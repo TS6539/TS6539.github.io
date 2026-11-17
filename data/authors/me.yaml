@@ -1,0 +1,60 @@
+schema: hugoblox/author/v1
+slug: me
+is_owner: true
+name:
+  display: Tianshi Hao
+  given: Tianshi
+  family: Hao
+  alternate: '郝天时'
+  pronunciation: ''
+  pronouns: he/him
+postnominals:
+  - PhD
+status:
+  icon: "🎓"
+role: Specially Appointed Assistant Professor
+bio: |
+  Tianshi Hao is a language educator and researcher at Hiroshima University,
+  Japan. His research sits at the intersection of educational technology, AI
+  in language education, and generative AI in second-language writing. He
+  studies how learners actually use AI tools — and what that use does to the
+  quality of their work — using quantitative ethnography (epistemic network
+  analysis) and systematic review methods. He earned his PhD in Global
+  Leadership and Change from Pepperdine University (2024) and an MAT in TESOL
+  from the University of Southern California (2020). He is the author of
+  *Play to Learn: Use Video Games to Learn a New Language* (2020).
+
+affiliations:
+  - name: Hiroshima University
+    url: https://www.hiroshima-u.ac.jp/en
+
+links:
+  - icon: at-symbol
+    url: mailto:haots2308@gmail.com
+    label: E-mail Me
+
+interests:
+  - Educational Technology
+  - AI in Language Education
+  - Generative AI in L2 Writing
+  - Quantitative Ethnography (ENA)
+  - Systematic Reviews & Meta-analysis
+  - Learning Sciences
+
+education:
+  - degree: PhD in Global Leadership and Change
+    institution: Pepperdine University
+    end: 2024-12-31
+    summary: |
+      Doctoral research on doctoral education and quantitative ethnography.
+  - degree: MAT in TESOL
+    institution: University of Southern California
+    end: 2020-12-31
+
+experience:
+  - role: Specially Appointed Assistant Professor
+    org: Hiroshima University
+    summary: |
+      Teaching and research in English language education and educational
+      technology, including university-wide work on generative AI guidelines
+      for English courses.
