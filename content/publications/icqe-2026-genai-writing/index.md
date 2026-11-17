@@ -22,7 +22,4 @@ featured: false
 hugoblox:
   ids:
     doi: "10.1007/978-3-032-44026-6_16"
-links:
-  - type: doi
-    url: "https://doi.org/10.1007/978-3-032-44026-6_16"
 ---
