@@ -1,0 +1,118 @@
+{{/* Hugo Blox: Citation Impact (custom block) */}}
+{{/* Renders a stats row, a Leaflet world map of citing institutions, and a
+     citations-per-year chart from data/citations.json (baked in at build time). */}}
+
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $content := $block.content }}
+{{ if not (reflect.IsMap $content) }}{{ $content = dict }}{{ end }}
+{{ $title := index $content "title" | default "Impact" }}
+
+{{ $data := hugo.Data.citations }}
+{{ $totals := $data.totals }}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  .ci-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+  .ci-title { font-size: 1.875rem; font-weight: 700; text-align: center; margin-bottom: 1rem; color: #111827; }
+  .dark .ci-title { color: #f9fafb; }
+  .ci-intro { max-width: 46rem; margin: 0 auto 2rem; text-align: center; font-size: 1.05rem; line-height: 1.6; color: #4b5563; }
+  .dark .ci-intro { color: #d1d5db; }
+  .ci-stats { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
+  .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; padding: 1.1rem 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); }
+  .dark .ci-stat { background: #111827; border-color: rgba(255,255,255,.12); }
+  .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; }
+  .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; }
+  .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); padding: 1.4rem; margin-bottom: 1.6rem; }
+  .dark .ci-card { background: #111827; border-color: rgba(255,255,255,.12); }
+  .ci-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .3rem; color: #111827; }
+  .dark .ci-card h3 { color: #f9fafb; }
+  .ci-card p.ci-sub { font-size: .88rem; color: #8a94a3; margin-bottom: 1rem; }
+  #ci-map { height: 480px; border-radius: .75rem; overflow: hidden; background: #eef1f5; z-index: 0; }
+  .ci-chart-wrap { height: 320px; position: relative; }
+  .ci-note { font-size: .8rem; color: #8a94a3; margin-top: .8rem; line-height: 1.55; }
+  .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+</style>
+
+<div class="ci-wrap">
+  <h2 class="ci-title">{{ $title }}</h2>
+  <p class="ci-intro">My research has been cited by scholars at {{ $totals.institutions }} institutions in {{ $totals.countries }} countries. The map shows where those citing researchers are based, and the chart traces how the citations have grown year by year.</p>
+
+  <div class="ci-stats">
+    <div class="ci-stat"><b>{{ $totals.citing_papers }}</b><span>Citing papers</span></div>
+    <div class="ci-stat"><b>{{ $totals.institutions }}</b><span>Institutions</span></div>
+    <div class="ci-stat"><b>{{ $totals.countries }}</b><span>Countries</span></div>
+  </div>
+
+  <div class="ci-card">
+    <h3>Where the citations come from</h3>
+    <p class="ci-sub">One marker per institution that employs a citing author. Click a marker for details.</p>
+    <div id="ci-map"></div>
+  </div>
+
+  <div class="ci-card">
+    <h3>Citations received per year</h3>
+    <p class="ci-sub">Bars count citing papers by their publication year. The line is the cumulative total.</p>
+    <div class="ci-chart-wrap"><canvas id="ci-chart"></canvas></div>
+    <p class="ci-note">Data from OpenAlex merged with Google Scholar citing works exported via Publish or Perish, compiled November 2026. A few citing works have no publication year in either source, so the yearly chart sums to slightly less than the total number of citing papers. Citing works found only through Google Scholar may lack institution data and do not appear on the map.</p>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  const CI_DATA = {{ $data | jsonify | safeJS }};
+
+  function ciEscape(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  if (window.L && document.getElementById('ci-map')) {
+    const map = L.map('ci-map', { scrollWheelZoom: false }).setView([25, 10], 2);
+    map.on('click', function () { map.scrollWheelZoom.enable(); });
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      attribution: 'Tiles &copy; Esri, OpenStreetMap contributors, and the GIS user community'
+    }).addTo(map);
+    CI_DATA.institutions.forEach(function (inst) {
+      const yrs = (inst.year_min && inst.year_max)
+        ? (inst.year_min === inst.year_max ? '' + inst.year_min : inst.year_min + ' to ' + inst.year_max)
+        : 'n/a';
+      const pop = '<b>' + ciEscape(inst.name) + '</b><br>' +
+        (inst.city ? ciEscape(inst.city) + ', ' : '') + ciEscape(inst.country_code) + '<br>' +
+        'Citing authors: ' + inst.citing_authors + '<br>' +
+        'Citing papers: ' + inst.citing_papers + '<br>' +
+        'Years: ' + yrs;
+      L.circleMarker([inst.lat, inst.lng], {
+        radius: 5 + Math.min(8, inst.citing_papers * 0.75),
+        color: '#ffffff', weight: 2, fillColor: '#1d4ed8', fillOpacity: 0.92
+      }).addTo(map).bindPopup(pop);
+    });
+  }
+
+  if (window.Chart && document.getElementById('ci-chart')) {
+    const dark = document.documentElement.classList.contains('dark');
+    const lineColor = dark ? '#e5e7eb' : '#0b0d10';
+    const cy = CI_DATA.citations_per_year;
+    new Chart(document.getElementById('ci-chart'), {
+      data: {
+        labels: cy.map(function (d) { return d.year; }),
+        datasets: [
+          { type: 'bar', label: 'Citations received', data: cy.map(function (d) { return d.count; }),
+            backgroundColor: 'rgba(29,78,216,0.85)', borderRadius: 6, maxBarThickness: 48, yAxisID: 'y' },
+          { type: 'line', label: 'Cumulative', data: cy.map(function (d) { return d.cumulative; }),
+            borderColor: lineColor, backgroundColor: lineColor, pointBackgroundColor: lineColor,
+            pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointRadius: 3, tension: 0.3, yAxisID: 'y1' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'Citations' } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { precision: 0 }, title: { display: true, text: 'Cumulative' } }
+        }
+      }
+    });
+  }
+</script>

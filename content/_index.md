@@ -71,6 +71,14 @@ sections:
         exclude_featured: false
     design:
       view: citation
+  - block: markdown
+    content:
+      title: 'Research impact'
+      subtitle: ''
+      text: |-
+        My work has been cited in 113 papers by researchers at 93 institutions in 36 countries. [See the Impact page](/impact/) for a map of the citing institutions and how the citations have grown over time.
+    design:
+      columns: '1'
   - block: collection
     id: news
     content:
