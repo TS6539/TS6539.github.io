@@ -14,15 +14,20 @@ status:
   icon: "🎓"
 role: Specially Appointed Assistant Professor
 bio: |
-  Tianshi Hao is a language educator and researcher at Hiroshima University,
-  Japan. His research sits at the intersection of educational technology, AI
-  in language education, and generative AI in second-language writing. He
-  studies how learners actually use AI tools — and what that use does to the
-  quality of their work — using quantitative ethnography (epistemic network
-  analysis) and systematic review methods. He earned his PhD in Global
-  Leadership and Change from Pepperdine University (2024) and an MAT in TESOL
-  from the University of Southern California (2020). He is the author of
-  *Play to Learn: Use Video Games to Learn a New Language* (2020).
+  Tianshi Hao is a Specially Appointed Assistant Professor at Hiroshima
+  University, Japan, working in the learning sciences and learning analytics.
+  His research asks what learning still happens on the student's side when
+  generative AI can draft, summarize, explain and revise on demand, and how
+  that learning can be seen in process data rather than in self-report alone.
+  His main methods are quantitative ethnography and epistemic network
+  analysis, alongside systematic review and AI-supported evidence synthesis.
+  At Hiroshima he teaches English courses in which students learn to write
+  with AI, and he leads the development of generative AI guidelines for
+  English education. He earned his PhD in Global Leadership and Change,
+  with a focus on educational technology and virtual leadership, from
+  Pepperdine University (2024), and his MAT in TESOL from the University
+  of Southern California (2020). He is the author of *Play to Learn: Use
+  Video Games to Learn a New Language* (2020).
 
 affiliations:
   - name: Hiroshima University
@@ -32,29 +37,117 @@ links:
   - icon: at-symbol
     url: mailto:haots2308@gmail.com
     label: E-mail Me
+  - icon: brands/linkedin
+    url: https://www.linkedin.com/in/tianshihao
+    label: LinkedIn
+  - icon: academicons/orcid
+    url: https://orcid.org/0000-0003-2456-0953
+    label: ORCID
 
 interests:
-  - Educational Technology
   - AI in Language Education
   - Generative AI in L2 Writing
   - Quantitative Ethnography (ENA)
-  - Systematic Reviews & Meta-analysis
-  - Learning Sciences
+  - Learning Sciences & Learning Analytics
+  - Systematic Reviews & Evidence Synthesis
+  - Educational Technology
 
 education:
   - degree: PhD in Global Leadership and Change
     institution: Pepperdine University
     end: 2024-12-31
     summary: |
-      Doctoral research on doctoral education and quantitative ethnography.
+      Focus on educational technology and virtual leadership. Doctoral
+      research on doctoral education, studied with quantitative ethnography.
   - degree: MAT in TESOL
     institution: University of Southern California
     end: 2020-12-31
+    summary: |
+      Master of Arts in Teaching, Teaching English to Speakers of Other
+      Languages, with a supervised student-teaching placement in California.
 
 experience:
   - role: Specially Appointed Assistant Professor
     org: Hiroshima University
+    start: 2026-04-01
     summary: |
-      Teaching and research in English language education and educational
-      technology, including university-wide work on generative AI guidelines
-      for English courses.
+      Teach undergraduate English courses, including Writing English with
+      AI, On Your Own Terms, a 10-session course open to university staff,
+      faculty and students. Lead the development of generative AI
+      guidelines for English education, pairing each principle with
+      concrete examples of student AI use, and organize faculty
+      development sessions on AI tools for academic work. Research
+      programme: generative AI in second language writing and learning
+      processes, studied with quantitative ethnography and epistemic
+      network analysis.
+  - role: Knowledge Engineer
+    org: Hyperthesis LLC
+    start: 2025-01-01
+    end: 2025-12-31
+    summary: |
+      Worked on an NIH-funded project building AI-supported systematic
+      review software for evidence synthesis.
+  - role: Graduate Assistant, ABLE Project
+    org: Pepperdine University
+    start: 2024-06-01
+    end: 2024-12-31
+    summary: |
+      Graduate assistantship in the Graduate School of Education and
+      Psychology.
+  - role: Graduate Assistant, Dissertation Support and APA Review
+    org: Pepperdine University
+    start: 2023-03-01
+    end: 2024-12-31
+    summary: |
+      Reviewed doctoral dissertations for APA style, formatting and
+      scholarly presentation.
+  - role: Part-Time Instructor
+    org: Beijing Institute of Fashion Technology
+    start: 2021-04-01
+    end: 2021-07-31
+    summary: |
+      Taught English courses part-time for one semester.
+  - role: Student Teacher
+    org: El Monte Rosemead Adult School
+    start: 2020-03-01
+    end: 2020-12-31
+    summary: |
+      Supervised student-teaching placement during the MAT in TESOL at
+      the University of Southern California.
+
+skills:
+  - name: Research Methods
+    items:
+      - label: Quantitative Ethnography & ENA
+        level: 5
+      - label: Systematic Reviews
+        level: 5
+      - label: AI-Supported Evidence Synthesis
+        level: 4
+      - label: Thematic Analysis
+        level: 4
+      - label: Inferential Statistics (Regression)
+        level: 3
+  - name: Teaching & Field
+    items:
+      - label: TESOL / English Language Teaching
+        level: 5
+      - label: AI in Language Education
+        level: 5
+      - label: Educational Technology
+        level: 5
+      - label: Faculty Development
+        level: 4
+      - label: Curriculum Development
+        level: 4
+
+languages:
+  - name: Chinese
+    level: 5
+    label: Native
+  - name: English
+    level: 5
+    label: Full professional proficiency
+  - name: Japanese
+    level: 1
+    label: Beginner
