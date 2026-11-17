@@ -1,0 +1,21 @@
+---
+title: "Cultural influences on leadership curriculum: A literature analysis between western and eastern leadership curricula"
+authors:
+  - S. Chen
+  - Z. Yin
+  - me
+  - A. Lal
+  - J. Llamas
+  - M. Llamas
+date: "2024-01-01T00:00:00Z"
+publishDate: "2024-01-01T00:00:00Z"
+publication_types: ["article-journal"]
+publication:
+  name: "The Scholarship Without Borders Journal, 2(1)"
+  pages: "2"
+peer_reviewed: true
+tags:
+  - Leadership
+  - Curriculum
+featured: false
+---
