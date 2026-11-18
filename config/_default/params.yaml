@@ -39,14 +39,15 @@ hugoblox:
     colors:
       primary: "" # Tailwind palette name or hex (e.g., "indigo" or "#6366f1")
       secondary: ""
-      neutral: "" # Affects gray utilities (text-gray-*, bg-gray-*)
+      neutral: "stone" # Affects gray utilities (text-gray-*, bg-gray-*) — warm grays for the v5 paper palette
     # Optional: Mode-specific color overrides
+    # v5 restraint pass: muted ink blue family (desaturated vs the old #1d4ed8)
     colors_light:
-      primary: "#1d4ed8"
-      secondary: "#1e40af"
+      primary: "#3f5a7a"
+      secondary: "#2e4258"
     colors_dark:
-      primary: "#60a5fa"
-      secondary: "#93c5fd"
+      primary: "#93a9c4"
+      secondary: "#b3c3d9"
     # Optional: Semantic surface color overrides
     surfaces:
       background: ""
@@ -64,7 +65,9 @@ hugoblox:
   # ────────────────────────────────────────────────────────────────────────────
   typography:
     # Theme pack: name from data/fonts/
-    pack: "academic"
+    # v5: custom "paper" pack (data/fonts/paper.yaml) — Newsreader serif
+    # display headings over the academic pack's Source Serif 4 body.
+    pack: "paper"
 
   # ────────────────────────────────────────────────────────────────────────────
   # LAYOUT

@@ -1,0 +1,49 @@
+# HugoBlox Font Pack (project-defined)
+# https://docs.hugoblox.com
+#
+# v5 "Paper" pack: mirrors the bundled "academic" pack (Source Serif 4 body,
+# Source Code Pro code) but swaps the heading face from Lora to Newsreader, a
+# humanist editorial serif, for the masthead and headings.
+#
+# Newsreader is loaded at a single discrete weight (700): the kit builds
+# Google Fonts URLs as "family=Name:wght@<weights joined by ','>", and the
+# css2 API only accepts discrete weights separated by ';' (a comma list is
+# rejected and the family silently falls back). A one-weight list is the only
+# discrete form the kit can emit that Google accepts, and Newsreader's
+# variable range form ("wght@100..900") is likewise rejected for this family.
+# 700 is the weight the design actually uses for display headings; lighter
+# heading weights in markup resolve to it via normal font matching.
+
+hugoblox:
+  meta:
+    format: "hugoblox-font@1"
+    name: "Paper"
+    vendor: "tianshihao"
+    version: "1.0.0"
+    license: "OFL-1.1"
+    style: "serif"
+    description: "Warm editorial pairing: Newsreader display headings, Source Serif 4 body"
+
+  families:
+    heading: "Newsreader"
+    body: "Source Serif 4"
+    code: "Source Code Pro"
+
+  weights:
+    heading: [700]
+    body: [400, 600]
+    code: [400]
+
+  leading:
+    heading: 1.2
+    body: 1.7
+    code: 1.5
+
+  tracking:
+    heading: "0"
+    body: "0"
+
+  variable:
+    heading: false
+    body: true
+    code: false

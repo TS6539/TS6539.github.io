@@ -83,11 +83,14 @@
         {{- end }}
       </div>
 
-      {{/* Trajectory: Beijing -> Los Angeles -> Hiroshima, one thin rule. */}}
+      {{/* Trajectory: Beijing -> Los Angeles -> Hiroshima, one thin rule.
+           v5: the rule is a gently wobbling path (a hand-drawn irregularity
+           of about +/-2.5 units) that still passes exactly through the
+           three city dots at (60,18), (500,18) and (940,18). */}}
       <div class="v4-path">
         <svg class="v4-path-svg" viewBox="0 0 1000 66" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
-          <line class="path-base" x1="60" y1="18" x2="940" y2="18"/>
-          <line class="path-draw" x1="60" y1="18" x2="940" y2="18" pathLength="1"/>
+          <path class="path-base" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18"/>
+          <path class="path-draw" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18" pathLength="1"/>
           <g class="path-dot"><circle class="halo" cx="60" cy="18" r="11"/><circle class="core" cx="60" cy="18" r="5.5"/></g>
           <g class="path-dot"><circle class="halo" cx="500" cy="18" r="11"/><circle class="core" cx="500" cy="18" r="5.5"/></g>
           <g class="path-dot"><circle class="halo" cx="940" cy="18" r="11"/><circle class="core" cx="940" cy="18" r="5.5"/></g>
@@ -119,8 +122,6 @@
       </div>
     </div>
   </section>
-
-  {{/* Keyword marquee is inserted here by v4-motion.js (progressive). */}}
 
   {{/* ================= 2. NUMBERS BAND ================= */}}
   <div class="v4-wrap">

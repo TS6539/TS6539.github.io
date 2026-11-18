@@ -1,51 +1,53 @@
 /* ==========================================================================
-   C-plus (v3) design layer for tianshihao.org
-   Ported from the approved C-plus mockup (~/workspace/site_mockups/c-plus.html)
-   onto Hugo Blox. Plain CSS (no @apply): the theme auto-loads this file
-   after its own stylesheets. Everything is scoped to v3 classes or to the
+   Design layer for tianshihao.org (v3 C-plus origins, v4 editorial homepage,
+   v5 restraint pass). Plain CSS (no @apply): the theme auto-loads this file
+   after its own stylesheets. Everything is scoped to v3/v4 classes or to the
    specific theme elements it restyles; there are no global resets and no
    img/canvas rules, so embedded content (e.g. the Leaflet map on /impact/)
    is untouched.
+   v5 palette: muted ink blue (#3f5a7a family) instead of the vivid #1d4ed8,
+   warm paper surfaces, warm grays. The --v3-* variable names are kept from
+   the v3 layer; their values are the v5 ones.
    ========================================================================== */
 
 :root {
-  --v3-accent: #1d4ed8;
-  --v3-accent-2: #5b8cff;
-  --v3-glow: rgba(29, 78, 216, .20);
-  --v3-beam: rgba(29, 78, 216, .55);
-  --v3-line: rgba(11, 13, 16, .09);
-  --v3-card: #ffffff;
-  --v3-card-line: rgba(11, 13, 16, .08);
-  --v3-text-2: #4b5563;
-  --v3-text-3: #8a94a3;
-  --v3-shadow: 0 1px 2px rgba(11, 13, 16, .05), 0 12px 32px -12px rgba(11, 13, 16, .14);
+  --v3-accent: #3f5a7a;
+  --v3-accent-2: #7d94b3;
+  --v3-glow: rgba(63, 90, 122, .18);
+  --v3-beam: rgba(63, 90, 122, .50);
+  --v3-line: rgba(28, 26, 23, .10);
+  --v3-card: #fffdf9;
+  --v3-card-line: rgba(28, 26, 23, .09);
+  --v3-text-2: #57534a;
+  --v3-text-3: #a49d8f;
+  --v3-shadow: 0 1px 2px rgba(28, 26, 23, .05), 0 12px 32px -12px rgba(28, 26, 23, .14);
 }
 .dark {
-  --v3-accent: #60a5fa;
-  --v3-accent-2: #2f5fd0;
-  --v3-glow: rgba(96, 165, 250, .22);
-  --v3-beam: rgba(96, 165, 250, .55);
+  --v3-accent: #93a9c4;
+  --v3-accent-2: #647d9c;
+  --v3-glow: rgba(147, 169, 196, .20);
+  --v3-beam: rgba(147, 169, 196, .50);
   --v3-line: rgba(255, 255, 255, .09);
-  --v3-card: #111827;
+  --v3-card: #1c1a17;
   --v3-card-line: rgba(255, 255, 255, .10);
-  --v3-text-2: #a6aeba;
-  --v3-text-3: #6b7482;
+  --v3-text-2: #b8b2a6;
+  --v3-text-3: #857e70;
   --v3-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .6);
 }
 
 ::selection { background: var(--v3-accent); color: #fff; }
 
 /* ---------- glassy sticky header ---------- */
-.page-header { border-bottom: 1px solid rgba(15, 23, 42, .08); }
+.page-header { border-bottom: 1px solid rgba(28, 26, 23, .08); }
 .dark .page-header { border-bottom-color: rgba(255, 255, 255, .08); }
 #site-header.header {
-  background-color: rgba(241, 245, 249, .78);
+  background-color: rgba(250, 248, 244, .82);
   -webkit-backdrop-filter: blur(14px) saturate(1.6);
   backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow: 0 1px 2px rgba(11, 13, 16, .05), 0 12px 32px -16px rgba(11, 13, 16, .18);
+  box-shadow: 0 1px 2px rgba(28, 26, 23, .05), 0 12px 32px -16px rgba(28, 26, 23, .18);
 }
 .dark #site-header.header {
-  background-color: rgba(15, 23, 42, .70);
+  background-color: rgba(23, 21, 18, .72);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 32px -16px rgba(0, 0, 0, .55);
 }
 
@@ -61,18 +63,8 @@
   display: inline-flex; align-items: center; justify-content: center;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 12.5px; font-weight: 800; letter-spacing: .04em; line-height: 1;
-  box-shadow: 0 4px 12px -4px rgba(29, 78, 216, .5);
+  box-shadow: 0 4px 12px -4px rgba(63, 90, 122, .45);
 }
-
-/* ---------- ENA network canvas behind the hero ---------- */
-#v3-hero-net {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  z-index: 0; pointer-events: none;
-  opacity: .55;
-}
-#section-resume-biography-3 .resume-biography > div { position: relative; z-index: 1; }
-@media (max-width: 639px) { #v3-hero-net { display: none; } }
 
 /* ---------- spotlight glow + border beam on cards ---------- */
 .v3-glow { position: relative; isolation: isolate; }
@@ -107,31 +99,6 @@
   box-shadow: var(--v3-shadow);
 }
 
-/* ---------- magnetic primary button ---------- */
-/* Keep Tailwind's transition-all from fighting GSAP's transform ticks. */
-a.v3-magnetic {
-  transition: box-shadow .3s ease, background-color .3s ease, color .3s ease, scale .3s ease;
-  will-change: transform;
-}
-
-/* ---------- keyword marquee ---------- */
-.v3-marquee {
-  border-top: 1px solid var(--v3-line);
-  border-bottom: 1px solid var(--v3-line);
-  overflow: hidden;
-  padding: 15px 0;
-}
-.v3-marquee-track { display: flex; width: max-content; animation: v3-mq-scroll 46s linear infinite; }
-.v3-marquee:hover .v3-marquee-track { animation-play-state: paused; }
-.v3-mq-group { display: flex; align-items: center; gap: 46px; padding-right: 46px; }
-.v3-mq-group span {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--v3-text-3); white-space: nowrap;
-}
-.v3-mq-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--v3-text-3); opacity: .55; flex: none; }
-@keyframes v3-mq-scroll { to { transform: translateX(-50%); } }
-
 /* ---------- trajectory path strip ---------- */
 .v3-path { padding: 2.5rem 1.5rem 0; }
 .v3-path-inner { max-width: 56rem; margin: 0 auto; }
@@ -157,7 +124,6 @@ a.v3-magnetic {
 @keyframes v3-halo-pulse { 0%, 100% { opacity: .45; } 50% { opacity: .12; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .v3-marquee-track { animation: none; }
   .v3-path-svg .path-dot .halo { animation: none; }
 }
 
@@ -210,13 +176,6 @@ a.v3-magnetic {
 /* ---------- masthead ---------- */
 .v4-masthead { position: relative; overflow: clip; padding: 3.25rem 0 2.75rem; }
 .v4-masthead .v4-wrap { position: relative; z-index: 1; }
-#v4-hero-net {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  z-index: 0; pointer-events: none;
-  opacity: .5;
-}
-@media (max-width: 639px) { #v4-hero-net { display: none; } }
 
 .v4-masthead-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .v4-masthead-text .v4-kicker { color: var(--v3-text-3); }
@@ -236,11 +195,10 @@ a.v3-magnetic {
   background: var(--v3-accent); color: #fff;
   font-weight: 650; font-size: .95rem;
   padding: .65rem 1.35rem; border-radius: 999px;
-  box-shadow: 0 8px 20px -8px rgba(29, 78, 216, .55);
+  box-shadow: 0 8px 20px -8px rgba(63, 90, 122, .50);
   transition: box-shadow .3s ease, background-color .3s ease;
 }
-.v4-cv-btn:hover { color: #fff; box-shadow: 0 10px 26px -8px rgba(29, 78, 216, .65); }
-a.v4-cv-btn.v3-magnetic { will-change: transform; }
+.v4-cv-btn:hover { color: #fff; box-shadow: 0 10px 26px -8px rgba(63, 90, 122, .60); }
 .v4-links { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; }
 .v4-links a {
   font-size: .95rem; font-weight: 550; color: var(--v3-text-2);
@@ -261,7 +219,6 @@ a.v4-cv-btn.v3-magnetic { will-change: transform; }
     max-width: none; width: 320px;
     margin-left: -2.75rem; margin-top: 1.5rem;
     position: relative; z-index: 2;
-    transform: rotate(.6deg);
   }
 }
 
@@ -312,8 +269,8 @@ a.v4-cv-btn.v3-magnetic { will-change: transform; }
   border-top: 1px solid var(--v3-line); border-bottom: 1px solid var(--v3-line);
   transition: background-color .3s ease;
 }
-.v4-band:hover { background-color: rgba(29, 78, 216, .045); }
-.dark .v4-band:hover { background-color: rgba(96, 165, 250, .06); }
+.v4-band:hover { background-color: rgba(63, 90, 122, .05); }
+.dark .v4-band:hover { background-color: rgba(147, 169, 196, .07); }
 .v4-band-inner {
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: 1.6rem 1rem; padding: 2.1rem 0; align-items: center;
@@ -420,3 +377,32 @@ a.v4-cv-btn.v3-magnetic { will-change: transform; }
 @media (min-width: 900px) {
   .v4-closing-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
 }
+
+/* ==========================================================================
+   v5 restraint pass: warm paper surfaces + serif display type.
+   The theme emits its surface variables on :root (and .dark) from the theme
+   pack; setting them on body overrides them page-wide, because every
+   consumer of these variables lives inside body and a custom property set
+   on an element shadows the inherited value for that element and its
+   descendants. Light mode: warm ivory paper with warm near-black text.
+   Dark mode: deep warm charcoal instead of blue-slate.
+   ========================================================================== */
+body {
+  --hb-color-background: #faf8f4;
+  --hb-color-foreground: #1c1a17;
+  --hb-color-footer-bg: #f2eee3;
+  --hb-color-footer-fg: #1c1a17;
+}
+.dark body {
+  --hb-color-background: #171512;
+  --hb-color-foreground: #ece7dc;
+  --hb-color-footer-bg: #201d18;
+  --hb-color-footer-fg: #ece7dc;
+}
+
+/* Serif display type. Headings (h1-h6) already take var(--hb-font-heading)
+   from the theme, which the "paper" font pack sets to Newsreader. These
+   rules pin the masthead name to the loaded Newsreader weight (700) and put
+   the big editorial research numerals in the same face. */
+.v4-name { font-family: var(--hb-font-heading); font-weight: 700; }
+.v4-rnum { font-family: var(--hb-font-heading); }

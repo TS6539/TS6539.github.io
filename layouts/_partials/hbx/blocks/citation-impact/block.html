@@ -50,7 +50,7 @@
   .ci-stats { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
   .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; padding: 1.1rem 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); }
   .dark .ci-stat { background: #111827; border-color: rgba(255,255,255,.12); }
-  .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; }
+  .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
   .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; }
   .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); padding: 1.4rem; margin-bottom: 1.6rem; }
   .dark .ci-card { background: #111827; border-color: rgba(255,255,255,.12); }
@@ -64,27 +64,27 @@
   .ci-intro-line { font-size: .95rem; color: #4b5563; margin-bottom: .8rem; }
   .dark .ci-intro-line { color: #d1d5db; }
   .ci-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.4rem; }
-  .ci-chip { font-size: .85rem; font-weight: 500; color: #1d4ed8; background: rgba(29,78,216,.07); border: 1px solid rgba(29,78,216,.28); border-radius: 9999px; padding: .35rem .85rem; line-height: 1.35; }
-  .dark .ci-chip { color: #93c5fd; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.35); }
+  .ci-chip { font-size: .85rem; font-weight: 500; color: #3f5a7a; background: rgba(63,90,122,.08); border: 1px solid rgba(63,90,122,.30); border-radius: 9999px; padding: .35rem .85rem; line-height: 1.35; }
+  .dark .ci-chip { color: #b3c3d9; background: rgba(147,169,196,.13); border-color: rgba(147,169,196,.35); }
   .ci-stats2 { display: flex; flex-wrap: wrap; gap: .8rem; }
   .ci-stat2 { flex: 1 1 9rem; text-align: center; border: 1px solid rgba(17,24,39,.07); border-radius: .75rem; padding: .8rem .8rem; background: rgba(17,24,39,.02); }
   .dark .ci-stat2 { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
-  .ci-stat2 b { display: block; font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; }
-  .dark .ci-stat2 b { color: #60a5fa; }
+  .ci-stat2 b { display: block; font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
+  .dark .ci-stat2 b { color: #93a9c4; }
   .ci-stat2 span { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #8a94a3; }
   .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
   /* Chronological playback controls (revealed by JS only when it can play) */
   .ci-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
   .ci-controls[hidden] { display: none; }
-  .ci-year-num { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; line-height: 1; }
-  .dark .ci-year-num { color: #60a5fa; }
+  .ci-year-num { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; line-height: 1; }
+  .dark .ci-year-num { color: #93a9c4; }
   .ci-year-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; margin-left: .55rem; }
-  .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #1d4ed8; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(29,78,216,.55); transition: background .2s ease, transform .2s ease; }
-  .ci-play-btn:hover:not(:disabled) { background: #1e40af; transform: translateY(-1px); }
+  .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #3f5a7a; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(63,90,122,.50); transition: background .2s ease, transform .2s ease; }
+  .ci-play-btn:hover:not(:disabled) { background: #2e4258; transform: translateY(-1px); }
   .ci-play-btn:disabled { opacity: .55; cursor: default; }
   /* Expanding pulse ring shown briefly where a marker lands */
   .ci-pulse-icon { background: transparent; border: 0; }
-  .ci-pulse-icon span { display: block; width: 36px; height: 36px; margin-left: -18px; margin-top: -18px; border-radius: 9999px; border: 3px solid rgba(29,78,216,.75); animation: ci-pulse .95s ease-out forwards; }
+  .ci-pulse-icon span { display: block; width: 36px; height: 36px; margin-left: -18px; margin-top: -18px; border-radius: 9999px; border: 3px solid rgba(63,90,122,.75); animation: ci-pulse .95s ease-out forwards; }
   @keyframes ci-pulse { 0% { transform: scale(.3); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .ci-pulse-icon span { animation: none; } }
 </style>
@@ -177,7 +177,7 @@
         'Years: ' + yrs;
       const marker = L.circleMarker([inst.lat, inst.lng], {
         radius: 5 + Math.min(8, inst.citing_papers * 0.75),
-        color: '#ffffff', weight: 2, fillColor: '#1d4ed8', fillOpacity: 0.92
+        color: '#ffffff', weight: 2, fillColor: '#3f5a7a', fillOpacity: 0.92
       }).bindPopup(pop);
       /* Static state: every marker on the map, exactly as before. */
       marker.addTo(ciMap);
@@ -301,7 +301,7 @@
         labels: cy.map(function (d) { return d.year; }),
         datasets: [
           { type: 'bar', label: 'Citations received', data: cy.map(function (d) { return d.count; }),
-            backgroundColor: 'rgba(29,78,216,0.85)', borderRadius: 6, maxBarThickness: 48, yAxisID: 'y' },
+            backgroundColor: 'rgba(63,90,122,0.85)', borderRadius: 6, maxBarThickness: 48, yAxisID: 'y' },
           { type: 'line', label: 'Cumulative', data: cy.map(function (d) { return d.cumulative; }),
             borderColor: lineColor, backgroundColor: lineColor, pointBackgroundColor: lineColor,
             pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointRadius: 3, tension: 0.3, yAxisID: 'y1' }
