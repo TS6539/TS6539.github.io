@@ -1,0 +1,23 @@
+{{/* Local override of the theme's page_author_card (third review round):
+     single pages (projects, blog, publications) ended with the author's
+     full bio. Replace that card with a one-sentence author line whose
+     name links to the homepage (the profile owner's profile URL already
+     resolves to the site root for a personal site). */}}
+{{ $profile := .profile }}
+{{ $site_type := site.Params.hugoblox.identity.type | humanize | default "Person" }}
+
+{{ if $profile }}
+  {{ $profile_url := printf "/authors/%s/" $profile.slug }}
+  {{ if and (eq $site_type "Person") ($profile.is_owner) }}
+    {{ $profile_url = site.BaseURL }}
+  {{ end }}
+  {{ $org := "" }}
+  {{ with $profile.affiliations }}{{ $org = (index . 0).name }}{{ end }}
+
+<div class="flex pt-12 pb-4">
+  <p class="text-sm text-neutral-700 dark:text-neutral-300">
+    <a href="{{ $profile_url }}" class="font-semibold no-underline">{{ $profile.title }}</a> is a {{ $profile.role }}{{ with $org }} at {{ . }}{{ end }}.
+  </p>
+</div>
+
+{{ end }}

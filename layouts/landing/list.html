@@ -110,14 +110,10 @@
             {{- range . }}<li>{{ . }}</li>{{ end }}
           </ul>
           {{- end }}
-          {{- with $profile.education }}
-          <h2 class="v4-rail-title">Education</h2>
-          <ul class="v4-rail-list">
-            {{- range . }}
-            <li><span class="v4-edu-degree">{{ .degree }}</span><span class="v4-edu-inst">{{ .institution }}{{ with .end }}, {{ substr (printf "%v" .) 0 4 }}{{ end }}</span></li>
-            {{- end }}
-          </ul>
-          {{- end }}
+          {{/* Education intentionally not repeated in the homepage rail
+               (third review round): the bio above already gives both
+               degrees, and the full education history lives on
+               /experience/. */}}
         </aside>
       </div>
     </div>

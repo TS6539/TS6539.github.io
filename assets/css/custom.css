@@ -208,10 +208,11 @@
   transition: box-shadow .3s ease, background-color .3s ease;
 }
 .v4-cv-btn:hover { color: #fff; box-shadow: 0 10px 26px -8px rgba(63, 90, 122, .60); }
-.v4-links { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; }
+.v4-links { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; min-width: 0; }
 .v4-links a {
   font-size: .95rem; font-weight: 550; color: var(--v3-text-2);
   border-bottom: 1px solid var(--v3-line); padding-bottom: 1px;
+  white-space: nowrap;
   transition: color .25s ease, border-color .25s ease;
 }
 .v4-links a:hover { color: var(--v3-accent); border-color: var(--v3-accent); }
@@ -231,6 +232,12 @@
 }
 @media (min-width: 1024px) {
   .v4-masthead-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 0; align-items: start; }
+  /* The portrait overlaps the text column by 2.75rem (negative margin
+     below, z-index 2). Keep the actions row (CV button + profile links)
+     out of that overlap strip so a link label can never slide under
+     the portrait and be clipped, as "Google Scholar" was on narrower
+     windows; the links simply wrap to a second line instead. */
+  .v4-hero-actions { padding-right: 3.25rem; }
   .v4-portrait {
     max-width: none; width: 320px;
     margin-left: -2.75rem; margin-top: 1.5rem;

@@ -106,11 +106,30 @@
   /* ---------- gentle reveals for sections below the masthead ---------- */
   (function initReveals() {
     if (!hasST) return;
+    var tweens = [];
     home.querySelectorAll(".v4-reveal").forEach(function (el) {
-      gsap.fromTo(el,
+      tweens.push(gsap.fromTo(el,
         { opacity: 0, y: 26 },
         { opacity: 1, y: 0, duration: 0.9, ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+          scrollTrigger: { trigger: el, start: "top 88%", once: true } }));
     });
+    /* Fail-safe (third review round): if a reveal trigger never fires
+       (very fast scroll, a ScrollTrigger quirk), any reveal element that
+       has already reached the viewport is forced to its final state, so
+       no section can be left blank and no screenshot can catch a
+       half-revealed page. Elements still below the fold keep their
+       normal scroll animation. Reduced-motion visitors never get here:
+       the script returns earlier and the static final state is shown. */
+    function forceVisible() {
+      tweens.forEach(function (tw) {
+        var el = tw.scrollTrigger && tw.scrollTrigger.trigger;
+        if (el && tw.progress() < 1 &&
+            el.getBoundingClientRect().top < window.innerHeight) {
+          tw.progress(1);
+        }
+      });
+    }
+    setTimeout(forceVisible, 3000);
+    setTimeout(forceVisible, 8000);
   })();
 })();

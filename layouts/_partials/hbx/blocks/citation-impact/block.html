@@ -392,6 +392,9 @@
         });
       }, { threshold: 0.3 });
       cio.observe(chartEl);
+      /* Fail-safe (third review round): if the observer never fires,
+         build anyway so the chart area is never left blank. */
+      setTimeout(ciBuildChart, 5000);
     } else {
       ciBuildChart();
     }
@@ -409,9 +412,11 @@
     const chips = card.querySelectorAll('.ci-chip');
     const counts = card.querySelectorAll('.ci-count');
     card.classList.add('ci-pr-prep');
+    let revealed = false;
     const io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
+        if (!en.isIntersecting || revealed) return;
+        revealed = true;
         io.disconnect();
         chips.forEach(function (chip, i) { chip.style.transitionDelay = (i * 45) + 'ms'; });
         card.classList.add('ci-pr-in');
@@ -421,5 +426,17 @@
       });
     }, { threshold: 0.3 });
     io.observe(card);
+    /* Fail-safe (third review round): if the observer never fires, the
+       card must not stay in its hidden prep state; reveal it with the
+       final values already in the markup. */
+    setTimeout(function () {
+      if (revealed) return;
+      revealed = true;
+      io.disconnect();
+      card.classList.add('ci-pr-in');
+      counts.forEach(function (el) {
+        el.textContent = el.getAttribute('data-target');
+      });
+    }, 4000);
   })();
 </script>
