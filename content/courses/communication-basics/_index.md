@@ -2,10 +2,10 @@
 title: Communication Basics
 linkTitle: Communication Basics
 date: 2026-04-01
-summary: Online English course at Hiroshima University (Institute for Foreign Language Research and Education, FLaRE), with curriculum, teaching materials and assessments developed in collaboration with subject instructors.
+summary: An online English course at Hiroshima University (Institute for Foreign Language Research and Education, FLaRE), where I collaborate with subject instructors on curriculum, teaching materials and assessments.
 tags:
   - Course
 weight: 10
 ---
 
-An online English course at Hiroshima University, offered through the Institute for Foreign Language Research and Education (FLaRE). Hao collaborates with subject instructors to develop the curriculum, create teaching materials, and design assessments for the course.
+An online English course at Hiroshima University, offered through the Institute for Foreign Language Research and Education (FLaRE). I collaborate with subject instructors to develop the curriculum, create teaching materials, and design assessments for the course.

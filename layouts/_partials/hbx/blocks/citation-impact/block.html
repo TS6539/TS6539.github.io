@@ -51,12 +51,12 @@
   .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; padding: 1.1rem 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); }
   .dark .ci-stat { background: #111827; border-color: rgba(255,255,255,.12); }
   .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
-  .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; }
+  .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #5f6a72; }
   .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); padding: 1.4rem; margin-bottom: 1.6rem; }
   .dark .ci-card { background: #111827; border-color: rgba(255,255,255,.12); }
   .ci-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .3rem; color: #111827; }
   .dark .ci-card h3 { color: #f9fafb; }
-  .ci-card p.ci-sub { font-size: .88rem; color: #8a94a3; margin-bottom: 1rem; }
+  .ci-card p.ci-sub { font-size: .88rem; color: #5f6a72; margin-bottom: 1rem; }
   #ci-map { height: 480px; border-radius: .75rem; overflow: hidden; background: #eef1f5; z-index: 0; }
   /* Mute the Esri basemap so it sits with the site's moon-white paper +
      ink-blue restraint. Only the tile pane is filtered: markers, pulses
@@ -64,7 +64,7 @@
   #ci-map .leaflet-tile-pane { filter: grayscale(1) sepia(0.06) brightness(1.04) contrast(0.94); }
   .dark #ci-map .leaflet-tile-pane { filter: grayscale(1) sepia(0.12) brightness(0.8) contrast(0.95); }
   .ci-chart-wrap { height: 320px; position: relative; }
-  .ci-note { font-size: .8rem; color: #8a94a3; margin-top: .8rem; line-height: 1.55; }
+  .ci-note { font-size: .8rem; color: #5f6a72; margin-top: .8rem; line-height: 1.55; }
   /* Peer review: journal chips + secondary stats row */
   .ci-intro-line { font-size: .95rem; color: #4b5563; margin-bottom: .8rem; }
   .dark .ci-intro-line { color: #d1d5db; }
@@ -76,7 +76,7 @@
   .dark .ci-stat2 { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
   .ci-stat2 b { display: block; font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
   .dark .ci-stat2 b { color: #93a9c4; }
-  .ci-stat2 span { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #8a94a3; }
+  .ci-stat2 span { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #5f6a72; }
   .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
   /* Popups in the site's paper language: moon-white card, ink text,
      serif institution name, thin ink-blue border, soft shadow. */
@@ -99,7 +99,12 @@
   .ci-controls[hidden] { display: none; }
   .ci-year-num { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; line-height: 1; }
   .dark .ci-year-num { color: #93a9c4; }
-  .ci-year-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; margin-left: .55rem; }
+  .ci-year-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #5f6a72; margin-left: .55rem; }
+  /* Label contrast (third review round): the label grey above is
+     #5f6a72 (5.5:1 on white cards) in light mode; on the dark cards
+     (#111827) the original #8a94a3 already gives 5.8:1, so dark mode
+     keeps it. */
+  .dark .ci-stat span, .dark .ci-card p.ci-sub, .dark .ci-note, .dark .ci-stat2 span, .dark .ci-year-label { color: #8a94a3; }
   .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #3f5a7a; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(63,90,122,.50); transition: background .2s ease, transform .2s ease; }
   .ci-play-btn:hover:not(:disabled) { background: #2e4258; transform: translateY(-1px); }
   .ci-play-btn:disabled { opacity: .55; cursor: default; }

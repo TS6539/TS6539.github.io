@@ -8,6 +8,7 @@ tags:
 date: "2026-08-15T00:00:00Z"
 image:
   focal_point: "Center"
+  preview_only: true
 ---
 
 **[Explore the Impact page →](/impact/)**

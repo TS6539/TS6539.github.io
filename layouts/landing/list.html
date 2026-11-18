@@ -168,32 +168,25 @@
       <header class="v4-sec-head v4-reveal">
         <p class="v4-kicker">Featured Publications</p>
       </header>
-      {{- $lead := index $featured 0 }}
-      <article class="v4-feature v4-reveal">
-        {{- with $lead.Resources.GetMatch "featured.jpg" }}
-        {{- $cover := .Fill "1200x675 webp q85 Center" -}}
-        <a class="v4-feature-cover" href="{{ $lead.RelPermalink }}" aria-hidden="true" tabindex="-1">
-          <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="" loading="lazy">
-        </a>
-        {{- end }}
+      {{/* Every featured publication gets the same full text card
+           (venue, title, authors, summary, link); the typographic cover
+           images were dropped in the third review round because they
+           merely repeated the titles. */}}
+      {{- range $featured }}
+      <article class="v4-feature v4-feature--text v4-reveal">
         <div class="v4-feature-text">
           <p class="v4-feature-meta">
-            {{- with $lead.Params.publication }}{{ .name }} · {{ end }}{{ $lead.Date.Year -}}
+            {{- with .Params.publication }}{{ .name }} · {{ end }}{{ .Date.Year -}}
           </p>
-          <h3 class="v4-feature-title"><a href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
+          <h3 class="v4-feature-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
           <p class="v4-feature-authors">
-            {{- range $i, $a := $lead.Params.authors }}{{ if $i }}, {{ end }}{{ if eq $a "me" }}Tianshi Hao{{ else }}{{ $a }}{{ end }}{{ end -}}
+            {{- range $i, $a := .Params.authors }}{{ if $i }}, {{ end }}{{ if eq $a "me" }}Tianshi Hao{{ else }}{{ $a }}{{ end }}{{ end -}}
           </p>
-          {{- with ($lead.Params.summary | default $lead.Params.abstract) }}
+          {{- with (.Params.summary | default .Params.abstract) }}
           <p class="v4-feature-summary">{{ . }}</p>
           {{- end }}
-          <a class="v4-more" href="{{ $lead.RelPermalink }}">Read more <span aria-hidden="true">→</span></a>
+          <a class="v4-more" href="{{ .RelPermalink }}">Read more <span aria-hidden="true">→</span></a>
         </div>
-      </article>
-      {{- range after 1 $featured }}
-      <article class="v4-pubrow v4-reveal">
-        <h3 class="v4-pubrow-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        <p class="v4-pubrow-meta">{{ with .Params.publication }}{{ .name }} · {{ end }}{{ .Date.Year }}</p>
       </article>
       {{- end }}
       <p class="v4-allpubs v4-reveal"><a class="v4-more" href="{{ "/publications/" | relURL }}">All publications <span aria-hidden="true">→</span></a></p>

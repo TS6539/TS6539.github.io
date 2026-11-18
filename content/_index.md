@@ -37,9 +37,9 @@ sections:
 
         **AI in language education.** How generative AI changes the way students write, read, and learn in a second language, and how universities should respond, from classroom practice to institutional guidelines. A recent study of Japanese undergraduates writing with ChatGPT appeared as Chapter 16 of the ICQE 2026 proceedings (Springer).
 
-        **Quantitative ethnography.** Using epistemic network analysis (ENA) to trace patterns in how learners interact with AI tools, and what separates productive use from shortcut use. An ENA study of preservice teachers' reading lives is accepted at AERA 2027.
+        **Quantitative ethnography.** Using epistemic network analysis (ENA) to trace learning and identity patterns in process data, including how learners interact with AI tools and what separates productive use from shortcut use. The ICQE 2026 chapter (Springer) uses ENA to map patterns of generative AI use during source-based writing.
 
-        **Evidence synthesis.** Systematic reviews and AI-supported evidence synthesis that map what the field actually knows about games, AI, and technology in language learning, including work on an NIH-funded synthesis project at Hyperthesis LLC.
+        **Evidence synthesis.** Systematic reviews and AI-supported evidence synthesis that map evidence across education and the social sciences, and develop AI-supported tools for doing synthesis, including work on an NIH-funded synthesis project at Hyperthesis LLC.
     design:
       columns: '1'
   - block: markdown

@@ -21,7 +21,9 @@
   --v3-card: #fcfdfe;
   --v3-card-line: rgba(26, 29, 32, .09);
   --v3-text-2: #5a636b;
-  --v3-text-3: #9aa4ab;
+  /* text-3 darkened from #9aa4ab (2.3:1) to #5f6a72 in the third review
+     round so small labels meet 4.5:1 on moon white (5.1:1) and cards. */
+  --v3-text-3: #5f6a72;
   --v3-shadow: 0 1px 2px rgba(26, 29, 32, .05), 0 12px 32px -12px rgba(26, 29, 32, .14);
 }
 .dark {
@@ -33,7 +35,8 @@
   --v3-card: #1c1a17;
   --v3-card-line: rgba(255, 255, 255, .10);
   --v3-text-2: #b8b2a6;
-  --v3-text-3: #857e70;
+  /* text-3 lightened from #857e70 (4.3:1 on card) to #a39a89 (6.2:1). */
+  --v3-text-3: #a39a89;
   --v3-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .6);
 }
 
@@ -370,6 +373,12 @@
 @media (min-width: 900px) {
   .v4-feature { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; }
 }
+/* Text-only featured cards (third review round): every featured
+   publication gets the same full card, with no cover image, so the
+   two-column cover layout collapses back to a single text column and
+   successive cards are separated by a hairline. */
+.v4-feature.v4-feature--text { grid-template-columns: minmax(0, 1fr); align-items: start; }
+.v4-feature--text + .v4-feature--text { border-top: 1px solid var(--v3-line); }
 .v4-pubrow {
   display: grid; grid-template-columns: minmax(0, 1fr); gap: .15rem;
   padding: 1.15rem 0; border-top: 1px solid var(--v3-line);
