@@ -58,6 +58,11 @@
   .dark .ci-card h3 { color: #f9fafb; }
   .ci-card p.ci-sub { font-size: .88rem; color: #8a94a3; margin-bottom: 1rem; }
   #ci-map { height: 480px; border-radius: .75rem; overflow: hidden; background: #eef1f5; z-index: 0; }
+  /* Mute the Esri basemap so it sits with the site's warm paper + ink-blue
+     restraint. Only the tile pane is filtered: markers, pulses and popups
+     live in other Leaflet panes and stay full color. */
+  #ci-map .leaflet-tile-pane { filter: grayscale(1) sepia(0.18) brightness(1.04) contrast(0.94); }
+  .dark #ci-map .leaflet-tile-pane { filter: grayscale(1) sepia(0.12) brightness(0.8) contrast(0.95); }
   .ci-chart-wrap { height: 320px; position: relative; }
   .ci-note { font-size: .8rem; color: #8a94a3; margin-top: .8rem; line-height: 1.55; }
   /* Peer review: journal chips + secondary stats row */
