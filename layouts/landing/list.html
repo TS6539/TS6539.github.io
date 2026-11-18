@@ -61,7 +61,7 @@
         <div class="v4-masthead-text">
           <p class="v4-kicker v4-hero-item">
             {{- with $profile.affiliations }}{{ (index . 0).name }}{{ end -}}
-            {{- with $profile.name_alternate }} · {{ . }}{{ end -}}
+            {{- with $profile.name_alternate }} · <span class="v4-name-alt">{{ . }}</span>{{ end -}}
           </p>
           <h1 class="v4-name">{{ $profile.title }}</h1>
           <p class="v4-role v4-hero-item">{{ $profile.role }}{{ with $profile.postnominals }}, {{ delimit . ", " }}{{ end }}</p>

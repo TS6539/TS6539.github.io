@@ -181,9 +181,13 @@
 
 .v4-masthead-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .v4-masthead-text .v4-kicker { color: var(--v3-text-3); }
+/* Chinese alternate name inside the masthead kicker: scaled by the same
+   0.78 factor as the name itself (12.5px kicker -> 9.75px) so the pairing
+   stays balanced. Font stack inherited from .v4-kicker, unchanged. */
+.v4-name-alt { font-size: .78em; }
 .v4-name {
-  font-size: clamp(3rem, 9vw, 6.5rem);
-  line-height: .98; font-weight: 800; letter-spacing: -.03em;
+  font-size: clamp(2.34rem, 7.02vw, 5.07rem);
+  line-height: .98; font-weight: 800; letter-spacing: -.02em;
   margin: .3rem 0 1rem;
 }
 .v4-role { font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 650; margin: 0 0 .3rem; }
@@ -420,8 +424,14 @@ body {
 }
 
 /* Serif display type. Headings (h1-h6) already take var(--hb-font-heading)
-   from the theme, which the "paper" font pack sets to Newsreader. These
-   rules pin the masthead name to the loaded Newsreader weight (700) and put
-   the big editorial research numerals in the same face. */
-.v4-name { font-family: var(--hb-font-heading); font-weight: 700; }
+   from the theme, which the "paper" font pack sets to Newsreader, and the
+   big editorial research numerals use the same face. The masthead name is
+   the exception (owner feedback, 2026-11-18): it takes the sans stack used
+   across the custom design at semibold, for a quieter, more modern
+   masthead. (The font pack resolves --hb-font-body to Source Serif 4, so
+   the variable route would have kept the name in a serif.) */
+.v4-name {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 600;
+}
 .v4-rnum { font-family: var(--hb-font-heading); }
