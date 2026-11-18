@@ -255,7 +255,12 @@
   box-shadow: var(--v3-shadow), 0 24px 48px -20px rgba(0, 0, 0, .5), 0 0 0 1px rgba(236, 231, 220, .16);
 }
 @media (min-width: 1024px) {
-  .v4-masthead-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 0; align-items: start; }
+  /* Text column is vertically centered against the 4:5 portrait, so
+     the free space splits above the kicker and below the pills instead
+     of pooling as a void under the buttons (owner feedback 2026-11-18).
+     The portrait's margin-top still offsets it within its margin box,
+     so the portrait itself does not move. */
+  .v4-masthead-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 0; align-items: center; }
   /* The portrait overlaps the text column by 2.75rem (negative margin
      below, z-index 2). Keep the actions rows (CV, e-mail and profile
      pills) out of that overlap strip so a pill can never slide under
