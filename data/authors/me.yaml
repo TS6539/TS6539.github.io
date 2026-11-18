@@ -37,6 +37,9 @@ links:
   - icon: at-symbol
     url: mailto:haots2308@gmail.com
     label: E-mail Me
+  - icon: at-symbol
+    url: mailto:tianshihao@hiroshima-u.ac.jp
+    label: University E-mail
   - icon: brands/linkedin
     url: https://www.linkedin.com/in/tianshihao
     label: LinkedIn
@@ -60,8 +63,7 @@ education:
     institution: Pepperdine University
     end: 2024-12-31
     summary: |
-      Focus on educational technology and virtual leadership. Doctoral
-      research on doctoral education, studied with quantitative ethnography.
+      Doctoral research on doctoral education, studied with quantitative ethnography.
   - degree: MAT in TESOL
     institution: University of Southern California
     end: 2020-12-31
@@ -147,10 +149,10 @@ skills:
 languages:
   - name: Chinese
     level: 5
-    label: Native
+    label: native
   - name: English
     level: 5
-    label: Full professional proficiency
+    label: professional
   - name: Japanese
     level: 1
-    label: Beginner
+    label: beginner, studying

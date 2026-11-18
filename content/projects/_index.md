@@ -8,7 +8,7 @@ sections:
   - block: collection
     content:
       title: Selected Projects
-      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+      text: Research projects I lead, from how students learn with generative AI to the guidelines work for English education at Hiroshima University.
       filters:
         folders:
           - projects
