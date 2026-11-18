@@ -12,7 +12,7 @@ summary: "A practical book on using video games as a tool for learning a new lan
 tags:
   - Game-Based Learning
   - Language Learning
-research_line: other-collaborations
+research_line: game-based-language-learning
 featured: false
 hugoblox:
   ids:
