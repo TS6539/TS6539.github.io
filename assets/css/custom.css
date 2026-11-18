@@ -189,3 +189,234 @@ a.v3-magnetic {
 @media (min-width: 1280px) {
   #section-resume-biography-3 .resume-biography { padding-top: 6rem; padding-bottom: 6rem; }
 }
+
+/* ==========================================================================
+   Homepage v4: editorial composition (layouts/landing/list.html).
+   Every rule is scoped under .v4-home, which exists only in the homepage
+   markup, so inner pages (including /impact/) are unaffected. The v3 rules
+   above that targeted the old block-stack homepage ids are inert now.
+   Nothing here hides content: all motion states are applied by JS only.
+   ========================================================================== */
+
+.v4-home { overflow-x: clip; }
+.v4-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+
+.v4-kicker {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--v3-accent); margin: 0 0 .9rem;
+}
+
+/* ---------- masthead ---------- */
+.v4-masthead { position: relative; overflow: clip; padding: 3.25rem 0 2.75rem; }
+.v4-masthead .v4-wrap { position: relative; z-index: 1; }
+#v4-hero-net {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+  opacity: .5;
+}
+@media (max-width: 639px) { #v4-hero-net { display: none; } }
+
+.v4-masthead-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.v4-masthead-text .v4-kicker { color: var(--v3-text-3); }
+.v4-name {
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: .98; font-weight: 800; letter-spacing: -.03em;
+  margin: .3rem 0 1rem;
+}
+.v4-role { font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 650; margin: 0 0 .3rem; }
+.v4-tagline { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--v3-text-2); margin: 0; }
+.v4-hero-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem;
+  margin-top: 1.6rem;
+}
+.v4-cv-btn {
+  display: inline-flex; align-items: center;
+  background: var(--v3-accent); color: #fff;
+  font-weight: 650; font-size: .95rem;
+  padding: .65rem 1.35rem; border-radius: 999px;
+  box-shadow: 0 8px 20px -8px rgba(29, 78, 216, .55);
+  transition: box-shadow .3s ease, background-color .3s ease;
+}
+.v4-cv-btn:hover { color: #fff; box-shadow: 0 10px 26px -8px rgba(29, 78, 216, .65); }
+a.v4-cv-btn.v3-magnetic { will-change: transform; }
+.v4-links { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; }
+.v4-links a {
+  font-size: .95rem; font-weight: 550; color: var(--v3-text-2);
+  border-bottom: 1px solid var(--v3-line); padding-bottom: 1px;
+  transition: color .25s ease, border-color .25s ease;
+}
+.v4-links a:hover { color: var(--v3-accent); border-color: var(--v3-accent); }
+
+.v4-portrait { margin: 0; max-width: 400px; }
+.v4-portrait img {
+  display: block; width: 100%; height: auto;
+  border-radius: 1.25rem;
+  box-shadow: var(--v3-shadow), 0 24px 48px -20px rgba(11, 13, 16, .28);
+}
+@media (min-width: 1024px) {
+  .v4-masthead-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 0; align-items: start; }
+  .v4-portrait {
+    max-width: none; width: 320px;
+    margin-left: -2.75rem; margin-top: 1.5rem;
+    position: relative; z-index: 2;
+    transform: rotate(.6deg);
+  }
+}
+
+/* trajectory rule inside the masthead */
+.v4-path { margin-top: 2.5rem; }
+.v4-path-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.v4-path-svg .path-base { stroke: var(--v3-line); stroke-width: 2; }
+.v4-path-svg .path-draw { stroke: var(--v3-accent); stroke-width: 2; stroke-linecap: round; }
+.v4-path-svg .path-dot .core { fill: var(--v3-accent); }
+.v4-path-svg .path-dot .halo {
+  fill: none; stroke: var(--v3-accent); stroke-width: 1.5; opacity: .45;
+  animation: v3-halo-pulse 3.2s ease-in-out infinite;
+}
+.v4-path-svg text {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 24px; font-weight: 600; fill: var(--v3-text-2); letter-spacing: .01em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v4-path-svg .path-dot .halo { animation: none; }
+}
+
+/* bio + rail */
+.v4-bio { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2.75rem; }
+.v4-bio-text { font-size: 1.02rem; line-height: 1.75; color: var(--v3-text-2); max-width: 44rem; }
+.v4-bio-text p { margin: 0 0 1em; }
+.v4-bio-text p:last-child { margin-bottom: 0; }
+.v4-bio-text a { color: var(--v3-accent); }
+@media (min-width: 1024px) {
+  .v4-bio { grid-template-columns: minmax(0, 1fr) 250px; gap: 3.5rem; }
+}
+.v4-rail-title {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--v3-text-3); margin: 0 0 .6rem;
+}
+.v4-rail-title:not(:first-child) { margin-top: 1.6rem; }
+.v4-rail-list { list-style: none; margin: 0; padding: 0; }
+.v4-rail-list li {
+  font-size: .93rem; line-height: 1.45; color: var(--v3-text-2);
+  padding: .32rem 0; border-top: 1px solid var(--v3-line);
+}
+.v4-edu-degree { display: block; font-weight: 600; color: inherit; }
+.v4-edu-inst { display: block; font-size: .85rem; color: var(--v3-text-3); }
+
+/* ---------- numbers band ---------- */
+.v4-band {
+  display: block; text-decoration: none; color: inherit;
+  border-top: 1px solid var(--v3-line); border-bottom: 1px solid var(--v3-line);
+  transition: background-color .3s ease;
+}
+.v4-band:hover { background-color: rgba(29, 78, 216, .045); }
+.dark .v4-band:hover { background-color: rgba(96, 165, 250, .06); }
+.v4-band-inner {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem 1rem; padding: 2.1rem 0; align-items: center;
+}
+.v4-num {
+  display: block;
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem); font-weight: 800; line-height: 1;
+  letter-spacing: -.02em; color: var(--v3-accent);
+  font-variant-numeric: tabular-nums;
+}
+.v4-fig-label {
+  display: block; margin-top: .45rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 11.5px; font-weight: 650; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--v3-text-3);
+}
+.v4-band-cta {
+  display: none;
+  font-weight: 650; color: var(--v3-accent); white-space: nowrap;
+}
+.v4-band-arrow { display: inline-block; transition: transform .3s ease; }
+.v4-band:hover .v4-band-arrow { transform: translateX(4px); }
+@media (min-width: 900px) {
+  .v4-band-inner { grid-template-columns: repeat(4, 1fr) auto; }
+  .v4-band-cta { display: block; }
+}
+
+/* ---------- sections ---------- */
+.v4-section { padding: 3.4rem 0 3.6rem; }
+.v4-sec-head { margin-bottom: .5rem; }
+.v4-sec-intro { font-size: 1.05rem; color: var(--v3-text-2); margin: 0; }
+.v4-sec-intro p { margin: 0; }
+.v4-prose { line-height: 1.75; color: var(--v3-text-2); }
+.v4-prose p { margin: 0 0 1em; }
+.v4-prose p:last-child { margin-bottom: 0; }
+.v4-prose a { color: var(--v3-accent); }
+
+/* research: numbered editorial rows */
+.v4-rrow {
+  display: grid; grid-template-columns: 1fr; gap: .3rem;
+  padding: 1.7rem 0; border-top: 1px solid var(--v3-line);
+}
+.v4-rrow:last-child { border-bottom: 1px solid var(--v3-line); }
+.v4-rnum {
+  font-size: 2.5rem; font-weight: 800; line-height: 1; letter-spacing: -.02em;
+  color: var(--v3-accent); opacity: .85;
+}
+.v4-rtitle { font-size: 1.28rem; font-weight: 700; line-height: 1.3; margin: 0; align-self: start; }
+.v4-rbody { color: var(--v3-text-2); line-height: 1.7; }
+.v4-rbody p { margin: 0; }
+@media (min-width: 820px) {
+  .v4-rrow { grid-template-columns: 96px 235px minmax(0, 1fr); gap: 1.75rem; align-items: start; }
+  .v4-rnum { font-size: 2.9rem; }
+}
+
+/* featured publications */
+.v4-feature { display: grid; grid-template-columns: 1fr; gap: 1.6rem; padding: 1.4rem 0 1.8rem; }
+.v4-feature-cover img {
+  display: block; width: 100%; height: auto; border-radius: 1rem;
+  border: 1px solid var(--v3-card-line); box-shadow: var(--v3-shadow);
+}
+.v4-feature-meta {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--v3-text-3); margin: 0 0 .6rem; line-height: 1.6;
+}
+.v4-feature-title { font-size: clamp(1.45rem, 2.6vw, 1.95rem); font-weight: 750; line-height: 1.22; letter-spacing: -.015em; margin: 0 0 .55rem; }
+.v4-feature-title a { color: inherit; text-decoration: none; }
+.v4-feature-title a:hover { color: var(--v3-accent); }
+.v4-feature-authors { font-size: .95rem; color: var(--v3-text-2); margin: 0 0 .7rem; }
+.v4-feature-summary { color: var(--v3-text-2); line-height: 1.7; margin: 0 0 .9rem; }
+.v4-more { font-weight: 650; color: var(--v3-accent); text-decoration: none; }
+.v4-more:hover { text-decoration: underline; }
+@media (min-width: 900px) {
+  .v4-feature { grid-template-columns: 1.12fr 1fr; gap: 2.5rem; align-items: center; }
+}
+.v4-pubrow {
+  display: grid; grid-template-columns: 1fr; gap: .15rem;
+  padding: 1.15rem 0; border-top: 1px solid var(--v3-line);
+}
+.v4-pubrow-title { font-size: 1.08rem; font-weight: 650; line-height: 1.35; margin: 0; }
+.v4-pubrow-title a { color: inherit; text-decoration: none; }
+.v4-pubrow-title a:hover { color: var(--v3-accent); }
+.v4-pubrow-meta { font-size: .9rem; color: var(--v3-text-3); margin: 0; white-space: nowrap; }
+@media (min-width: 760px) {
+  .v4-pubrow { grid-template-columns: minmax(0, 1fr) auto; gap: 1.5rem; align-items: baseline; }
+}
+.v4-allpubs { margin: 1.2rem 0 0; }
+
+/* news: newspaper rows */
+.v4-nrow {
+  display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 1rem;
+  padding: .95rem 0; border-top: 1px solid var(--v3-line); align-items: baseline;
+}
+.v4-nrow:last-child { border-bottom: 1px solid var(--v3-line); }
+.v4-ndate { font-size: .88rem; color: var(--v3-text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.v4-ntitle { font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin: 0; }
+.v4-ntitle a { color: inherit; text-decoration: none; }
+.v4-ntitle a:hover { color: var(--v3-accent); }
+
+/* closing: teaching + contact */
+.v4-closing { border-top: 1px solid var(--v3-line); }
+.v4-closing-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 900px) {
+  .v4-closing-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+}

@@ -1,9 +1,12 @@
 /* ==========================================================================
-   C-plus (v3) motion layer for tianshihao.org (homepage only; the body-end
+   Homepage v4 motion layer for tianshihao.org (homepage only; the body-end
    hook emits these scripts only on the home page).
    Progressive enhancement throughout: if GSAP or a plugin fails to load,
    nothing is hidden and every feature degrades to its static state.
-   Ported from the approved C-plus mockup.
+   Adapted from the v3 (C-plus) layer for the editorial homepage markup:
+   network canvas + SplitText name reveal + marquee + trajectory draw +
+   magnetic CV button, plus numbers-band count-up and gentle section
+   reveals. All content is visible with JS disabled.
    ========================================================================== */
 (function () {
   "use strict";
@@ -18,19 +21,17 @@
     if (hasSplit) gsap.registerPlugin(SplitText);
   }
 
-  var hero = document.getElementById("section-resume-biography-3");
-  if (!hero) return;
+  var home = document.querySelector(".v4-home");
+  if (!home) return;
+  var masthead = home.querySelector(".v4-masthead");
+  if (!masthead) return;
 
-  /* ---------- ENA-style network motif behind the hero ---------- */
-  var bio = hero.querySelector(".resume-biography");
-  var canvas = null;
-  if (bio) {
-    canvas = document.createElement("canvas");
-    canvas.id = "v3-hero-net";
-    canvas.setAttribute("aria-hidden", "true");
-    bio.insertBefore(canvas, bio.firstChild);
-    initNetwork(reduced);
-  }
+  /* ---------- ENA-style network motif behind the masthead ---------- */
+  var canvas = document.createElement("canvas");
+  canvas.id = "v4-hero-net";
+  canvas.setAttribute("aria-hidden", "true");
+  masthead.insertBefore(canvas, masthead.firstChild);
+  initNetwork(reduced);
 
   function initNetwork(staticFrame) {
     if (!canvas || !canvas.getContext) return;
@@ -88,7 +89,7 @@
       });
     }
     function resize() {
-      var r = bio.getBoundingClientRect();
+      var r = masthead.getBoundingClientRect();
       W = canvas.width = Math.max(1, Math.round(r.width));
       H = canvas.height = Math.max(1, Math.round(r.height));
       if (staticFrame) draw();
@@ -105,7 +106,7 @@
     if (staticFrame) { draw(); return; }
     var visible = true;
     if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(bio);
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(masthead);
     }
     (function loop() {
       t += 0.016;
@@ -114,7 +115,7 @@
     })();
   }
 
-  /* ---------- keyword marquee (inserted under the hero) ---------- */
+  /* ---------- keyword marquee (inserted between masthead and band) ---- */
   (function buildMarquee() {
     var words = ["Generative AI", "Quantitative Ethnography", "Learning Analytics", "L2 Writing", "Evidence Synthesis"];
     var mq = document.createElement("div");
@@ -136,93 +137,17 @@
       track.appendChild(group);
     }
     mq.appendChild(track);
-    hero.insertAdjacentElement("afterend", mq);
+    masthead.insertAdjacentElement("afterend", mq);
   })();
 
-  /* ---------- helpers ---------- */
-  function findSectionByTitle(title) {
-    var secs = document.querySelectorAll("section.hbb-section");
-    for (var i = 0; i < secs.length; i++) {
-      var divs = secs[i].querySelectorAll("div");
-      for (var j = 0; j < divs.length; j++) {
-        if (divs[j].children.length === 0 &&
-            divs[j].textContent.trim() === title &&
-            divs[j].className.indexOf("text-3xl") > -1) {
-          return secs[i];
-        }
-      }
-    }
-    return null;
-  }
-
-  /* ---------- trajectory path strip (inserted after Research) ---------- */
-  var pathSection = (function buildPath() {
-    var sec = document.createElement("section");
-    sec.className = "v3-path";
-    sec.setAttribute("aria-label", "Path");
-    sec.innerHTML =
-      '<div class="v3-path-inner">' +
-        '<p class="v3-path-kicker">Path</p>' +
-        '<h2 class="v3-path-title">From Beijing to Hiroshima</h2>' +
-        '<div class="v3-path-box">' +
-          '<svg class="v3-path-svg" viewBox="0 0 1000 96" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">' +
-            '<line class="path-base" x1="70" y1="30" x2="930" y2="30"/>' +
-            '<line class="path-draw" x1="70" y1="30" x2="930" y2="30" pathLength="1"/>' +
-            '<g class="path-dot"><circle class="halo" cx="70" cy="30" r="13"/><circle class="core" cx="70" cy="30" r="6.5"/></g>' +
-            '<g class="path-dot"><circle class="halo" cx="500" cy="30" r="13"/><circle class="core" cx="500" cy="30" r="6.5"/></g>' +
-            '<g class="path-dot"><circle class="halo" cx="930" cy="30" r="13"/><circle class="core" cx="930" cy="30" r="6.5"/></g>' +
-            '<text x="70" y="76" text-anchor="middle">Beijing</text>' +
-            '<text x="500" y="76" text-anchor="middle">Los Angeles</text>' +
-            '<text x="930" y="76" text-anchor="middle">Hiroshima</text>' +
-          '</svg>' +
-        '</div>' +
-      '</div>';
-    var research = findSectionByTitle("Research");
-    if (research) research.insertAdjacentElement("afterend", sec);
-    else hero.insertAdjacentElement("afterend", sec);
-    return sec;
-  })();
-
-  /* ---------- spotlight cards: mark targets ---------- */
-  document.querySelectorAll("#papers [role='article']").forEach(function (el) {
-    el.classList.add("v3-glow");
-  });
-  var researchSec = findSectionByTitle("Research");
-  if (researchSec) {
-    var rc = researchSec.querySelector(":scope > div:not(.home-section-bg)");
-    if (rc) rc.classList.add("v3-glow", "v3-research-card");
-  }
-
-  /* ---------- spotlight pointer tracking (fine pointers only) ---------- */
-  if (finePointer && !reduced) {
-    document.addEventListener("pointermove", function (e) {
-      var el = e.target && e.target.closest ? e.target.closest(".v3-glow") : null;
-      if (!el) return;
-      var r = el.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      el.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
-      el.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
-    }, { passive: true });
-  }
-
-  /* ---------- everything below needs GSAP and no reduced motion ---------- */
+  /* ---------- everything below needs GSAP and no reduced motion ------- */
   if (!hasGsap || reduced) return;
 
-  /* ---------- hero intro: masked line reveal for the name,
+  /* ---------- masthead intro: masked line reveal for the name,
                 blur-to-sharp reveal for the supporting items ---------- */
   (function heroReveal() {
-    var h1 = hero.querySelector("h1");
-    var grid = hero.querySelector(".grid");
-    var items = [];
-    if (grid && grid.children.length >= 2) {
-      var left = grid.children[0];
-      var avatar = left.querySelector(".avatar-wrapper");
-      if (avatar) items.push(avatar);
-      left.querySelectorAll(".space-y-3 > p").forEach(function (p) { items.push(p); });
-      var social = left.querySelector(".space-y-3 + div");
-      if (social) items.push(social);
-      items.push(grid.children[1]);
-    }
+    var h1 = masthead.querySelector(".v4-name");
+    var items = masthead.querySelectorAll(".v4-hero-item");
     if (items.length) {
       gsap.fromTo(items,
         { opacity: 0, y: 24, filter: "blur(8px)" },
@@ -256,25 +181,57 @@
     }
   })();
 
-  /* ---------- path line draws itself on scroll ---------- */
+  /* ---------- trajectory line draws itself shortly after load --------- */
   (function initPath() {
-    if (!hasST) return;
-    var draw = pathSection.querySelector(".path-draw");
+    var draw = masthead.querySelector(".v4-path-svg .path-draw");
     if (!draw) return;
-    var dots = pathSection.querySelectorAll(".path-dot");
+    var dots = masthead.querySelectorAll(".v4-path-svg .path-dot");
     gsap.set(draw, { strokeDasharray: 1, strokeDashoffset: 1 });
     gsap.set(dots, { opacity: 0 });
-    var tl = gsap.timeline({
-      scrollTrigger: { trigger: pathSection, start: "top 78%", once: true }
-    });
-    tl.to(draw, { strokeDashoffset: 0, duration: 1.7, ease: "expo.out" })
-      .to(dots, { opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.28 }, 0.25);
+    var tl = gsap.timeline({ delay: 0.55 });
+    tl.to(draw, { strokeDashoffset: 0, duration: 1.6, ease: "expo.out" })
+      .to(dots, { opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.28 }, 0.2);
   })();
 
-  /* ---------- magnetic primary button (Download CV), subtle ---------- */
+  /* ---------- numbers band: count up when it scrolls into view -------- */
+  (function initCountUp() {
+    var band = home.querySelector(".v4-band");
+    if (!band || !("IntersectionObserver" in window)) return;
+    var nums = band.querySelectorAll(".v4-num[data-count]");
+    if (!nums.length) return;
+    var done = false;
+    var io = new IntersectionObserver(function (entries) {
+      if (done || !entries[0].isIntersecting) return;
+      done = true;
+      io.disconnect();
+      nums.forEach(function (el, i) {
+        var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+        var obj = { v: 0 };
+        gsap.to(obj, {
+          v: target, duration: 1.4, delay: i * 0.12, ease: "expo.out",
+          onUpdate: function () { el.textContent = Math.round(obj.v); },
+          onComplete: function () { el.textContent = target; }
+        });
+      });
+    }, { threshold: 0.35 });
+    io.observe(band);
+  })();
+
+  /* ---------- gentle reveals for sections below the masthead ---------- */
+  (function initReveals() {
+    if (!hasST) return;
+    home.querySelectorAll(".v4-reveal").forEach(function (el) {
+      gsap.fromTo(el,
+        { opacity: 0, y: 26 },
+        { opacity: 1, y: 0, duration: 0.9, ease: "expo.out",
+          scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+    });
+  })();
+
+  /* ---------- magnetic primary button (Download CV), subtle ----------- */
   (function initMagnetic() {
     if (!finePointer) return;
-    var btn = hero.querySelector('a[href$="uploads/resume.pdf"]');
+    var btn = masthead.querySelector(".v4-cv-btn");
     if (!btn) return;
     btn.classList.add("v3-magnetic");
     function clamp(v, m) { return Math.max(-m, Math.min(m, v)); }

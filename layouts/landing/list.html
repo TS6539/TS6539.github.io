@@ -1,0 +1,242 @@
+{{- define "main" -}}
+{{- if .IsHome -}}
+{{/* ==========================================================================
+     Homepage v4: editorial composition (project override of the theme’s
+     block-stack landing/list.html). Content stays data-driven:
+       - name / role / bio / links / interests / education: data/authors/me.yaml
+         via the theme's get_author_profile partial
+       - Research / Teaching / Contact text: the markdown blocks in
+         content/_index.md front matter (edit the text there, not here)
+       - Featured publications: content/publications/ pages flagged featured
+       - News: content/blog/ pages
+       - Numbers band: data/citations.json totals (+ peer-review total)
+     All styling lives in assets/css/custom.css, scoped under .v4-home, so
+     inner pages are untouched. Motion: assets/js/v4-motion.js (progressive
+     enhancement; nothing is hidden without JS).
+     ========================================================================== */}}
+{{- $profile := partial "functions/get_author_profile.html" (dict "slug" "me") -}}
+{{- $totals := site.Data.citations.totals -}}
+
+{{/* Markdown blocks from content/_index.md, keyed by urlized title. */}}
+{{- $md := dict -}}
+{{- range .Params.sections -}}
+  {{- if eq .block "markdown" -}}
+    {{- $md = merge $md (dict (.content.title | urlize) .content.text) -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Research text -> intro + numbered items (bold lead-in = item title). */}}
+{{- $researchText := index $md "research" | default "" -}}
+{{- $paras := slice -}}
+{{- range split $researchText "\n\n" -}}
+  {{- $p := trim . " \n\r\t" -}}
+  {{- if $p }}{{ $paras = $paras | append $p }}{{ end -}}
+{{- end -}}
+{{- $rIntro := "" -}}
+{{- $rItems := slice -}}
+{{- $rOK := false -}}
+{{- if gt (len $paras) 1 -}}
+  {{- $rIntro = index $paras 0 -}}
+  {{- range after 1 $paras -}}
+    {{- $m := findRE "\\*\\*([^*]+)\\*\\*" . -}}
+    {{- $t := "" -}}
+    {{- if $m }}{{ $t = replace (index $m 0) "**" "" | replaceRE "\\.\\s*$" "" }}{{ end -}}
+    {{- $b := replaceRE "^\\*\\*[^*]+\\*\\*\\s*" "" . -}}
+    {{- $rItems = $rItems | append (dict "title" $t "body" $b) -}}
+  {{- end -}}
+  {{- $rOK = eq (len $rItems) 3 -}}
+  {{- range $rItems }}{{ if not .title }}{{ $rOK = false }}{{ end }}{{ end -}}
+{{- end -}}
+
+{{- $featured := sort (where (where site.RegularPages "Section" "publications") "Params.featured" true) "Date" "desc" -}}
+{{- $news := first 4 (sort (where site.RegularPages "Section" "blog") "Date" "desc") -}}
+{{- $avatar := $profile.avatar -}}
+
+<div class="v4-home">
+
+  {{/* ================= 1. MASTHEAD ================= */}}
+  <section class="v4-masthead">
+    <div class="v4-wrap">
+      <div class="v4-masthead-grid">
+        <div class="v4-masthead-text">
+          <p class="v4-kicker v4-hero-item">
+            {{- with $profile.affiliations }}{{ (index . 0).name }}{{ end -}}
+            {{- with $profile.name_alternate }} · {{ . }}{{ end -}}
+          </p>
+          <h1 class="v4-name">{{ $profile.title }}</h1>
+          <p class="v4-role v4-hero-item">{{ $profile.role }}{{ with $profile.postnominals }}, {{ delimit . ", " }}{{ end }}</p>
+          <p class="v4-tagline v4-hero-item">{{ site.Params.hugoblox.identity.tagline }}</p>
+          <div class="v4-hero-actions v4-hero-item">
+            <a class="v4-cv-btn" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
+            <nav class="v4-links" aria-label="Profiles">
+              {{- range $profile.links }}
+              <a href="{{ .url }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }}>{{ .label }}</a>
+              {{- end }}
+            </nav>
+          </div>
+        </div>
+        {{- with $avatar }}
+        <figure class="v4-portrait v4-hero-item">
+          {{- $img := .Fill "760x950 webp q88" -}}
+          <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="Portrait of {{ $profile.title }}" loading="eager">
+        </figure>
+        {{- end }}
+      </div>
+
+      {{/* Trajectory: Beijing -> Los Angeles -> Hiroshima, one thin rule. */}}
+      <div class="v4-path">
+        <svg class="v4-path-svg" viewBox="0 0 1000 66" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
+          <line class="path-base" x1="60" y1="18" x2="940" y2="18"/>
+          <line class="path-draw" x1="60" y1="18" x2="940" y2="18" pathLength="1"/>
+          <g class="path-dot"><circle class="halo" cx="60" cy="18" r="11"/><circle class="core" cx="60" cy="18" r="5.5"/></g>
+          <g class="path-dot"><circle class="halo" cx="500" cy="18" r="11"/><circle class="core" cx="500" cy="18" r="5.5"/></g>
+          <g class="path-dot"><circle class="halo" cx="940" cy="18" r="11"/><circle class="core" cx="940" cy="18" r="5.5"/></g>
+          <text x="60" y="54" text-anchor="middle">Beijing</text>
+          <text x="500" y="54" text-anchor="middle">Los Angeles</text>
+          <text x="940" y="54" text-anchor="middle">Hiroshima</text>
+        </svg>
+      </div>
+
+      {{/* Bio + rail (interests, education). */}}
+      <div class="v4-bio">
+        <div class="v4-bio-text">{{ $profile.bio | markdownify }}</div>
+        <aside class="v4-bio-rail">
+          {{- with $profile.interests }}
+          <h2 class="v4-rail-title">Interests</h2>
+          <ul class="v4-rail-list">
+            {{- range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+          {{- end }}
+          {{- with $profile.education }}
+          <h2 class="v4-rail-title">Education</h2>
+          <ul class="v4-rail-list">
+            {{- range . }}
+            <li><span class="v4-edu-degree">{{ .degree }}</span><span class="v4-edu-inst">{{ .institution }}{{ with .end }}, {{ substr (printf "%v" .) 0 4 }}{{ end }}</span></li>
+            {{- end }}
+          </ul>
+          {{- end }}
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {{/* Keyword marquee is inserted here by v4-motion.js (progressive). */}}
+
+  {{/* ================= 2. NUMBERS BAND ================= */}}
+  <div class="v4-wrap">
+    <a class="v4-band v4-reveal" href="{{ "/impact/" | relURL }}" aria-label="Impact: citing papers, institutions, countries and manuscripts reviewed. See the Impact page.">
+      <div class="v4-band-inner">
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.citing_papers }}">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing papers</span></div>
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.institutions }}">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.countries }}">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
+        {{/* 45 = completed manuscripts reviewed (Web of Science verified);
+             kept in step with the Peer Review stats on /impact/. */}}
+        <div class="v4-fig"><span class="v4-num" data-count="45">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
+        <div class="v4-band-cta" aria-hidden="true">Impact <span class="v4-band-arrow">→</span></div>
+      </div>
+    </a>
+  </div>
+
+  {{/* ================= 3. RESEARCH ================= */}}
+  <section class="v4-section" id="research">
+    <div class="v4-wrap">
+      <header class="v4-sec-head v4-reveal">
+        <p class="v4-kicker">Research</p>
+        {{- if $rOK }}<p class="v4-sec-intro">{{ $rIntro | markdownify }}</p>{{ end }}
+      </header>
+      {{- if $rOK }}
+      <div class="v4-rlist">
+        {{- range $i, $item := $rItems }}
+        <article class="v4-rrow v4-reveal">
+          <span class="v4-rnum" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
+          <h3 class="v4-rtitle">{{ $item.title }}</h3>
+          <div class="v4-rbody">{{ $item.body | markdownify }}</div>
+        </article>
+        {{- end }}
+      </div>
+      {{- else }}
+      <div class="v4-prose">{{ $researchText | markdownify }}</div>
+      {{- end }}
+    </div>
+  </section>
+
+  {{/* ================= 4. FEATURED PUBLICATIONS ================= */}}
+  {{- if $featured }}
+  <section class="v4-section" id="papers">
+    <div class="v4-wrap">
+      <header class="v4-sec-head v4-reveal">
+        <p class="v4-kicker">Featured Publications</p>
+      </header>
+      {{- $lead := index $featured 0 }}
+      <article class="v4-feature v4-reveal">
+        {{- with $lead.Resources.GetMatch "featured.jpg" }}
+        {{- $cover := .Fill "1200x675 webp q85" -}}
+        <a class="v4-feature-cover" href="{{ $lead.RelPermalink }}" aria-hidden="true" tabindex="-1">
+          <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="" loading="lazy">
+        </a>
+        {{- end }}
+        <div class="v4-feature-text">
+          <p class="v4-feature-meta">
+            {{- with $lead.Params.publication }}{{ .name }} · {{ end }}{{ $lead.Date.Year -}}
+          </p>
+          <h3 class="v4-feature-title"><a href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
+          <p class="v4-feature-authors">
+            {{- range $i, $a := $lead.Params.authors }}{{ if $i }}, {{ end }}{{ if eq $a "me" }}Tianshi Hao{{ else }}{{ $a }}{{ end }}{{ end -}}
+          </p>
+          {{- with ($lead.Params.summary | default $lead.Params.abstract) }}
+          <p class="v4-feature-summary">{{ . }}</p>
+          {{- end }}
+          <a class="v4-more" href="{{ $lead.RelPermalink }}">Read more <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      {{- range after 1 $featured }}
+      <article class="v4-pubrow v4-reveal">
+        <h3 class="v4-pubrow-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="v4-pubrow-meta">{{ with .Params.publication }}{{ .name }} · {{ end }}{{ .Date.Year }}</p>
+      </article>
+      {{- end }}
+      <p class="v4-allpubs v4-reveal"><a class="v4-more" href="{{ "/publications/" | relURL }}">All publications <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+  {{- end }}
+
+  {{/* ================= 5. NEWS ================= */}}
+  {{- if $news }}
+  <section class="v4-section" id="news">
+    <div class="v4-wrap">
+      <header class="v4-sec-head v4-reveal">
+        <p class="v4-kicker">Recent News</p>
+      </header>
+      <div class="v4-nlist">
+        {{- range $news }}
+        <article class="v4-nrow v4-reveal">
+          <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+          <h3 class="v4-ntitle"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        </article>
+        {{- end }}
+      </div>
+    </div>
+  </section>
+  {{- end }}
+
+  {{/* ================= 6. TEACHING + CONTACT ================= */}}
+  <section class="v4-section v4-closing">
+    <div class="v4-wrap">
+      <div class="v4-closing-grid">
+        <div class="v4-reveal">
+          <p class="v4-kicker">Teaching</p>
+          <div class="v4-prose">{{ index $md "teaching" | markdownify }}</div>
+        </div>
+        <div class="v4-reveal">
+          <p class="v4-kicker">Contact</p>
+          <div class="v4-prose">{{ index $md "contact" | markdownify }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{{- else -}}
+  {{ partial "landing_page.html" . }}
+{{- end -}}
+{{- end -}}
