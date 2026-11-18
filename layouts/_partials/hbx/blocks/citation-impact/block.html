@@ -1,6 +1,9 @@
 {{/* Hugo Blox: Citation Impact (custom block) */}}
 {{/* Renders a stats row, a Leaflet world map of citing institutions, and a
-     citations-per-year chart from data/citations.json (baked in at build time). */}}
+     citations-per-year chart from data/citations.json (baked in at build time).
+     The citation story can play back chronologically: institutions appear by
+     first citing year while the counters count up in sync. The animation is
+     progressive enhancement on top of the full static render. */}}
 
 {{ $page := .wcPage }}
 {{ $block := .wcBlock }}
@@ -10,6 +13,32 @@
 
 {{ $data := hugo.Data.citations }}
 {{ $totals := $data.totals }}
+
+{{/* Chronological playback steps, computed from the data at build time.
+     Institutions are grouped by first citing year (year_min); the one
+     institution without a year joins the final group so the end state
+     matches the static totals. Countries are the cumulative distinct
+     country codes up to and including each year. */}}
+{{ $cyp := $data.citations_per_year }}
+{{ $lastIdx := sub (len $cyp) 1 }}
+{{ $steps := slice }}
+{{ range $i, $cy := $cyp }}
+  {{ $count := 0 }}
+  {{ $codes := slice }}
+  {{ range $data.institutions }}
+    {{ $inc := false }}
+    {{ if .year_min }}
+      {{ if le (int .year_min) (int $cy.year) }}{{ $inc = true }}{{ end }}
+    {{ else if eq $i $lastIdx }}
+      {{ $inc = true }}
+    {{ end }}
+    {{ if $inc }}
+      {{ $count = add $count 1 }}
+      {{ $codes = $codes | append .country_code }}
+    {{ end }}
+  {{ end }}
+  {{ $steps = $steps | append (dict "year" (int $cy.year) "papers" (int $cy.cumulative) "institutions" $count "countries" (len ($codes | uniq))) }}
+{{ end }}
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
@@ -21,7 +50,7 @@
   .ci-stats { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
   .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; padding: 1.1rem 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); }
   .dark .ci-stat { background: #111827; border-color: rgba(255,255,255,.12); }
-  .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; }
+  .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; }
   .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; }
   .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); padding: 1.4rem; margin-bottom: 1.6rem; }
   .dark .ci-card { background: #111827; border-color: rgba(255,255,255,.12); }
@@ -32,6 +61,20 @@
   .ci-chart-wrap { height: 320px; position: relative; }
   .ci-note { font-size: .8rem; color: #8a94a3; margin-top: .8rem; line-height: 1.55; }
   .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+  /* Chronological playback controls (revealed by JS only when it can play) */
+  .ci-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+  .ci-controls[hidden] { display: none; }
+  .ci-year-num { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; line-height: 1; }
+  .dark .ci-year-num { color: #60a5fa; }
+  .ci-year-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #8a94a3; margin-left: .55rem; }
+  .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #1d4ed8; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(29,78,216,.55); transition: background .2s ease, transform .2s ease; }
+  .ci-play-btn:hover:not(:disabled) { background: #1e40af; transform: translateY(-1px); }
+  .ci-play-btn:disabled { opacity: .55; cursor: default; }
+  /* Expanding pulse ring shown briefly where a marker lands */
+  .ci-pulse-icon { background: transparent; border: 0; }
+  .ci-pulse-icon span { display: block; width: 36px; height: 36px; margin-left: -18px; margin-top: -18px; border-radius: 9999px; border: 3px solid rgba(29,78,216,.75); animation: ci-pulse .95s ease-out forwards; }
+  @keyframes ci-pulse { 0% { transform: scale(.3); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ci-pulse-icon span { animation: none; } }
 </style>
 
 <div class="ci-wrap">
@@ -39,14 +82,18 @@
   <p class="ci-intro">My research has been cited by scholars at {{ $totals.institutions }} institutions in {{ $totals.countries }} countries. The map shows where those citing researchers are based, and the chart traces how the citations have grown year by year.</p>
 
   <div class="ci-stats">
-    <div class="ci-stat"><b>{{ $totals.citing_papers }}</b><span>Citing papers</span></div>
-    <div class="ci-stat"><b>{{ $totals.institutions }}</b><span>Institutions</span></div>
-    <div class="ci-stat"><b>{{ $totals.countries }}</b><span>Countries</span></div>
+    <div class="ci-stat"><b id="ci-stat-papers">{{ $totals.citing_papers }}</b><span>Citing papers</span></div>
+    <div class="ci-stat"><b id="ci-stat-institutions">{{ $totals.institutions }}</b><span>Institutions</span></div>
+    <div class="ci-stat"><b id="ci-stat-countries">{{ $totals.countries }}</b><span>Countries</span></div>
   </div>
 
-  <div class="ci-card">
+  <div class="ci-card" id="ci-map-card">
     <h3>Where the citations come from</h3>
     <p class="ci-sub">One marker per institution that employs a citing author. Click a marker for details.</p>
+    <div class="ci-controls" id="ci-controls" hidden>
+      <div><span class="ci-year-num" id="ci-year-num"></span><span class="ci-year-label">citations by year</span></div>
+      <button type="button" class="ci-play-btn" id="ci-play-btn">Play</button>
+    </div>
     <div id="ci-map"></div>
   </div>
 
@@ -62,18 +109,31 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
   const CI_DATA = {{ $data | jsonify | safeJS }};
+  const CI_STEPS = {{ $steps | jsonify | safeJS }};
+  const CI_TOTALS = {
+    papers: {{ int $totals.citing_papers }},
+    institutions: {{ int $totals.institutions }},
+    countries: {{ int $totals.countries }}
+  };
+  const CI_REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function ciEscape(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  /* ---------------- Map + chronological playback ---------------- */
+  let ciMap = null;
+  const ciGroups = CI_STEPS.map(function () { return []; });
+
   if (window.L && document.getElementById('ci-map')) {
-    const map = L.map('ci-map', { scrollWheelZoom: false }).setView([25, 10], 2);
-    map.on('click', function () { map.scrollWheelZoom.enable(); });
+    ciMap = L.map('ci-map', { scrollWheelZoom: false }).setView([25, 10], 2);
+    ciMap.on('click', function () { ciMap.scrollWheelZoom.enable(); });
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 18,
       attribution: 'Tiles &copy; Esri, OpenStreetMap contributors, and the GIS user community'
-    }).addTo(map);
+    }).addTo(ciMap);
+
+    const lastYear = CI_STEPS.length ? CI_STEPS[CI_STEPS.length - 1].year : null;
     CI_DATA.institutions.forEach(function (inst) {
       const yrs = (inst.year_min && inst.year_max)
         ? (inst.year_min === inst.year_max ? '' + inst.year_min : inst.year_min + ' to ' + inst.year_max)
@@ -83,14 +143,124 @@
         'Citing authors: ' + inst.citing_authors + '<br>' +
         'Citing papers: ' + inst.citing_papers + '<br>' +
         'Years: ' + yrs;
-      L.circleMarker([inst.lat, inst.lng], {
+      const marker = L.circleMarker([inst.lat, inst.lng], {
         radius: 5 + Math.min(8, inst.citing_papers * 0.75),
         color: '#ffffff', weight: 2, fillColor: '#1d4ed8', fillOpacity: 0.92
-      }).addTo(map).bindPopup(pop);
+      }).bindPopup(pop);
+      /* Static state: every marker on the map, exactly as before. */
+      marker.addTo(ciMap);
+      let gi = CI_STEPS.findIndex(function (s) { return inst.year_min && inst.year_min <= s.year; });
+      if (gi < 0) gi = CI_STEPS.length - 1;
+      ciGroups[gi].push({ marker: marker, lat: inst.lat, lng: inst.lng });
     });
   }
 
-  if (window.Chart && document.getElementById('ci-chart')) {
+  const ciPulseIcon = window.L ? L.divIcon({
+    className: 'ci-pulse-icon', html: '<span></span>', iconSize: [0, 0], iconAnchor: [0, 0]
+  }) : null;
+
+  const ciEls = {
+    papers: document.getElementById('ci-stat-papers'),
+    institutions: document.getElementById('ci-stat-institutions'),
+    countries: document.getElementById('ci-stat-countries')
+  };
+
+  function ciTween(el, from, to, dur, done) {
+    if (!el) { if (done) done(); return; }
+    if (dur <= 0 || from === to) { el.textContent = to; if (done) done(); return; }
+    const t0 = performance.now();
+    (function frame(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(from + (to - from) * e);
+      if (t < 1) requestAnimationFrame(frame);
+      else if (done) done();
+    })(t0);
+  }
+
+  let ciPlaying = false;
+  let ciTimers = [];
+
+  function ciClearTimers() {
+    ciTimers.forEach(function (id) { clearTimeout(id); });
+    ciTimers = [];
+  }
+
+  function ciLater(fn, ms) { ciTimers.push(setTimeout(fn, ms)); }
+
+  function ciPlay() {
+    if (!ciMap || ciPlaying) return;
+    ciPlaying = true;
+    ciClearTimers();
+    const btn = document.getElementById('ci-play-btn');
+    const yearEl = document.getElementById('ci-year-num');
+    if (btn) { btn.disabled = true; btn.textContent = 'Playing'; }
+
+    /* Rewind: hide every marker and zero the counters. */
+    ciGroups.forEach(function (g) {
+      g.forEach(function (it) { if (ciMap.hasLayer(it.marker)) ciMap.removeLayer(it.marker); });
+    });
+    const cur = { papers: 0, institutions: 0, countries: 0 };
+    Object.keys(ciEls).forEach(function (k) { if (ciEls[k]) ciEls[k].textContent = '0'; });
+
+    const STEP_MS = 1400;
+    CI_STEPS.forEach(function (step, i) {
+      ciLater(function () {
+        if (yearEl) yearEl.textContent = step.year;
+        ciTween(ciEls.papers, cur.papers, step.papers, STEP_MS * 0.95);
+        ciTween(ciEls.institutions, cur.institutions, step.institutions, STEP_MS * 0.95);
+        ciTween(ciEls.countries, cur.countries, step.countries, STEP_MS * 0.95);
+        cur.papers = step.papers; cur.institutions = step.institutions; cur.countries = step.countries;
+        const group = ciGroups[i] || [];
+        const stagger = Math.min(90, (STEP_MS * 0.8) / Math.max(1, group.length));
+        group.forEach(function (it, j) {
+          ciLater(function () {
+            it.marker.addTo(ciMap);
+            if (ciPulseIcon) {
+              const pulse = L.marker([it.lat, it.lng], { icon: ciPulseIcon, interactive: false, keyboard: false }).addTo(ciMap);
+              ciLater(function () { if (ciMap.hasLayer(pulse)) ciMap.removeLayer(pulse); }, 1000);
+            }
+          }, j * stagger);
+        });
+      }, i * STEP_MS);
+    });
+
+    /* Settle on the full totals (the yearly series sums to slightly less
+       than the total citing papers; the footnote explains why). */
+    ciLater(function () {
+      ciTween(ciEls.papers, cur.papers, CI_TOTALS.papers, 500);
+      ciTween(ciEls.institutions, cur.institutions, CI_TOTALS.institutions, 300);
+      ciTween(ciEls.countries, cur.countries, CI_TOTALS.countries, 300);
+      ciPlaying = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
+    }, CI_STEPS.length * STEP_MS + 150);
+  }
+
+  /* Wire playback only when motion is allowed; otherwise the static
+     render above already shows the complete final state. */
+  if (ciMap && !CI_REDUCED) {
+    const controls = document.getElementById('ci-controls');
+    const btn = document.getElementById('ci-play-btn');
+    const yearEl = document.getElementById('ci-year-num');
+    if (controls) controls.hidden = false;
+    if (yearEl && CI_STEPS.length) yearEl.textContent = CI_STEPS[CI_STEPS.length - 1].year;
+    if (btn) btn.addEventListener('click', ciPlay);
+    const card = document.getElementById('ci-map-card');
+    if (card && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { io.disconnect(); ciPlay(); }
+        });
+      }, { threshold: 0.3 });
+      io.observe(card);
+    }
+  }
+
+  /* ---------------- Citations-per-year chart ---------------- */
+  let ciChartBuilt = false;
+  function ciBuildChart() {
+    if (ciChartBuilt || !window.Chart || !document.getElementById('ci-chart')) return;
+    ciChartBuilt = true;
     const dark = document.documentElement.classList.contains('dark');
     const lineColor = dark ? '#e5e7eb' : '#0b0d10';
     const cy = CI_DATA.citations_per_year;
@@ -107,6 +277,12 @@
       },
       options: {
         responsive: true, maintainAspectRatio: false,
+        animation: CI_REDUCED ? false : {
+          duration: 900,
+          delay: function (ctx) {
+            return (ctx.datasetIndex === 0 && ctx.type === 'data') ? ctx.dataIndex * 260 : 0;
+          }
+        },
         scales: {
           x: { grid: { display: false } },
           y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'Citations' } },
@@ -114,5 +290,21 @@
         }
       }
     });
+  }
+
+  if (CI_REDUCED || !('IntersectionObserver' in window)) {
+    ciBuildChart();
+  } else {
+    const chartEl = document.getElementById('ci-chart');
+    if (chartEl) {
+      const cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { cio.disconnect(); ciBuildChart(); }
+        });
+      }, { threshold: 0.3 });
+      cio.observe(chartEl);
+    } else {
+      ciBuildChart();
+    }
   }
 </script>
