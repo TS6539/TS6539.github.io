@@ -13,9 +13,6 @@ main:
   - name: Impact
     url: impact/
     weight: 12
-  - name: Talks
-    url: /#talks
-    weight: 13
   - name: News
     url: /#news
     weight: 14
