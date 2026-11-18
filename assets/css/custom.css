@@ -5,9 +5,11 @@
    specific theme elements it restyles; there are no global resets and no
    img/canvas rules, so embedded content (e.g. the Leaflet map on /impact/)
    is untouched.
-   v5 palette: muted ink blue (#3f5a7a family) instead of the vivid #1d4ed8,
-   warm paper surfaces, warm grays. The --v3-* variable names are kept from
-   the v3 layer; their values are the v5 ones.
+   v5 palette: muted ink blue (#3f5a7a family) instead of the vivid #1d4ed8.
+   Light surfaces: moon white (#f2f5f7, a pale blue-white) with blue-grey
+   neutrals (switched from warm ivory after v5 review: the cream read as
+   too Anthropic). Dark mode keeps its warm charcoal. The --v3-* variable
+   names are kept from the v3 layer; their values are the current ones.
    ========================================================================== */
 
 :root {
@@ -15,12 +17,12 @@
   --v3-accent-2: #7d94b3;
   --v3-glow: rgba(63, 90, 122, .18);
   --v3-beam: rgba(63, 90, 122, .50);
-  --v3-line: rgba(28, 26, 23, .10);
-  --v3-card: #fffdf9;
-  --v3-card-line: rgba(28, 26, 23, .09);
-  --v3-text-2: #57534a;
-  --v3-text-3: #a49d8f;
-  --v3-shadow: 0 1px 2px rgba(28, 26, 23, .05), 0 12px 32px -12px rgba(28, 26, 23, .14);
+  --v3-line: rgba(26, 29, 32, .10);
+  --v3-card: #fcfdfe;
+  --v3-card-line: rgba(26, 29, 32, .09);
+  --v3-text-2: #5a636b;
+  --v3-text-3: #9aa4ab;
+  --v3-shadow: 0 1px 2px rgba(26, 29, 32, .05), 0 12px 32px -12px rgba(26, 29, 32, .14);
 }
 .dark {
   --v3-accent: #93a9c4;
@@ -38,13 +40,13 @@
 ::selection { background: var(--v3-accent); color: #fff; }
 
 /* ---------- glassy sticky header ---------- */
-.page-header { border-bottom: 1px solid rgba(28, 26, 23, .08); }
+.page-header { border-bottom: 1px solid rgba(26, 29, 32, .08); }
 .dark .page-header { border-bottom-color: rgba(255, 255, 255, .08); }
 #site-header.header {
-  background-color: rgba(250, 248, 244, .82);
+  background-color: rgba(242, 245, 247, .82);
   -webkit-backdrop-filter: blur(14px) saturate(1.6);
   backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow: 0 1px 2px rgba(28, 26, 23, .05), 0 12px 32px -16px rgba(28, 26, 23, .18);
+  box-shadow: 0 1px 2px rgba(26, 29, 32, .05), 0 12px 32px -16px rgba(26, 29, 32, .18);
 }
 .dark #site-header.header {
   background-color: rgba(23, 21, 18, .72);
@@ -401,14 +403,14 @@
    pack; setting them on body overrides them page-wide, because every
    consumer of these variables lives inside body and a custom property set
    on an element shadows the inherited value for that element and its
-   descendants. Light mode: warm ivory paper with warm near-black text.
-   Dark mode: deep warm charcoal instead of blue-slate.
+   descendants. Light mode: moon-white paper (#f2f5f7) with blue-grey
+   near-black text. Dark mode: deep warm charcoal instead of blue-slate.
    ========================================================================== */
 body {
-  --hb-color-background: #faf8f4;
-  --hb-color-foreground: #1c1a17;
-  --hb-color-footer-bg: #f2eee3;
-  --hb-color-footer-fg: #1c1a17;
+  --hb-color-background: #f2f5f7;
+  --hb-color-foreground: #1a1d20;
+  --hb-color-footer-bg: #e9eef1;
+  --hb-color-footer-fg: #1a1d20;
 }
 .dark body {
   --hb-color-background: #171512;
