@@ -67,10 +67,23 @@
           <p class="v4-role v4-hero-item">{{ $profile.role }}{{ with $profile.postnominals }}, {{ delimit . ", " }}{{ end }}</p>
           <p class="v4-tagline v4-hero-item">{{ site.Params.hugoblox.identity.tagline }}</p>
           <div class="v4-hero-actions v4-hero-item">
-            <a class="v4-cv-btn" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
-            <nav class="v4-links" aria-label="Profiles">
+            {{/* Two rows, owner spec 2026-11-18: row 1 (Download CV +
+                 the two e-mail links) in outline pills, row 2 (profile
+                 links) in filled pills. Hrefs unchanged; the split is
+                 by URL scheme (mailto vs http). */}}
+            <div class="v4-actions-row">
+              <a class="v4-pill" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
               {{- range $profile.links }}
-              <a href="{{ .url }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }}>{{ .label }}</a>
+              {{- if hasPrefix .url "mailto:" }}
+              <a class="v4-pill" href="{{ .url }}">{{ .label }}</a>
+              {{- end }}
+              {{- end }}
+            </div>
+            <nav class="v4-actions-row" aria-label="Profiles">
+              {{- range $profile.links }}
+              {{- if hasPrefix .url "http" }}
+              <a class="v4-pill v4-pill--filled" href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}</a>
+              {{- end }}
               {{- end }}
             </nav>
           </div>

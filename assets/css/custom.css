@@ -29,6 +29,8 @@
      the accent fill (6.5:1). Accent text on the card surface is 7.0:1. */
   --v3-pill-line: rgba(63, 90, 122, .35);
   --v3-on-accent: #f2f5f7;
+  /* Filled hero pills deepen on hover to the secondary ink. */
+  --v3-accent-deep: #2e4258;
 }
 .dark {
   --v3-accent: #93a9c4;
@@ -46,6 +48,8 @@
      page-background text on the accent fill is 7.5:1. */
   --v3-pill-line: rgba(147, 169, 196, .40);
   --v3-on-accent: #171512;
+  /* Filled hero pills lighten on hover in dark mode. */
+  --v3-accent-deep: #adc2da;
 }
 
 ::selection { background: var(--v3-accent); color: #fff; }
@@ -203,25 +207,18 @@
 }
 .v4-role { font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 650; margin: 0 0 .3rem; }
 .v4-tagline { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--v3-text-2); margin: 0; }
+/* Hero actions in two stacked rows (owner spec 2026-11-18): row 1
+   (Download CV + the two e-mail links) in outline pills, row 2 (profile
+   links) in filled pills, light on top and filled below. */
 .v4-hero-actions {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem;
-  margin-top: 1.6rem;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: .75rem; margin-top: 1.6rem;
 }
-.v4-cv-btn {
-  display: inline-flex; align-items: center;
-  background: var(--v3-accent); color: #fff;
-  font-weight: 650; font-size: .95rem;
-  padding: .65rem 1.35rem; border-radius: 999px;
-  box-shadow: 0 8px 20px -8px rgba(63, 90, 122, .50);
-  transition: box-shadow .3s ease, background-color .3s ease;
-}
-.v4-cv-btn:hover { color: #fff; box-shadow: 0 10px 26px -8px rgba(63, 90, 122, .60); }
-/* Profile links as compact pill buttons (owner request 2026-11-18:
-   one click jumps, tidier row than underlined text labels). They wrap
-   as whole units (white-space: nowrap + flex-wrap) and, with the
-   .v4-hero-actions padding at >=1024px, never slide under the portrait. */
-.v4-links { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
-.v4-links a {
+.v4-actions-row { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
+/* Shared pill geometry for both rows. Pills wrap as whole units
+   (white-space: nowrap + flex-wrap) and, with the .v4-hero-actions
+   padding at >=1024px, never slide under the portrait. */
+.v4-pill {
   display: inline-flex; align-items: center;
   min-height: 2.375rem; padding: .55rem 1.05rem;
   background: var(--v3-card);
@@ -230,10 +227,19 @@
   white-space: nowrap; text-decoration: none;
   transition: background-color .25s ease, color .25s ease, border-color .25s ease;
 }
-.v4-links a:hover, .v4-links a:focus-visible {
+.v4-pill:hover, .v4-pill:focus-visible {
   background: var(--v3-accent); border-color: var(--v3-accent); color: var(--v3-on-accent);
 }
-.v4-links a:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v4-pill:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+/* Row 2: filled pills. Contrast of on-accent text on the fill is 6.5:1
+   in light mode and 7.5:1 in dark mode; the hover shade keeps it
+   higher still in both modes. */
+.v4-pill--filled {
+  background: var(--v3-accent); border-color: var(--v3-accent); color: var(--v3-on-accent);
+}
+.v4-pill--filled:hover, .v4-pill--filled:focus-visible {
+  background: var(--v3-accent-deep); border-color: var(--v3-accent-deep); color: var(--v3-on-accent);
+}
 
 .v4-portrait { margin: 0; max-width: 400px; }
 .v4-portrait img {
@@ -251,10 +257,10 @@
 @media (min-width: 1024px) {
   .v4-masthead-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 0; align-items: start; }
   /* The portrait overlaps the text column by 2.75rem (negative margin
-     below, z-index 2). Keep the actions row (CV button + profile links)
-     out of that overlap strip so a link label can never slide under
+     below, z-index 2). Keep the actions rows (CV, e-mail and profile
+     pills) out of that overlap strip so a pill can never slide under
      the portrait and be clipped, as "Google Scholar" was on narrower
-     windows; the links simply wrap to a second line instead. */
+     windows; the pills simply wrap within their row instead. */
   .v4-hero-actions { padding-right: 3.25rem; }
   .v4-portrait {
     max-width: none; width: 320px;
