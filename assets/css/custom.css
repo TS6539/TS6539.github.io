@@ -435,3 +435,15 @@ body {
   font-weight: 600;
 }
 .v4-rnum { font-family: var(--hb-font-heading); }
+
+/* ---------- publications index: research-line group headings ---------- */
+.pub-group-title {
+  font-family: var(--hb-font-heading);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--v3-accent);
+  margin: 0 0 .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--v3-line);
+}

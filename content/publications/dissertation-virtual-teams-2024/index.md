@@ -10,5 +10,6 @@ publication:
 tags:
   - Virtual Teams
   - Leadership
+research_line: other-collaborations
 featured: false
 ---

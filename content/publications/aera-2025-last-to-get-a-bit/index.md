@@ -13,6 +13,7 @@ tags:
   - Generative AI
   - Quantitative Ethnography
   - ENA
+research_line: ai-l2-writing
 featured: false
 hugoblox:
   ids:

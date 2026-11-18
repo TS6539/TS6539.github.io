@@ -14,5 +14,6 @@ peer_reviewed: true
 tags:
   - Moral Judgment
   - Social Psychology
+research_line: other-collaborations
 featured: false
 ---

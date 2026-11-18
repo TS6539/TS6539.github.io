@@ -1,0 +1,59 @@
+{{ define "main" }}
+
+{{/* Publications index, grouped by research line.
+     Overrides the theme's generic list layout for this section only:
+     same header and the same per-item view partials, but the entries are
+     rendered in four fixed research-line groups (front matter field
+     `research_line`), date descending within each group, no pagination. */}}
+
+<div class="max-w-prose mx-auto flex justify-center">
+  <article class="prose prose-slate lg:prose-xl dark:prose-invert">
+    <h1 class="lg:text-6xl">{{ .Title }}</h1>
+    {{ .Content }}
+  </article>
+</div>
+
+{{ $view := .Params.view | default "card" }}
+{{ $block := . }}
+
+{{ $config := dict
+  "columns" (.Params.columns | default 2)
+  "len" (len .Pages)
+  "fill_image" (.Params.fill_image | default true)
+  "show_date" (.Params.show_date | default true)
+  "show_read_time" (.Params.show_read_time | default true)
+  "show_read_more" (.Params.show_read_more | default true)
+}}
+
+{{/* Check if any pages have author_notes to enable Alpine.js */}}
+{{ range .Pages }}
+  {{ if isset .Params "author_notes" }}
+    {{ $.Store.Set "has_alpine" true }}
+    {{ break }}
+  {{ end }}
+{{ end }}
+
+{{ $groups := slice
+  (dict "key" "ai-l2-writing" "title" "AI and Second Language Writing")
+  (dict "key" "evidence-synthesis" "title" "Evidence Synthesis and Systematic Reviews")
+  (dict "key" "qe-learning-analytics" "title" "Quantitative Ethnography and Learning Analytics")
+  (dict "key" "other-collaborations" "title" "Other Collaborations")
+}}
+
+<div class="flex flex-col items-center">
+
+  {{ range $groups }}
+    {{ $items := where $.Pages "Params.research_line" .key }}
+    {{ if $items }}
+      {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" $block "view" $view "config" $config) }}
+      <h2 class="pub-group-title">{{ .title }}</h2>
+      {{ range $index, $item := $items.ByDate.Reverse }}
+        {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" $index "config" $config) }}
+      {{ end }}
+      {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" $block "view" $view) }}
+    {{ end }}
+  {{ end }}
+
+</div>
+
+{{ end }}

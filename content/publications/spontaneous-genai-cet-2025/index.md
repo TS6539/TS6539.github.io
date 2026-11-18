@@ -14,6 +14,7 @@ peer_reviewed: true
 tags:
   - Generative AI
   - Language Learning
+research_line: ai-l2-writing
 featured: false
 hugoblox:
   ids:

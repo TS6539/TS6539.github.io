@@ -15,6 +15,7 @@ peer_reviewed: true
 tags:
   - Systematic Review
   - Evidence Synthesis
+research_line: evidence-synthesis
 featured: false
 hugoblox:
   ids:

@@ -13,6 +13,7 @@ peer_reviewed: true
 tags:
   - Doctoral Education
   - Quantitative Ethnography
+research_line: qe-learning-analytics
 featured: false
 hugoblox:
   ids:
