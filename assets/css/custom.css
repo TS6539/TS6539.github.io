@@ -491,3 +491,87 @@ body {
   padding-bottom: .55rem;
   border-bottom: 1px solid var(--v3-line);
 }
+
+/* ==========================================================================
+   Mobile fix round (2026-11-18): the responsive defects from the 390px
+   audit, fixed one by one. Everything is scoped to small screens or
+   coarse pointers, except the header hit areas, which use compensating
+   negative margins so the header's layout size is unchanged at every
+   width (mobile header 58px, desktop 75px, before and after).
+   ========================================================================== */
+
+/* ---------- header controls: 44px minimum hit areas ----------
+   The hamburger label is 24x24, the search button 40x16 and the theme
+   toggle 24x18. Each gets a 44x44 box; the negative margins hand the
+   extra size back, so the icons stay exactly where they were and the
+   header neither grows nor shifts. */
+#site-header label[for="nav-toggle"] {
+  min-width: 44px; min-height: 44px; justify-content: center;
+  margin: -10px;
+}
+#site-header button[data-search-toggle] {
+  min-width: 44px; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin: -14px -2px;
+}
+#site-header button.theme-toggle {
+  min-width: 44px; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin: -9px -10px -13px;
+}
+
+/* ---------- publications: side gutters below the desktop breakpoint ----
+   The citation view's group container (container max-w-3xl w-full) has
+   no horizontal padding, so on phones the entries touched both screen
+   edges (measured 0px). Other list containers on the site carry 24px
+   gutters (e.g. the blog index's px-8 at this width); mirror that with
+   1.5rem, scoped to groups only via the group heading they contain,
+   and only below 1024px so the centered 768px desktop column and its
+   geometry are untouched. */
+@media (max-width: 1023px) {
+  .container.max-w-3xl:has(.pub-group-title) {
+    padding-left: 1.5rem; padding-right: 1.5rem;
+  }
+}
+
+/* ---------- homepage masthead on phones ----------
+   The portrait rendered at the full content width (342px, 427px tall)
+   and pushed the masthead to ~950px before the trajectory strip. Cap
+   it at 260px wide (aspect kept, centered in its column as it stacks).
+   The trajectory SVG scales its 1000-unit viewBox down to ~342px, so
+   the 24px labels landed at ~8.2px effective; 34px in SVG units puts
+   them at ~11.6px on a 390px phone. */
+@media (max-width: 640px) {
+  .v4-portrait { max-width: 260px; margin: 0 auto; }
+  .v4-path-svg text { font-size: 34px; }
+}
+
+/* ---------- hero pills: 44px tall where fingers are involved ----------
+   Pills are 38px tall (min-height 2.375rem). Raise to the 44px touch
+   minimum on small screens and coarse pointers; fine-pointer desktop
+   keeps 38px. */
+@media (max-width: 640px), (pointer: coarse) {
+  .v4-pill { min-height: 2.75rem; }
+}
+
+/* ---------- /impact/ on phones ----------
+   The citation-impact block ships no mobile rules of its own: the map
+   stayed 480px tall in a 295px-wide card, the three stat cards wrapped
+   2+1, and Leaflet's zoom buttons were 30px. These overrides live here
+   (not in the block) and use one extra class of specificity, because
+   the block's own <style> sits later in the document than this file.
+   - map 340px tall, card padding 1.4rem -> 1rem
+   - zoom controls 38px
+   - playback row may wrap, with more air under it
+   - stats share one row: basis 0, tighter padding and type so the
+     numbers and labels (INSTITUTIONS is the widest) still fit */
+@media (max-width: 640px) {
+  .ci-wrap .ci-card { padding: 1rem; }
+  .ci-wrap #ci-map { height: 340px; }
+  #ci-map .leaflet-bar a { width: 38px; height: 38px; line-height: 38px; font-size: 20px; }
+  .ci-wrap .ci-controls { flex-wrap: wrap; row-gap: .65rem; margin-bottom: 1.25rem; }
+  .ci-wrap .ci-stats { flex-wrap: nowrap; gap: .6rem; }
+  .ci-wrap .ci-stat { flex: 1 1 0; max-width: none; padding: .9rem .35rem; }
+  .ci-wrap .ci-stat b { font-size: 1.55rem; }
+  .ci-wrap .ci-stat span { font-size: .62rem; letter-spacing: .05em; }
+}
