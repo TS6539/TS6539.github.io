@@ -60,6 +60,18 @@
   #ci-map { height: 480px; border-radius: .75rem; overflow: hidden; background: #eef1f5; z-index: 0; }
   .ci-chart-wrap { height: 320px; position: relative; }
   .ci-note { font-size: .8rem; color: #8a94a3; margin-top: .8rem; line-height: 1.55; }
+  /* Peer review: journal chips + secondary stats row */
+  .ci-intro-line { font-size: .95rem; color: #4b5563; margin-bottom: .8rem; }
+  .dark .ci-intro-line { color: #d1d5db; }
+  .ci-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.4rem; }
+  .ci-chip { font-size: .85rem; font-weight: 500; color: #1d4ed8; background: rgba(29,78,216,.07); border: 1px solid rgba(29,78,216,.28); border-radius: 9999px; padding: .35rem .85rem; line-height: 1.35; }
+  .dark .ci-chip { color: #93c5fd; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.35); }
+  .ci-stats2 { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .ci-stat2 { flex: 1 1 9rem; text-align: center; border: 1px solid rgba(17,24,39,.07); border-radius: .75rem; padding: .8rem .8rem; background: rgba(17,24,39,.02); }
+  .dark .ci-stat2 { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
+  .ci-stat2 b { display: block; font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: #1d4ed8; font-variant-numeric: tabular-nums; }
+  .dark .ci-stat2 b { color: #60a5fa; }
+  .ci-stat2 span { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #8a94a3; }
   .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
   /* Chronological playback controls (revealed by JS only when it can play) */
   .ci-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
@@ -102,6 +114,26 @@
     <p class="ci-sub">Bars count citing papers by their publication year. The line is the cumulative total.</p>
     <div class="ci-chart-wrap"><canvas id="ci-chart"></canvas></div>
     <p class="ci-note">Data from OpenAlex merged with Google Scholar citing works exported via Publish or Perish, compiled November 2026. A few citing works have no publication year in either source, so the yearly chart sums to slightly less than the total number of citing papers. Citing works found only through Google Scholar may lack institution data and do not appear on the map.</p>
+  </div>
+
+  <div class="ci-card">
+    <h3>Peer Review</h3>
+    <p class="ci-intro-line">Reviewer for journals including:</p>
+    <div class="ci-chips">
+      <span class="ci-chip">TESOL Journal</span>
+      <span class="ci-chip">Education and Information Technologies</span>
+      <span class="ci-chip">English Teaching &amp; Learning</span>
+      <span class="ci-chip">Scientometrics</span>
+      <span class="ci-chip">Humanities and Social Sciences Communications</span>
+      <span class="ci-chip">International Journal of Human-Computer Interaction</span>
+      <span class="ci-chip">Frontiers in Psychology</span>
+      <span class="ci-chip">Frontiers in Education</span>
+    </div>
+    <div class="ci-stats2">
+      <div class="ci-stat2"><b>45</b><span>Manuscripts reviewed</span></div>
+      <div class="ci-stat2"><b>55</b><span>Verified review records (Web of Science)</span></div>
+      <div class="ci-stat2"><b>AERA</b><span>Annual meeting proposal reviewer</span></div>
+    </div>
   </div>
 </div>
 
