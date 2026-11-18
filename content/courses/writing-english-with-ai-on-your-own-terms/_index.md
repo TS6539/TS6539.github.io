@@ -6,6 +6,10 @@ summary: I teach this practical studio course on written English communication w
 tags:
   - Course
 weight: 10
+image:
+  caption: 'Guest lecture "Breaking the Yes-Machine" by Paul McGachey, November 12, 2026.'
+  alt_text: 'Paul McGachey delivering a guest lecture in CALL Room J209, gesturing beside a projected slide titled Polishing AI Text Usually Meant Accepting It Unchecked, with a course participant seen from behind in the foreground.'
+  focal_point: 'Center'
 ---
 
 This is a practical studio course on written English communication. I work with participants on how to read, plan, draft, revise, and judge English for academic and professional purposes when a fluent AI system is part of the process. The writing is always addressed to a real reader, and the AI serves as a communication partner, not a replacement for the writer's thinking. Along the way, participants keep a Displacement Log of the places where the AI shifted their meaning or tone, and what they kept, changed, or rejected. The course ends with an AI-Assisted English Communication Portfolio built on real work delivered to a real reader.

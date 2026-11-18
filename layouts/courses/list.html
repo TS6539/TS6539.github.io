@@ -1,0 +1,88 @@
+{{ define "main" }}
+
+<div class="max-w-prose mx-auto flex justify-center">
+  <article class="prose prose-slate lg:prose-xl dark:prose-invert">
+    <h1 class="lg:text-6xl">{{ .Title }}</h1>
+
+    {{/* Featured image with caption, mirroring the theme's single.html placement-1 block.
+         The stock list layout renders no featured image; course pages use it so the
+         bundle's featured.jpg and image.caption appear on the page itself. */}}
+    {{ $featured := partial "functions/get_featured_image.html" . }}
+    {{ $image_params := partial "functions/get_page_image_params.html" . }}
+    {{ if and $featured (not $image_params.preview_only) }}
+      {{ $canProcess := and (reflect.IsImageResourceProcessable $featured) (ne $featured.MediaType.SubType "gif") }}
+      {{ if not $canProcess }}
+        <div class="article-header article-container featured-image-wrapper mt-4 mb-16">
+          <div style="position: relative">
+            <img src="{{ $featured.RelPermalink }}"
+                 data-pagefind-meta="image[src]"
+                 alt="{{ with $image_params.alt_text }}{{ . }}{{ end }}"
+                 class="featured-image"
+                 fetchpriority="high">
+            {{ with $image_params.caption }}<span class="article-header-caption">{{ . | markdownify | emojify }}</span>{{ end }}
+          </div>
+        </div>
+      {{ else }}
+        {{ $fitted_image := $featured.Fit "720x2500" }}
+        {{ $responsive := partial "functions/process_responsive_image.html" (dict
+            "image" $fitted_image
+            "mode" "responsive"
+            "sizes" (slice 320 480 640 720 960)
+        ) }}
+        <div class="article-header article-container featured-image-wrapper mt-4 mb-16" style="max-width: {{ $fitted_image.Width }}px; max-height: {{ $fitted_image.Height }}px;">
+          <div style="position: relative">
+            <img srcset="{{ $responsive.srcset }}"
+                 sizes="(max-width: 480px) 100vw, (max-width: 640px) 90vw, (max-width: 720px) 80vw, 720px"
+                 src="{{ $responsive.fallback.RelPermalink }}"
+                 data-pagefind-meta="image[src]"
+                 width="{{ $fitted_image.Width }}"
+                 height="{{ $fitted_image.Height }}"
+                 alt="{{ with $image_params.alt_text }}{{ . }}{{ end }}"
+                 class="featured-image"
+                 fetchpriority="high">
+            {{ with $image_params.caption }}<span class="article-header-caption">{{ . | markdownify | emojify }}</span>{{ end }}
+          </div>
+        </div>
+      {{ end }}
+    {{ end }}
+
+    {{ .Content }}
+  </article>
+</div>
+
+{{ $view := .Params.view | default "card" }}
+{{ $block := . }}
+
+{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+{{ $config := dict
+  "columns" (.Params.columns | default 2)
+  "len" (len $paginator.Pages)
+  "fill_image" (.Params.fill_image | default true)
+  "show_date" (.Params.show_date | default true)
+  "show_read_time" (.Params.show_read_time | default true)
+  "show_read_more" (.Params.show_read_more | default true)
+}}
+
+{{/* Check if any pages have author_notes to enable Alpine.js */}}
+{{ range .Pages }}
+  {{ if isset .Params "author_notes" }}
+    {{ $.Store.Set "has_alpine" true }}
+    {{ break }}
+  {{ end }}
+{{ end }}
+
+<div class="flex flex-col items-center">
+
+  {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" . "view" $view "config" $config) }}
+
+  {{ range $index, $item := $paginator.Pages }}
+  {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" $index "config" $config) }}
+  {{end}}
+
+  {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
+
+  {{ partial "components/paginator" . }}
+
+</div>
+
+{{ end }}
