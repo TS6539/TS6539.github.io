@@ -171,7 +171,7 @@
       {{- $lead := index $featured 0 }}
       <article class="v4-feature v4-reveal">
         {{- with $lead.Resources.GetMatch "featured.jpg" }}
-        {{- $cover := .Fill "1200x675 webp q85" -}}
+        {{- $cover := .Fill "1200x675 webp q85 Center" -}}
         <a class="v4-feature-cover" href="{{ $lead.RelPermalink }}" aria-hidden="true" tabindex="-1">
           <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="" loading="lazy">
         </a>
