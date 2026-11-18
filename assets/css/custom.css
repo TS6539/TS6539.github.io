@@ -327,6 +327,10 @@
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: 1.6rem 1rem; padding: 2.1rem 0; align-items: center;
 }
+/* Each figure's number + label pair is centered in its grid cell, so the
+   band reads as four balanced units instead of hugging each cell's left
+   edge (desktop) / a ragged left-aligned 2x2 (mobile). */
+.v4-fig { text-align: center; }
 .v4-num {
   display: block;
   font-size: clamp(2.4rem, 4.5vw, 3.4rem); font-weight: 800; line-height: 1;
