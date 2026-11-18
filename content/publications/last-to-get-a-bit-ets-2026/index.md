@@ -14,5 +14,5 @@ tags:
   - Generative AI
   - Quantitative Ethnography
   - ENA
-featured: false
+featured: true
 ---
