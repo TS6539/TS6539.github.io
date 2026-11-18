@@ -160,3 +160,32 @@ a.v3-magnetic {
   .v3-marquee-track { animation: none; }
   .v3-path-svg .path-dot .halo { animation: none; }
 }
+
+/* ---------- homepage section spacing: modest tightening (~25%) ----------
+   Scoped by section id; these ids exist only on the home landing page
+   (verified against the built site), so inner pages are untouched.
+   .hbb-section pads with var(--hb-spacing-section, 6rem): 6rem -> 4.5rem.
+   The hero's inner .resume-biography carries its own Tailwind py scale
+   (2/3/4/6/8rem across breakpoints); each step is scaled by 0.75 too, so
+   the hero's total vertical padding also drops by 25%. */
+#section-resume-biography-3,
+#section-markdown,
+#papers,
+#section-content-collection {
+  --hb-spacing-section: 4.5rem;
+}
+#section-resume-biography-3 .resume-biography {
+  padding-top: 1.5rem; padding-bottom: 1.5rem;
+}
+@media (min-width: 640px) {
+  #section-resume-biography-3 .resume-biography { padding-top: 2.25rem; padding-bottom: 2.25rem; }
+}
+@media (min-width: 768px) {
+  #section-resume-biography-3 .resume-biography { padding-top: 3rem; padding-bottom: 3rem; }
+}
+@media (min-width: 1024px) {
+  #section-resume-biography-3 .resume-biography { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+}
+@media (min-width: 1280px) {
+  #section-resume-biography-3 .resume-biography { padding-top: 6rem; padding-bottom: 6rem; }
+}
