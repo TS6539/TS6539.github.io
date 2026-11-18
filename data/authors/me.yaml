@@ -14,7 +14,9 @@ status:
   icon: "🎓"
 role: Specially Appointed Assistant Professor
 bio: |
-  Tianshi Hao is a Specially Appointed Assistant Professor at the Institute for Foreign Language Research and Education, Hiroshima University, Japan. He works across second language writing, the learning sciences, and learning analytics. His research asks what learning still happens on the student’s side when generative AI can draft, summarize, explain, and revise on demand, and how that learning can be traced in process data rather than in self-report alone. His primary methods are quantitative ethnography and epistemic network analysis. He also works on systematic reviews and AI-supported evidence synthesis. At Hiroshima he teaches English courses in which students learn to write with AI, and he leads the development of generative AI guidelines for English education. He holds a PhD in Global Leadership and Change from Pepperdine University (2024), where his research focused on educational technology and virtual leadership. He also holds an MAT in TESOL from the University of Southern California (2020). He is the author of Play to Learn: Use Video Games to Learn a New Language (2020).
+  Tianshi Hao is a Specially Appointed Assistant Professor at the Institute for Foreign Language Research and Education, Hiroshima University, Japan. He works across second language writing, the learning sciences, and learning analytics. His research asks what learning still happens on the student’s side when generative AI can draft, summarize, explain, and revise on demand, and how that learning can be traced in process data rather than in self-report alone. His primary methods are quantitative ethnography and epistemic network analysis. A further strand of his work is systematic reviews and AI-supported evidence synthesis.
+
+  At Hiroshima he teaches English courses in which students learn to write with AI, and he leads the development of generative AI guidelines for English education. He holds a PhD in Global Leadership and Change from Pepperdine University (2024), where his research focused on educational technology and virtual leadership. He also holds an MAT in TESOL from the University of Southern California (2020). He is the author of Play to Learn: Use Video Games to Learn a New Language (2020).
 
 affiliations:
   - name: Hiroshima University
@@ -33,6 +35,9 @@ links:
   - icon: academicons/orcid
     url: https://orcid.org/0000-0003-2456-0953
     label: ORCID
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/profile/Tianshi-Hao
+    label: ResearchGate
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?user=WKM1Nq8AAAAJ
     label: Google Scholar
@@ -50,7 +55,7 @@ education:
     institution: Pepperdine University
     end: 2024-12-31
     summary: |
-      Doctoral research on doctoral education, studied with quantitative ethnography.
+      Doctoral research on virtual gaming and virtual teams, studied with quantitative ethnography.
   - degree: MAT in TESOL
     institution: University of Southern California
     end: 2020-12-31

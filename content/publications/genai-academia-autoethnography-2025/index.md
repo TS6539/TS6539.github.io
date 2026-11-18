@@ -1,5 +1,5 @@
 ---
-title: "Use of generative AI in academia: An autoethnographic perspectives from NNES and NES scholars"
+title: "Use of Generative AI in Academia: Collaborative Autoethnographic Perspectives from NNES and NES Scholars"
 authors:
   - me
   - Z. Guo
