@@ -78,6 +78,22 @@
   .dark .ci-stat2 b { color: #93a9c4; }
   .ci-stat2 span { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #8a94a3; }
   .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+  /* Popups in the site's paper language: moon-white card, ink text,
+     serif institution name, thin ink-blue border, soft shadow. */
+  #ci-map .leaflet-popup-content-wrapper { background: #fcfdfe; color: #1a1d20; border: 1px solid rgba(63,90,122,.5); border-radius: .65rem; box-shadow: 0 10px 28px -12px rgba(26,29,32,.28); }
+  #ci-map .leaflet-popup-content { margin: 12px 16px; line-height: 1.55; }
+  #ci-map .leaflet-popup-content b { font-family: 'Newsreader', Georgia, 'Times New Roman', serif; font-size: 15px; font-weight: 600; }
+  #ci-map .leaflet-popup-tip { background: #fcfdfe; box-shadow: none; }
+  #ci-map .leaflet-popup-close-button { color: #3f5a7a; }
+  /* Year scrubber (sits in the playback controls row) */
+  .ci-scrub { flex: 1 1 auto; max-width: 15rem; margin: 0 .25rem; }
+  .ci-scrub input[type="range"] { width: 100%; accent-color: #3f5a7a; cursor: pointer; }
+  .dark .ci-scrub input[type="range"] { accent-color: #93a9c4; }
+  /* Peer Review reveal: the hidden initial state (ci-pr-prep) is added
+     by JS only when the animation will actually run. */
+  .ci-pr-prep .ci-chip, .ci-pr-prep .ci-stat2 { opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
+  .ci-pr-prep .ci-stat2 { transition-delay: .15s; }
+  .ci-pr-prep.ci-pr-in .ci-chip, .ci-pr-prep.ci-pr-in .ci-stat2 { opacity: 1; transform: translateY(0); }
   /* Chronological playback controls (revealed by JS only when it can play) */
   .ci-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
   .ci-controls[hidden] { display: none; }
@@ -109,6 +125,7 @@
     <p class="ci-sub">One marker per institution that employs a citing author. Click a marker for details.</p>
     <div class="ci-controls" id="ci-controls" hidden>
       <div><span class="ci-year-num" id="ci-year-num"></span><span class="ci-year-label">citations by year</span></div>
+      <div class="ci-scrub"><input type="range" id="ci-year-range" min="{{ (index $steps 0).year }}" max="{{ (index $steps $lastIdx).year }}" step="1" value="{{ (index $steps $lastIdx).year }}" aria-label="Show citations up to this year"></div>
       <button type="button" class="ci-play-btn" id="ci-play-btn">Play</button>
     </div>
     <div id="ci-map"></div>
@@ -121,7 +138,7 @@
     <p class="ci-note">Data from OpenAlex merged with Google Scholar citing works exported via Publish or Perish, compiled November 2026. A few citing works have no publication year in either source, so the yearly chart sums to slightly less than the total number of citing papers. Citing works found only through Google Scholar may lack institution data and do not appear on the map.</p>
   </div>
 
-  <div class="ci-card">
+  <div class="ci-card" id="ci-pr-card">
     <h3>Peer Review</h3>
     <p class="ci-intro-line">Reviewer for journals including:</p>
     <div class="ci-chips">
@@ -135,8 +152,8 @@
       <span class="ci-chip">Frontiers in Education</span>
     </div>
     <div class="ci-stats2">
-      <div class="ci-stat2"><b>45</b><span>Manuscripts reviewed</span></div>
-      <div class="ci-stat2"><b>55</b><span>Verified review records (Web of Science)</span></div>
+      <div class="ci-stat2"><b class="ci-count" data-target="45">45</b><span>Manuscripts reviewed</span></div>
+      <div class="ci-stat2"><b class="ci-count" data-target="55">55</b><span>Verified review records (Web of Science)</span></div>
       <div class="ci-stat2"><b>AERA</b><span>Annual meeting proposal reviewer</span></div>
     </div>
   </div>
@@ -182,7 +199,7 @@
         'Years: ' + yrs;
       const marker = L.circleMarker([inst.lat, inst.lng], {
         radius: 5 + Math.min(8, inst.citing_papers * 0.75),
-        color: '#ffffff', weight: 2, fillColor: '#3f5a7a', fillOpacity: 0.92
+        color: '#f2f5f7', weight: 1.5, fillColor: '#3f5a7a', fillOpacity: 0.92
       }).bindPopup(pop);
       /* Static state: every marker on the map, exactly as before. */
       marker.addTo(ciMap);
@@ -244,6 +261,8 @@
     CI_STEPS.forEach(function (step, i) {
       ciLater(function () {
         if (yearEl) yearEl.textContent = step.year;
+        const rangeSync = document.getElementById('ci-year-range');
+        if (rangeSync) rangeSync.value = step.year;
         ciTween(ciEls.papers, cur.papers, step.papers, STEP_MS * 0.95);
         ciTween(ciEls.institutions, cur.institutions, step.institutions, STEP_MS * 0.95);
         ciTween(ciEls.countries, cur.countries, step.countries, STEP_MS * 0.95);
@@ -273,6 +292,31 @@
     }, CI_STEPS.length * STEP_MS + 150);
   }
 
+  /* Scrubber: jump straight to a year's cumulative state. Cancels any
+     running playback; Play afterwards replays the full sequence. */
+  function ciSetYear(year) {
+    if (!ciMap) return;
+    const idx = CI_STEPS.findIndex(function (s) { return s.year === year; });
+    if (idx < 0) return;
+    ciClearTimers();
+    ciPlaying = false;
+    const btn = document.getElementById('ci-play-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
+    const yearEl = document.getElementById('ci-year-num');
+    if (yearEl) yearEl.textContent = year;
+    ciGroups.forEach(function (g, gi) {
+      g.forEach(function (it) {
+        const on = ciMap.hasLayer(it.marker);
+        if (gi <= idx && !on) it.marker.addTo(ciMap);
+        if (gi > idx && on) ciMap.removeLayer(it.marker);
+      });
+    });
+    const step = CI_STEPS[idx];
+    if (ciEls.papers) ciEls.papers.textContent = step.papers;
+    if (ciEls.institutions) ciEls.institutions.textContent = step.institutions;
+    if (ciEls.countries) ciEls.countries.textContent = step.countries;
+  }
+
   /* Wire playback only when motion is allowed; otherwise the static
      render above already shows the complete final state. */
   if (ciMap && !CI_REDUCED) {
@@ -282,6 +326,8 @@
     if (controls) controls.hidden = false;
     if (yearEl && CI_STEPS.length) yearEl.textContent = CI_STEPS[CI_STEPS.length - 1].year;
     if (btn) btn.addEventListener('click', ciPlay);
+    const range = document.getElementById('ci-year-range');
+    if (range) range.addEventListener('input', function () { ciSetYear(parseInt(range.value, 10)); });
     const card = document.getElementById('ci-map-card');
     if (card && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver(function (entries) {
@@ -306,10 +352,10 @@
         labels: cy.map(function (d) { return d.year; }),
         datasets: [
           { type: 'bar', label: 'Citations received', data: cy.map(function (d) { return d.count; }),
-            backgroundColor: 'rgba(63,90,122,0.85)', borderRadius: 6, maxBarThickness: 48, yAxisID: 'y' },
+            backgroundColor: 'rgba(63,90,122,0.85)', borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 }, maxBarThickness: 48, yAxisID: 'y' },
           { type: 'line', label: 'Cumulative', data: cy.map(function (d) { return d.cumulative; }),
-            borderColor: lineColor, backgroundColor: lineColor, pointBackgroundColor: lineColor,
-            pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointRadius: 3, tension: 0.3, yAxisID: 'y1' }
+            borderColor: lineColor, backgroundColor: 'rgba(63,90,122,0.10)', fill: true, pointBackgroundColor: lineColor,
+            pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointRadius: 3, tension: 0.35, yAxisID: 'y1' }
         ]
       },
       options: {
@@ -344,4 +390,30 @@
       ciBuildChart();
     }
   }
+
+  /* ---------------- Peer Review reveal ----------------
+     The journal chips stagger in and the two numeric stats count up
+     when the card scrolls into view. The hidden initial state
+     (ci-pr-prep) is added here, in JS, only when the animation will
+     actually run; under reduced motion or without IntersectionObserver
+     the card stays in its complete static state with final values. */
+  (function () {
+    const card = document.getElementById('ci-pr-card');
+    if (!card || CI_REDUCED || !('IntersectionObserver' in window)) return;
+    const chips = card.querySelectorAll('.ci-chip');
+    const counts = card.querySelectorAll('.ci-count');
+    card.classList.add('ci-pr-prep');
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.disconnect();
+        chips.forEach(function (chip, i) { chip.style.transitionDelay = (i * 45) + 'ms'; });
+        card.classList.add('ci-pr-in');
+        counts.forEach(function (el) {
+          ciTween(el, 0, parseInt(el.getAttribute('data-target'), 10) || 0, 900);
+        });
+      });
+    }, { threshold: 0.3 });
+    io.observe(card);
+  })();
 </script>
