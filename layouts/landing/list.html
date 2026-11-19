@@ -56,6 +56,27 @@
 
   {{/* ================= 1. MASTHEAD ================= */}}
   <section class="v4-masthead">
+    {{/* Signature visual (review brief, 2026-11-19): a faint, purely
+         decorative ENA-style network motif behind the masthead. It is
+         an abstract graphic, not a plot of anyone's research data, and
+         it is hidden from assistive technology. */}}
+    <svg class="v4-ena-motif" viewBox="0 0 640 560" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor">
+        <path stroke-width="3" d="M90 90 L170 130 L260 210 L350 270 L500 300"/>
+        <path stroke-width="2" d="M90 90 L150 60 L170 130 M170 130 L110 180 L60 150 M110 180 L90 90"/>
+        <path stroke-width="1.5" d="M150 60 L260 210 M170 130 L320 160 M260 210 L215 290 L350 270 M260 210 L300 330"/>
+        <path stroke-width="2.5" d="M350 270 L430 330 L500 300 M430 330 L480 420 L545 445 M500 300 L560 360 L545 445"/>
+        <path stroke-width="1.5" d="M430 330 L415 400 L480 420 M300 330 L430 330 M320 160 L350 270 M215 290 L300 330"/>
+      </g>
+      <g fill="currentColor">
+        <circle cx="90" cy="90" r="8"/><circle cx="150" cy="60" r="5"/><circle cx="170" cy="130" r="10"/>
+        <circle cx="110" cy="180" r="5"/><circle cx="60" cy="150" r="4"/><circle cx="260" cy="210" r="7"/>
+        <circle cx="320" cy="160" r="4"/><circle cx="215" cy="290" r="4"/><circle cx="350" cy="270" r="6"/>
+        <circle cx="300" cy="330" r="4"/><circle cx="430" cy="330" r="7"/><circle cx="500" cy="300" r="10"/>
+        <circle cx="560" cy="360" r="5"/><circle cx="480" cy="420" r="8"/><circle cx="545" cy="445" r="4"/>
+        <circle cx="415" cy="400" r="5"/>
+      </g>
+    </svg>
     <div class="v4-wrap">
       <div class="v4-masthead-grid">
         <div class="v4-masthead-text">
@@ -67,23 +88,23 @@
           <p class="v4-role v4-hero-item">{{ $profile.role }}{{ with $profile.postnominals }}, {{ delimit . ", " }}{{ end }}</p>
           <p class="v4-tagline v4-hero-item">{{ site.Params.hugoblox.identity.tagline }}</p>
           <div class="v4-hero-actions v4-hero-item">
-            {{/* Two rows, owner spec 2026-11-18: row 1 (Download CV +
-                 the two e-mail links) in outline pills, row 2 (profile
-                 links) in filled pills. Hrefs unchanged; the split is
-                 by URL scheme (mailto vs http). */}}
-            <div class="v4-actions-row">
-              <a class="v4-pill" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
+            {{/* Contact row (review brief, 2026-11-19): Download CV is
+                 the single filled primary button; every other contact
+                 and profile link is a small monochrome icon link using
+                 the theme's own icon packs (the icon names come from
+                 data/authors/me.yaml). The two e-mail links get distinct
+                 glyphs so they stay distinguishable without text:
+                 envelope for the personal Gmail address, academic cap
+                 for the university address. Hrefs unchanged. */}}
+            <a class="v4-pill v4-pill--filled" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
+            <nav class="v4-icon-row" aria-label="Contact and profiles">
               {{- range $profile.links }}
-              {{- if hasPrefix .url "mailto:" }}
-              <a class="v4-pill" href="{{ .url }}">{{ .label }}</a>
-              {{- end }}
-              {{- end }}
-            </div>
-            <nav class="v4-actions-row" aria-label="Profiles">
-              {{- range $profile.links }}
-              {{- if hasPrefix .url "http" }}
-              <a class="v4-pill v4-pill--filled" href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}</a>
-              {{- end }}
+              {{- $iconName := .icon }}
+              {{- if strings.Contains .url "hiroshima-u.ac.jp" }}{{ $iconName = "academic-cap" }}
+              {{- else if hasPrefix .url "mailto:" }}{{ $iconName = "envelope" }}{{ end }}
+              <a class="v4-icon-link" href="{{ .url }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }} aria-label="{{ .label }}" title="{{ .label }}">
+                {{- partial "functions/get_icon" (dict "name" $iconName "attributes" "class=\"v4-icon-svg\" aria-hidden=\"true\"") -}}
+              </a>
               {{- end }}
             </nav>
           </div>
@@ -101,7 +122,7 @@
            of about +/-2.5 units) that still passes exactly through the
            three city dots at (60,18), (500,18) and (940,18). */}}
       <div class="v4-path">
-        <svg class="v4-path-svg" viewBox="0 0 1000 66" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
+        <svg class="v4-path-svg" viewBox="0 0 1000 94" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
           <path class="path-base" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18"/>
           <path class="path-draw" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18" pathLength="1"/>
           <g class="path-dot"><circle class="halo" cx="60" cy="18" r="11"/><circle class="core" cx="60" cy="18" r="5.5"/></g>
@@ -110,6 +131,11 @@
           <text x="60" y="54" text-anchor="middle">Beijing</text>
           <text x="500" y="54" text-anchor="middle">Los Angeles</text>
           <text x="940" y="54" text-anchor="middle">Hiroshima</text>
+          {{/* One-line story under each city (review brief, 2026-11-19),
+               set in the serif body font. */}}
+          <text class="path-cap" x="60" y="82" text-anchor="middle">Born and raised</text>
+          <text class="path-cap" x="500" y="82" text-anchor="middle">USC, Pepperdine</text>
+          <text class="path-cap" x="940" y="82" text-anchor="middle">Hiroshima University, 2026–</text>
         </svg>
       </div>
 
@@ -139,11 +165,14 @@
         <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.citing_papers }}">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing papers</span></div>
         <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.institutions }}">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
         <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.countries }}">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
-        {{/* 45 = completed manuscripts reviewed (Web of Science verified);
-             kept in step with the Peer Review stats on /impact/. */}}
-        <div class="v4-fig"><span class="v4-num" data-count="45">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
+        {{/* 45 = completed manuscripts reviewed; kept in step with the
+             Peer Review stats on /impact/. It is a service metric, not a
+             citation metric, so the figure is visually separated from
+             the three citation figures (review brief, 2026-11-19). */}}
+        <div class="v4-fig v4-fig--service"><span class="v4-num" data-count="45">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
       </div>
     </a>
+    <p class="v4-band-asof">As of November 2026</p>
   </div>
 
   {{/* ================= 3. RESEARCH ================= */}}

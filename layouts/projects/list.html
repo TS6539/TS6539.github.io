@@ -1,0 +1,34 @@
+{{ define "main" }}
+
+{{/* Projects index as editorial list rows (review brief, 2026-11-19):
+     left column carries status + year in small text, right column the
+     title and the full summary; hairline rules between rows, no cards,
+     no shadows, no truncated text. Styling: .plist-* in custom.css. */}}
+
+<div class="plist-wrap">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  <div class="plist">
+    {{ range .Pages.ByDate.Reverse }}
+    <article class="plist-row">
+      <div class="plist-meta">
+        {{- with .Params.status }}<span class="plist-status">{{ . }}</span>{{ end }}
+        <span class="plist-year">{{ .Date.Format "2006" }}</span>
+      </div>
+      <div class="plist-main">
+        <h2 class="plist-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{- with .Params.summary }}
+        <p class="plist-desc">{{ . }}</p>
+        {{- end }}
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</div>
+
+{{ end }}

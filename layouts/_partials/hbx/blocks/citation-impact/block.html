@@ -48,16 +48,16 @@
   .ci-intro { max-width: 46rem; margin: 0 auto 2rem; text-align: center; font-size: 1.05rem; line-height: 1.6; color: #4b5563; }
   .dark .ci-intro { color: #d1d5db; }
   .ci-stats { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
-  .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; padding: 1.1rem 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); }
+  .ci-stat { flex: 1 1 10rem; max-width: 16rem; text-align: center; border: 1px solid rgba(17,24,39,.09); border-radius: .375rem; padding: 1.1rem 1rem; background: #ffffff; }
   .dark .ci-stat { background: #111827; border-color: rgba(255,255,255,.12); }
   .ci-stat b { display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
   .ci-stat span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #5f6a72; }
-  .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: 1rem; background: #ffffff; box-shadow: 0 1px 2px rgba(11,13,16,.05), 0 12px 32px -12px rgba(11,13,16,.12); padding: 1.4rem; margin-bottom: 1.6rem; }
+  .ci-card { border: 1px solid rgba(17,24,39,.09); border-radius: .375rem; background: #ffffff; padding: 1.4rem; margin-bottom: 1.6rem; }
   .dark .ci-card { background: #111827; border-color: rgba(255,255,255,.12); }
   .ci-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .3rem; color: #111827; }
   .dark .ci-card h3 { color: #f9fafb; }
   .ci-card p.ci-sub { font-size: .88rem; color: #5f6a72; margin-bottom: 1rem; }
-  #ci-map { height: 480px; border-radius: .75rem; overflow: hidden; background: #eef1f5; z-index: 0; }
+  #ci-map { height: 480px; border-radius: .375rem; overflow: hidden; background: #eef1f5; z-index: 0; }
   /* Mute the Esri basemap so it sits with the site's moon-white paper +
      ink-blue restraint. Only the tile pane is filtered: markers, pulses
      and popups live in other Leaflet panes and stay full color. */
@@ -72,7 +72,7 @@
   .ci-chip { font-size: .85rem; font-weight: 500; color: #3f5a7a; background: rgba(63,90,122,.08); border: 1px solid rgba(63,90,122,.30); border-radius: 9999px; padding: .35rem .85rem; line-height: 1.35; }
   .dark .ci-chip { color: #b3c3d9; background: rgba(147,169,196,.13); border-color: rgba(147,169,196,.35); }
   .ci-stats2 { display: flex; flex-wrap: wrap; gap: .8rem; }
-  .ci-stat2 { flex: 1 1 100%; text-align: center; border: 1px solid rgba(17,24,39,.07); border-radius: .75rem; padding: .8rem .8rem; background: rgba(17,24,39,.02); }
+  .ci-stat2 { flex: 1 1 100%; text-align: center; border: 1px solid rgba(17,24,39,.07); border-radius: .375rem; padding: .8rem .8rem; background: rgba(17,24,39,.02); }
   .dark .ci-stat2 { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
   .ci-stat2 b { display: block; font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: #3f5a7a; font-variant-numeric: tabular-nums; }
   .dark .ci-stat2 b { color: #93a9c4; }
@@ -105,7 +105,7 @@
      (#111827) the original #8a94a3 already gives 5.8:1, so dark mode
      keeps it. */
   .dark .ci-stat span, .dark .ci-card p.ci-sub, .dark .ci-note, .dark .ci-stat2 span, .dark .ci-year-label { color: #8a94a3; }
-  .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #3f5a7a; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(63,90,122,.50); transition: background .2s ease, transform .2s ease; }
+  .ci-play-btn { flex: none; font: inherit; font-size: .85rem; font-weight: 600; color: #ffffff; background: #3f5a7a; border: 0; border-radius: 9999px; padding: .5rem 1.1rem; cursor: pointer; transition: background .2s ease, transform .2s ease; }
   .ci-play-btn:hover:not(:disabled) { background: #2e4258; transform: translateY(-1px); }
   .ci-play-btn:disabled { opacity: .55; cursor: default; }
   /* Expanding pulse ring shown briefly where a marker lands */
@@ -124,6 +124,8 @@
     <div class="ci-stat"><b id="ci-stat-institutions">{{ $totals.institutions }}</b><span>Institutions</span></div>
     <div class="ci-stat"><b id="ci-stat-countries">{{ $totals.countries }}</b><span>Countries</span></div>
   </div>
+
+  <p class="ci-note" style="text-align: center; max-width: 46rem; margin: -1.4rem auto 2.2rem;">Citing papers are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
 
   <div class="ci-card" id="ci-map-card">
     <h3>Where the citations come from</h3>
@@ -158,10 +160,10 @@
     </div>
     <div class="ci-stats2">
       <div class="ci-stat2"><b class="ci-count" data-target="45">45</b><span>Manuscripts reviewed</span></div>
-      <div class="ci-stat2"><b class="ci-count" data-target="55">55</b><span>Verified review records (Web of Science)</span></div>
+      <div class="ci-stat2"><b class="ci-count" data-target="40">40</b><span>Verified reviews (Web of Science)</span></div>
       <div class="ci-stat2"><b>AERA</b><span>Annual meeting proposal reviewer</span></div>
     </div>
-    <p class="ci-note">Web of Science counts verified records; one manuscript can appear in more than one record.</p>
+    <p class="ci-note">Web of Science counts individual verified reviews; one manuscript can appear in more than one review, and the verified reviews cover 32 of the manuscripts.</p>
   </div>
 </div>
 

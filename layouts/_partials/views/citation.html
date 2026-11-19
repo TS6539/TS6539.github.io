@@ -1,8 +1,10 @@
 {{/* Local override of the theme citation view: identical except (1) the
      period after the title link is only added when the title does not
      already end with one (avoids "U.S.." for titles ending in an
-     abbreviation), and (2) the site owner's name is bolded in each
-     entry's author list so readers can scan for his position. */}}
+     abbreviation), (2) the site owner's name is bolded in each
+     entry's author list so readers can scan for his position, and
+     (3) a small, quiet publication-type marker derived from the entry's
+     own metadata leads each entry (review brief, 2026-11-19). */}}
 {{ $item := .item }}
 {{ $year_value := $item.Params.event_start | default $item.Date }}
 {{ $year := (time $year_value).Format "2006" }}
@@ -11,7 +13,20 @@
 {{ $top_award := "" }}
 {{ with $item.Params.awards }}{{ $top_award = index . 0 }}{{ end }}
 
+{{/* Type marker from existing metadata: publication_types first; the
+     two SSRN/OSF entries typed "article" are preprints by venue. */}}
+{{ $types := $item.Params.publication_types | default slice }}
+{{ $venue := lower ($pub.name | default "") }}
+{{ $typeLabel := "" }}
+{{ if in $types "paper-conference" }}{{ $typeLabel = "Proceedings paper" }}
+{{ else if in $types "book" }}{{ $typeLabel = "Book" }}
+{{ else if in $types "thesis" }}{{ $typeLabel = "Dissertation" }}
+{{ else if strings.Contains $venue "preprint" }}{{ $typeLabel = "Preprint" }}
+{{ else if or (in $types "article-journal") (in $types "article") }}{{ $typeLabel = "Journal article" }}
+{{ end }}
+
 <div class="pub-list-item view-citation" style="margin-bottom: 1rem">
+  {{ with $typeLabel }}<span class="pub-type-marker">{{ . }}</span>{{ end }}
   <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
 
   {{/* APA Style */}}

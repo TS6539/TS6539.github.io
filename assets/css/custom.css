@@ -24,7 +24,11 @@
   /* text-3 darkened from #9aa4ab (2.3:1) to #5f6a72 in the third review
      round so small labels meet 4.5:1 on moon white (5.1:1) and cards. */
   --v3-text-3: #5f6a72;
-  --v3-shadow: 0 1px 2px rgba(26, 29, 32, .05), 0 12px 32px -12px rgba(26, 29, 32, .14);
+  /* One small corner radius site-wide, and no card shadows anywhere
+     (review brief, 2026-11-19): the editorial language is hairline
+     rules and flat surfaces, so --v3-shadow now resolves to none. */
+  --v3-radius: 6px;
+  --v3-shadow: none;
   /* Hero profile-link pills: muted ink-blue border, moon white text on
      the accent fill (6.5:1). Accent text on the card surface is 7.0:1. */
   --v3-pill-line: rgba(63, 90, 122, .35);
@@ -43,7 +47,7 @@
   --v3-text-2: #b8b2a6;
   /* text-3 lightened from #857e70 (4.3:1 on card) to #a39a89 (6.2:1). */
   --v3-text-3: #a39a89;
-  --v3-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .6);
+  --v3-shadow: none;
   /* Hero pills in dark mode: accent text on the card surface is 7.2:1,
      page-background text on the accent fill is 7.5:1. */
   --v3-pill-line: rgba(147, 169, 196, .40);
@@ -61,11 +65,9 @@
   background-color: rgba(242, 245, 247, .82);
   -webkit-backdrop-filter: blur(14px) saturate(1.6);
   backdrop-filter: blur(14px) saturate(1.6);
-  box-shadow: 0 1px 2px rgba(26, 29, 32, .05), 0 12px 32px -16px rgba(26, 29, 32, .18);
 }
 .dark #site-header.header {
   background-color: rgba(23, 21, 18, .72);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 32px -16px rgba(0, 0, 0, .55);
 }
 
 /* ---------- TH monogram tile next to the site name ---------- */
@@ -74,13 +76,12 @@
   content: "TH";
   flex: none;
   width: 34px; height: 34px;
-  border-radius: 10px;
+  border-radius: var(--v3-radius);
   background: linear-gradient(135deg, var(--v3-accent), var(--v3-accent-2));
   color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 12.5px; font-weight: 800; letter-spacing: .04em; line-height: 1;
-  box-shadow: 0 4px 12px -4px rgba(63, 90, 122, .45);
 }
 
 /* ---------- spotlight glow + border beam on cards ---------- */
@@ -110,7 +111,7 @@
 .v3-research-card {
   background: var(--v3-card);
   border: 1px solid var(--v3-card-line);
-  border-radius: 1rem;
+  border-radius: var(--v3-radius);
   padding-top: 2.25rem;
   padding-bottom: 2.25rem;
   box-shadow: var(--v3-shadow);
@@ -184,10 +185,20 @@
 .v4-home { overflow-x: clip; }
 .v4-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
 
+/* Section labels (review brief, 2026-11-19): the spaced all-caps sans
+   eyebrow is replaced by a small serif italic label in the voice of the
+   research lines; inside sections it is led by a short hairline rule.
+   The masthead kicker (affiliation line) keeps the serif italic style
+   without the rule. */
 .v4-kicker {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  font-family: var(--hb-font-heading);
+  font-size: 1.06rem; font-weight: 500; font-style: italic; letter-spacing: 0; text-transform: none;
   color: var(--v3-accent); margin: 0 0 .9rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.v4-sec-head .v4-kicker::before,
+.v4-closing .v4-kicker::before {
+  content: ""; flex: none; width: 2rem; border-top: 1px solid var(--v3-accent); opacity: .55;
 }
 
 /* ---------- masthead ---------- */
@@ -207,13 +218,25 @@
 }
 .v4-role { font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 650; margin: 0 0 .3rem; }
 .v4-tagline { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--v3-text-2); margin: 0; }
-/* Hero actions in two stacked rows (owner spec 2026-11-18): row 1
-   (Download CV + the two e-mail links) in outline pills, row 2 (profile
-   links) in filled pills, light on top and filled below. */
+/* Hero contact row (review brief, 2026-11-19): Download CV is the
+   single filled pill; the e-mail and profile links sit beside it as a
+   row of small monochrome icon links (44px hit areas, matching the
+   site's touch-target standard). */
 .v4-hero-actions {
-  display: flex; flex-direction: column; align-items: flex-start;
-  gap: .75rem; margin-top: 1.6rem;
+  display: flex; flex-direction: row; flex-wrap: wrap; align-items: center;
+  gap: .9rem 1.15rem; margin-top: 1.6rem;
 }
+.v4-icon-row { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; min-width: 0; }
+.v4-icon-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.75rem; height: 2.75rem; border-radius: 999px;
+  color: var(--v3-accent); text-decoration: none;
+  transition: background-color .25s ease, color .25s ease;
+}
+.v4-icon-link:hover { background-color: rgba(63, 90, 122, .09); }
+.dark .v4-icon-link:hover { background-color: rgba(147, 169, 196, .14); }
+.v4-icon-link:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v4-icon-svg { width: 21px; height: 21px; flex: none; }
 .v4-actions-row { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
 /* Shared pill geometry for both rows. Pills wrap as whole units
    (white-space: nowrap + flex-wrap) and, with the .v4-hero-actions
@@ -244,15 +267,29 @@
 .v4-portrait { margin: 0; max-width: 400px; }
 .v4-portrait img {
   display: block; width: 100%; height: auto;
-  border-radius: 1.25rem;
-  box-shadow: var(--v3-shadow), 0 24px 48px -20px rgba(11, 13, 16, .28);
+  border-radius: var(--v3-radius);
+  border: 1px solid var(--v3-card-line);
 }
 /* Dark mode: the bright daylight portrait floats on the warm charcoal
-   background, so dim and warm it slightly and give it a faint warm ring
-   to settle it into the page. Homepage portrait only. */
+   background, so dim and warm it slightly and give it a faint warm
+   border to settle it into the page. Homepage portrait only. */
 .dark .v4-home .v4-portrait img {
   filter: brightness(0.88) contrast(1.03) saturate(0.95);
-  box-shadow: var(--v3-shadow), 0 24px 48px -20px rgba(0, 0, 0, .5), 0 0 0 1px rgba(236, 231, 220, .16);
+  border-color: rgba(236, 231, 220, .25);
+}
+
+/* Signature ENA-style network motif (review brief, 2026-11-19):
+   decorative only, very faint, behind the masthead content on the
+   right side where the portrait sits. */
+.v4-ena-motif {
+  position: absolute; top: -2.5rem; right: -4rem;
+  width: 640px; max-width: 72vw; height: auto;
+  color: var(--v3-accent); opacity: .08;
+  pointer-events: none;
+}
+.dark .v4-ena-motif { opacity: .11; }
+@media (max-width: 640px) {
+  .v4-ena-motif { width: 420px; right: -7rem; opacity: .06; }
 }
 @media (min-width: 1024px) {
   /* Text column is vertically centered against the 4:5 portrait, so
@@ -288,6 +325,12 @@
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 24px; font-weight: 600; fill: var(--v3-text-2); letter-spacing: .01em;
 }
+/* City story lines under the names, in the serif body font. */
+.v4-path-svg text.path-cap {
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 14.5px; font-weight: 400; font-style: italic;
+  fill: var(--v3-text-3); letter-spacing: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   .v4-path-svg .path-dot .halo { animation: none; }
 }
@@ -302,8 +345,8 @@
   .v4-bio { grid-template-columns: minmax(0, 1fr) 250px; gap: 3.5rem; }
 }
 .v4-rail-title {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 11.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  font-family: var(--hb-font-heading);
+  font-size: 1rem; font-weight: 500; font-style: italic; letter-spacing: 0; text-transform: none;
   color: var(--v3-text-3); margin: 0 0 .6rem;
 }
 .v4-rail-title:not(:first-child) { margin-top: 1.6rem; }
@@ -349,6 +392,15 @@
 }
 @media (min-width: 900px) {
   .v4-band-inner { grid-template-columns: repeat(4, 1fr); }
+  /* The manuscripts-reviewed figure is a service metric, not a
+     citation metric: a hairline divider sets it apart from the three
+     citation figures on wide screens (review brief, 2026-11-19). On
+     the 2x2 phone grid its corner position separates it already. */
+  .v4-fig--service { border-left: 1px solid var(--v3-line); }
+}
+.v4-band-asof {
+  text-align: center; font-size: .8rem; color: var(--v3-text-3);
+  margin: .7rem 0 0;
 }
 
 /* ---------- sections ---------- */
@@ -387,13 +439,15 @@
 .v4-feature { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.6rem; padding: 1.4rem 0 1.8rem; }
 .v4-feature-cover, .v4-feature-text { min-width: 0; }
 .v4-feature-cover img {
-  display: block; width: 100%; height: auto; border-radius: 1rem;
+  display: block; width: 100%; height: auto; border-radius: var(--v3-radius);
   border: 1px solid var(--v3-card-line); box-shadow: var(--v3-shadow);
 }
+/* Venue line: italic sentence case in the serif, matching the
+   Publications page, never spaced capitals (review brief, 2026-11-19). */
 .v4-feature-meta {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--v3-text-3); margin: 0 0 .6rem; line-height: 1.6;
+  font-family: var(--hb-font-heading);
+  font-size: .98rem; font-weight: 500; font-style: italic; letter-spacing: 0; text-transform: none;
+  color: var(--v3-text-3); margin: 0 0 .6rem; line-height: 1.55;
   overflow-wrap: break-word;
 }
 .v4-feature-title { font-size: clamp(1.45rem, 2.6vw, 1.95rem); font-weight: 750; line-height: 1.22; letter-spacing: -.015em; margin: 0 0 .55rem; overflow-wrap: break-word; }
@@ -493,6 +547,78 @@ body {
   border-bottom: 1px solid var(--v3-line);
 }
 
+/* ---------- publications index: quiet type marker per entry ---------- */
+.pub-type-marker {
+  display: inline-block;
+  font-family: var(--hb-font-heading); font-style: italic;
+  font-size: .8rem; line-height: 1.35; white-space: nowrap;
+  color: var(--v3-text-3);
+  border: 1px solid var(--v3-line); border-radius: 3px;
+  padding: .07rem .5rem; margin-right: .55rem;
+  vertical-align: baseline;
+}
+
+/* ==========================================================================
+   Scroll reveals (review brief, 2026-11-19): elements are fully visible
+   by default; JS adds .v4-reveal-init only when it will animate, and the
+   animation itself is small and quick: from 40% opacity and a 10px rise
+   over 400ms, triggered early and run once (see v4-motion.js).
+   ========================================================================== */
+.v4-reveal-init {
+  opacity: .4; transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.v4-reveal-init.v4-reveal-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .v4-reveal-init { opacity: 1; transform: none; transition: none; }
+}
+
+/* ==========================================================================
+   Projects / Courses index pages: editorial list rows instead of card
+   grids (review brief, 2026-11-19). Left column: status + year in small
+   text. Right column: title + full description. Hairline rules between
+   rows; titles underline on hover. Shared by layouts/projects/list.html
+   and layouts/courses/list.html.
+   ========================================================================== */
+.plist-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+.plist-head { padding-top: 3.25rem; }
+.plist-page-title {
+  font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 700; line-height: 1.1;
+  margin: 0 0 .8rem;
+}
+.plist-intro { font-size: 1.05rem; line-height: 1.7; color: var(--v3-text-2); max-width: 46rem; }
+.plist-intro p { margin: 0; }
+.plist { margin-top: 1.5rem; }
+.plist-row {
+  display: grid; grid-template-columns: 1fr; gap: .4rem;
+  padding: 1.7rem 0; border-top: 1px solid var(--v3-line);
+}
+.plist-row:last-child { border-bottom: 1px solid var(--v3-line); }
+.plist-meta { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: baseline; }
+.plist-status {
+  font-family: var(--hb-font-heading); font-style: italic;
+  font-size: 1rem; color: var(--v3-accent);
+}
+.plist-year { font-size: .9rem; color: var(--v3-text-3); font-variant-numeric: tabular-nums; }
+.plist-title { font-size: 1.32rem; font-weight: 700; line-height: 1.3; margin: 0 0 .5rem; }
+.plist-title a { color: inherit; text-decoration: none; }
+.plist-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.plist-desc { color: var(--v3-text-2); line-height: 1.7; margin: 0; max-width: 46rem; }
+@media (min-width: 820px) {
+  .plist-row { grid-template-columns: 190px minmax(0, 1fr); gap: 2rem; }
+  .plist-meta { flex-direction: column; flex-wrap: nowrap; gap: .2rem; }
+}
+
+/* ---------- 404 page ---------- */
+.nf-wrap { max-width: 44rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
+.nf-kicker {
+  font-family: var(--hb-font-heading); font-style: italic;
+  font-size: 1.06rem; color: var(--v3-accent); margin: 0 0 .9rem;
+}
+.nf-title { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 700; line-height: 1.15; margin: 0 0 1rem; }
+.nf-text { font-size: 1.05rem; line-height: 1.75; color: var(--v3-text-2); margin: 0; }
+.nf-text a { color: var(--v3-accent); }
+
 /* ==========================================================================
    Mobile fix round (2026-11-18): the responsive defects from the 390px
    audit, fixed one by one. Everything is scoped to small screens or
@@ -545,6 +671,9 @@ body {
 @media (max-width: 640px) {
   .v4-portrait { max-width: 260px; margin: 0 auto; }
   .v4-path-svg text { font-size: 34px; }
+  /* Captions scale up less than the city names (29 units lands at
+     about 10px on a 390px phone, against the names' ~11.6px). */
+  .v4-path-svg text.path-cap { font-size: 29px; }
 }
 
 /* ---------- hero pills: 44px tall where fingers are involved ----------

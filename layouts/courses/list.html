@@ -1,5 +1,44 @@
 {{ define "main" }}
 
+{{ if .Pages }}
+
+{{/* Courses index as editorial list rows (review brief, 2026-11-19):
+     same row language as /projects/ — status + term in the left column,
+     title and the full summary on the right, hairline rules, no cards.
+     The course's featured photo stays on the course page itself. */}}
+
+<div class="plist-wrap">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  <div class="plist">
+    {{ range .Pages.ByDate.Reverse }}
+    <article class="plist-row">
+      <div class="plist-meta">
+        {{- with .Params.status }}<span class="plist-status">{{ . }}</span>{{ end }}
+        {{- with .Params.term }}<span class="plist-year">{{ . }}</span>{{ end }}
+      </div>
+      <div class="plist-main">
+        <h2 class="plist-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{- with .Params.summary }}
+        <p class="plist-desc">{{ . }}</p>
+        {{- end }}
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</div>
+
+{{ else }}
+
+{{/* A single course's own page (the course is a branch bundle, so it
+     renders through this list template): title, featured image with
+     caption, then the body. */}}
+
 <div class="max-w-prose mx-auto flex justify-center">
   <article class="prose prose-slate lg:prose-xl dark:prose-invert">
     <h1 class="lg:text-6xl">{{ .Title }}</h1>
@@ -50,39 +89,6 @@
   </article>
 </div>
 
-{{ $view := .Params.view | default "card" }}
-{{ $block := . }}
-
-{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
-{{ $config := dict
-  "columns" (.Params.columns | default 2)
-  "len" (len $paginator.Pages)
-  "fill_image" (.Params.fill_image | default true)
-  "show_date" (.Params.show_date | default true)
-  "show_read_time" (.Params.show_read_time | default true)
-  "show_read_more" (.Params.show_read_more | default true)
-}}
-
-{{/* Check if any pages have author_notes to enable Alpine.js */}}
-{{ range .Pages }}
-  {{ if isset .Params "author_notes" }}
-    {{ $.Store.Set "has_alpine" true }}
-    {{ break }}
-  {{ end }}
 {{ end }}
-
-<div class="flex flex-col items-center">
-
-  {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" . "view" $view "config" $config) }}
-
-  {{ range $index, $item := $paginator.Pages }}
-  {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" $index "config" $config) }}
-  {{end}}
-
-  {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
-
-  {{ partial "components/paginator" . }}
-
-</div>
 
 {{ end }}

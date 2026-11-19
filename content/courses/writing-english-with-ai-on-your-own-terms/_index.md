@@ -6,6 +6,8 @@ summary: I teach this practical studio course on written English communication w
 tags:
   - Course
 weight: 10
+status: "Kenshu Program"
+term: "Fall 2026"
 image:
   caption: 'Guest lecture "Breaking the Yes-Machine" by Paul McGachey, November 12, 2026.'
   alt_text: 'Paul McGachey delivering a guest lecture in CALL Room J209, standing in a salmon-pink blazer with both hands raised in an open gesture beside the projected title slide Breaking the Yes-Machine, with a course participant seen from behind in the foreground.'
