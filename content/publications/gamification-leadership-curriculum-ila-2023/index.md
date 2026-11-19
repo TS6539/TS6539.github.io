@@ -10,6 +10,7 @@ publication_types: ["paper-conference"]
 publication:
   name: "International Leadership Association (ILA) Global Conference"
 peer_reviewed: true
+abstract: "This project aim to conduct a systematic literature review from all peer-reivewed journal articles published from 2018 - 2022 on the topic of gamification and leadership studies curriculum"
 tags:
   - Gamification
   - Leadership

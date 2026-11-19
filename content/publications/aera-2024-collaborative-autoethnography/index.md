@@ -11,6 +11,7 @@ publication_types: ["paper-conference"]
 publication:
   name: "Proceedings of the 2024 AERA Annual Meeting"
 peer_reviewed: true
+abstract: "This study offers an in-depth investigation into the complex interactions between scholars and Artificial intelligence (AI) tools in teaching and research, grounded in Linguistic Justice Theory and Actor-Network Theory. Utilizing Collaborative Autoethnography as the research methodology, we explore the experiences and perceptions of two Asian non-native-English-speaking Ph.D. students and two native-English-speaking American professors as they engage with AI tools in academia. Our findings cast light on these scholars’ motivations for AI adoption, AI applications in academia, perceived benefits, challenges, and future actions. We conclude that when properly integrated, AI can augment academic practices, potentially rectifying linguistic disparities in academic writing. However, the development of guidelines and training programs is critical to promote responsible usage and mitigate overreliance on these tools."
 tags:
   - Generative AI
   - Autoethnography
