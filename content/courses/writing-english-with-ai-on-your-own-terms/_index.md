@@ -8,7 +8,7 @@ tags:
 weight: 10
 image:
   caption: 'Guest lecture "Breaking the Yes-Machine" by Paul McGachey, November 12, 2026.'
-  alt_text: 'Paul McGachey delivering a guest lecture in CALL Room J209, gesturing beside a projected slide titled Polishing AI Text Usually Meant Accepting It Unchecked, with a course participant seen from behind in the foreground.'
+  alt_text: 'Paul McGachey delivering a guest lecture in CALL Room J209, standing in a salmon-pink blazer with both hands raised in an open gesture beside the projected title slide Breaking the Yes-Machine, with a course participant seen from behind in the foreground.'
   focal_point: 'Center'
 ---
 
