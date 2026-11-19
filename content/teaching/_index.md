@@ -18,7 +18,7 @@ activities:
   - status: "Faculty development"
     term: "2026"
     title: "Faculty development workshops"
-    summary: "I organize faculty development workshops on the digitization of university English education and AI literacy training."
+    summary: "I organize faculty development workshops on the digitalization of university English education and AI literacy training."
 
 # The section was renamed from Courses to Teaching (2026-11-19); keep
 # the old section URL working.

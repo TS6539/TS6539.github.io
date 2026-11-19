@@ -1,0 +1,31 @@
+# Site override of the Hugo Blox page_sharer data (eighth review round,
+# 2026-11-19): on an academic site, LinkedIn and email are the only share
+# channels offered. Same schema as the theme's data/page_sharer.yaml;
+# entries with enable: false are not rendered.
+
+links:
+  - id: linkedin
+    url: 'https://www.linkedin.com/shareArticle?url={url}&title={title}'
+    title: LinkedIn
+    icon: brands/linkedin
+    enable: true
+  - id: email
+    url: 'mailto:?subject={title}&body={url}'
+    title: Email
+    icon: hero/at-symbol
+    enable: true
+  - id: x
+    url: 'https://x.com/intent/tweet?url={url}&text={title}'
+    title: X
+    icon: brands/x
+    enable: false
+  - id: facebook
+    url: 'https://www.facebook.com/sharer.php?u={url}&t={title}'
+    title: Facebook
+    icon: brands/facebook
+    enable: false
+  - id: whatsapp
+    url: 'whatsapp://send?text={title}%20{url}'
+    title: WhatsApp
+    icon: brands/whatsapp
+    enable: false
