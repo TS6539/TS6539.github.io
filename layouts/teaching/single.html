@@ -1,0 +1,20 @@
+{{ define "main" }}
+
+{{/* Minimal single page for Teaching entries that are not the course
+     itself (the guest lectures): status + date line, title, the short
+     factual body, and a link back to the Teaching index. No blog
+     metadata (dates, reading time) — the date lives in the status
+     line, in the same editorial style as the list rows. */}}
+
+<div class="plist-wrap">
+  <header class="plist-head">
+    {{- if .Params.status }}
+    <p class="plist-status" style="display:block; margin:0 0 .5rem">{{ .Params.status }}{{ with .Params.term }} · {{ . }}{{ end }}</p>
+    {{- end }}
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+  </header>
+  <div class="plist-intro">{{ .Content }}</div>
+  <p class="plist-desc" style="margin-top:2.25rem"><a href="{{ "/teaching/" | relURL }}">← Teaching</a></p>
+</div>
+
+{{ end }}

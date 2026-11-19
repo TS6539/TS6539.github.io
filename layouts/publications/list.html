@@ -6,11 +6,17 @@
      rendered in five fixed research-line groups (front matter field
      `research_line`), date descending within each group, no pagination. */}}
 
-<div class="max-w-prose mx-auto flex justify-center">
-  <article class="prose prose-slate lg:prose-xl dark:prose-invert">
-    <h1 class="lg:text-6xl">{{ .Title }}</h1>
-    {{ .Content }}
-  </article>
+{{/* Page header in the same left-aligned style as /projects/ and
+     /teaching/ (fifth review, 2026-11-19): the theme's centered
+     max-w-prose title block made this page the odd one out, so it
+     reuses the .plist-head / .plist-page-title language. */}}
+<div class="plist-wrap">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
 </div>
 
 {{ $view := .Params.view | default "card" }}

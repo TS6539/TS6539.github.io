@@ -2,10 +2,18 @@
 
 {{ if .Pages }}
 
-{{/* Courses index as editorial list rows (review brief, 2026-11-19):
-     same row language as /projects/ — status + term in the left column,
-     title and the full summary on the right, hairline rules, no cards.
-     The course's featured photo stays on the course page itself. */}}
+{{/* Teaching index as editorial list rows: same row language as
+     /projects/ — status + term in the left column, title and the full
+     summary on the right, hairline rules, no cards. Course entries
+     come first; guest lectures hosted in the course (entry_type:
+     guest) follow below them in date order. The course's featured
+     photo stays on the course page itself. */}}
+
+{{ $guests := where .Pages "Params.entry_type" "guest" }}
+{{ $courses := .Pages | complement $guests }}
+{{ $ordered := slice }}
+{{ range $courses.ByDate.Reverse }}{{ $ordered = $ordered | append . }}{{ end }}
+{{ range $guests.ByDate }}{{ $ordered = $ordered | append . }}{{ end }}
 
 <div class="plist-wrap">
   <header class="plist-head">
@@ -16,7 +24,7 @@
   </header>
 
   <div class="plist">
-    {{ range .Pages.ByDate.Reverse }}
+    {{ range $ordered }}
     <article class="plist-row">
       <div class="plist-meta">
         {{- with .Params.status }}<span class="plist-status">{{ . }}</span>{{ end }}

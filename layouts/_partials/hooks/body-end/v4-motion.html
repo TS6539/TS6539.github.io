@@ -1,14 +1,22 @@
-{{/* Homepage motion layer: GSAP core from CDN plus the site's own
-     v4-motion.js. Homepage only. ScrollTrigger and SplitText are gone
-     (review brief, 2026-11-19): reveals are vanilla IntersectionObserver
-     and the hero no longer waits on a text-splitting reveal. All
-     enhancement is progressive: if the CDN script is blocked, the page
-     renders fully readable and v4-motion.js degrades to static states. */}}
+{{/* Homepage motion layer: the site's own v4-motion.js plus GSAP core
+     from CDN (used only for the trajectory line draw). Homepage only.
+     ScrollTrigger and SplitText are gone (review brief, 2026-11-19):
+     reveals are vanilla IntersectionObserver and the hero no longer
+     waits on a text-splitting reveal.
+     ORDER MATTERS (fifth review, 2026-11-19): deferred scripts run in
+     document order, so v4-motion.js is emitted FIRST. When it sat
+     behind the GSAP CDN tag, the hero fade and the counters could not
+     start until jsDelivr answered — on a phone that left the name
+     semi-transparent ~2s after load. The hero intro and counters are
+     now vanilla (WAAPI / rAF) and start as soon as this local script
+     runs; only the decorative path draw waits for GSAP, polling for
+     it. All enhancement is progressive: if the CDN script is blocked,
+     the page renders fully readable in its static state. */}}
 {{ if .IsHome }}
-<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 {{- $v4 := resources.Get "js/v4-motion.js" | js.Build | resources.Minify -}}
 {{- if hugo.IsProduction -}}
   {{- $v4 = $v4 | fingerprint "sha256" -}}
 {{- end -}}
 <script defer src="{{ $v4.RelPermalink }}"{{ if hugo.IsProduction }} integrity="{{ $v4.Data.Integrity }}" crossorigin="anonymous"{{ end }}></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 {{ end }}

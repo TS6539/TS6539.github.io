@@ -122,7 +122,12 @@
            of about +/-2.5 units) that still passes exactly through the
            three city dots at (60,18), (500,18) and (940,18). */}}
       <div class="v4-path">
-        <svg class="v4-path-svg" viewBox="0 0 1000 94" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
+        {{/* The viewBox carries 12 units of horizontal padding on both
+             sides (-12 to 1012) and the Hiroshima caption is end-anchored
+             at x=1000: centered at its dot (940) the ~191-unit caption
+             reached x≈1036 and painted past the screen edge (fifth
+             review, 2026-11-19). All paint now stays inside the box. */}}
+        <svg class="v4-path-svg" viewBox="-12 0 1024 94" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
           <path class="path-base" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18"/>
           <path class="path-draw" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18" pathLength="1"/>
           <g class="path-dot"><circle class="halo" cx="60" cy="18" r="11"/><circle class="core" cx="60" cy="18" r="5.5"/></g>
@@ -135,8 +140,31 @@
                set in the serif body font. */}}
           <text class="path-cap" x="60" y="82" text-anchor="middle">Born and raised</text>
           <text class="path-cap" x="500" y="82" text-anchor="middle">USC, Pepperdine</text>
-          <text class="path-cap" x="940" y="82" text-anchor="middle">Hiroshima University, 2026–</text>
+          <text class="path-cap" x="1000" y="82" text-anchor="end">Hiroshima University, 2026–</text>
         </svg>
+        {{/* Narrow screens (fifth review, 2026-11-19): the horizontal
+             strip shrinks until the captions clip, so under 640px the
+             timeline stacks vertically instead — three stops down the
+             left, city name and caption beside each stop. Purely a
+             visual duplicate of the SVG (which keeps the accessible
+             label), so it is hidden from assistive technology. */}}
+        <div class="v4-path-v" aria-hidden="true">
+          <div class="v4-path-stop">
+            <span class="v4-path-vdot"></span>
+            <p class="v4-path-vcity">Beijing</p>
+            <p class="v4-path-vcap">Born and raised</p>
+          </div>
+          <div class="v4-path-stop">
+            <span class="v4-path-vdot"></span>
+            <p class="v4-path-vcity">Los Angeles</p>
+            <p class="v4-path-vcap">USC, Pepperdine</p>
+          </div>
+          <div class="v4-path-stop">
+            <span class="v4-path-vdot"></span>
+            <p class="v4-path-vcity">Hiroshima</p>
+            <p class="v4-path-vcap">Hiroshima University, 2026–</p>
+          </div>
+        </div>
       </div>
 
       {{/* Bio + rail (interests, education). */}}

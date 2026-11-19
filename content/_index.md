@@ -35,7 +35,7 @@ sections:
       text: |-
         My work follows three connected lines:
 
-        **AI in language education.** How generative AI changes the way students write, read, and learn in a second language, and how universities should respond, from classroom practice to institutional guidelines. His 2025 article "Spontaneous use of generative artificial intelligence in preparing for college English test: GenAI adopting factors, learner motivation, and self-efficacy" appeared in Technology in Language Teaching & Learning.
+        **AI in language education.** How generative AI changes the way students write, read, and learn in a second language, and how universities should respond, from classroom practice to institutional guidelines. A 2025 study in *Technology in Language Teaching & Learning* examined how university students used GenAI to prepare for the College English Test.
 
         **Quantitative ethnography.** Using epistemic network analysis (ENA) to trace learning and identity patterns in process data, including how learners interact with AI tools and what separates productive use from shortcut use. The ICQE 2026 chapter (Springer) uses ENA to map patterns of generative AI use during source-based writing.
 

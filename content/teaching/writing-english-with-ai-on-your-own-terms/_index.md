@@ -1,6 +1,10 @@
 ---
 title: Writing English with AI, On Your Own Terms
 linkTitle: Writing English with AI, On Your Own Terms
+# The course lived under /courses/ until the section was renamed to
+# Teaching (2026-11-19); keep the old URL working.
+aliases:
+  - /courses/writing-english-with-ai-on-your-own-terms/
 date: 2026-10-15
 summary: I teach this practical studio course on written English communication with AI, offered by the Institute for Foreign Language Research and Education (FLaRE) at Hiroshima University. Participants work with AI as a communication partner while keeping authorship, voice, and judgment their own, and finish with an AI-Assisted English Communication Portfolio.
 tags:

@@ -7,9 +7,6 @@ tags:
   - Faculty Development
   - Higher Education
 date: "2026-10-15T00:00:00Z"
-image:
-  focal_point: "Center"
-  preview_only: false
 ---
 
 This institutional project at the Institute for Foreign Language Research and Education (FLaRE), Hiroshima University, develops guidelines for the use of generative AI in university English education, together with faculty-development training for teaching staff.
