@@ -18,6 +18,25 @@ sections:
       date_format: 'January 2006'
       # Education or Experience section first?
       is_education_first: false
+  - block: markdown
+    content:
+      title: Service
+      text: |-
+        - Planning Committee member, Games and Learning Alliance (GALA) 2026
+        - Proposal reviewer, American Educational Research Association (Divisions C, E, H, K)
+        - Session Chair, CATESOL 2021
+    design:
+      columns: '1'
+  - block: markdown
+    content:
+      title: Grants
+      text: |-
+        - Provost Grant, Pepperdine University, 2022: Gamification of Leadership Studies Curriculum: A Systematic Review (2012-2022)
+        - Provost Grant, Pepperdine University, 2022: Adapted Media Communication Strategies: A Comparison between Men and Women Police Chiefs and Sheriffs
+        - Provost Grant, Pepperdine University, 2023: Assessing the Role of AI Tools in Enhancing Learning and Motivation: An Experimental Study
+        - Participant, National Institutes of Health grant for meta-analysis/systematic review software development (total $3,949,796, Phases I and II)
+    design:
+      columns: '1'
   - block: resume-skills
     content:
       title: Skills

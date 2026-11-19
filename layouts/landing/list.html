@@ -25,6 +25,15 @@
   {{- end -}}
 {{- end -}}
 
+{{/* Speaking band text: looked up by exact title because urlize would
+     mangle the "&" in "Speaking & collaboration". */}}
+{{- $speakingText := "" -}}
+{{- range .Params.sections -}}
+  {{- if and (eq .block "markdown") (eq .content.title "Speaking & collaboration") -}}
+    {{- $speakingText = .content.text -}}
+  {{- end -}}
+{{- end -}}
+
 {{/* Research text -> intro + numbered items (bold lead-in = item title). */}}
 {{- $researchText := index $md "research" | default "" -}}
 {{- $paras := slice -}}
@@ -226,7 +235,20 @@
     </div>
   </section>
 
-  {{/* ================= 4. FEATURED PUBLICATIONS ================= */}}
+  {{/* ================= 4. SPEAKING & COLLABORATION ================= */}}
+  {{- with $speakingText }}
+  <section class="v4-section" id="speaking">
+    <div class="v4-wrap">
+      <header class="v4-sec-head v4-reveal">
+        <p class="v4-kicker">Speaking &amp; collaboration</p>
+      </header>
+      <div class="v4-prose v4-reveal">{{ . | markdownify }}</div>
+      <p class="v4-reveal"><a class="v4-more" href="{{ "/speaking/" | relURL }}">Topics, past talks and how to invite me <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+  {{- end }}
+
+  {{/* ================= 5. FEATURED PUBLICATIONS ================= */}}
   {{- if $featured }}
   <section class="v4-section" id="papers">
     <div class="v4-wrap">
@@ -259,7 +281,7 @@
   </section>
   {{- end }}
 
-  {{/* ================= 5. NEWS ================= */}}
+  {{/* ================= 6. NEWS ================= */}}
   {{- if $news }}
   <section class="v4-section" id="news">
     <div class="v4-wrap">
@@ -278,7 +300,7 @@
   </section>
   {{- end }}
 
-  {{/* ================= 6. TEACHING + CONTACT ================= */}}
+  {{/* ================= 7. TEACHING + CONTACT ================= */}}
   <section class="v4-section v4-closing">
     <div class="v4-wrap">
       <div class="v4-closing-grid">

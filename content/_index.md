@@ -44,10 +44,18 @@ sections:
       columns: '1'
   - block: markdown
     content:
+      title: 'Speaking & collaboration'
+      subtitle: ''
+      text: |-
+        I give talks and workshops on generative AI in language education, AI guidelines for universities, and quantitative ethnography, and I am glad to join research teams as an ENA or evidence synthesis partner.
+    design:
+      columns: '1'
+  - block: markdown
+    content:
       title: 'Teaching'
       subtitle: ''
       text: |-
-        At Hiroshima University I teach undergraduate English courses in which students learn how to write with AI. I also run *Writing English with AI, On Your Own Terms*, a 10-session course open to university staff, faculty and students, and I organize faculty development sessions on the digitalization of English education and AI literacy.
+        At Hiroshima University I run *Writing English with AI, On Your Own Terms*, a 10-session non-credit training course (Kenshu Program) open to university students, faculty and staff, in which participants learn to write with AI. I also develop curricula with subject instructors for the online Communication Basics and Communication Exercises courses, observe faculty classes, and organize faculty development sessions on the digitalization of English education and AI literacy.
     design:
       columns: '1'
   - block: collection
@@ -113,7 +121,7 @@ sections:
       title: 'Contact'
       subtitle: ''
       text: |-
-        The best way to reach me is by email at haots2308@gmail.com. I am glad to connect with colleagues working on AI in education, second language acquisition, the learning sciences, learning analytics, quantitative ethnography and systematic review, including co-authoring, ENA collaborations and invited talks.
+        For invitations to speak and research collaborations, please email me at [tianshihao@hiroshima-u.ac.jp](mailto:tianshihao@hiroshima-u.ac.jp). For anything else, [haots2308@gmail.com](mailto:haots2308@gmail.com) reaches me too. I am especially glad to hear from colleagues working on generative AI in language education, quantitative ethnography, or AI-supported evidence synthesis.
     design:
       columns: '1'
 ---

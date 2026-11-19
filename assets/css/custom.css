@@ -635,6 +635,30 @@ body {
   .plist-meta { flex-direction: column; flex-wrap: nowrap; gap: .2rem; }
 }
 
+/* ---------- Speaking & Collaboration page ----------
+   Sections stack under italic serif labels (the .v4-kicker voice, with
+   the same leading hairline the homepage section labels use); the rows
+   themselves are the shared .plist-* rows. All colors come from the
+   --v3-* tokens, so dark mode follows automatically. */
+.spk-page { padding-bottom: 4.5rem; }
+.spk-section { margin-top: 3.25rem; }
+.spk-label::before {
+  content: ""; flex: none; width: 2rem; border-top: 1px solid var(--v3-accent); opacity: .55;
+}
+.spk-body { font-size: 1.05rem; line-height: 1.7; color: var(--v3-text-2); max-width: 46rem; margin: 0; }
+.spk-body p { margin: 0; }
+.spk-body a { color: var(--v3-accent); }
+.spk-suited { margin: .6rem 0 0; font-size: .95rem; color: var(--v3-text-3); max-width: 46rem; }
+.spk-suited em { font-family: var(--hb-font-heading); color: var(--v3-text-2); }
+.spk-venue {
+  font-family: var(--hb-font-heading); font-style: italic;
+  font-size: 1rem; color: var(--v3-text-3); margin: 0 0 .35rem;
+}
+.spk-authors { color: var(--v3-text-3); font-size: .98rem; margin: .35rem 0 0; }
+.spk-sub { font-size: 1.05rem; font-weight: 700; margin: 1.6rem 0 .5rem; }
+.spk-downloads { margin: 0; padding-left: 1.1rem; color: var(--v3-text-2); line-height: 1.9; }
+.spk-downloads a { color: var(--v3-accent); }
+
 /* ---------- 404 page ---------- */
 .nf-wrap { max-width: 44rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
 .nf-kicker {

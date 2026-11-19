@@ -1,0 +1,124 @@
+{{ define "main" }}
+
+{{/* Speaking & Collaboration: same editorial list-row language as
+     /projects/ (.plist-* in custom.css) — italic serif section labels,
+     meta column on the left, content on the right, hairline rules, no
+     cards. All copy lives in content/speaking/_index.md front matter;
+     this template only arranges it. */}}
+
+<div class="plist-wrap spk-page">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  {{- with .Params.topics }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Talk topics</h2>
+    <div class="plist">
+      {{ range . }}
+      <article class="plist-row">
+        <div class="plist-meta">
+          <span class="plist-status">{{ .kind }}</span>
+        </div>
+        <div class="plist-main">
+          <h3 class="plist-title">{{ .title }}</h3>
+          <p class="plist-desc">{{ .description }}</p>
+          <p class="spk-suited"><em>Suited to</em> {{ .suited }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with .Params.formats }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Formats</h2>
+    <p class="spk-body">{{ . }}</p>
+  </section>
+  {{- end }}
+
+  {{- with .Params.lectures }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Past guest lectures</h2>
+    <div class="plist">
+      {{ range . }}
+      <article class="plist-row">
+        <div class="plist-meta">
+          <span class="plist-year">{{ .date_label }}</span>
+        </div>
+        <div class="plist-main">
+          <h3 class="plist-title">{{ .org }}</h3>
+          <p class="plist-desc">{{ .description }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with .Params.presentations }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Selected conference presentations</h2>
+    <div class="plist">
+      {{ range . }}
+      <article class="plist-row">
+        <div class="plist-meta">
+          {{- with .status }}<span class="plist-status">{{ . }}</span>{{ end }}
+          <span class="plist-year">{{ .year }}</span>
+        </div>
+        <div class="plist-main">
+          <p class="spk-venue">{{ .venue }}</p>
+          <h3 class="plist-title">{{ .title }}</h3>
+          <p class="spk-authors">{{ .authors }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with .Params.collaborations }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Research collaboration</h2>
+    {{- with $.Params.collaboration_intro }}
+    <p class="spk-body">{{ . }}</p>
+    {{- end }}
+    <div class="plist">
+      {{ range . }}
+      <article class="plist-row">
+        <div class="plist-meta"></div>
+        <div class="plist-main">
+          <p class="plist-desc"><strong>{{ .lead }}</strong> {{ .text }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">For organizers</h2>
+    <h3 class="spk-sub">Short bio</h3>
+    <p class="spk-body">{{ .Params.short_bio }}</p>
+    <h3 class="spk-sub">Medium bio</h3>
+    <p class="spk-body">{{ .Params.medium_bio }}</p>
+    <h3 class="spk-sub">Downloads</h3>
+    <ul class="spk-downloads">
+      <li><a href="{{ "uploads/headshot.jpg" | relURL }}">Headshot (high resolution)</a></li>
+      <li><a href="{{ "uploads/resume.pdf" | relURL }}">CV</a></li>
+    </ul>
+  </section>
+
+  {{- with .Params.invite }}
+  <section class="spk-section">
+    <h2 class="v4-kicker spk-label">Invite me</h2>
+    <div class="spk-body">{{ . | markdownify }}</div>
+  </section>
+  {{- end }}
+</div>
+
+{{ end }}

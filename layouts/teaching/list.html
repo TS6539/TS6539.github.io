@@ -4,16 +4,12 @@
 
 {{/* Teaching index as editorial list rows: same row language as
      /projects/ — status + term in the left column, title and the full
-     summary on the right, hairline rules, no cards. Course entries
-     come first; guest lectures hosted in the course (entry_type:
-     guest) follow below them in date order. The course's featured
-     photo stays on the course page itself. */}}
+     summary on the right, hairline rules, no cards. The course's
+     featured photo stays on the course page itself. Guest lectures
+     hosted in the course live on the course page, not here
+     (2026-11-19, reviewer's correction). */}}
 
-{{ $guests := where .Pages "Params.entry_type" "guest" }}
-{{ $courses := .Pages | complement $guests }}
-{{ $ordered := slice }}
-{{ range $courses.ByDate.Reverse }}{{ $ordered = $ordered | append . }}{{ end }}
-{{ range $guests.ByDate }}{{ $ordered = $ordered | append . }}{{ end }}
+{{ $ordered := .Pages.ByDate.Reverse }}
 
 <div class="plist-wrap">
   <header class="plist-head">

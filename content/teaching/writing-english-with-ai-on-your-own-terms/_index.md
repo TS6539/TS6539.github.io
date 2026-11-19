@@ -2,9 +2,14 @@
 title: Writing English with AI, On Your Own Terms
 linkTitle: Writing English with AI, On Your Own Terms
 # The course lived under /courses/ until the section was renamed to
-# Teaching (2026-11-19); keep the old URL working.
+# Teaching (2026-11-19); keep the old URL working. The two hosted guest
+# lectures briefly had their own pages under /teaching/ before moving
+# onto this page (2026-11-19, reviewer's correction); keep those URLs
+# working too.
 aliases:
   - /courses/writing-english-with-ai-on-your-own-terms/
+  - /teaching/guest-lecture-futuring/
+  - /teaching/guest-lecture-breaking-the-yes-machine/
 date: 2026-10-15
 summary: I teach this practical studio course on written English communication with AI, offered by the Institute for Foreign Language Research and Education (FLaRE) at Hiroshima University. Participants work with AI as a communication partner while keeping authorship, voice, and judgment their own, and finish with an AI-Assisted English Communication Portfolio.
 tags:
@@ -24,3 +29,8 @@ This is a practical studio course on written English communication. I work with 
 - **Term:** Fall 2026, October 15 to November 19; 10 sessions of 90 minutes, Tuesdays and Thursdays, 16:20–17:50
 - **Place:** CALL Room J209, Higashihiroshima campus; mainly in person, with hybrid access via Zoom where needed
 - **Open to:** Hiroshima University students, faculty, and staff (capacity approximately 40; TOEFL iBT 85 recommended, not required)
+
+## Guest lectures in this course
+
+- **Futuring.** Guest lecture by Eric Hamilton, November 10, 2026.
+- **Breaking the Yes-Machine.** Guest lecture by Paul McGachey, November 12, 2026.
