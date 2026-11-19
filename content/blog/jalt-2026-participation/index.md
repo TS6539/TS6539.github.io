@@ -2,6 +2,8 @@
 title: 'Participating in JALT2026 in Nagoya'
 date: 2026-11-20
 publishDate: 2026-11-18
+aliases:
+  - /blog/jalt-2026-presentation/
 summary: 'I will be in Nagoya for the JALT2026 conference, November 20 to 22, 2026.'
 ---
 

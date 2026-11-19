@@ -3,6 +3,13 @@ title: 'Projects'
 date: 2024-05-19
 type: landing
 
+# Project pages are not blog posts: hide the date and reading time that the
+# theme's single template prints (it respects show_date / reading_time params)
+cascade:
+  show_date: false
+  reading_time: false
+  show_date_updated: false
+
 # Page sections
 sections:
   - block: collection

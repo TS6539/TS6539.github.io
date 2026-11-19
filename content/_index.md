@@ -35,11 +35,11 @@ sections:
       text: |-
         My work follows three connected lines:
 
-        **AI in language education.** How generative AI changes the way students write, read, and learn in a second language, and how universities should respond, from classroom practice to institutional guidelines. A recent study of Japanese undergraduates writing with ChatGPT appeared as Chapter 16 of the ICQE 2026 proceedings (Springer).
+        **AI in language education.** How generative AI changes the way students write, read, and learn in a second language, and how universities should respond, from classroom practice to institutional guidelines. His 2025 article "Spontaneous use of generative artificial intelligence in preparing for college English test: GenAI adopting factors, learner motivation, and self-efficacy" appeared in Technology in Language Teaching & Learning.
 
         **Quantitative ethnography.** Using epistemic network analysis (ENA) to trace learning and identity patterns in process data, including how learners interact with AI tools and what separates productive use from shortcut use. The ICQE 2026 chapter (Springer) uses ENA to map patterns of generative AI use during source-based writing.
 
-        **Evidence synthesis.** Systematic reviews and AI-supported evidence synthesis that map evidence across education and the social sciences, and develop AI-supported tools for doing synthesis, including work on an NIH-funded synthesis project at Hyperthesis LLC.
+        **Evidence synthesis.** Systematic reviews that map evidence across education and the social sciences, and AI-supported tools that make synthesis faster, including work on an NIH-funded project at Hyperthesis LLC.
     design:
       columns: '1'
   - block: markdown
