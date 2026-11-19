@@ -756,3 +756,35 @@ body {
   .ci-wrap .ci-stat b { font-size: 1.55rem; }
   .ci-wrap .ci-stat span { font-size: .62rem; letter-spacing: .05em; }
 }
+
+/* ==========================================================================
+   Nav wrap fix (seventh review, 2026-11-19). The theme switches the
+   header to its inline row at the lg breakpoint (1024px), but the eight
+   items plus the search and theme icons only fit from ~1150px up: in
+   between, the flex navbar wrapped, the icons dropped to a second row
+   and the header grew from 75px to ~105px. Two bands:
+   - 1024-1149.5px: keep the hamburger layout the theme uses below lg.
+     The toggle is a checkbox hack (the theme's own
+     input#nav-toggle:checked ~ #nav-menu rule still opens the menu);
+     these overrides only undo the lg: utilities that would otherwise
+     hide the hamburger, inline the menu, and un-auto the icon margin.
+   - 1150-1279.5px: the inline row stays, slightly tightened (link
+     padding 8px -> 6px, item gaps 8px -> 6px; ~46px of extra slack).
+     From 1280px the theme's xl spacing applies untouched.
+   ========================================================================== */
+@media (min-width: 1024px) and (max-width: 1149.5px) {
+  #site-header label[for="nav-toggle"] { display: flex; order: 3; }
+  #site-header .navbar > :last-child { margin-left: auto; }
+  #site-header #nav-menu {
+    display: none;
+    width: 100%;
+    order: 3;
+    padding-bottom: 1.5rem;
+  }
+  #site-header #nav-menu > li { margin-inline: 0; }
+  #site-header input#nav-toggle:checked ~ #nav-menu { display: block; }
+}
+@media (min-width: 1150px) and (max-width: 1279.5px) {
+  #site-header .nav-link { padding-inline: .375rem; }
+  #site-header #nav-menu > :not(:last-child) { margin-inline-end: .375rem; }
+}
