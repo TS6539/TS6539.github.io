@@ -13,7 +13,7 @@ main:
   - name: Projects
     url: projects/
     weight: 12
-  - name: Speaking
+  - name: Speaking & Collaboration
     url: speaking/
     weight: 13
   - name: Teaching

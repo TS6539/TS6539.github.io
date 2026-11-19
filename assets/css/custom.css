@@ -237,6 +237,16 @@
 .dark .v4-icon-link:hover { background-color: rgba(147, 169, 196, .14); }
 .v4-icon-link:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
 .v4-icon-svg { width: 21px; height: 21px; flex: none; }
+/* Quiet text link in the hero contact row (Astra round, 2026-11-19):
+   the footer's text-link idiom translated to the v4 variables - plain
+   ink-blue text, underline only on hover, no fill, no pill border. */
+.v4-text-link {
+  font-size: .9rem; font-weight: 550; line-height: 1; white-space: nowrap;
+  color: var(--v3-accent); text-decoration: none;
+  transition: color .25s ease;
+}
+.v4-text-link:hover, .v4-text-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.v4-text-link:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
 .v4-actions-row { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
 /* Shared pill geometry for both rows. Pills wrap as whole units
    (white-space: nowrap + flex-wrap) and, with the .v4-hero-actions
@@ -771,6 +781,18 @@ body {
    - 1150-1279.5px: the inline row stays, slightly tightened (link
      padding 8px -> 6px, item gaps 8px -> 6px; ~46px of extra slack).
      From 1280px the theme's xl spacing applies untouched.
+   Astra round (2026-11-19): the fourth item's label grew from
+   "Speaking" to "Speaking & Collaboration" (+126px of text at the
+   nav's Source Serif 4 600, measured with fontTools on the served
+   variable font). Numeric audit of the rendered header (brand block
+   161px + eight links + search/theme block 88px + navbar padding
+   24px): the tightened band needs a 1071px viewport (1086px at
+   weight 700), so it still fits from 1150px and the hamburger
+   breakpoint stays. But the xl spacing (gaps 8px -> 32px) now needs
+   1285px (1300px at weight 700), so at 1280px the row would wrap
+   again. The tightened band therefore runs to 1359.5px and the xl
+   spacing applies from 1360px, where it fits with 60px+ of slack.
+   One row at every width, as before.
    ========================================================================== */
 @media (min-width: 1024px) and (max-width: 1149.5px) {
   #site-header label[for="nav-toggle"] { display: flex; order: 3; }
@@ -784,7 +806,7 @@ body {
   #site-header #nav-menu > li { margin-inline: 0; }
   #site-header input#nav-toggle:checked ~ #nav-menu { display: block; }
 }
-@media (min-width: 1150px) and (max-width: 1279.5px) {
+@media (min-width: 1150px) and (max-width: 1359.5px) {
   #site-header .nav-link { padding-inline: .375rem; }
   #site-header #nav-menu > :not(:last-child) { margin-inline-end: .375rem; }
 }

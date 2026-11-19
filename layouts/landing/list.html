@@ -104,8 +104,15 @@
                  data/authors/me.yaml). The two e-mail links get distinct
                  glyphs so they stay distinguishable without text:
                  envelope for the personal Gmail address, academic cap
-                 for the university address. Hrefs unchanged. */}}
+                 for the university address. Hrefs unchanged.
+                 Astra round (2026-11-19): one quiet text link sits
+                 between the pill and the icon row, "Discuss a research
+                 idea", deep-linking to the Research collaboration
+                 section of /speaking/ (id added to that section in
+                 layouts/speaking/list.html). CV stays the only filled
+                 button. */}}
             <a class="v4-pill v4-pill--filled" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
+            <a class="v4-text-link" href="{{ "speaking/#research-collaboration" | relURL }}">Discuss a research idea</a>
             <nav class="v4-icon-row" aria-label="Contact and profiles">
               {{- range $profile.links }}
               {{- $iconName := .icon }}
