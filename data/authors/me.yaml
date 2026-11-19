@@ -84,7 +84,10 @@ experience:
     end: 2025-12-31
     summary: |
       Worked on an NIH-funded project building AI-supported systematic
-      review software for evidence synthesis.
+      review software for evidence synthesis. Designed the prompts that
+      guided the AI-based extraction of key information from research
+      papers, and reviewed and corrected the extracted information to
+      ensure accurate extractions.
   - role: Graduate Assistant, ABLE Project
     org: Pepperdine University
     start: 2024-06-01

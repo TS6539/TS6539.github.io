@@ -13,12 +13,22 @@
 {{ $top_award := "" }}
 {{ with $item.Params.awards }}{{ $top_award = index . 0 }}{{ end }}
 
-{{/* Type marker from existing metadata: publication_types first; the
-     two SSRN/OSF entries typed "article" are preprints by venue. */}}
+{{/* Type marker rules (audited against every entry's own record,
+     Astra review, 2026-11-19):
+     1. an explicit `type_label` front-matter param wins (used for the
+        AERA 2027 accepted paper, whose proceedings do not exist yet,
+        so "Proceedings paper" would misstate its status);
+     2. a venue that identifies the item as a poster presentation
+        (CATESOL 2020, APA 2025) labels it "Poster", even though those
+        entries are typed "paper-conference";
+     3. otherwise publication_types drives the label, with a venue
+        "preprint" check for entries typed "article". */}}
 {{ $types := $item.Params.publication_types | default slice }}
 {{ $venue := lower ($pub.name | default "") }}
 {{ $typeLabel := "" }}
-{{ if in $types "paper-conference" }}{{ $typeLabel = "Proceedings paper" }}
+{{ if $item.Params.type_label }}{{ $typeLabel = $item.Params.type_label }}
+{{ else if strings.Contains $venue "poster" }}{{ $typeLabel = "Poster" }}
+{{ else if in $types "paper-conference" }}{{ $typeLabel = "Proceedings paper" }}
 {{ else if in $types "book" }}{{ $typeLabel = "Book" }}
 {{ else if in $types "thesis" }}{{ $typeLabel = "Dissertation" }}
 {{ else if strings.Contains $venue "preprint" }}{{ $typeLabel = "Preprint" }}

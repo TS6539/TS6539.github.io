@@ -6,6 +6,7 @@ authors:
 date: "2027-04-14T00:00:00Z"
 publishDate: "2026-11-18T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Accepted presentation"
 publication:
   name: "American Educational Research Association (AERA) 2027 Annual Meeting, Toronto"
 peer_reviewed: true
