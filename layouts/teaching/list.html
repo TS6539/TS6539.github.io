@@ -34,6 +34,22 @@
       </div>
     </article>
     {{ end }}
+    {{/* Further teaching activities from the section's own front
+         matter: same rows, but no page to link to. */}}
+    {{ range .Params.activities }}
+    <article class="plist-row">
+      <div class="plist-meta">
+        {{- with .status }}<span class="plist-status">{{ . }}</span>{{ end }}
+        {{- with .term }}<span class="plist-year">{{ . }}</span>{{ end }}
+      </div>
+      <div class="plist-main">
+        <h2 class="plist-title">{{ .title }}</h2>
+        {{- with .summary }}
+        <p class="plist-desc">{{ . }}</p>
+        {{- end }}
+      </div>
+    </article>
+    {{ end }}
   </div>
 </div>
 

@@ -28,6 +28,9 @@ topics:
 formats: "Keynotes, guest lectures, workshops, and faculty development sessions, online or in person. I am based in Hiroshima, Japan, and give talks in English or Chinese."
 
 lectures:
+  - org: "Hiroshima University"
+    date_label: "2026"
+    description: "Faculty development workshops on the digitalization of English education and AI literacy."
   - org: "Johns Hopkins University"
     date_label: "Fall 2024"
     description: "Capstone: Current Leadership Issues. Advisor and guest lecturer."
@@ -40,9 +43,6 @@ lectures:
   - org: "University of Southern California"
     date_label: "2024"
     description: "MML 598, Master of Management in Library and Information Science program. Ethical use of AI in education."
-  - org: "Hiroshima University"
-    date_label: "2026"
-    description: "Faculty development workshops on the digitalization of English education and AI literacy."
 
 # Presentation titles and author lists follow the site's own
 # publication entries (checked 2026-11-19), which differ from the
