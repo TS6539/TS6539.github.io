@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Kit · Pre-alpha</title>
+<meta name="description" content="A simple systematic review tool in your browser. Screen titles, abstracts, and full texts, extract data, appraise quality, and draw your PRISMA 2020 flow diagram. No account, no upload.">
+<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
+<meta property="og:title" content="Review Kit">
+<meta property="og:description" content="A simple systematic review tool in your browser. Screen titles, abstracts, and full texts, extract data, appraise quality, and draw your PRISMA 2020 flow diagram. No account, no upload.">
+<meta property="og:image" content="https://tianshihao.org/media/sharing.jpg">
+<style>
+:root{
+  --serif:"Source Serif 4","Newsreader","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif SC",Georgia,serif;
+  --sans:"Inter","Hanken Grotesk",system-ui,-apple-system,"Segoe UI","Hiragino Sans","Yu Gothic UI","Noto Sans JP","Noto Sans SC",sans-serif;
+  --bg:#EEF1F5; --panel:#F6F8FA; --surface:#FFFFFF; --ink:#161D29; --muted:#5A6576; --faint:#8B95A4;
+  --line:#DCE2E9; --line-strong:#C3CCD7; --accent:#25507A; --accent-2:#3A72A6; --accent-ink:#FFFFFF; --accent-soft:#E2EBF4;
+  --inc:#2F7A55; --inc-soft:#E1F1E8; --exc:#A33A2E; --exc-soft:#F7E3E0; --may:#9A6A12; --may-soft:#F7EED9;
+  --shadow:0 1px 2px rgba(16,28,45,.06),0 8px 28px rgba(16,28,45,.08); --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E141C; --panel:#131A24; --surface:#18212D; --ink:#E4E9F0; --muted:#9AA6B6; --faint:#6F7B8B;
+    --line:#253142; --line-strong:#354357; --accent:#8DB6DD; --accent-2:#A9C9E8; --accent-ink:#0E1823; --accent-soft:#1B2D43;
+    --inc:#7CC8A0; --inc-soft:#16302A; --exc:#E58B80; --exc-soft:#3A1E1B; --may:#E2B861; --may-soft:#33290F;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%}
+body{height:100%;margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;transition:transform .15s var(--ease),box-shadow .15s var(--ease),border-color .15s,background .15s}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 3px 10px rgba(20,40,70,.08)}
+.btn:active{transform:none;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none;border-color:var(--line)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600}
+.btn.primary:hover{background:var(--accent-2)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink);background:var(--accent-soft);box-shadow:none}
+.btn.small{padding:4px 10px;font-size:.84rem;border-radius:8px}
+.btn.big{padding:11px 20px;font-size:1rem;border-radius:11px}
+.btn.danger{color:var(--exc)}
+input[type=text],input:not([type]),input[type=search],input[type=number],input[type=date],select,textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:7px 10px;width:100%;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);outline:none}
+textarea{resize:vertical;line-height:1.45}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:3px 10px}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2.4s ease-in-out infinite}
+
+/* top */
+.top{display:flex;align-items:center;gap:10px;padding:10px 16px;background:color-mix(in srgb,var(--panel) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);position:relative;z-index:40}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.01em;border:0;background:transparent;cursor:pointer;padding:2px 4px;border-radius:8px}
+.mark{width:24px;height:24px;border-radius:7px;flex:none;background:var(--accent);position:relative;overflow:hidden}
+.mark b{position:absolute;height:3px;border-radius:2px;background:#fff;left:5px}
+.mark b:nth-child(1){top:6px;right:5px}.mark b:nth-child(2){top:11px;right:8px;background:#F2B544}.mark b:nth-child(3){top:16px;right:11px}
+#projName{border:1px solid transparent;background:transparent;font-weight:600;font-size:.98rem;width:auto;min-width:8ch;max-width:30ch;padding:4px 7px}
+#projName:hover,#projName:focus{border-color:var(--line-strong);background:var(--surface)}
+.saveState{color:var(--muted);font-size:.8rem;display:inline-flex;align-items:center;gap:6px}
+.saveState .dot{width:7px;height:7px;border-radius:50%;background:var(--inc)}
+.saveState.bad .dot{background:var(--exc)}.saveState.bad{color:var(--exc)}
+.saveState button{border:0;background:var(--accent-soft);color:var(--accent);border-radius:7px;padding:2px 8px;font-size:.78rem;font-weight:600;cursor:pointer}
+.spacer{flex:1}
+.menuWrap{position:relative}
+.menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:6px;min-width:250px;z-index:60;box-shadow:var(--shadow);opacity:0;transform:translateY(-6px) scale(.98);transform-origin:top right;pointer-events:none;transition:opacity .16s var(--ease),transform .16s var(--ease)}
+.menu.show{opacity:1;transform:none;pointer-events:auto}
+.menu button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:8px 10px;border-radius:7px;cursor:pointer}
+.menu button small{color:var(--faint);font-size:.74rem}
+.menu button:hover{background:var(--accent-soft)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:5px 2px}
+.steps{display:flex;gap:2px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.steps button{display:flex;align-items:center;gap:8px;border:0;background:transparent;padding:8px 12px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:600;white-space:nowrap;position:relative;transition:background .15s,color .15s}
+.steps button:hover{background:var(--surface);color:var(--ink)}
+.steps button[aria-current=page]{color:var(--ink);background:var(--surface);box-shadow:0 1px 3px rgba(16,28,45,.08)}
+.steps button[aria-current=page]::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;border-radius:2px;background:var(--accent);animation:grow .25s var(--ease) both}
+.steps .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--line);font-size:.72rem;color:var(--muted)}
+.steps button[aria-current=page] .n{background:var(--accent);color:var(--accent-ink)}
+.steps .cnt{font-size:.74rem;font-weight:600;color:var(--faint)}
+.steps .done .n{background:var(--inc);color:#fff}
+#alphaBar{display:flex;align-items:center;gap:10px;padding:7px 16px;font-size:.84rem;background:var(--accent-soft);border-bottom:1px solid var(--line)}
+#alphaBar p{margin:0;flex:1}
+
+/* welcome */
+#welcome{flex:1;overflow:auto}
+.wIn{max-width:1120px;margin:0 auto;padding:clamp(28px,6vh,72px) clamp(18px,4vw,40px) 40px}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,1.3rem + 2.6vw,3.3rem);line-height:1.08;letter-spacing:-.015em;margin:14px 0 16px}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:1.08rem;color:var(--muted);max-width:52ch;margin:0 0 22px}
+.ctaRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;color:var(--muted);font-size:.86rem}
+.trust span{display:inline-flex;align-items:center;gap:7px}
+.anim{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px;position:relative;overflow:hidden;min-height:330px}
+.anim .lanes{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:10px;align-items:start}
+.lane h4{margin:0 0 8px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;justify-content:space-between}
+.lane h4 b{color:var(--ink);font-size:.9rem;letter-spacing:0}
+.lane .stack{display:flex;flex-direction:column;gap:6px;min-height:200px}
+.mini{border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:.74rem;line-height:1.3;background:var(--surface);animation:pop .3s var(--ease) both}
+.mini b{display:block;font-family:var(--serif);font-weight:600;font-size:.84rem;margin-bottom:2px}
+.mini.inc{border-color:var(--inc);background:var(--inc-soft)}.mini.exc{border-color:var(--exc);background:var(--exc-soft);opacity:.8}
+.focus{border:1.5px solid var(--accent);border-radius:12px;padding:12px;min-height:150px;transition:transform .35s var(--ease),opacity .35s var(--ease)}
+.focus.goL{transform:translateX(-60%) rotate(-4deg);opacity:0}.focus.goR{transform:translateX(60%) rotate(4deg);opacity:0}
+.focus b{font-family:var(--serif);font-size:1rem;display:block;margin-bottom:6px;line-height:1.3}
+.focus p{margin:0;font-size:.78rem;color:var(--muted);line-height:1.4}
+.focus mark{background:var(--inc-soft);color:inherit;border-radius:3px;padding:0 2px}
+.focus mark.x{background:var(--exc-soft)}
+.keys3{display:flex;gap:6px;margin-top:10px;justify-content:center}
+.keys3 span{border:1px solid var(--line-strong);border-radius:6px;font-size:.72rem;padding:2px 8px;color:var(--muted);transition:background .15s,color .15s}
+.keys3 span.hit{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(36px,7vh,72px)}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.feat .k{font-family:var(--serif);font-size:1.6rem;color:var(--accent);line-height:1}
+.feat h3{margin:8px 0 6px;font-size:1rem}
+.feat p{margin:0;color:var(--muted);font-size:.9rem}
+.wFoot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;margin-top:36px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.84rem}
+.cite{font-family:var(--serif)}
+.reveal{animation:rise .6s var(--ease) both}.d1{animation-delay:.06s}.d2{animation-delay:.14s}.d3{animation-delay:.22s}.d4{animation-delay:.3s}.d5{animation-delay:.38s}
+
+/* views */
+#views{flex:1;min-height:0;display:flex;flex-direction:column}
+.view{flex:1;min-height:0;overflow:auto;animation:fade .25s var(--ease) both}
+.wrap{max-width:1100px;margin:0 auto;padding:24px clamp(14px,3vw,36px) 48px}
+.vHead{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.vHead h1{font-family:var(--serif);font-weight:600;font-size:1.7rem;margin:0;letter-spacing:-.01em}
+.vHead p{margin:4px 0 0;color:var(--muted)}
+.vHead .grow{flex:1;min-width:240px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.drop{border:2px dashed var(--line-strong);border-radius:16px;padding:30px;text-align:center;background:var(--panel);transition:border-color .15s,background .15s,transform .15s var(--ease)}
+.drop.over{border-color:var(--accent);background:var(--accent-soft);transform:scale(1.01)}
+.drop h3{margin:0 0 6px}.drop p{margin:0 0 14px;color:var(--muted)}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl th{text-align:left;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.muted{color:var(--muted)}.small{font-size:.84rem}
+.stat{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 0}
+.stat span{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:.82rem;color:var(--muted)}
+.stat b{color:var(--ink)}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty h2{font-family:var(--serif);color:var(--ink);font-weight:600;margin:0 0 8px}
+
+/* screening */
+.screen{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:0;height:100%}
+.slist{border-right:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.slist .tools{padding:12px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line)}
+.filters{display:flex;gap:4px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:2px 10px;font-size:.78rem;cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.items{overflow:auto;flex:1;padding:6px}
+.it{display:grid;grid-template-columns:8px 1fr;gap:8px;width:100%;text-align:left;border:1px solid transparent;background:transparent;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:.84rem;line-height:1.3;transition:background .12s}
+.it:hover{background:var(--surface)}
+.it.cur{background:var(--surface);border-color:var(--line-strong)}
+.it .st{width:8px;height:8px;border-radius:50%;margin-top:4px;background:var(--line-strong)}
+.it .st.include{background:var(--inc)}.it .st.exclude{background:var(--exc)}.it .st.maybe{background:var(--may)}.it .st.notRetrieved{background:var(--faint)}
+.it .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.it small{color:var(--faint);display:block}
+.more{font-size:.78rem;color:var(--faint);text-align:center;padding:8px}
+.sMain{overflow:auto;padding:22px clamp(14px,3vw,40px) 40px}
+.sIn{max-width:860px;margin:0 auto}
+.prog{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.84rem;margin-bottom:12px}
+.prog .bar{flex:1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--accent);transition:width .5s var(--ease)}
+.rec{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 26px;box-shadow:var(--shadow);position:relative}
+.rec.swap{animation:swapIn .28s var(--ease) both}
+.rec .meta{color:var(--muted);font-size:.86rem;margin-bottom:6px}
+.rec h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.2rem,1rem + .8vw,1.6rem);line-height:1.3;margin:0 0 10px}
+.rec .abs{font-family:var(--serif);font-size:1.04rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.rec .abs.none{color:var(--faint);font-style:italic;font-family:var(--sans);font-size:.92rem}
+.rec mark{background:var(--inc-soft);color:inherit;border-radius:3px;padding:0 2px}
+.rec mark.x{background:var(--exc-soft)}
+.rec .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:.86rem}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;border-radius:999px;padding:3px 11px;position:absolute;top:18px;right:18px;animation:pop .25s var(--ease) both}
+.badge.include{background:var(--inc-soft);color:var(--inc)}.badge.exclude{background:var(--exc-soft);color:var(--exc)}.badge.maybe{background:var(--may-soft);color:var(--may)}.badge.notRetrieved{background:var(--panel);color:var(--muted)}
+.decide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.decide button{border:1.5px solid var(--line-strong);background:var(--surface);border-radius:12px;padding:12px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .12s var(--ease),background .15s,border-color .15s}
+.decide button:hover{transform:translateY(-2px)}
+.decide button kbd{font-family:var(--sans);font-size:.72rem;border:1px solid currentColor;border-radius:5px;padding:0 6px;opacity:.7}
+.decide .inc{color:var(--inc)}.decide .inc:hover,.decide .inc[aria-pressed=true]{background:var(--inc-soft);border-color:var(--inc)}
+.decide .exc{color:var(--exc)}.decide .exc:hover,.decide .exc[aria-pressed=true]{background:var(--exc-soft);border-color:var(--exc)}
+.decide .may{color:var(--may)}.decide .may:hover,.decide .may[aria-pressed=true]{background:var(--may-soft);border-color:var(--may)}
+.decide button.hit{animation:hit .3s var(--ease)}
+.reasons{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;animation:rise .2s var(--ease) both}
+.reasons button{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:.86rem;display:inline-flex;gap:7px;align-items:center}
+.reasons button[aria-pressed=true]{background:var(--exc-soft);border-color:var(--exc);color:var(--exc)}
+.reasons kbd{font-family:var(--sans);font-size:.7rem;border:1px solid var(--line-strong);border-radius:4px;padding:0 5px;color:var(--muted)}
+.noteRow{margin-top:12px}
+.navRow{display:flex;align-items:center;gap:10px;margin-top:16px}
+.navRow .hint{flex:1;text-align:center;color:var(--muted);font-size:.8rem}
+.kwBar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kwBar label{font-size:.74rem;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+
+/* extraction */
+.form{display:flex;flex-direction:column;gap:14px}
+.fld{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted);font-weight:700}
+.fld input,.fld select,.fld textarea{font-weight:400;color:var(--ink);font-size:.95rem}
+.fld .hint{font-weight:400;color:var(--faint)}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:9px;overflow:hidden;width:max-content}
+.seg label{padding:5px 12px;font-size:.86rem;cursor:pointer;border-right:1px solid var(--line-strong);font-weight:500;color:var(--ink)}
+.seg label:last-child{border-right:0}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink)}
+.tplRow{display:grid;grid-template-columns:auto 1.4fr 1fr 1.4fr auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.tplRow:last-child{border-bottom:0}
+.drag{cursor:grab;color:var(--faint);padding:0 4px;user-select:none}
+.tableWrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);max-height:65vh}
+.tableWrap .tbl th{position:sticky;top:0;background:var(--surface);z-index:1}
+.tableWrap td{max-width:280px;min-width:90px}
+.qaItem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.qaItem .lab{font-size:.92rem}.qaItem .lab b{font-family:var(--serif);color:var(--accent);margin-right:6px}
+
+/* prisma */
+.prismaWrap{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;overflow:auto}
+#prismaSvg text{font-family:var(--sans)}
+#prismaSvg .box{animation:fade .5s var(--ease) both}
+
+/* dialogs + toast */
+dialog{border:1px solid var(--line-strong);border-radius:16px;background:var(--surface);color:var(--ink);padding:0;width:min(600px,calc(100vw - 24px));max-height:calc(100vh - 40px);box-shadow:0 24px 70px rgba(10,20,40,.28)}
+dialog[open]{animation:dlgIn .2s var(--ease) both}
+dialog.wide{width:min(900px,calc(100vw - 24px))}
+dialog::backdrop{background:rgba(12,20,32,.42);backdrop-filter:blur(2px)}
+dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
+.dlgHead{padding:20px 22px 6px}.dlgHead h2{margin:0;font-size:1.12rem}.dlgHead p{margin:6px 0 0;color:var(--muted);font-size:.88rem}
+.dlgBody{padding:10px 22px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.dlgFoot{display:flex;justify-content:flex-end;gap:8px;padding:12px 22px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.dlgFoot .left{margin-right:auto}
+.err{color:var(--exc);font-size:.86rem;min-height:1em;margin:0}
+.note{color:var(--muted);font-size:.84rem;margin:0}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}.chk input{margin-top:4px;accent-color:var(--accent)}.chk small{display:block;color:var(--muted)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.9rem;z-index:100;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s var(--ease),transform .25s var(--ease)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:none}}
+@keyframes swapIn{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dlgIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes hit{0%{transform:scale(1)}40%{transform:scale(.96)}100%{transform:scale(1)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (max-width:980px){.feats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:820px){
+  .screen{grid-template-columns:1fr}.slist{display:none}
+  .brandTx,.hideSm{display:none!important}
+  #projName{max-width:40vw}
+  .tplRow{grid-template-columns:1fr 1fr}.tplRow .drag{display:none}
+  .feats{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="brand" id="brandBtn" title="Review Kit home"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span class="brandTx">Review Kit</span></button>
+  <span class="pill hideSm"><i></i>Pre-alpha</span>
+  <input id="projName" aria-label="Review name" spellcheck="false" hidden>
+  <span class="saveState hideSm" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
+  <span class="spacer"></span>
+  <button class="btn ghost hideSm" id="undoBtn" title="Undo (Ctrl+Z)" hidden>Undo</button>
+  <div class="menuWrap">
+    <button class="btn" id="menuBtn" aria-haspopup="true" aria-expanded="false">Review ▾</button>
+    <div class="menu" id="menu" role="menu">
+      <button data-m="save">Save review file</button>
+      <button data-m="open">Open review file</button>
+      <button data-m="link">Autosave to a file <small>Chrome, Edge</small></button>
+      <button data-m="openLink">Open and autosave a file</button>
+      <button data-m="unlink" id="unlinkItem" hidden>Stop autosaving to file</button>
+      <hr>
+      <button data-m="keys">Keyboard shortcuts <small>?</small></button>
+      <button data-m="feedback">Send feedback</button>
+      <button data-m="demo">Open the demo review</button>
+      <button data-m="new">Start a new review</button>
+    </div>
+  </div>
+  <button class="btn primary" id="exportBtn" hidden>Export</button>
+</header>
+<nav class="steps" id="steps" hidden></nav>
+<div id="alphaBar" hidden><span class="pill"><i></i>Pre-alpha</span><p>Early version. Save a review file often, and please <a href="#" data-m="feedback">tell me what breaks</a>.</p><button class="btn small ghost" id="alphaClose" aria-label="Dismiss">✕</button></div>
+
+<section id="welcome" aria-label="Welcome">
+  <div class="wIn">
+    <div class="hero">
+      <div>
+        <span class="pill reveal"><i></i>Pre-alpha · Free to use</span>
+        <h1 class="reveal d1">A systematic review, <em>without the overhead.</em></h1>
+        <p class="lede reveal d2">Import your search results, screen titles and abstracts with one key per decision, check full texts, extract data into a form you control, and get a PRISMA 2020 flow diagram that fills itself in.</p>
+        <div class="ctaRow reveal d3">
+          <button class="btn primary big" data-go="demo">Try the demo review</button>
+          <button class="btn big" data-go="start">Start a review</button>
+        </div>
+        <div class="trust reveal d4">
+          <span>🔒 Your records stay in your browser</span><span>No account, no upload</span><span>RIS · BibTeX · CSV · Web of Science · PubMed</span>
+        </div>
+      </div>
+      <div class="anim reveal d2" aria-hidden="true">
+        <div class="lanes">
+          <div class="lane"><h4>Excluded <b id="aEx">0</b></h4><div class="stack" id="aExS"></div></div>
+          <div><div class="focus" id="aFocus"></div><div class="keys3"><span id="aKE">E exclude</span><span id="aKM">M maybe</span><span id="aKI">I include</span></div></div>
+          <div class="lane"><h4>Included <b id="aIn">0</b></h4><div class="stack" id="aInS"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="feats">
+      <div class="feat reveal d2"><div class="k">1</div><h3>Import and deduplicate</h3><p>Bring in exports from each database. Duplicates are found by DOI and title, and you can restore any that are not.</p></div>
+      <div class="feat reveal d3"><div class="k">2</div><h3>Screen fast</h3><p>Title and abstract, then full text with exclusion reasons. Highlight your keywords. Press I, E, or M and move on.</p></div>
+      <div class="feat reveal d4"><div class="k">3</div><h3>Extract your way</h3><p>Start from a standard template and add, rename, or reorder fields. One row per study. Optional MMAT or custom quality appraisal.</p></div>
+      <div class="feat reveal d5"><div class="k">4</div><h3>PRISMA and export</h3><p>A PRISMA 2020 flow diagram built from your decisions, as SVG or PNG, and one Excel workbook with everything.</p></div>
+    </div>
+    <div class="wFoot">
+      <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Version 0.1, pre-alpha. No AI or automation: every decision is yours. <a href="#" data-m="feedback">Send feedback</a></span>
+      <span class="cite">Cite as: Hao, T. (2026). <i>Review Kit</i> (Version 0.1) [Computer software]. https://tianshihao.org/review/</span>
+    </div>
+  </div>
+</section>
+
+<div id="views" hidden>
+  <!-- IMPORT -->
+  <section class="view" id="v-import" hidden><div class="wrap">
+    <div class="vHead"><div class="grow"><h1>Import records</h1><p>Add one file per database search. Each import is listed as a source on your PRISMA diagram.</p></div></div>
+    <div class="drop" id="drop"><h3>Drop search exports here</h3><p>RIS, BibTeX (.bib), CSV (Scopus, Publish or Perish, and others), Web of Science plain text, or PubMed (.nbib / .txt).</p><button class="btn primary" id="pickBtn">Choose files</button></div>
+    <div class="card" style="margin-top:18px">
+      <h3 style="margin:0 0 8px">Sources</h3>
+      <div id="srcTable"></div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0;flex:1">Duplicates</h3><span class="muted small" id="dupSum"></span><button class="btn small" id="redupBtn">Check again</button></div>
+      <p class="note" style="margin:6px 0 10px">A record counts as a duplicate when its DOI matches, or its title matches and the years agree. The earliest imported copy is kept. Restore any record that is not really a duplicate.</p>
+      <div id="dupTable"></div>
+    </div>
+  </div></section>
+
+  <!-- TITLE/ABSTRACT + FULL TEXT share layout -->
+  <section class="view" id="v-screen" hidden>
+    <div class="screen">
+      <aside class="slist">
+        <div class="tools">
+          <input type="search" id="sSearch" placeholder="Search titles and authors" aria-label="Search records">
+          <div class="filters" id="sFilters"></div>
+        </div>
+        <div class="items" id="sItems"></div>
+      </aside>
+      <div class="sMain"><div class="sIn">
+        <div class="prog"><span id="sProgTx"></span><div class="bar"><i id="sProgBar"></i></div><button class="btn small ghost" id="kwBtn">Highlight keywords</button></div>
+        <div class="card" id="kwCard" hidden style="margin-bottom:12px"><div class="kwBar">
+          <label>Include terms (green)<input id="kwInc" placeholder="writing, generative AI, ChatGPT"></label>
+          <label>Exclude terms (red)<input id="kwExc" placeholder="protocol, children, medical"></label>
+        </div><p class="note" style="margin-top:8px">Separate terms with commas. Highlighting only helps you read; it never makes a decision.</p></div>
+        <div id="sEmpty" class="empty" hidden></div>
+        <article class="rec" id="rec">
+          <span class="badge" id="recBadge" hidden></span>
+          <div class="meta" id="recMeta"></div>
+          <h2 id="recTitle"></h2>
+          <div class="abs" id="recAbs"></div>
+          <div class="links" id="recLinks"></div>
+          <div class="decide" id="decide"></div>
+          <div class="reasons" id="reasons" hidden></div>
+          <div class="noteRow"><input id="recNote" placeholder="Note (optional)" aria-label="Note for this record"></div>
+        </article>
+        <div class="navRow"><button class="btn" id="prevBtn">← Previous</button><span class="hint" id="sHint"></span><button class="btn primary" id="nextBtn">Next →</button></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- EXTRACT -->
+  <section class="view" id="v-extract" hidden>
+    <div class="screen">
+      <aside class="slist"><div class="tools"><div class="seg" role="radiogroup"><label><input type="radio" name="exMode" value="form" checked>Form</label><label><input type="radio" name="exMode" value="table">Table</label></div><button class="btn small" id="tplBtn">Edit template</button></div><div class="items" id="exItems"></div></aside>
+      <div class="sMain"><div class="sIn" id="exMain"></div></div>
+    </div>
+  </section>
+
+  <!-- APPRAISE -->
+  <section class="view" id="v-appraise" hidden>
+    <div class="screen">
+      <aside class="slist"><div class="tools"><button class="btn small" id="qaSetBtn">Appraisal settings</button></div><div class="items" id="qaItems"></div></aside>
+      <div class="sMain"><div class="sIn" id="qaMain"></div></div>
+    </div>
+  </section>
+
+  <!-- PRISMA -->
+  <section class="view" id="v-prisma" hidden><div class="wrap">
+    <div class="vHead"><div class="grow"><h1>PRISMA 2020 flow diagram</h1><p>Built from your sources and decisions. It updates as you screen.</p></div>
+      <button class="btn" id="svgBtn">Download SVG</button><button class="btn primary" id="pngBtn">Download PNG</button></div>
+    <div class="prismaWrap"><div id="prismaHost"></div></div>
+    <p class="note" style="margin-top:10px">Records marked "Maybe" at title and abstract screening move on to full-text review. Each included study is counted as one report. Check the counts against your own records before publishing.</p>
+  </div></section>
+</div>
+
+<input type="file" id="fileIn" accept=".ris,.bib,.csv,.txt,.nbib,.xlsx" multiple hidden>
+<input type="file" id="projIn" accept=".json,application/json" hidden>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="srcDlg"><form method="dialog" id="srcForm">
+  <div class="dlgHead"><h2>Add a source</h2><p id="srcWhat"></p></div>
+  <div class="dlgBody">
+    <label class="fld">Database or source name<input id="srcName" placeholder="Scopus"></label>
+    <div class="fld">Type<span class="seg"><label><input type="radio" name="srcKind" value="database" checked>Database or register</label><label><input type="radio" name="srcKind" value="other">Other method</label></span><span class="hint">Other methods are citation searching, websites, or experts. PRISMA shows them in a separate column.</span></div>
+    <div class="grid2"><label class="fld">Search date<input type="date" id="srcDate"></label><label class="fld">Search string (optional)<input id="srcQuery"></label></div>
+    <p class="err" id="srcErr"></p>
+  </div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Add records</button></div>
+</form></dialog>
+
+<dialog id="tplDlg" class="wide"><form method="dialog" id="tplForm">
+  <div class="dlgHead"><h2>Extraction template</h2><p>Every included study gets one row with these fields. Drag to reorder. Choice fields take options separated by commas.</p></div>
+  <div class="dlgBody"><div id="tplRows"></div></div>
+  <div class="dlgFoot"><button type="button" class="btn left" id="tplAdd">Add field</button><button type="button" class="btn" id="tplReset">Reset to standard</button><button class="btn primary" value="ok">Done</button></div>
+</form></dialog>
+
+<dialog id="qaDlg"><form method="dialog" id="qaForm">
+  <div class="dlgHead"><h2>Quality appraisal</h2><p>Optional. Turn it on if your review appraises study quality or risk of bias.</p></div>
+  <div class="dlgBody">
+    <label class="chk"><input type="checkbox" id="qaOn"><span>Appraise included studies</span></label>
+    <div class="fld">Checklist<span class="seg"><label><input type="radio" name="qaTool" value="mmat" checked>MMAT 2018</label><label><input type="radio" name="qaTool" value="custom">My own checklist</label></span></div>
+    <p class="note" id="qaMmatNote">The MMAT items here are short reminders of each criterion. Use them with the official MMAT 2018 user guide (Hong et al., 2018), which gives the full criteria and explains how to judge them. MMAT advises against an overall score.</p>
+    <label class="fld" id="qaCustomWrap">Checklist items, one per line<textarea id="qaCustom" rows="7" placeholder="Clear research question&#10;Appropriate sampling&#10;Valid measures&#10;Findings supported by data"></textarea></label>
+  </div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Save</button></div>
+</form></dialog>
+
+<dialog id="exportDlg"><form method="dialog" id="exportForm">
+  <div class="dlgHead"><h2>Export</h2><p>One Excel workbook with every record and decision, your extraction table, appraisal, PRISMA counts, and sources.</p></div>
+  <div class="dlgBody">
+    <label class="chk"><input type="checkbox" id="exAll" checked><span>Include every record<small>Off keeps only records that reached full-text review.</small></span></label>
+    <p class="note">For the diagram itself, use Download SVG or PNG on the PRISMA page.</p>
+  </div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Export Excel</button></div>
+</form></dialog>
+
+<dialog id="askDlg"><form method="dialog">
+  <div class="dlgHead"><h2 id="askTitle"></h2><p id="askHint"></p></div>
+  <div class="dlgBody"><label class="fld"><span id="askLabel"></span><input id="askInput"></label></div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok" id="askOk">Save</button></div>
+</form></dialog>
+<dialog id="confirmDlg"><form method="dialog">
+  <div class="dlgHead"><h2 id="cfTitle"></h2><p id="cfBody"></p></div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok" id="cfOk">Continue</button></div>
+</form></dialog>
+<dialog id="keysDlg"><form method="dialog">
+  <div class="dlgHead"><h2>Keyboard shortcuts</h2></div>
+  <div class="dlgBody"><table class="tbl"><tbody>
+    <tr><td><b>I</b> · <b>E</b> · <b>M</b></td><td>Include, exclude, or maybe (title and abstract)</td></tr>
+    <tr><td><b>I</b> · <b>E</b> · <b>R</b></td><td>Include, exclude, or not retrieved (full text)</td></tr>
+    <tr><td><b>1</b> to <b>9</b></td><td>Pick an exclusion reason at full text</td></tr>
+    <tr><td><b>→</b> · <b>←</b></td><td>Next or previous record</td></tr>
+    <tr><td><b>N</b></td><td>Write a note</td></tr>
+    <tr><td><b>U</b></td><td>Clear the decision on this record</td></tr>
+    <tr><td><b>Ctrl</b> <b>Z</b></td><td>Undo</td></tr>
+  </tbody></table></div>
+  <div class="dlgFoot"><button class="btn primary" value="ok">Close</button></div>
+</form></dialog>
+
+<script>
+(function(){
+'use strict';
+const VERSION = '0.1';
+const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Review Kit feedback (v' + VERSION + ')');
+const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'] };
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
+const today = () => new Date().toISOString().slice(0,10);
+const safeName = s => (s || 'review').replace(/[\\/:*?"<>|]+/g,' ').trim().slice(0,80) || 'review';
+
+/* ---------- defaults ---------- */
+const STD_TEMPLATE = () => [
+  ['Country','short'],['Setting or context','short'],['Aim or research questions','long'],['Study design','choice','Qualitative, Quantitative non-randomized, Randomized controlled trial, Quantitative descriptive, Mixed methods, Review, Other'],
+  ['Sample size','number'],['Participants','long'],['Intervention or exposure','long'],['Comparison','short'],['Outcomes and measures','long'],['Key findings','long'],['Limitations','long'],['Notes','long']
+].map(([label, type, opts]) => ({ id:uid(), label, type, options: opts ? opts.split(',').map(s => s.trim()) : [] }));
+const STD_REASONS = ['Wrong population','Wrong intervention or exposure','Wrong outcome','Wrong study design','Wrong publication type','Not in an eligible language','Duplicate report','Full text not about the topic'];
+const MMAT = {
+  S:{ name:'Screening questions', items:[['S1','Clear research questions'],['S2','Data allow the questions to be addressed']] },
+  '1':{ name:'Qualitative', items:[['1.1','Approach suits the question'],['1.2','Data collection adequate'],['1.3','Findings derived from the data'],['1.4','Interpretation supported by the data'],['1.5','Coherence of data, analysis, and interpretation']] },
+  '2':{ name:'Quantitative randomized controlled trial', items:[['2.1','Randomization appropriate'],['2.2','Groups comparable at baseline'],['2.3','Outcome data complete'],['2.4','Outcome assessors blinded'],['2.5','Adherence to assigned intervention']] },
+  '3':{ name:'Quantitative non-randomized', items:[['3.1','Participants represent the target population'],['3.2','Measurements appropriate'],['3.3','Outcome data complete'],['3.4','Confounders accounted for'],['3.5','Intervention delivered as intended']] },
+  '4':{ name:'Quantitative descriptive', items:[['4.1','Sampling strategy relevant'],['4.2','Sample represents the population'],['4.3','Measurements appropriate'],['4.4','Risk of nonresponse bias low'],['4.5','Statistical analysis appropriate']] },
+  '5':{ name:'Mixed methods', items:[['5.1','Rationale for mixed methods'],['5.2','Components effectively integrated'],['5.3','Integrated outputs interpreted'],['5.4','Divergences addressed'],['5.5','Each component meets its quality criteria']] },
+};
+const blank = () => ({ v:1, name:'Untitled review', batches:[], records:[], reasons:STD_REASONS.slice(), template:STD_TEMPLATE(), qa:{ on:false, tool:'mmat', custom:[] }, kw:{ inc:'', exc:'' }, cur:{ ta:null, ft:null, ex:null, qa:null }, savedAt:0 });
+function normalize(o){
+  const s = Object.assign(blank(), o);
+  for (const k of ['batches','records','reasons','template']) if (!Array.isArray(s[k])) s[k] = blank()[k];
+  s.qa = Object.assign({ on:false, tool:'mmat', custom:[] }, s.qa || {}); s.kw = Object.assign({ inc:'', exc:'' }, s.kw || {}); s.cur = Object.assign({ ta:null, ft:null, ex:null, qa:null }, s.cur || {});
+  s.records.forEach(r => { r.ex = r.ex || {}; r.qa = r.qa || {}; });
+  return s;
+}
+
+/* ---------- storage (IndexedDB, falls back to memory) ---------- */
+function idbOpen(){ return new Promise((res, rej) => { const r = indexedDB.open('review-kit', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function kvGet(k){ try { const db = await idbOpen(); return await new Promise(res => { const q = db.transaction('kv').objectStore('kv').get(k); q.onsuccess = () => res(q.result ?? null); q.onerror = () => res(null); }); } catch(e){ return null; } }
+async function kvSet(k, v){ const db = await idbOpen(); await new Promise((res, rej) => { const tx = db.transaction('kv','readwrite'); v === undefined ? tx.objectStore('kv').delete(k) : tx.objectStore('kv').put(v, k); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); }
+let S = blank();
+const UI = { view:null, step:'import', filter:{ ta:'todo', ft:'todo' }, q:'', exMode:'form', lastRec:null, kwOpen:false };
+const undoStack = [];
+let saveTimer = null;
+const projectJSON = () => JSON.stringify(Object.assign({ app:'review-kit', appVersion:VERSION }, S));
+function persist(){ clearTimeout(saveTimer); saveTimer = setTimeout(flush, 400); }
+async function flush(){
+  S.savedAt = Date.now();
+  try { await kvSet('project', JSON.parse(JSON.stringify(S))); setSave(true); } catch(e){ setSave(false); }
+  if (FS.handle && FS.state === 'on') writeLinked();
+}
+function pushUndo(){ undoStack.push(JSON.stringify(S)); if (undoStack.length > 30) undoStack.shift(); }
+function mutate(fn){ pushUndo(); const r = fn(); persist(); render(); return r; }
+function undo(){ if (!undoStack.length){ toast('Nothing to undo'); return; } S = normalize(JSON.parse(undoStack.pop())); persist(); render(); toast('Undone'); }
+
+/* ---------- linked file ---------- */
+const FS = { handle:null, name:'', state:'off' };
+const fsOK = () => typeof window.showSaveFilePicker === 'function';
+const FT = [{ description:'Review Kit file', accept:{ 'application/json':['.json'] } }];
+function setSave(ok){
+  const el = $('#saveState'), tx = $('#saveText');
+  el.classList.toggle('bad', !ok);
+  if (FS.handle && FS.state === 'needs'){ tx.innerHTML = `Autosave file paused <button type="button" id="relinkBtn">Reconnect ${esc(FS.name)}</button>`; return; }
+  tx.textContent = !ok ? 'Could not save in this browser. Save a review file.' : (FS.handle && FS.state === 'on') ? 'Autosaving to ' + FS.name : 'Saved in this browser';
+}
+let writing = null;
+async function writeLinked(){
+  if (!FS.handle) return; if (writing){ writing.again = true; return; } writing = { again:false };
+  try { const w = await FS.handle.createWritable(); await w.write(projectJSON()); await w.close(); FS.state = 'on'; setSave(true); }
+  catch(e){ FS.state = (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) ? 'needs' : 'on'; setSave(e && FS.state === 'needs'); }
+  const a = writing.again; writing = null; if (a) writeLinked();
+}
+async function linkNew(){
+  if (!fsOK()){ toast('Autosaving to a file works in Chrome and Edge. Here, use Save review file.'); return; }
+  try { const h = await window.showSaveFilePicker({ suggestedName: safeName(S.name) + '.json', types: FT }); FS.handle = h; FS.name = h.name; FS.state = 'on'; await kvSet('link', h); await writeLinked(); renderTop(); toast('Autosaving to ' + h.name); }
+  catch(e){ if (e && e.name !== 'AbortError') toast('Could not link that file.'); }
+}
+async function linkOpen(){
+  if (!fsOK()){ toast('Autosaving to a file works in Chrome and Edge. Here, use Open review file.'); return; }
+  try {
+    const [h] = await window.showOpenFilePicker({ types: FT });
+    const o = parseProject(await (await h.getFile()).text()); if (!o){ toast('That is not a Review Kit file.'); return; }
+    if (S.records.length && !(await confirmBox({ title:`Open "${o.name || h.name}"?`, body:'It replaces the review in this browser and keeps autosaving to that file.', ok:'Open and autosave' }))) return;
+    if ((await h.queryPermission({ mode:'readwrite' })) !== 'granted') await h.requestPermission({ mode:'readwrite' });
+    FS.handle = h; FS.name = h.name; FS.state = 'on'; await kvSet('link', h);
+    mutate(() => { S = normalize(o); }); go(firstStep()); toast('Opened ' + h.name);
+  } catch(e){ if (e && e.name !== 'AbortError') toast('Could not open that file.'); }
+}
+async function relink(){
+  try {
+    if ((await FS.handle.requestPermission({ mode:'readwrite' })) !== 'granted') return;
+    const o = parseProject(await (await FS.handle.getFile()).text());
+    if (o && (o.savedAt||0) > (S.savedAt||0) + 2000 && await confirmBox({ title:'The file has newer work', body:`${FS.name} was saved more recently, probably on another computer. Load it?`, ok:'Load newer version' })){ FS.state = 'on'; mutate(() => { S = normalize(o); }); toast('Loaded ' + FS.name); return; }
+    FS.state = 'on'; await writeLinked(); toast('Autosaving to ' + FS.name + ' again.');
+  } catch(e){ toast('Could not reconnect the file.'); }
+}
+async function unlink(){ FS.handle = null; FS.name = ''; FS.state = 'off'; try { await kvSet('link', undefined); } catch(e){} renderTop(); setSave(true); toast('Stopped autosaving to the file.'); }
+document.addEventListener('click', e => { if (e.target.id === 'relinkBtn') relink(); });
+
+/* ---------- small UI helpers ---------- */
+let toastT; function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800); }
+$$('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close('cancel')));
+function ask({ title, label, value='', ok='Save', hint='' }){ return new Promise(res => { const d = $('#askDlg'); $('#askTitle').textContent = title; $('#askLabel').textContent = label; $('#askHint').textContent = hint; $('#askOk').textContent = ok; const i = $('#askInput'); i.value = value; d.returnValue = ''; d.showModal(); i.select(); d.onclose = () => res(d.returnValue === 'ok' ? i.value.trim() : null); }); }
+function confirmBox({ title, body='', ok='Continue' }){ return new Promise(res => { const d = $('#confirmDlg'); $('#cfTitle').textContent = title; $('#cfBody').textContent = body; $('#cfOk').textContent = ok; d.returnValue = ''; d.showModal(); d.onclose = () => res(d.returnValue === 'ok'); }); }
+const loaded = {};
+function loadScript(key){
+  if (key === 'xlsx' && window.XLSX) return Promise.resolve();
+  const one = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => { s.remove(); rej(new Error('load ' + src)); }; document.head.appendChild(s); });
+  if (!loaded[key]) loaded[key] = VENDOR[key].reduce((p, src) => p.catch(() => one(src)), Promise.reject()).catch(e => { loaded[key] = null; throw e; });
+  return loaded[key];
+}
+const downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null);
+async function saveFile(filename, blob){
+  const d = await downloadsP;
+  if (d){ try { await d.save({ filename, data: blob }); toast('Saved ' + filename); } catch(e){ if (!e || e.code !== 'declined') toast('Saving files is not available here.'); } return; }
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); toast('Saved ' + filename);
+}
+function parseProject(txt){ let o; try { o = JSON.parse(txt); } catch(e){ return null; } if (!o || !Array.isArray(o.records) || !Array.isArray(o.batches)) return null; delete o.app; delete o.appVersion; return o; }
+
+/* ---------- parsers ---------- */
+const clean = s => String(s ?? '').replace(/\s+/g,' ').trim();
+function rec(o){ return { id:uid(), batchId:null, title:clean(o.title), authors:clean(o.authors), year:clean(o.year).match(/\d{4}/)?.[0] || '', journal:clean(o.journal), abstract:String(o.abstract || '').trim(), doi:clean(o.doi).replace(/^https?:\/\/(dx\.)?doi\.org\//i,'').toLowerCase(), url:clean(o.url), keywords:clean(o.keywords), dup:null, ta:null, taNote:'', ft:null, ftReason:'', ftNote:'', ex:{}, qa:{} }; }
+function parseTagged(text, kind){
+  // RIS ("TY  - "), PubMed MEDLINE ("PMID- "), Web of Science ("PT J" ... "ER")
+  const out = []; let cur = null, last = null;
+  const lines = text.replace(/\r\n?/g,'\n').split('\n');
+  const push = () => { if (cur && (cur.TI || cur.T1 || cur.title)) out.push(cur); cur = null; };
+  for (const ln of lines){
+    let m;
+    if (kind === 'wos'){
+      if (/^ER\s*$/.test(ln)){ push(); last = null; continue; }
+      m = ln.match(/^([A-Z][A-Z0-9])\s(.*)$/);
+      if (m && m[1] !== 'EF'){ if (m[1] === 'PT') cur = {}; if (!cur) cur = {}; last = m[1]; (cur[last] = cur[last] || []).push(m[2]); continue; }
+      if (/^\s{3}\S/.test(ln) && cur && last){ cur[last].push(ln.trim()); continue; }
+      continue;
+    }
+    m = ln.match(/^([A-Z][A-Z0-9]{1,3})\s{0,3}-\s?(.*)$/);
+    if (m){
+      const tag = m[1], val = m[2];
+      if (kind === 'ris' && tag === 'TY'){ push(); cur = {}; last = null; continue; }
+      if (kind === 'ris' && tag === 'ER'){ push(); last = null; continue; }
+      if (kind === 'medline' && tag === 'PMID'){ push(); cur = {}; }
+      if (!cur) cur = {};
+      last = tag; (cur[tag] = cur[tag] || []).push(val); continue;
+    }
+    if (cur && last && /^\s{2,}\S/.test(ln)){ const a = cur[last]; a[a.length-1] += ' ' + ln.trim(); }
+    else if (!ln.trim() && kind === 'medline'){ last = null; }
+  }
+  push();
+  const f = (o, ...keys) => { for (const k of keys) if (o[k] && o[k].length) return o[k]; return null; };
+  return out.map(o => {
+    if (kind === 'wos') return rec({ title:(o.TI||[]).join(' '), authors:(o.AU||[]).join('; '), year:(o.PY||[''])[0], journal:(o.SO||[]).join(' '), abstract:(o.AB||[]).join(' '), doi:(o.DI||[''])[0], keywords:[...(o.DE||[]),...(o.ID||[])].join(' ') });
+    if (kind === 'medline'){ const doi = (o.AID||o.LID||[]).find(x => /\[doi\]/.test(x)) || ''; return rec({ title:(o.TI||[]).join(' '), authors:(o.FAU||o.AU||[]).join('; '), year:(o.DP||[''])[0], journal:(o.JT||o.TA||[''])[0], abstract:(o.AB||[]).join(' '), doi:doi.replace(/\s*\[doi\]/,''), url:o.PMID ? 'https://pubmed.ncbi.nlm.nih.gov/' + o.PMID[0].trim() + '/' : '', keywords:(o.MH||o.OT||[]).join('; ') }); }
+    return rec({ title:(f(o,'TI','T1','CT','BT')||[''])[0], authors:(f(o,'AU','A1','A2')||[]).join('; '), year:(f(o,'PY','Y1','DA','Y2')||[''])[0], journal:(f(o,'T2','JO','JF','JA','J2','SO')||[''])[0], abstract:(f(o,'AB','N2')||[]).join(' '), doi:(f(o,'DO','DI')||[''])[0], url:(f(o,'UR','L1','L2')||[''])[0], keywords:(f(o,'KW')||[]).join('; ') });
+  });
+}
+function parseBib(text){
+  const out = []; let i = 0; const n = text.length;
+  while ((i = text.indexOf('@', i)) !== -1){
+    const m = /^@\s*(\w+)\s*[{(]/.exec(text.slice(i, i + 40)); if (!m){ i++; continue; }
+    const type = m[1].toLowerCase(); let j = i + m[0].length;
+    if (['comment','preamble','string'].includes(type)){ i = j; continue; }
+    let depth = 1, k = j; while (k < n && depth){ const c = text[k]; if (c === '{' || c === '(') depth++; else if (c === '}' || c === ')') depth--; k++; }
+    const body = text.slice(j, k - 1); i = k;
+    const comma = body.indexOf(','); const fieldsTx = comma >= 0 ? body.slice(comma + 1) : '';
+    const fields = {}; let p = 0;
+    while (p < fieldsTx.length){
+      const fm = /\s*([A-Za-z][\w-]*)\s*=\s*/y; fm.lastIndex = p; const r = fm.exec(fieldsTx); if (!r) break;
+      p = fm.lastIndex; let val = '';
+      if (fieldsTx[p] === '{'){ let d = 0, q = p; do { if (fieldsTx[q] === '{') d++; else if (fieldsTx[q] === '}') d--; q++; } while (q < fieldsTx.length && d); val = fieldsTx.slice(p + 1, q - 1); p = q; }
+      else if (fieldsTx[p] === '"'){ let q = p + 1; while (q < fieldsTx.length && !(fieldsTx[q] === '"' && fieldsTx[q-1] !== '\\')) q++; val = fieldsTx.slice(p + 1, q); p = q + 1; }
+      else { const q = fieldsTx.indexOf(',', p); val = fieldsTx.slice(p, q < 0 ? undefined : q); p = q < 0 ? fieldsTx.length : q; }
+      fields[r[1].toLowerCase()] = val.replace(/[{}]/g,'').replace(/\\&/g,'&').trim();
+      const c2 = fieldsTx.indexOf(',', p); p = c2 < 0 ? fieldsTx.length : c2 + 1;
+    }
+    if (fields.title) out.push(rec({ title:fields.title, authors:(fields.author||'').split(/\s+and\s+/i).join('; '), year:fields.year || fields.date || '', journal:fields.journal || fields.booktitle || fields.journaltitle || fields.publisher || '', abstract:fields.abstract || '', doi:fields.doi || '', url:fields.url || '', keywords:fields.keywords || '' }));
+  }
+  return out;
+}
+const CSVH = { title:['title','article title','document title','ti'], authors:['authors','author','author full names','author names','au'], year:['year','publication year','py','pubyear','date'], journal:['source title','journal','source','publication title','journal title','so','secondary title'], abstract:['abstract','ab'], doi:['doi','di'], url:['url','link','articleurl','article url'], keywords:['author keywords','keywords','index keywords','de'] };
+async function parseSheet(buf){
+  await loadScript('xlsx');
+  const wb = window.XLSX.read(buf, { type:'array' }); const ws = wb.Sheets[wb.SheetNames[0]];
+  const rows = window.XLSX.utils.sheet_to_json(ws, { header:1, defval:'', raw:false });
+  if (!rows.length) return [];
+  const hdr = rows[0].map(h => String(h).trim().toLowerCase().replace(/^﻿/,''));
+  const col = k => hdr.findIndex(h => CSVH[k].includes(h));
+  const c = {}; Object.keys(CSVH).forEach(k => c[k] = col(k));
+  if (c.title < 0) throw new Error('No Title column found in that file.');
+  return rows.slice(1).filter(r => String(r[c.title]||'').trim()).map(r => rec(Object.fromEntries(Object.keys(CSVH).map(k => [k, c[k] >= 0 ? r[c[k]] : '']))));
+}
+async function parseFile(f){
+  const ext = f.name.split('.').pop().toLowerCase();
+  if (ext === 'csv' || ext === 'xlsx') return parseSheet(await f.arrayBuffer());
+  const text = new TextDecoder('utf-8').decode(await f.arrayBuffer()).replace(/^﻿/,'');
+  if (ext === 'bib' || /^\s*@\w+\s*[{(]/m.test(text.slice(0, 2000))) return parseBib(text);
+  if (/^PMID-\s?\d/m.test(text)) return parseTagged(text, 'medline');
+  if (/^(FN |PT [JBSP]\s*$)/m.test(text)) return parseTagged(text, 'wos');
+  if (/^TY\s{2}-/m.test(text)) return parseTagged(text, 'ris');
+  throw new Error('Could not recognize ' + f.name + '. Export as RIS, BibTeX, or CSV.');
+}
+
+/* ---------- import flow ---------- */
+let pending = null;
+async function importFiles(files){
+  for (const f of files){
+    let rs; try { rs = await parseFile(f); } catch(e){ toast(e.message || 'Could not read ' + f.name); continue; }
+    if (!rs.length){ toast('No records found in ' + f.name); continue; }
+    pending = rs; const guess = /scopus/i.test(f.name) ? 'Scopus' : /wos|savedrecs|web.?of.?sci/i.test(f.name) ? 'Web of Science' : /pubmed|nbib/i.test(f.name) ? 'PubMed' : /eric/i.test(f.name) ? 'ERIC' : /scholar|pop/i.test(f.name) ? 'Google Scholar' : f.name.replace(/\.[^.]+$/,'');
+    $('#srcWhat').textContent = `${rs.length} records found in ${f.name}.`; $('#srcName').value = guess; $('#srcDate').value = today(); $('#srcQuery').value = ''; $('#srcErr').textContent = '';
+    $$('input[name=srcKind]')[0].checked = true;
+    await new Promise(res => { const d = $('#srcDlg'); d.returnValue = ''; d.showModal(); d.onclose = res; });
+  }
+}
+$('#srcForm').addEventListener('submit', e => {
+  if (e.submitter && e.submitter.value !== 'ok') return;
+  const name = $('#srcName').value.trim(); if (!name){ e.preventDefault(); $('#srcErr').textContent = 'Name the source, for example Scopus.'; return; }
+  const rs = pending; pending = null;
+  mutate(() => {
+    const b = { id:uid(), name, kind: $('input[name=srcKind]:checked').value, date: $('#srcDate').value, query: $('#srcQuery').value.trim(), count: rs.length };
+    rs.forEach(r => r.batchId = b.id); S.batches.push(b); S.records.push(...rs); dedupe(false);
+  });
+  const d = S.records.filter(r => r.dup).length;
+  toast(`Added ${rs.length} records from ${name}. ${d} duplicate${d===1?'':'s'} in the review so far.`);
+});
+const normT = s => s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/<[^>]+>/g,'').replace(/[^a-z0-9぀-ヿ㐀-鿿]+/g,'');
+function dedupe(reset){
+  const byDoi = new Map(), byT = new Map();
+  S.records.forEach(r => {
+    if (r.dupKeep) return; if (reset) r.dup = null; if (r.dup) return;
+    const t = normT(r.title); let hit = null;
+    if (r.doi && byDoi.has(r.doi)) hit = byDoi.get(r.doi);
+    else if (t.length > 12 && byT.has(t)){ const o = byT.get(t); if (!r.year || !o.year || r.year === o.year) hit = o; }
+    if (hit && hit.id !== r.id){ r.dup = hit.id; return; }
+    if (r.doi) byDoi.set(r.doi, r); if (t.length > 12 && !byT.has(t)) byT.set(t, r);
+  });
+}
+const live = () => S.records.filter(r => !r.dup);
+const byId = id => S.records.find(r => r.id === id);
+const batch = id => S.batches.find(b => b.id === id);
+
+/* ---------- pools ---------- */
+const POOL = {
+  ta: () => live(),
+  ft: () => live().filter(r => r.ta === 'include' || r.ta === 'maybe'),
+  ex: () => live().filter(r => (r.ta === 'include' || r.ta === 'maybe') && r.ft === 'include'),
+};
+const baseId = r => { const first = (r.authors.split(';')[0] || '').trim(); const last = /,/.test(first) ? first.split(',')[0].trim() : (first.split(/\s+/).pop() || ''); return `${last || 'Unknown'} ${r.year || 'n.d.'}`; };
+const studyId = r => { const b = baseId(r); const same = S.records.filter(x => !x.dup && baseId(x) === b); return same.length > 1 ? b + String.fromCharCode(97 + same.indexOf(r)) : b; };
+
+/* ---------- views + steps ---------- */
+const STEPS = [['import','Import'],['ta','Title & abstract'],['ft','Full text'],['ex','Extract'],['qa','Appraise'],['prisma','PRISMA']];
+function firstStep(){ if (!S.records.length) return 'import'; if (POOL.ta().some(r => !r.ta)) return 'ta'; if (POOL.ft().some(r => !r.ft)) return 'ft'; return 'ex'; }
+function showWelcome(){ UI.view = 'welcome'; $('#welcome').hidden = false; $('#views').hidden = true; renderTop(); startAnim(); }
+function go(step){
+  UI.view = 'app'; UI.step = step; stopAnim();
+  $('#welcome').hidden = true; $('#views').hidden = false;
+  render();
+}
+function renderTop(){
+  const inApp = UI.view === 'app';
+  $('#projName').hidden = !inApp; $('#saveState').hidden = !inApp; $('#undoBtn').hidden = !inApp; $('#exportBtn').hidden = !inApp; $('#steps').hidden = !inApp;
+  $('#unlinkItem').hidden = !FS.handle;
+  $('#alphaBar').hidden = !inApp || sessionStorage.getItem('rk-alpha-off') === '1';
+  const pn = $('#projName'); if (document.activeElement !== pn) pn.value = S.name; pn.style.width = Math.max(8, Math.min(30, pn.value.length + 2)) + 'ch';
+  $('#undoBtn').disabled = !undoStack.length;
+}
+function renderSteps(){
+  const c = {
+    import: S.records.length ? `${live().length}` : '',
+    ta: POOL.ta().length ? `${POOL.ta().filter(r => r.ta).length}/${POOL.ta().length}` : '',
+    ft: POOL.ft().length ? `${POOL.ft().filter(r => r.ft).length}/${POOL.ft().length}` : '',
+    ex: POOL.ex().length ? `${POOL.ex().filter(exDone).length}/${POOL.ex().length}` : '',
+    qa: S.qa.on && POOL.ex().length ? `${POOL.ex().filter(qaDone).length}/${POOL.ex().length}` : (S.qa.on ? '' : 'off'),
+    prisma:''
+  };
+  const done = { import: S.records.length > 0, ta: POOL.ta().length && POOL.ta().every(r => r.ta), ft: POOL.ft().length && POOL.ft().every(r => r.ft), ex: POOL.ex().length && POOL.ex().every(exDone), qa: S.qa.on && POOL.ex().length && POOL.ex().every(qaDone) };
+  $('#steps').innerHTML = STEPS.map(([k, l], i) => `<button data-step="${k}" ${UI.step === k ? 'aria-current="page"' : ''} class="${done[k] ? 'done' : ''}"><span class="n">${done[k] ? '✓' : i + 1}</span>${l}${c[k] ? ` <span class="cnt">${c[k]}</span>` : ''}</button>`).join('');
+}
+$('#steps').addEventListener('click', e => { const b = e.target.closest('[data-step]'); if (b) go(b.dataset.step); });
+function render(){
+  renderTop(); if (UI.view !== 'app') return;
+  renderSteps();
+  const v = { import:'v-import', ta:'v-screen', ft:'v-screen', ex:'v-extract', qa:'v-appraise', prisma:'v-prisma' }[UI.step];
+  $$('.view').forEach(x => x.hidden = x.id !== v);
+  if (UI.step === 'import') renderImport();
+  else if (UI.step === 'ta' || UI.step === 'ft') renderScreen();
+  else if (UI.step === 'ex') renderExtract();
+  else if (UI.step === 'qa') renderQA();
+  else if (UI.step === 'prisma') renderPrisma();
+}
+
+/* ---------- import view ---------- */
+function renderImport(){
+  const counts = new Map(); S.records.forEach(r => counts.set(r.batchId, (counts.get(r.batchId)||0) + 1));
+  $('#srcTable').innerHTML = S.batches.length ? `<table class="tbl"><thead><tr><th>Source</th><th>Type</th><th>Date</th><th>Records</th><th>Search string</th><th></th></tr></thead><tbody>${S.batches.map(b => `<tr data-b="${b.id}"><td><b>${esc(b.name)}</b></td><td>${b.kind === 'other' ? 'Other method' : 'Database'}</td><td>${esc(b.date)}</td><td>${counts.get(b.id)||0}</td><td class="muted small">${esc(b.query)}</td><td><button class="btn small ghost danger" data-rmb="${b.id}">Remove</button></td></tr>`).join('')}</tbody></table>` : '<p class="muted">No sources yet. Add your first search export above.</p>';
+  const dups = S.records.filter(r => r.dup);
+  $('#dupSum').textContent = S.records.length ? `${dups.length} duplicate${dups.length===1?'':'s'} removed · ${live().length} unique records` : '';
+  $('#dupTable').innerHTML = dups.length ? `<table class="tbl"><thead><tr><th>Removed</th><th>Kept</th><th></th></tr></thead><tbody>${dups.slice(0, 300).map(r => { const k = byId(r.dup); return `<tr><td>${esc(r.title)}<div class="muted small">${esc(batch(r.batchId)?.name)} · ${esc(r.year)}</div></td><td>${esc(k?.title)}<div class="muted small">${esc(batch(k?.batchId)?.name)} · ${esc(k?.year)}</div></td><td><button class="btn small" data-keep="${r.id}">Not a duplicate</button></td></tr>`; }).join('')}</tbody></table>${dups.length > 300 ? `<p class="note">Showing 300 of ${dups.length}.</p>` : ''}` : '<p class="muted small">No duplicates found.</p>';
+}
+$('#pickBtn').addEventListener('click', () => $('#fileIn').click());
+$('#fileIn').addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) importFiles(f); });
+const drop = $('#drop');
+['dragenter','dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => { const f = [...(e.dataTransfer?.files || [])]; if (f.length) importFiles(f); });
+$('#v-import').addEventListener('click', async e => {
+  const k = e.target.closest('[data-keep]'); if (k){ mutate(() => { const r = byId(k.dataset.keep); r.dup = null; r.dupKeep = true; }); toast('Restored as a unique record.'); return; }
+  const rb = e.target.closest('[data-rmb]');
+  if (rb){ const b = batch(rb.dataset.rmb); if (await confirmBox({ title:`Remove "${b.name}"?`, body:'Its records and any decisions on them are removed. Undo brings them back.', ok:'Remove source' })) mutate(() => { S.records = S.records.filter(r => r.batchId !== b.id); S.batches = S.batches.filter(x => x.id !== b.id); S.records.forEach(r => { if (r.dup && !byId(r.dup)) r.dup = null; }); dedupe(true); }); }
+});
+$('#redupBtn').addEventListener('click', () => { mutate(() => dedupe(true)); toast('Checked for duplicates again.'); });
+
+/* ---------- screening ---------- */
+const FILTERS = { ta:[['todo','To do'],['all','All'],['include','Included'],['maybe','Maybe'],['exclude','Excluded']], ft:[['todo','To do'],['all','All'],['include','Included'],['exclude','Excluded'],['notRetrieved','Not retrieved']] };
+const LBL = { include:'Included', exclude:'Excluded', maybe:'Maybe', notRetrieved:'Not retrieved' };
+function stageKey(){ return UI.step; }
+function decisionOf(r){ return UI.step === 'ta' ? r.ta : r.ft; }
+function filtered(){
+  const st = stageKey(); const f = UI.filter[st]; const q = UI.q.toLowerCase();
+  return POOL[st]().filter(r => (f === 'all' || (f === 'todo' ? !decisionOf(r) : decisionOf(r) === f)) && (!q || r.title.toLowerCase().includes(q) || r.authors.toLowerCase().includes(q)));
+}
+function curRec(){
+  const st = stageKey(); const pool = POOL[st](); let r = byId(S.cur[st]);
+  if (!r || !pool.includes(r)) r = pool.find(x => !decisionOf(x)) || pool[0] || null;
+  if (r) S.cur[st] = r.id; return r;
+}
+function hl(text){
+  let h = esc(text);
+  const terms = (s, cls) => s.split(',').map(t => t.trim()).filter(t => t.length > 1).sort((a,b) => b.length - a.length).forEach(t => {
+    const re = new RegExp('(' + esc(t).replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    h = h.replace(/(<[^>]+>)|([^<]+)/g, (m, tag, txt) => tag ? tag : txt.replace(re, `<mark${cls ? ' class="x"' : ''}>$1</mark>`));
+  });
+  terms(S.kw.exc, true); terms(S.kw.inc, false);
+  return h;
+}
+function renderScreen(){
+  const st = stageKey(); const pool = POOL[st]();
+  $('#sFilters').innerHTML = FILTERS[st].map(([k, l]) => { const n = k === 'all' ? pool.length : k === 'todo' ? pool.filter(r => !decisionOf(r)).length : pool.filter(r => decisionOf(r) === k).length; return `<button data-f="${k}" aria-pressed="${UI.filter[st] === k}">${l} ${n}</button>`; }).join('');
+  const done = pool.filter(r => decisionOf(r)).length;
+  $('#sProgTx').textContent = pool.length ? `${done} of ${pool.length} screened` : '';
+  $('#sProgBar').style.width = (pool.length ? done / pool.length * 100 : 0) + '%';
+  $('#kwCard').hidden = !UI.kwOpen; $('#kwInc').value = S.kw.inc; $('#kwExc').value = S.kw.exc;
+  const r = curRec();
+  if (!pool.length){
+    $('#rec').hidden = true; $('.navRow').hidden = true; $('#sEmpty').hidden = false; $('#sItems').innerHTML = '';
+    $('#sEmpty').innerHTML = st === 'ta' ? `<h2>No records yet</h2><p>Import search results first.</p><button class="btn primary" data-step-go="import">Go to Import</button>` : `<h2>Nothing to review in full text yet</h2><p>Records you include or mark "Maybe" at title and abstract screening appear here.</p><button class="btn primary" data-step-go="ta">Go to title and abstract</button>`;
+    return;
+  }
+  $('#rec').hidden = false; $('.navRow').hidden = false; $('#sEmpty').hidden = true;
+  const list = filtered(); const ci = list.indexOf(r);
+  const lo = Math.max(0, (ci < 0 ? 0 : ci) - 80), hi = Math.min(list.length, lo + 200);
+  $('#sItems').innerHTML = (lo > 0 ? `<div class="more">${lo} earlier</div>` : '') + list.slice(lo, hi).map(x => `<button class="it${x === r ? ' cur' : ''}" data-r="${x.id}"><span class="st ${decisionOf(x) || ''}"></span><span><span class="t">${esc(x.title)}</span><small>${esc(studyId(x))}${st === 'ft' && x.ftReason ? ' · ' + esc(x.ftReason) : ''}</small></span></button>`).join('') + (hi < list.length ? `<div class="more">${list.length - hi} more</div>` : '') + (list.length ? '' : `<div class="more">No records in this filter.</div>`);
+  const cur = $('#sItems .it.cur'); if (cur) cur.scrollIntoView({ block:'nearest' });
+  if (!r) return;
+  const card = $('#rec'); if (UI.lastRec !== r.id + st){ card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap'); UI.lastRec = r.id + st; }
+  const d = decisionOf(r);
+  const bd = $('#recBadge'); bd.hidden = !d; if (d){ bd.className = 'badge ' + d; bd.textContent = LBL[d] + (st === 'ft' && d === 'exclude' && r.ftReason ? ' · ' + r.ftReason : ''); }
+  $('#recMeta').textContent = [r.authors.split(';').slice(0,4).join(';') + (r.authors.split(';').length > 4 ? '; et al.' : ''), r.year, r.journal, batch(r.batchId)?.name].filter(Boolean).join(' · ');
+  $('#recTitle').innerHTML = hl(r.title);
+  const abs = $('#recAbs'); abs.classList.toggle('none', !r.abstract); abs.innerHTML = r.abstract ? hl(r.abstract) : 'No abstract in the import. Use the DOI or link to check the record.';
+  const links = []; if (r.doi) links.push(`<a href="https://doi.org/${encodeURIComponent(r.doi).replace(/%2F/g,'/')}" target="_blank" rel="noopener">DOI ${esc(r.doi)}</a>`); if (r.url) links.push(`<a href="${esc(r.url)}" target="_blank" rel="noopener">Open link</a>`);
+  links.push(`<a href="https://scholar.google.com/scholar?q=${encodeURIComponent(r.title)}" target="_blank" rel="noopener">Search Google Scholar</a>`);
+  if (st === 'ft' && r.taNote) links.push(`<span class="muted">Title and abstract note: ${esc(r.taNote)}</span>`);
+  $('#recLinks').innerHTML = links.join('');
+  $('#decide').innerHTML = st === 'ta'
+    ? `<button class="exc" data-d="exclude" aria-pressed="${d==='exclude'}">Exclude <kbd>E</kbd></button><button class="may" data-d="maybe" aria-pressed="${d==='maybe'}">Maybe <kbd>M</kbd></button><button class="inc" data-d="include" aria-pressed="${d==='include'}">Include <kbd>I</kbd></button>`
+    : `<button class="exc" data-d="exclude" aria-pressed="${d==='exclude'}">Exclude <kbd>E</kbd></button><button class="may" data-d="notRetrieved" aria-pressed="${d==='notRetrieved'}">Not retrieved <kbd>R</kbd></button><button class="inc" data-d="include" aria-pressed="${d==='include'}">Include <kbd>I</kbd></button>`;
+  const rs = $('#reasons'); rs.hidden = !(st === 'ft' && UI.askReason === r.id || (st === 'ft' && d === 'exclude'));
+  rs.innerHTML = S.reasons.map((x, i) => `<button data-reason="${esc(x)}" aria-pressed="${r.ftReason === x}">${i < 9 ? `<kbd>${i+1}</kbd>` : ''}${esc(x)}</button>`).join('') + `<button data-reason="__new">+ New reason</button>`;
+  const note = $('#recNote'); if (document.activeElement !== note) note.value = st === 'ta' ? r.taNote : r.ftNote;
+  $('#sHint').textContent = st === 'ta' ? 'I include · E exclude · M maybe · → next · ? all shortcuts' : 'I include · E exclude, then 1 to 9 for the reason · R not retrieved';
+}
+function decide(d){
+  const st = stageKey(); const r = curRec(); if (!r) return;
+  const btn = $(`#decide [data-d="${d}"]`); if (btn){ btn.classList.remove('hit'); void btn.offsetWidth; btn.classList.add('hit'); }
+  if (st === 'ft' && d === 'exclude'){
+    UI.askReason = r.id;
+    mutate(() => { r.ft = 'exclude'; });
+    if (!r.ftReason) toast('Pick an exclusion reason: press 1 to 9, or click one.');
+    return;
+  }
+  mutate(() => { if (st === 'ta') r.ta = d; else { r.ft = d; if (d !== 'exclude') r.ftReason = ''; } });
+  const stp = UI.step; setTimeout(() => { if (UI.step === stp) next(1, true); }, 160);
+}
+function setReason(x){
+  const r = curRec(); if (!r || stageKey() !== 'ft') return;
+  mutate(() => { r.ft = 'exclude'; r.ftReason = x; }); UI.askReason = null;
+  setTimeout(() => { if (UI.step === 'ft') next(1, true); }, 160);
+}
+function next(dir, auto){
+  const st = stageKey(); if (!POOL[st]) return; const list = filtered(); const r = curRec(); let i = list.indexOf(r);
+  if (UI.filter[st] === 'todo' && auto){ const nx = list.find(x => x !== r && !decisionOf(x)); if (nx){ S.cur[st] = nx.id; persist(); render(); return; } toast('All records in this stage are screened.'); render(); return; }
+  if (i < 0) i = 0; else i += dir;
+  if (i < 0 || i >= list.length){ if (!auto) toast(dir > 0 ? 'Last record in this list.' : 'First record in this list.'); render(); return; }
+  S.cur[st] = list[i].id; persist(); render();
+}
+$('#decide').addEventListener('click', e => { const b = e.target.closest('[data-d]'); if (b) decide(b.dataset.d); });
+$('#reasons').addEventListener('click', async e => {
+  const b = e.target.closest('[data-reason]'); if (!b) return;
+  if (b.dataset.reason === '__new'){ const n = await ask({ title:'New exclusion reason', label:'Reason', ok:'Add and use' }); if (n){ mutate(() => { if (!S.reasons.includes(n)) S.reasons.push(n); }); setReason(n); } return; }
+  setReason(b.dataset.reason);
+});
+$('#recNote').addEventListener('change', e => { const r = curRec(); if (!r) return; mutate(() => { if (stageKey() === 'ta') r.taNote = e.target.value; else r.ftNote = e.target.value; }); });
+$('#sFilters').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (!b) return; UI.filter[stageKey()] = b.dataset.f; const l = filtered(); if (l.length && !l.includes(curRec())) S.cur[stageKey()] = l[0].id; render(); });
+$('#sItems').addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (!b) return; S.cur[stageKey()] = b.dataset.r; UI.askReason = null; persist(); render(); });
+$('#sSearch').addEventListener('input', e => { UI.q = e.target.value; render(); });
+$('#prevBtn').addEventListener('click', () => next(-1));
+$('#nextBtn').addEventListener('click', () => next(1));
+$('#kwBtn').addEventListener('click', () => { UI.kwOpen = !UI.kwOpen; render(); });
+['kwInc','kwExc'].forEach(id => $('#' + id).addEventListener('change', e => mutate(() => { S.kw[id === 'kwInc' ? 'inc' : 'exc'] = e.target.value; })));
+document.addEventListener('click', e => { const b = e.target.closest('[data-step-go]'); if (b) go(b.dataset.stepGo); });
+
+/* ---------- extraction ---------- */
+const exDone = r => S.template.every(f => String(r.ex[f.id] ?? '').trim() !== '') ;
+const exPct = r => S.template.length ? Math.round(S.template.filter(f => String(r.ex[f.id] ?? '').trim() !== '').length / S.template.length * 100) : 100;
+function renderExtract(){
+  const pool = POOL.ex(); let r = byId(S.cur.ex); if (!r || !pool.includes(r)) r = pool[0] || null; if (r) S.cur.ex = r.id;
+  $('#exItems').innerHTML = pool.map(x => `<button class="it${x === r && UI.exMode === 'form' ? ' cur' : ''}" data-x="${x.id}"><span class="st ${exDone(x) ? 'include' : exPct(x) ? 'maybe' : ''}"></span><span><span class="t">${esc(studyId(x))}</span><small>${esc(x.title.slice(0, 70))}${x.title.length > 70 ? '…' : ''} · ${exPct(x)}%</small></span></button>`).join('') || '<div class="more">Included studies appear here.</div>';
+  const main = $('#exMain');
+  if (!pool.length){ main.innerHTML = `<div class="empty"><h2>No included studies yet</h2><p>Studies you include at full-text review appear here for data extraction.</p><button class="btn primary" data-step-go="ft">Go to full text</button></div>`; return; }
+  if (UI.exMode === 'table'){
+    main.style.maxWidth = 'none';
+    main.innerHTML = `<div class="vHead"><div class="grow"><h1>Extraction table</h1><p>${pool.length} included ${pool.length === 1 ? 'study' : 'studies'}, ${pool.filter(exDone).length} complete. Click a row to edit it.</p></div></div>
+      <div class="tableWrap"><table class="tbl"><thead><tr><th>Study</th><th>Title</th>${S.template.map(f => `<th>${esc(f.label)}</th>`).join('')}</tr></thead><tbody>${pool.map(x => `<tr data-x="${x.id}" style="cursor:pointer"><td><b>${esc(studyId(x))}</b></td><td>${esc(x.title)}</td>${S.template.map(f => `<td>${esc(x.ex[f.id] ?? '')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    return;
+  }
+  main.style.maxWidth = '';
+  const field = f => {
+    const v = r.ex[f.id] ?? '';
+    if (f.type === 'long') return `<label class="fld">${esc(f.label)}<textarea data-fid="${f.id}" rows="3">${esc(v)}</textarea></label>`;
+    if (f.type === 'number') return `<label class="fld">${esc(f.label)}<input type="number" data-fid="${f.id}" value="${esc(v)}"></label>`;
+    if (f.type === 'choice') return `<label class="fld">${esc(f.label)}<select data-fid="${f.id}"><option value=""></option>${f.options.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    if (f.type === 'yesno') return `<div class="fld">${esc(f.label)}<span class="seg">${['Yes','No','Unclear'].map(o => `<label><input type="radio" name="yn-${f.id}" data-fid="${f.id}" value="${o}"${o === v ? ' checked' : ''}>${o}</label>`).join('')}</span></div>`;
+    return `<label class="fld">${esc(f.label)}<input data-fid="${f.id}" value="${esc(v)}"></label>`;
+  };
+  main.innerHTML = `<div class="rec swap"><div class="meta">${esc(r.authors)} · ${esc(r.year)} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
+    <div class="links">${r.doi ? `<a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener">DOI ${esc(r.doi)}</a>` : ''}<span class="muted">Study ID: <b>${esc(studyId(r))}</b></span><span class="muted">${exPct(r)}% complete</span></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><div class="form">${S.template.map(field).join('')}</div></div>
+    <div class="navRow"><button class="btn" data-exnav="-1">← Previous study</button><span class="hint">Changes save as you type.</span><button class="btn primary" data-exnav="1">Next study →</button></div>`;
+}
+$('#exItems').addEventListener('click', e => { const b = e.target.closest('[data-x]'); if (!b) return; S.cur.ex = b.dataset.x; UI.exMode = 'form'; $$('input[name=exMode]').find(i => i.value === 'form').checked = true; persist(); render(); });
+$('#exMain').addEventListener('click', e => {
+  const row = e.target.closest('tr[data-x]'); if (row){ S.cur.ex = row.dataset.x; UI.exMode = 'form'; $$('input[name=exMode]').find(i => i.value === 'form').checked = true; render(); return; }
+  const n = e.target.closest('[data-exnav]'); if (n){ const pool = POOL.ex(); const i = pool.findIndex(x => x.id === S.cur.ex) + (+n.dataset.exnav); if (i >= 0 && i < pool.length){ S.cur.ex = pool[i].id; persist(); render(); $('#exMain').scrollIntoView({ block:'start' }); } else toast(+n.dataset.exnav > 0 ? 'That was the last study.' : 'This is the first study.'); }
+});
+let exTimer = null;
+$('#exMain').addEventListener('input', e => {
+  const fid = e.target.dataset.fid; if (!fid) return; const r = byId(S.cur.ex); if (!r) return;
+  r.ex[fid] = e.target.value; clearTimeout(exTimer); exTimer = setTimeout(() => { pushUndo(); persist(); renderSteps(); const it = $(`#exItems [data-x="${r.id}"] small`); if (it) it.textContent = `${r.title.slice(0,70)}${r.title.length > 70 ? '…' : ''} · ${exPct(r)}%`; }, 400);
+});
+$('#exMain').addEventListener('change', e => { if (e.target.type === 'radio' || e.target.tagName === 'SELECT'){ const r = byId(S.cur.ex); r.ex[e.target.dataset.fid] = e.target.value; persist(); renderSteps(); } });
+$$('input[name=exMode]').forEach(i => i.addEventListener('change', e => { UI.exMode = e.target.value; render(); }));
+
+/* template editor */
+const TYPES = [['short','Short text'],['long','Long text'],['number','Number'],['choice','Choice'],['yesno','Yes / No / Unclear']];
+function renderTpl(){
+  $('#tplRows').innerHTML = S.template.map(f => `<div class="tplRow" draggable="true" data-t="${f.id}"><span class="drag" title="Drag to reorder">⋮⋮</span><input data-k="label" value="${esc(f.label)}" aria-label="Field name"><select data-k="type" aria-label="Field type">${TYPES.map(([v,l]) => `<option value="${v}"${v === f.type ? ' selected' : ''}>${l}</option>`).join('')}</select><input data-k="options" value="${esc(f.options.join(', '))}" placeholder="${f.type === 'choice' ? 'Option A, Option B' : 'Options (choice only)'}"${f.type === 'choice' ? '' : ' disabled'} aria-label="Options"><button type="button" class="btn small ghost danger" data-del="${f.id}" aria-label="Remove field">✕</button></div>`).join('');
+}
+$('#tplBtn').addEventListener('click', () => { renderTpl(); $('#tplDlg').showModal(); });
+$('#tplRows').addEventListener('change', e => {
+  const row = e.target.closest('[data-t]'); const f = S.template.find(x => x.id === row.dataset.t); const k = e.target.dataset.k;
+  mutate(() => { if (k === 'options') f.options = e.target.value.split(',').map(s => s.trim()).filter(Boolean); else f[k] = k === 'label' ? (e.target.value.trim() || f.label) : e.target.value; });
+  renderTpl();
+});
+$('#tplRows').addEventListener('click', async e => {
+  const b = e.target.closest('[data-del]'); if (!b) return; const f = S.template.find(x => x.id === b.dataset.del);
+  const used = POOL.ex().some(r => String(r.ex[f.id] ?? '').trim()); const d = $('#tplDlg');
+  if (used){ d.close(); const ok = await confirmBox({ title:`Remove "${f.label}"?`, body:'Some studies have data in this field. It is removed from them too. Undo brings it back.', ok:'Remove field' }); d.showModal(); if (!ok) return; }
+  mutate(() => { S.template = S.template.filter(x => x.id !== f.id); }); renderTpl();
+});
+let dragId = null;
+$('#tplRows').addEventListener('dragstart', e => { const r = e.target.closest('[data-t]'); dragId = r?.dataset.t; });
+$('#tplRows').addEventListener('dragover', e => e.preventDefault());
+$('#tplRows').addEventListener('drop', e => { e.preventDefault(); const r = e.target.closest('[data-t]'); if (!r || !dragId || r.dataset.t === dragId) return; mutate(() => { const a = S.template.findIndex(x => x.id === dragId); const [m] = S.template.splice(a, 1); const b = S.template.findIndex(x => x.id === r.dataset.t); S.template.splice(b, 0, m); }); renderTpl(); });
+$('#tplAdd').addEventListener('click', () => { mutate(() => S.template.push({ id:uid(), label:'New field', type:'short', options:[] })); renderTpl(); const ins = $$('#tplRows input[data-k=label]'); ins[ins.length - 1].select(); });
+$('#tplReset').addEventListener('click', async () => { const d = $('#tplDlg'); d.close(); if (await confirmBox({ title:'Reset to the standard template?', body:'Your custom fields and the data in them are removed. Undo brings them back.', ok:'Reset template' })) mutate(() => { S.template = STD_TEMPLATE(); }); renderTpl(); d.showModal(); });
+
+/* ---------- appraisal ---------- */
+function qaItemsFor(r){
+  if (S.qa.tool === 'custom') return S.qa.custom.map((l, i) => [String(i + 1), l]);
+  const cat = r.qa.cat; return MMAT.S.items.concat(cat && MMAT[cat] ? MMAT[cat].items : []);
+}
+const qaDone = r => { if (!S.qa.on) return true; if (S.qa.tool === 'mmat' && !r.qa.cat) return false; return qaItemsFor(r).every(([k]) => r.qa[k]); };
+function renderQA(){
+  const pool = POOL.ex(); const main = $('#qaMain');
+  if (!S.qa.on){ $('#qaItems').innerHTML = ''; main.innerHTML = `<div class="empty"><h2>Quality appraisal is off</h2><p>It is optional. Turn it on if your review appraises study quality, using MMAT 2018 or your own checklist.</p><button class="btn primary" id="qaTurnOn">Set up appraisal</button></div>`; return; }
+  let r = byId(S.cur.qa); if (!r || !pool.includes(r)) r = pool[0] || null; if (r) S.cur.qa = r.id;
+  $('#qaItems').innerHTML = pool.map(x => `<button class="it${x === r ? ' cur' : ''}" data-q="${x.id}"><span class="st ${qaDone(x) ? 'include' : ''}"></span><span><span class="t">${esc(studyId(x))}</span><small>${S.qa.tool === 'mmat' ? esc(MMAT[x.qa.cat]?.name || 'No category yet') : ''}</small></span></button>`).join('') || '<div class="more">Included studies appear here.</div>';
+  if (!r){ main.innerHTML = `<div class="empty"><h2>No included studies yet</h2><p>Include studies at full-text review first.</p></div>`; return; }
+  const ans = k => `<span class="seg">${['Yes','No',"Can't tell"].map(o => `<label><input type="radio" name="qa-${k}" data-qk="${k}" value="${o}"${r.qa[k] === o ? ' checked' : ''}>${o}</label>`).join('')}</span>`;
+  main.innerHTML = `<div class="rec swap"><div class="meta">${esc(studyId(r))} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
+    ${S.qa.tool === 'mmat' ? `<label class="fld" style="margin:10px 0">Study category<select id="qaCat"><option value="">Choose a category</option>${['1','2','3','4','5'].map(k => `<option value="${k}"${r.qa.cat === k ? ' selected' : ''}>${k}. ${MMAT[k].name}</option>`).join('')}</select></label>` : ''}
+    ${qaItemsFor(r).map(([k, l]) => `<div class="qaItem"><span class="lab"><b>${esc(k)}</b>${esc(l)}</span>${ans(k)}</div>`).join('')}
+    <label class="fld" style="margin-top:14px">Comments<textarea id="qaNote" rows="3">${esc(r.qa.note || '')}</textarea></label>
+    ${S.qa.tool === 'mmat' ? '<p class="note" style="margin-top:8px">Items are short reminders. Judge each one using the full criteria in the MMAT 2018 user guide.</p>' : ''}</div>
+    <div class="navRow"><button class="btn" data-qnav="-1">← Previous study</button><span class="hint"></span><button class="btn primary" data-qnav="1">Next study →</button></div>`;
+}
+$('#qaItems').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b){ S.cur.qa = b.dataset.q; persist(); render(); } });
+$('#qaMain').addEventListener('change', e => {
+  const r = byId(S.cur.qa); if (!r) return;
+  if (e.target.id === 'qaCat') mutate(() => { r.qa.cat = e.target.value; });
+  else if (e.target.dataset.qk) mutate(() => { r.qa[e.target.dataset.qk] = e.target.value; });
+  else if (e.target.id === 'qaNote') mutate(() => { r.qa.note = e.target.value; });
+});
+$('#qaMain').addEventListener('click', e => {
+  if (e.target.id === 'qaTurnOn') openQASettings();
+  const n = e.target.closest('[data-qnav]'); if (n){ const pool = POOL.ex(); const i = pool.findIndex(x => x.id === S.cur.qa) + (+n.dataset.qnav); if (i >= 0 && i < pool.length){ S.cur.qa = pool[i].id; persist(); render(); } }
+});
+function openQASettings(){
+  $('#qaOn').checked = S.qa.on || true; $$('input[name=qaTool]').forEach(i => i.checked = i.value === S.qa.tool);
+  $('#qaCustom').value = S.qa.custom.join('\n'); syncQA(); $('#qaDlg').showModal();
+}
+function syncQA(){ const t = $('input[name=qaTool]:checked').value; $('#qaCustomWrap').hidden = t !== 'custom'; $('#qaMmatNote').hidden = t !== 'mmat'; }
+$('#qaDlg').addEventListener('change', e => { if (e.target.name === 'qaTool') syncQA(); });
+$('#qaSetBtn').addEventListener('click', openQASettings);
+$('#qaForm').addEventListener('submit', e => {
+  if (e.submitter && e.submitter.value !== 'ok') return;
+  const tool = $('input[name=qaTool]:checked').value; const custom = $('#qaCustom').value.split('\n').map(s => s.trim()).filter(Boolean);
+  if (tool === 'custom' && !custom.length && $('#qaOn').checked){ e.preventDefault(); toast('Add at least one checklist item.'); return; }
+  mutate(() => { S.qa.on = $('#qaOn').checked; S.qa.tool = tool; S.qa.custom = custom; });
+});
+
+/* ---------- PRISMA ---------- */
+function prismaCounts(){
+  const grp = kind => {
+    const recs = S.records.filter(r => (batch(r.batchId)?.kind || 'database') === kind);
+    const lv = recs.filter(r => !r.dup);
+    const toFT = lv.filter(r => r.ta === 'include' || r.ta === 'maybe');
+    const reasons = new Map(); toFT.filter(r => r.ft === 'exclude').forEach(r => { const k = r.ftReason || 'Reason not recorded'; reasons.set(k, (reasons.get(k)||0) + 1); });
+    return {
+      sources: S.batches.filter(b => b.kind === kind).map(b => [b.name, recs.filter(r => r.batchId === b.id).length]),
+      identified: recs.length, dups: recs.length - lv.length, screened: lv.length,
+      taExcluded: lv.filter(r => r.ta === 'exclude').length, taPending: lv.filter(r => !r.ta).length,
+      sought: toFT.length, notRetrieved: toFT.filter(r => r.ft === 'notRetrieved').length,
+      assessed: toFT.filter(r => r.ft !== 'notRetrieved').length, ftExcluded: toFT.filter(r => r.ft === 'exclude').length,
+      ftPending: toFT.filter(r => !r.ft).length, reasons:[...reasons.entries()].sort((a,b) => b[1] - a[1]), included: toFT.filter(r => r.ft === 'include').length,
+    };
+  };
+  const db = grp('database'), ot = grp('other');
+  return { db, ot, included: db.included + ot.included };
+}
+function wrapText(t, max){ const words = String(t).split(' '); const lines = []; let cur = ''; words.forEach(w => { if ((cur + ' ' + w).trim().length > max){ if (cur) lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); }); if (cur) lines.push(cur); return lines; }
+function prismaSVG(){
+  const c = prismaCounts(); const hasOther = c.ot.identified > 0;
+  const W = hasOther ? 1180 : 860, BW = 300, gap = 70;
+  const colL = 120, colR = colL + BW + gap, colO = colR + BW + 80;
+  const ink = '#1A2230', line = '#24557F', head = '#E2EBF4', soft = '#F6F8FA';
+  let y = 20; const parts = [];
+  const box = (x, y0, w, lines, opt={}) => {
+    const lh = 18, padY = 12; const h = Math.max(opt.min || 0, lines.length * lh + padY * 2);
+    parts.push(`<g class="box"><rect x="${x}" y="${y0}" width="${w}" height="${h}" rx="6" fill="${opt.fill || '#fff'}" stroke="${opt.stroke || ink}" stroke-width="1.2"/>` + lines.map((l, i) => `<text x="${x + 12}" y="${y0 + padY + 13 + i * lh}" font-size="13" fill="${ink}"${l.b ? ' font-weight="700"' : ''}>${esc(l.t ?? l)}</text>`).join('') + `</g>`);
+    return h;
+  };
+  const arrow = (x1, y1, x2, y2) => parts.push(`<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${line}" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>`);
+  const sideHead = (label, y0, h) => parts.push(`<g class="box"><rect x="20" y="${y0}" width="34" height="${h}" rx="6" fill="${head}"/><text x="${37}" y="${y0 + h/2}" font-size="13" font-weight="700" fill="${ink}" text-anchor="middle" transform="rotate(-90 37 ${y0 + h/2})">${label}</text></g>`);
+  // titles
+  parts.push(`<g class="box"><rect x="${colL}" y="${y}" width="${BW * 2 + gap}" height="34" rx="6" fill="${head}"/><text x="${colL + (BW * 2 + gap)/2}" y="${y + 22}" font-size="14" font-weight="700" text-anchor="middle" fill="${ink}">Identification of studies via databases and registers</text></g>`);
+  if (hasOther) parts.push(`<g class="box"><rect x="${colO}" y="${y}" width="${BW}" height="34" rx="6" fill="${soft}" stroke="#C3CCD7"/><text x="${colO + BW/2}" y="${y + 22}" font-size="14" font-weight="700" text-anchor="middle" fill="${ink}">Identification via other methods</text></g>`);
+  y += 54;
+  const L = t => ({ t }), B = t => ({ t, b:true });
+  // identification
+  const idTop = y;
+  const idLines = [B(`Records identified from (n = ${c.db.identified}):`), ...c.db.sources.map(([n, k]) => L(`   ${n} (n = ${k})`))];
+  if (!c.db.sources.length) idLines.push(L('   No database sources yet'));
+  const h1 = box(colL, y, BW, idLines.flatMap(l => wrapText(l.t, 40).map((t, i) => ({ t, b: l.b && i === 0 })) ));
+  const remLines = [B('Records removed before screening:'), L(`   Duplicate records (n = ${c.db.dups})`)];
+  const h1b = box(colR, y, BW, remLines);
+  arrow(colL + BW, y + Math.min(h1, h1b)/2, colR, y + Math.min(h1, h1b)/2);
+  let hO1 = 0;
+  if (hasOther){ hO1 = box(colO, y, BW, [B(`Records identified from (n = ${c.ot.identified}):`), ...c.ot.sources.map(([n,k]) => L(`   ${n} (n = ${k})`))]); }
+  const idH = Math.max(h1, h1b, hO1); y += idH + 34;
+  sideHead('Identification', idTop, idH);
+  arrow(colL + BW/2, idTop + h1, colL + BW/2, y);
+  // screening
+  const scTop = y;
+  const h2 = box(colL, y, BW, [L(`Records screened (n = ${c.db.screened})`)], { min:46 });
+  const h2b = box(colR, y, BW, [L(`Records excluded (n = ${c.db.taExcluded})`), ...(c.db.taPending ? [L(`Not yet screened (n = ${c.db.taPending})`)] : [])], { min:46 });
+  arrow(colL + BW, y + 23, colR, y + 23);
+  y += Math.max(h2, h2b) + 30; arrow(colL + BW/2, scTop + h2, colL + BW/2, y);
+  const h3 = box(colL, y, BW, [L(`Reports sought for retrieval (n = ${c.db.sought})`)], { min:46 });
+  const h3b = box(colR, y, BW, [L(`Reports not retrieved (n = ${c.db.notRetrieved})`)], { min:46 });
+  arrow(colL + BW, y + 23, colR, y + 23);
+  let yO = y; let hO2 = 0, hO3 = 0;
+  if (hasOther){ hO2 = box(colO, yO, BW, [L(`Reports sought for retrieval (n = ${c.ot.sought})`)], { min:46 }); arrow(colO + BW/2, idTop + hO1, colO + BW/2, yO); }
+  const s3 = y; y += Math.max(h3, h3b) + 30; arrow(colL + BW/2, s3 + h3, colL + BW/2, y);
+  const reasonLines = c.db.reasons.length ? c.db.reasons.map(([k, n]) => L(`   ${k} (n = ${n})`)) : [];
+  const h4 = box(colL, y, BW, [L(`Reports assessed for eligibility (n = ${c.db.assessed})`), ...(c.db.ftPending ? [L(`Not yet assessed (n = ${c.db.ftPending})`)] : [])], { min:46 });
+  const h4b = box(colR, y, BW, [B(`Reports excluded (n = ${c.db.ftExcluded}):`), ...reasonLines].flatMap(l => wrapText(l.t, 40).map((t, i) => ({ t, b: l.b && i === 0 }))), { min:46 });
+  arrow(colL + BW, y + 23, colR, y + 23);
+  if (hasOther){
+    hO3 = box(colO, s3 + Math.max(h3, h3b) + 30, BW, [L(`Reports not retrieved (n = ${c.ot.notRetrieved})`), L(`Reports assessed (n = ${c.ot.assessed})`), L(`Reports excluded (n = ${c.ot.ftExcluded})`), ...c.ot.reasons.map(([k,n]) => L(`   ${k} (n = ${n})`))].flatMap(l => wrapText(l.t, 40).map(t => ({ t }))));
+    arrow(colO + BW/2, yO + hO2, colO + BW/2, s3 + Math.max(h3, h3b) + 30);
+  }
+  const scH = (y + Math.max(h4, h4b, hasOther ? hO3 : 0)) - scTop;
+  sideHead('Screening', scTop, scH);
+  const s4 = y; y += Math.max(h4, h4b, hasOther ? hO3 : 0) + 34; arrow(colL + BW/2, s4 + h4, colL + BW/2, y);
+  // included
+  const inTop = y;
+  const h5 = box(colL, y, BW, [B(`Studies included in review (n = ${c.included})`), L(`Reports of included studies (n = ${c.included})`)]);
+  if (hasOther){ const oy = s3 + Math.max(h3, h3b) + 30 + hO3; parts.push(`<path d="M${colO + BW/2} ${oy} L${colO + BW/2} ${y + h5/2} L${colL + BW} ${y + h5/2}" stroke="${line}" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>`); }
+  sideHead('Included', inTop, h5);
+  y += h5 + 20;
+  return `<svg id="prismaSvg" xmlns="http://www.w3.org/2000/svg" width="${W}" height="${y}" viewBox="0 0 ${W} ${y}" style="background:#fff;max-width:100%;height:auto"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${line}"/></marker></defs><style>text{font-family:Inter,"Segoe UI",Arial,sans-serif}</style>${parts.join('')}</svg>`;
+}
+function renderPrisma(){ $('#prismaHost').innerHTML = prismaSVG(); }
+$('#svgBtn').addEventListener('click', () => saveFile(`${safeName(S.name)} PRISMA ${today()}.svg`, new Blob([prismaSVG()], { type:'image/svg+xml' })));
+$('#pngBtn').addEventListener('click', () => {
+  const svg = prismaSVG(); const m = svg.match(/width="(\d+)" height="(\d+)"/); const w = +m[1], h = +m[2];
+  const img = new Image(); const url = URL.createObjectURL(new Blob([svg], { type:'image/svg+xml' }));
+  img.onload = () => { const cv = document.createElement('canvas'); cv.width = w * 2; cv.height = h * 2; const g = cv.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, cv.width, cv.height); g.scale(2, 2); g.drawImage(img, 0, 0); URL.revokeObjectURL(url); cv.toBlob(b => saveFile(`${safeName(S.name)} PRISMA ${today()}.png`, b), 'image/png'); };
+  img.onerror = () => toast('Could not draw the PNG. Download the SVG instead.');
+  img.src = url;
+});
+
+/* ---------- export ---------- */
+function buildWorkbookRows(all){
+  const bn = id => batch(id)?.name || '';
+  const recs = all ? S.records : POOL.ft();
+  const sh1 = [['Record ID','Study ID','Source','Title','Authors','Year','Journal','DOI','URL','Duplicate of','Title/abstract decision','Title/abstract note','Full-text decision','Exclusion reason','Full-text note','Abstract']];
+  recs.forEach(r => sh1.push([r.id, studyId(r), bn(r.batchId), r.title, r.authors, r.year, r.journal, r.doi, r.url, r.dup ? (byId(r.dup)?.id || '') : '', r.dup ? '' : (LBL[r.ta] || ''), r.taNote, r.dup ? '' : (LBL[r.ft] || ''), r.ftReason, r.ftNote, r.abstract]));
+  const inc = POOL.ex();
+  const sh2 = [['Study ID','Title','Authors','Year','Journal','DOI', ...S.template.map(f => f.label)]];
+  inc.forEach(r => sh2.push([studyId(r), r.title, r.authors, r.year, r.journal, r.doi, ...S.template.map(f => r.ex[f.id] ?? '')]));
+  let sh3 = null;
+  if (S.qa.on){
+    if (S.qa.tool === 'mmat'){
+      const keys = ['S1','S2','1.1','1.2','1.3','1.4','1.5','2.1','2.2','2.3','2.4','2.5','3.1','3.2','3.3','3.4','3.5','4.1','4.2','4.3','4.4','4.5','5.1','5.2','5.3','5.4','5.5'];
+      sh3 = [['Study ID','Title','MMAT category', ...keys, 'Comments']];
+      inc.forEach(r => sh3.push([studyId(r), r.title, MMAT[r.qa.cat]?.name || '', ...keys.map(k => r.qa[k] || ''), r.qa.note || '']));
+    } else {
+      sh3 = [['Study ID','Title', ...S.qa.custom, 'Comments']];
+      inc.forEach(r => sh3.push([studyId(r), r.title, ...S.qa.custom.map((l, i) => r.qa[String(i + 1)] || ''), r.qa.note || '']));
+    }
+  }
+  const c = prismaCounts();
+  const sh4 = [['PRISMA 2020 item','Databases and registers','Other methods'],
+    ['Records identified', c.db.identified, c.ot.identified], ...S.batches.map(b => ['   ' + b.name, b.kind === 'other' ? '' : S.records.filter(r => r.batchId === b.id).length, b.kind === 'other' ? S.records.filter(r => r.batchId === b.id).length : '']),
+    ['Duplicate records removed', c.db.dups, c.ot.dups], ['Records screened', c.db.screened, c.ot.screened], ['Records excluded', c.db.taExcluded, c.ot.taExcluded], ['Records not yet screened', c.db.taPending, c.ot.taPending],
+    ['Reports sought for retrieval', c.db.sought, c.ot.sought], ['Reports not retrieved', c.db.notRetrieved, c.ot.notRetrieved], ['Reports assessed for eligibility', c.db.assessed, c.ot.assessed], ['Reports excluded', c.db.ftExcluded, c.ot.ftExcluded],
+    ...[...new Set([...c.db.reasons, ...c.ot.reasons].map(x => x[0]))].map(k => ['   ' + k, (c.db.reasons.find(x => x[0] === k) || [0,0])[1], (c.ot.reasons.find(x => x[0] === k) || [0,0])[1]]),
+    ['Studies included in review', c.included, ''], ['Reports of included studies', c.included, '']];
+  const sh5 = [['Source','Type','Search date','Records','Search string'], ...S.batches.map(b => [b.name, b.kind === 'other' ? 'Other method' : 'Database or register', b.date, S.records.filter(r => r.batchId === b.id).length, b.query])];
+  return { sheets: [['Records', sh1, [10,18,14,60,30,6,26,24,24,10,14,24,14,24,24,60]], ['Extraction', sh2, [18,50,30,6,26,22, ...S.template.map(() => 26)]], ...(sh3 ? [['Appraisal', sh3, [18,50,22, ...sh3[0].slice(3).map(() => 10)]]] : []), ['PRISMA counts', sh4, [40,22,16]], ['Sources', sh5, [24,22,12,10,60]]] };
+}
+$('#exportBtn').addEventListener('click', () => { if (!S.records.length){ toast('Import records before exporting.'); return; } $('#exportDlg').showModal(); });
+$('#exportForm').addEventListener('submit', async e => {
+  if (e.submitter && e.submitter.value !== 'ok') return;
+  try { await loadScript('xlsx'); } catch(err){ toast('The spreadsheet helper did not load. Reload the page and try again.'); return; }
+  const X = window.XLSX; const wb = X.utils.book_new();
+  buildWorkbookRows($('#exAll').checked).sheets.forEach(([n, rows, w]) => { const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = w.map(x => ({ wch:x })); X.utils.book_append_sheet(wb, ws, n); });
+  saveFile(`${safeName(S.name)} review ${today()}.xlsx`, new Blob([X.write(wb, { bookType:'xlsx', type:'array' })], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+});
+
+/* ---------- demo (invented records) ---------- */
+function demoReview(){
+  const s = blank(); s.name = 'Demo: GenAI and L2 writing (invented records)';
+  const b1 = { id:uid(), name:'Scopus', kind:'database', date:'2026-11-01', query:'("generative AI" OR ChatGPT) AND ("second language" OR L2 OR EFL) AND writing', count:0 };
+  const b2 = { id:uid(), name:'Web of Science', kind:'database', date:'2026-11-01', query:'TS=(("generative AI" OR ChatGPT) AND (EFL OR L2) AND writing)', count:0 };
+  const b3 = { id:uid(), name:'Citation searching', kind:'other', date:'2026-11-05', query:'Backward citation search of included studies', count:0 };
+  s.batches = [b1, b2, b3];
+  const A = 'This is an invented record for the Review Kit demo. ';
+  const mk = (b, t, au, y, j, ab, doi, ta, ft, why) => { const r = rec({ title:t, authors:au, year:y, journal:j, abstract: A + ab, doi }); r.batchId = b.id; r.ta = ta || null; r.ft = ft || null; r.ftReason = why || ''; return r; };
+  s.records = [
+    mk(b1,'ChatGPT feedback and revision quality in EFL argumentative writing','Demo, A.; Sample, B.',2025,'Demo Journal of Language Learning','We examined how 84 university EFL learners revised essays after receiving ChatGPT feedback. Revision quality improved, but learners accepted most surface edits without checking them.','10.0000/demo.001','include','include'),
+    mk(b1,'Learner perceptions of generative AI in L2 academic writing courses','Example, C.; Placeholder, D.',2024,'Demo Review of Writing','A survey of 312 second language writers explored perceptions of generative AI. Participants valued idea generation but worried about authorship and teacher reactions.','10.0000/demo.002','include','include'),
+    mk(b1,'Generative AI tools in secondary school science classrooms','Mock, E.',2025,'Demo Science Education','A case study of AI tools used in lower secondary science lessons with children aged 12 to 14.','10.0000/demo.003','exclude'),
+    mk(b1,'Process data reveal shortcut use of ChatGPT in source-based writing','Fictional, F.; Demo, A.',2026,'Demo Computers and Writing','Keystroke and prompt logs from 40 learners showed two patterns of use: productive questioning and wholesale copying. Copying was associated with lower essay scores.','10.0000/demo.004','include','include'),
+    mk(b1,'A protocol for a scoping review of AI in language education','Sample, B.',2024,'Demo Systematic Reviews','This protocol describes the planned methods for a scoping review.','10.0000/demo.005','maybe','exclude','Wrong publication type'),
+    mk(b1,'Machine translation and vocabulary learning in EFL reading','Imaginary, G.',2023,'Demo Reading Research','Learners using machine translation learned fewer new words in a reading task.','10.0000/demo.006','exclude'),
+    mk(b2,'ChatGPT feedback and revision quality in EFL argumentative writing','Demo A; Sample B',2025,'DEMO JOURNAL OF LANGUAGE LEARNING','We examined how 84 university EFL learners revised essays after receiving ChatGPT feedback.','10.0000/demo.001'),
+    mk(b2,'Teacher guidelines for generative AI in university English programs','Placeholder, D.',2025,'Demo Language Teaching Policy','A document analysis of 28 university guidelines on generative AI in English courses. Few guidelines gave concrete examples of acceptable student use.','10.0000/demo.008','include','exclude','Wrong population'),
+    mk(b2,'Self-regulation when writing with AI: a mixed methods study','Mock, E.; Example, C.',2026,'Demo Educational Technology Research','Interviews and screen recordings with 22 EFL learners showed that planning before prompting was linked to higher self-regulation and better drafts.','10.0000/demo.009','include','include'),
+    mk(b2,'AI chatbots for speaking practice in EFL classrooms','Fictional, F.',2024,'Demo Speaking Journal','A quasi-experiment on chatbot speaking practice. Writing was not measured.','10.0000/demo.010','exclude'),
+    mk(b2,'Large language models as writing tutors: a randomized trial','Imaginary, G.; Demo, A.',2025,'Demo Learning and Instruction','Students were randomized to an LLM tutor or a control condition across an eight-week L2 writing course.','10.0000/demo.011','maybe','notRetrieved'),
+    mk(b2,'Authorship and ownership of AI-assisted student essays','Sample, B.; Fictional, F.',2026,'Demo Journal of Academic Integrity','Focus groups with 30 L2 writers explored how students decide whether an AI-assisted essay is their own work.','10.0000/demo.012',null),
+    mk(b3,'Revising with AI feedback: a longitudinal case study of two L2 writers','Example, C.',2025,'Demo Case Studies in Writing','Two EFL writers were followed for a semester. Their revisions shifted from accepting AI suggestions to questioning them.','10.0000/demo.013','include','include'),
+  ];
+  s.records.forEach(r => { r.ex = {}; r.qa = {}; });
+  dedupeIn(s);
+  const st = s.template; const by = l => st.find(f => f.label === l).id;
+  const fill = (doi, o) => { const r = s.records.find(x => x.doi === doi && !x.dup); Object.entries(o).forEach(([k, v]) => r.ex[by(k)] = v); };
+  fill('10.0000/demo.001', { 'Country':'Japan', 'Setting or context':'University EFL writing course', 'Study design':'Quantitative non-randomized', 'Sample size':'84', 'Key findings':'Revision quality improved; surface edits accepted without checking.' });
+  fill('10.0000/demo.002', { 'Country':'China', 'Study design':'Quantitative descriptive', 'Sample size':'312' });
+  s.qa = { on:false, tool:'mmat', custom:[] };
+  return s;
+}
+function dedupeIn(s){ const keep = S; S = s; dedupe(true); S = keep; }
+
+/* ---------- welcome animation ---------- */
+const AN = [
+  { t:'ChatGPT feedback and revision in EFL writing', a:'University <mark>EFL</mark> learners revised <mark>essays</mark> after AI feedback…', d:'I' },
+  { t:'Generative AI in secondary science classrooms', a:'Case study with <mark class="x">children</mark> aged 12 to 14 in science lessons…', d:'E' },
+  { t:'A protocol for a scoping review of AI tools', a:'This <mark class="x">protocol</mark> describes planned methods…', d:'M' },
+  { t:'Process data and shortcut use of ChatGPT', a:'Keystroke logs from L2 <mark>writing</mark> show two patterns of use…', d:'I' },
+  { t:'Machine translation and vocabulary learning', a:'Learners using MT in a <mark class="x">reading</mark> task…', d:'E' },
+];
+let animT = null, animI = 0, cIn = 0, cEx = 0;
+function animStep(){
+  const it = AN[animI % AN.length]; const f = $('#aFocus');
+  f.classList.remove('goL','goR'); f.innerHTML = `<b>${esc(it.t)}</b><p>${it.a}</p>`;
+  setTimeout(() => {
+    const k = it.d === 'I' ? '#aKI' : it.d === 'E' ? '#aKE' : '#aKM'; $(k).classList.add('hit'); setTimeout(() => $(k).classList.remove('hit'), 250);
+    f.classList.add(it.d === 'E' ? 'goL' : 'goR');
+    setTimeout(() => {
+      if (it.d === 'E'){ cEx++; $('#aEx').textContent = cEx; $('#aExS').insertAdjacentHTML('afterbegin', `<div class="mini exc"><b>${esc(it.t.split(' ').slice(0,4).join(' '))}…</b>Excluded</div>`); }
+      else { cIn++; $('#aIn').textContent = cIn; $('#aInS').insertAdjacentHTML('afterbegin', `<div class="mini inc"><b>${esc(it.t.split(' ').slice(0,4).join(' '))}…</b>${it.d === 'M' ? 'Maybe' : 'Included'}</div>`); }
+      ['#aExS','#aInS'].forEach(s => { const st = $(s); while (st.children.length > 4) st.lastElementChild.remove(); });
+    }, 300);
+    animI++;
+  }, 1400);
+}
+const reduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function startAnim(){ stopAnim(); animStep(); if (!reduced()) animT = setInterval(() => { if (!document.hidden) animStep(); }, 2400); }
+function stopAnim(){ clearInterval(animT); animT = null; }
+
+/* ---------- top bar, menu, keys ---------- */
+$('#projName').addEventListener('change', e => mutate(() => { S.name = e.target.value.trim() || 'Untitled review'; }));
+$('#undoBtn').addEventListener('click', undo);
+$('#brandBtn').addEventListener('click', () => { if (UI.view === 'app') showWelcome(); else if (S.records.length) go(firstStep()); });
+$('#alphaClose').addEventListener('click', () => { sessionStorage.setItem('rk-alpha-off','1'); renderTop(); });
+const menu = $('#menu'), menuBtn = $('#menuBtn');
+menuBtn.addEventListener('click', e => { e.stopPropagation(); menuBtn.setAttribute('aria-expanded', String(menu.classList.toggle('show'))); });
+document.addEventListener('click', e => { if (!menu.contains(e.target)){ menu.classList.remove('show'); menuBtn.setAttribute('aria-expanded','false'); } });
+menu.addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (!b) return; menu.classList.remove('show'); act(b.dataset.m); });
+document.addEventListener('click', e => { const a = e.target.closest('a[data-m]'); if (a){ e.preventDefault(); act(a.dataset.m); } });
+$('#welcome').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) act(b.dataset.go); });
+async function act(m){
+  if (m === 'demo'){
+    if (S.records.length && !(await confirmBox({ title:'Open the demo review?', body:'It replaces the review in this browser. Save a review file first to keep your work. Undo brings it back.', ok:'Open demo' }))) return;
+    mutate(() => { S = demoReview(); }); go('ta'); toast('Demo loaded with invented records. Press I, E, or M to screen.');
+  }
+  else if (m === 'start'){ go(S.records.length ? firstStep() : 'import'); }
+  else if (m === 'save') saveFile(`${safeName(S.name)} ${today()}.json`, new Blob([projectJSON()], { type:'application/json' }));
+  else if (m === 'open') $('#projIn').click();
+  else if (m === 'link') linkNew();
+  else if (m === 'openLink') linkOpen();
+  else if (m === 'unlink') unlink();
+  else if (m === 'keys') $('#keysDlg').showModal();
+  else if (m === 'feedback') window.location.href = FEEDBACK;
+  else if (m === 'new'){ if (await confirmBox({ title:'Start a new review?', body:'This clears the review in this browser. Save a review file first to keep it. Undo works until you reload.', ok:'Start new review' })){ mutate(() => { S = blank(); }); showWelcome(); } }
+}
+$('#projIn').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const o = parseProject(await f.text()); if (!o){ toast('That is not a Review Kit file.'); return; }
+  if (S.records.length && !(await confirmBox({ title:`Open "${o.name || f.name}"?`, body:'It replaces the review in this browser. Undo brings the current one back.', ok:'Open review' }))) return;
+  mutate(() => { S = normalize(o); }); go(firstStep()); toast('Opened ' + S.name);
+});
+document.addEventListener('keydown', e => {
+  if (document.querySelector('dialog[open]')) return;
+  const tag = e.target.tagName; const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.target.isContentEditable;
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey && !typing && UI.view === 'app'){ e.preventDefault(); undo(); return; }
+  if (typing || e.ctrlKey || e.metaKey || e.altKey || UI.view !== 'app') return;
+  if (e.key === '?'){ $('#keysDlg').showModal(); return; }
+  const st = UI.step; if (st !== 'ta' && st !== 'ft') return;
+  const k = (e.code || '').replace(/^Key/, '') || e.key.toUpperCase();
+  if (e.key === 'ArrowRight'){ e.preventDefault(); next(1); }
+  else if (e.key === 'ArrowLeft'){ e.preventDefault(); next(-1); }
+  else if (k === 'I') decide('include');
+  else if (k === 'E') decide('exclude');
+  else if (k === 'M' && st === 'ta') decide('maybe');
+  else if (k === 'R' && st === 'ft') decide('notRetrieved');
+  else if (k === 'N'){ e.preventDefault(); $('#recNote').focus(); }
+  else if (k === 'U'){ const r = curRec(); if (r) mutate(() => { if (st === 'ta') r.ta = null; else { r.ft = null; r.ftReason = ''; } }); }
+  else if (st === 'ft'){ const m = (e.code || '').match(/^(?:Digit|Numpad)([1-9])$/); if (m){ const x = S.reasons[+m[1] - 1]; const r = curRec(); if (x && r && r.ft === 'exclude') setReason(x); else if (x) toast('Press E first to exclude, then pick a reason.'); } }
+});
+
+/* ---------- start ---------- */
+window.__rk = { parseTagged, parseBib, parseSheet, demoReview, prismaCounts, prismaSVG, buildWorkbookRows, dedupe, get S(){ return S; }, set S(v){ S = v; }, normalize, go, render };
+(async () => {
+  const saved = await kvGet('project'); if (saved && Array.isArray(saved.records)) S = normalize(saved);
+  try { const h = await kvGet('link'); if (h && h.queryPermission){ FS.handle = h; FS.name = h.name; FS.state = (await h.queryPermission({ mode:'readwrite' })) === 'granted' ? 'on' : 'needs'; } } catch(e){}
+  if (S.records.length) go(firstStep()); else showWelcome();
+  setSave(true);
+})();
+})();
+</script>
+</body>
+</html>

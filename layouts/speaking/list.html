@@ -93,6 +93,9 @@
         <div class="plist-meta"></div>
         <div class="plist-main">
           <p class="plist-desc"><strong>{{ .lead }}</strong> {{ .text }}</p>
+          {{- with .extra }}
+          <p class="plist-desc">{{ . | safeHTML }}</p>
+          {{- end }}
         </div>
       </article>
       {{ end }}
