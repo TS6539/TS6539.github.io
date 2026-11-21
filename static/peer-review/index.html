@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png"><title>Peer Review Desk · Tianshi Hao</title><meta name="description" content="Read a manuscript, collect evidence and prepare separate author and editor comments privately in your browser."><meta property="og:title" content="Peer Review Desk"><meta property="og:description" content="Read a manuscript, collect evidence and prepare separate author and editor comments privately in your browser."><meta property="og:image" content="https://tianshihao.org/media/sharing.jpg"><style>:root{
+  --ui:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --read:"Source Serif 4",Charter,"Iowan Old Style",Georgia,"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif SC",serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --bg:#F7F7F5; --panel:#EFEFEC; --surface:#FFFFFF; --ink:#1F2328; --muted:#5F6670; --faint:#8C939C;
+  --line:#DADAD5; --line-strong:#BDBDB6; --accent:#25507A; --accent-ink:#FFFFFF; --accent-soft:#E6EDF4;
+  --danger:#A33A2E; --ok:#3D7A4E; --cs:55%; --cl:90%; --cbar:45%; --cink:22%;
+  --r:4px; --tabH:0px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181B; --panel:#1C1F23; --surface:#212429; --ink:#E6E8EB; --muted:#A1A8B1; --faint:#737B85;
+    --line:#30343A; --line-strong:#444A52; --accent:#8DB6DD; --accent-ink:#11161C; --accent-soft:#1E2A37;
+    --danger:#E58B80; --ok:#86C59A; --cs:28%; --cl:24%; --cbar:58%; --cink:86%; color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{height:100%;height:100dvh;margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14.5px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+kbd{font-family:var(--mono);font-size:.78em;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:var(--surface);color:var(--muted)}
+.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r);padding:6px 12px;cursor:pointer;white-space:nowrap;line-height:1.35;transition:background .12s,border-color .12s}
+.btn:hover{background:var(--panel);border-color:var(--muted)}
+.btn:active{background:var(--line)}
+.btn:disabled{opacity:.45;cursor:default;background:var(--surface);border-color:var(--line)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink);background:var(--panel)}
+.btn.small{padding:3px 9px;font-size:.85rem}
+.btn.big{padding:8px 16px}
+.btn.danger{color:var(--danger)}
+input[type=text],input:not([type]),input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:6px 9px;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 1px var(--accent)}
+textarea{resize:vertical;line-height:1.45}
+.tag{font-size:.78rem;color:var(--muted);border:1px solid var(--line-strong);border-radius:3px;padding:0 6px;white-space:nowrap}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:8px;padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;border:0;background:transparent;cursor:pointer;padding:2px 4px;border-radius:var(--r)}
+.saveState{color:var(--muted);font-size:.8rem;display:inline-flex;align-items:center;gap:6px}
+.saveState .dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.saveState.bad .dot{background:var(--danger)}.saveState.bad{color:var(--danger)}
+.saveState.busy .dot{background:var(--faint)}
+.saveState button{border:1px solid var(--line-strong);background:var(--surface);color:var(--accent);border-radius:3px;padding:0 6px;font-size:.78rem;cursor:pointer}
+.top .spacer{flex:1}
+.ver{font-size:.78rem;color:var(--faint)}
+.menuWrap{position:relative}
+#alphaBar{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:.84rem;background:#FFF8E5;color:#5C4510;border-bottom:1px solid #EADBB0}
+#alphaBar p{margin:0;flex:1}
+@media (prefers-color-scheme: dark){#alphaBar{background:#2A2414;color:#E9D49A;border-color:#4A3F22}}
+
+/* start page */
+#welcome{flex:1;overflow:auto}
+.wIn{max-width:760px;margin:0 auto;padding:40px 20px 60px}
+.wIn h1{font-size:1.9rem;font-weight:650;margin:0 0 6px;letter-spacing:-.01em}
+.wIn .sub{font-size:1.05rem;color:var(--ink);margin:0 0 8px;max-width:62ch}
+.wIn .metaLine{color:var(--muted);font-size:.86rem;margin:0 0 20px}
+.wIn h2{font-size:1rem;font-weight:650;margin:34px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.wIn p{margin:0 0 10px;max-width:68ch}
+.wIn ul{margin:0 0 10px;padding-left:20px}
+.wIn li{margin:3px 0}
+.ctaRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:18px 0 6px}
+.sampleWrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin:10px 0 4px}
+.sample{border-collapse:collapse;font-family:var(--mono);font-size:.76rem;white-space:nowrap}
+.sample th,.sample td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 8px;text-align:left}
+.sample th{background:var(--panel);font-weight:600}
+.sample td.n{text-align:center}
+.caption{font-size:.8rem;color:var(--muted)}
+.log{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.9rem}
+.log dt{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+.log dd{margin:0}
+.wFoot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:.84rem;display:flex;flex-direction:column;gap:4px}
+.cite{font-family:var(--read)}
+dialog{border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 40px);box-shadow:0 12px 40px rgba(0,0,0,.22)}
+dialog.wide{width:min(840px,calc(100vw - 24px))}
+dialog::backdrop{background:rgba(20,22,25,.45)}
+dialog form{display:flex;flex-direction:column;max-height:calc(100dvh - 42px)}
+.dlgHead{padding:16px 18px 4px}
+.dlgHead h2{margin:0;font-size:1.05rem;font-weight:650}
+.dlgHead p{margin:5px 0 0;color:var(--muted);font-size:.88rem}
+.dlgBody{padding:8px 18px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.dlgFoot{display:flex;justify-content:flex-end;gap:8px;padding:10px 18px 14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.dlgFoot .left{margin-right:auto}
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0 4px}
+.path{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s}
+.path:hover{border-color:var(--accent);transform:translateY(-1px)}
+.path:first-child{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.path b{font-size:1rem}.path span{color:var(--muted);font-size:.88rem}.path em{font-style:normal;color:var(--accent);font-weight:600;font-size:.9rem;margin-top:auto}
+#guide{flex:1;overflow:auto;display:flex;flex-direction:column}
+.gTop{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.gTopIn{max-width:1080px;margin:0 auto;padding:10px 20px 10px}
+.gMeta{display:flex;justify-content:space-between;gap:10px;font-size:.84rem;margin-bottom:6px}
+.gMeta #gStepOf{font-weight:600}.gMeta #gLeft{color:var(--muted)}
+.gBar{position:relative;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.gBar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:3px;transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.gBar .tick{position:absolute;top:0;bottom:0;width:2px;background:var(--bg)}
+.gBody{max-width:1080px;margin:0 auto;width:100%;padding:18px 20px 60px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px;align-items:start}
+.gRail{position:sticky;top:64px;font-size:.86rem}
+.gRail details{border:0}
+.gRail summary{display:none}
+.gPh{margin:0 0 10px}
+.gPh h3{font-size:.74rem;font-weight:650;color:var(--faint);margin:0 0 3px;letter-spacing:.02em}
+.gPh.complete h3{color:var(--ok)}
+.gSt{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:4px 6px;border-radius:3px;cursor:pointer;color:var(--muted)}
+.gSt:hover{background:var(--panel);color:var(--ink)}
+.gSt .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line-strong);flex:none;display:grid;place-items:center;transition:background .3s,border-color .3s}
+.gSt.done .dot{background:var(--ok);border-color:var(--ok)}
+.gSt.done .dot::after{content:"";width:6px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(0,-1px)}
+.gSt.on{color:var(--ink);font-weight:600;background:var(--surface);box-shadow:inset 2px 0 0 var(--accent)}
+.gSt.on .dot{border-color:var(--accent)}
+.gSt.soon{opacity:.6}
+.gCard{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:22px 24px 20px}
+.gCard.enter{animation:cardIn .32s cubic-bezier(.2,.7,.2,1) both}
+.gKick{font-size:.8rem;color:var(--muted);margin:0 0 4px;display:flex;gap:8px;flex-wrap:wrap}
+.gKick .est{color:var(--faint)}
+.gCard h2{font-size:1.35rem;font-weight:650;margin:0 0 8px;letter-spacing:-.01em}
+.gWhy{color:var(--ink);max-width:68ch;margin:0 0 14px}
+#guide cite{font-style:normal;color:var(--muted)}
+.gCard h3{font-size:.92rem;margin:20px 0 8px}
+.gCard p{max-width:70ch}
+.gDo{display:flex;flex-direction:column;gap:12px}
+.gFoot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+.gFoot .sp{flex:1}
+.gDone{display:inline-flex;align-items:center;gap:6px;color:var(--ok);font-weight:600;font-size:.9rem}
+.gDone svg{width:18px;height:18px}
+.gDone path{stroke-dasharray:24;stroke-dashoffset:24;animation:draw .45s .1s ease-out forwards}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font-size:.9rem}
+.checks li{display:flex;gap:8px;align-items:flex-start;color:var(--muted)}
+.checks li::before{content:"";width:13px;height:13px;margin-top:4px;border:1.5px solid var(--line-strong);border-radius:3px;flex:none;transition:background .25s,border-color .25s}
+.checks li.ok{color:var(--ink)}
+.checks li.ok::before{background:var(--ok);border-color:var(--ok);box-shadow:inset 0 0 0 2px var(--surface)}
+.gCheer{position:fixed;left:50%;top:84px;transform:translate(-50%,-12px);background:var(--surface);border:1px solid var(--ok);color:var(--ink);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;font-weight:600;opacity:0;pointer-events:none;z-index:90;transition:opacity .3s,transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.gCheer.show{opacity:1;transform:translate(-50%,0)}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+body{height:auto;min-height:100dvh;display:block}#appRoot{min-height:100dvh}.top{min-height:43px}.brand{font-size:1rem}.btn{white-space:normal}.path:disabled{cursor:default;transform:none;color:var(--muted);background:var(--bg)}.path:disabled:hover{border-color:var(--line-strong)}.path:disabled em{font-weight:500;color:var(--muted)}.path:hover{transform:none}.wIn{padding-top:32px}.wFoot{font-family:var(--ui)}.gMain,.gCard,.gDo,.notesGrid>section{min-width:0}.gBody{grid-template-columns:185px minmax(0,1fr);max-width:1160px}.gTopIn{max-width:1160px}.field{display:grid;gap:5px;font-size:.88rem;font-weight:600;min-width:0}.field input,.field select,.field textarea{font-weight:400;min-width:0;max-width:100%}input[type=date]{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:6px 9px}.two,.setgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row,.footActions,.projectRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.projectRow{margin:8px 0}.footActions{justify-content:end;margin-top:8px}.gDo>.btn{align-self:start}.tickbox{display:flex;gap:8px;align-items:baseline}.tickbox input{accent-color:var(--accent)}.ethics small,.setgrid small{display:block;margin-left:23px}.ethics,.criterion,.audit,.noteItem,.finding{border-bottom:1px solid var(--line);padding:10px 0}.muted,small,.eyeline{color:var(--muted)}small,.eyeline{font-size:.82rem}.gDo p,.dlgBody p{margin:0}.gDo h3{margin:0 0 6px}.gDo summary{font-weight:600;cursor:pointer}.box{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r)}.box[open]>*,.criterion>*{margin:6px 0}.box[open]>summary{margin:0 0 9px}.criterion ul{padding-left:22px;color:var(--muted)}.criterion .field{max-width:450px}.checks{margin-top:20px}.notesGrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px}.notesGrid h3{font-size:.96rem}.readingPanel .row{margin-bottom:9px}.readingPanel .row h3{flex:1;margin:0}#reader{max-height:55vh;min-height:110px;overflow:auto;border:1px solid var(--line);border-radius:var(--r);padding:9px 10px;scroll-padding:10px}.paragraph{display:grid;grid-template-columns:34px minmax(0,1fr);gap:5px;margin:9px 0 15px}.paragraph p,blockquote{font:1rem/1.6 var(--read);white-space:pre-wrap;overflow-wrap:anywhere}.margin{display:flex;flex-direction:column;align-items:start;font-size:.78rem;color:var(--muted)}.margin .btn{padding:3px}.marker{background:var(--accent-soft);color:var(--accent);min-width:24px}.noteItem p,.rankList p,.finding p{white-space:pre-wrap;overflow-wrap:anywhere}.noteItem .btn{display:block;margin-top:8px}.noteItem.current{outline:2px solid var(--accent)}blockquote{border-left:2px solid var(--line-strong);padding-left:10px;margin:7px 0}.rankList{padding-left:24px}.rankList li{padding:8px;border-bottom:1px solid var(--line)}.rankList .row{margin-top:6px}.audit{display:flex;justify-content:space-between;gap:10px;align-items:center}.audit small{display:block}.audit .btn{flex:none}.bottom{display:none}.field,small,.gMeta,.gCard,.wFoot{overflow-wrap:anywhere}dialog{border-radius:var(--r)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.gCheer{max-width:calc(100vw - 24px)}.field+.field{margin-top:2px}
+@media(max-width:860px){.wIn{padding:24px 14px 38px}.paths{grid-template-columns:1fr}.gBody{display:block;padding:12px 12px 90px}.gTopIn{padding:8px 12px}.gCard{padding:15px 13px}.gRail{display:none;position:static}#guide[data-tab=rail] .gRail{display:block}#guide[data-tab=rail] .gMain{display:none}.gSt{padding:8px}.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;padding:5px 10px calc(5px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface);z-index:6;gap:4px}.bottom .btn{flex:1;min-height:40px;background:transparent;border-color:transparent}.bottom .btn[aria-pressed=true]{color:var(--accent);background:var(--accent-soft);font-weight:600}.notesGrid{display:block}#guide[data-tab=step] .notesPanel,#guide[data-tab=notes] .readingPanel{display:none}.top{flex-wrap:wrap}.top .ver{display:none}.saveState{max-width:50%}.two,.setgrid{grid-template-columns:1fr}.gMeta{font-size:.77rem}.gBar{height:5px}.gCheer{top:auto;bottom:70px}#reader{max-height:52vh}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+.textLayer{
+  --csstools-color-scheme--light:initial;
+  color-scheme:only light;
+
+  position:absolute;
+  text-align:initial;
+  inset:0;
+  overflow:clip;
+  opacity:1;
+  line-height:1;
+  -webkit-text-size-adjust:none;
+     -moz-text-size-adjust:none;
+          text-size-adjust:none;
+  forced-color-adjust:none;
+  transform-origin:0 0;
+  caret-color:CanvasText;
+  z-index:0;
+}
+
+.textLayer.highlighting{
+    touch-action:none;
+  }
+
+.textLayer :is(span,br){
+    color:transparent;
+    position:absolute;
+    white-space:pre;
+    cursor:text;
+    transform-origin:0% 0%;
+  }
+
+.textLayer{
+  --min-font-size:1;
+  --text-scale-factor:calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv:calc(1 / var(--min-font-size));
+}
+
+.textLayer  > :not(.markedContent),.textLayer .markedContent span:not(.markedContent){
+    z-index:1;
+
+    --font-height:0;
+    font-size:calc(var(--text-scale-factor) * var(--font-height));
+
+    --scale-x:1;
+    --rotate:0deg;
+    transform:rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+  }
+
+.textLayer .markedContent{
+    display:contents;
+  }
+
+.textLayer span[role="img"]{
+    -webkit-user-select:none;
+       -moz-user-select:none;
+            user-select:none;
+    cursor:default;
+  }
+
+#readingDialog{inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;background:var(--panel)}#readingDialog[open]{display:flex;flex-direction:column}.pdfTools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px;background:var(--surface)}#pdfInfo,#pdfUnlock:not(:empty){padding:4px 12px}#pdfSpace{flex:1;min-height:0;overflow:auto;padding:8px}#pdfPage{width:max-content;min-width:100%}.pageSheet{margin:auto;position:relative;background:white}.pageSheet canvas{width:100%;height:100%;display:block}.textLayer ::selection{background:rgba(38,105,190,.32);color:transparent}#pdfPanel{position:absolute;right:12px;top:90px;width:min(340px,calc(100% - 24px));padding:14px;background:var(--surface);border:1px solid var(--line-strong);box-shadow:0 3px 16px #0002;max-height:65dvh;overflow:auto}#pdfPanel>*{display:block;width:100%;margin:5px 0;text-align:left}#pdfPanel .row{display:flex;justify-content:space-between}#holdDiscard{background-size:0 100%;position:relative;overflow:hidden}#holdDiscard:after{content:'';position:absolute;inset:0;background:#c029294d;transform-origin:left;transform:scaleX(0)}#holdDiscard.holding:after{transform:scaleX(1);transition:transform 2s linear}@media(max-width:860px){#pdfPanel{top:auto;bottom:8px}}
+#pdfPage .pageSheet{margin:0 auto 14px;isolation:isolate}.inkLayer{position:absolute;inset:0;pointer-events:none;z-index:1}.inkLayer i{position:absolute;opacity:.30;border-bottom:2px solid currentColor;mix-blend-mode:multiply}.inkLayer .jumpMark{outline:3px solid #164575}.pdfTools [aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}#holdDiscard.holding:after{transition-duration:1.5s}
+:root{--faint:#565e67;--muted:#505962}@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--faint:#b0b6bd;--muted:#b6bcc3}}
+#undoBar{position:fixed;bottom:68px;left:12px;background:var(--surface);color:var(--ink);border:1px solid var(--accent);padding:10px;z-index:99}.gFoot .primary{font-weight:700;padding:9px 20px}.footActions{border-top:1px solid var(--line);padding-top:6px}
+@media(min-width:861px){#readingDialog:has(#pdfPanel:not([hidden])) #pdfSpace{margin-right:360px}#readingDialog #pdfPanel{bottom:10px;max-height:none}#readingDialog:has(#pdfPanel:not([hidden])) #pdfPage{margin:0}}
+</style></head><body>
+<div id="appRoot"></div><dialog id="readingDialog" aria-label="PDF"></dialog><dialog id="dialog" aria-labelledby="dialogTitle"></dialog>
+<input type="file" hidden id="projectInput" accept=".json"><input type="file" hidden id="templateInput" accept=".json">
+<div id="message" class="gCheer" role="status" aria-live="polite"></div>
+<div id="undoBar" role="status" hidden></div>
+<script>
+const VERSION = '0.2';
+const STR = {
+  v2:{flow:'Load a manuscript, take notes, draft your review, then export.',sample:'Try a sample review',sampleTag:'Sample',coming:'More modes coming',core:'Core only',full:'Full general set',report:'Add a reporting checklist',confirmCriteria:'Use this selection',undo:'Undo',deleted:'Deleted',missing:'Still to complete',authorWord:'Download author comments',editorWord:'Download confidential editor copy',editorWarning:'This document includes the confidential editor comments and your recommendation.',preview:'Paste preview',firstHelp:'Answer each question in your own words or link a PDF passage. The timer is optional.',linked:'linked passages',notesHelp:'Select within one paragraph for a structured note. Kind describes the issue. Severity determines whether it goes into Rank.',rankHelp:'Order your major notes here. This order carries into the author draft.',recHelp:'Compare your decision with your major concerns. You choose the recommendation.',anchor:'Choose a new paragraph',orphan:'Original passage needs a new anchor',templateWrong:'This is a criteria template. Import it in Step 3.',projectWrong:'This is a review project. Use Open review project.',backup:'Download a project file for a backup.',all:'See all',prompts:'Selection prompts',enabled:'Enabled',paused:'Paused'},
+  reading:{edit:'Edit question',apply:'Save question',unlink:'Remove this link',previous:'Previous passage',following:'Next passage',jump:'Go to passage',linked:'Already linked',page:'Page',newQuestion:'What question would you like to add?',discard:'Hold to discard',assign:'Which question does this passage answer?',questions:'Questions and passages',dismiss:'Close and pause selection prompts',see:'See questions',addQuestion:'Add question',saved:'Saved to your questions',back:'Back to review',prev:'Previous page',next:'Next page',out:'Zoom out',in:'Zoom in',pause:'Pause prompts',resume:'Enable prompts',hint:'Select a passage to link it to a question.',open:'Read original PDF',optional:'Write additional first-read comments'},
+  app:'Peer Review Desk', alpha:'Pre-alpha', alphaText:'Save a project file as you work. This browser keeps a local copy.', feedback:'Email me', home:'Start page', settings:'Settings', open:'Open review project', saved:'Saved in this browser', saving:'Saving…', saveFail:'Local saving is unavailable. Download a project file to keep your work.', conflict:'Another tab saved this project. Download your copy before reopening it.', saveFile:'Save project file', resume:'Continue a review', untitled:'Untitled review', start:'Start review →', soon:'Coming soon',
+  sub:'Read a manuscript, anchor your concerns in the text, and write a review in your own words.',
+  meta:'Version {v} · pre-alpha · free to use · works on computers and phones',
+  modes:[
+    ['Review a journal manuscript','Read, evaluate, and draft separate comments for the authors and editor.'],
+    ['Respond to reviewers','Organize reviewer comments and prepare a response to each one.'],
+    ['Review a conference proposal','Assess a submission against the conference criteria.'],
+    ['Learn to review (practice)','Work through a review using a practice manuscript.']
+  ],
+  why:'Why I made this', whyText:'I built this desk so I could trace each concern back to a passage before asking an author to revise it.',
+  privacy:'Where your manuscript goes', privacyText:'Your manuscript and review stay in this browser. Check the journal’s policy before loading a paper. Project files contain the manuscript and both drafts. Keep them somewhere private.',
+  issues:'Known issues', issuesText:'Scanned PDFs need a text copy. Columns, tables, and printed line numbers can lose their order during import. Compare the reading pane with the original.',
+  changes:'Changes', changeText:'Version 0.2 adds a sample review, five core criteria, note recovery and separate Word downloads.',
+  cite:'Hao, T. (2026). Peer Review Desk (Version {v}) [Computer software]. https://tianshihao.org/peer-review/',
+  phases:['Before you start','Read','Evaluate','Decide and write'],
+  steps:['Details','First read','Criteria','Notes','Rank','Recommendation','Draft','Final checks','Export'],
+  intro:['Record the invitation and check that you can take it on.','Read the manuscript. Select passages to collect under your questions as you go.','Choose the criteria that fit this paper. Record your judgment for each one.','Select a passage to quote it, or add a note beside a paragraph.','Lead with the concern that threatens the central claim most directly.','Choose the decision you would send to the editor.','Shape your notes into a review. The two audiences have separate text boxes.','Inspect each result against the manuscript and your drafts. You decide what to change.','Copy each box into the journal system or download a private copy.'],
+  of:'Step {x} of 9', left:'About {n} min left', back:'Back', next:'Next step', stepsNav:'Review steps', complete:'Step complete', done:'Complete', pending:'Pending', progress:'Review progress',
+  journal:'Journal', msid:'Manuscript ID', title:'Manuscript title', due:'Due date', round:'Review round', rounds:['First round','Second round'], days:'{n} days left', overdue:'{n} days overdue', today:'Due today',
+  ethical:[['I have no conflict of interest.','Tell the editor about any relationship that could affect your judgment.'],['I have time to finish by the due date.','Contact the editor early if your availability changes.'],['I have read this journal’s policy on reviewers using software and AI.','Check which tools the journal permits before handling its manuscript.']],
+  cope:'COPE ethical guidelines for peer reviewers', manuscript:'Manuscript', import:'Load manuscript', paste:'Paste manuscript text', usePaste:'Use pasted text', file:'Choose a TXT, DOCX, or PDF file', loaded:'{n} paragraphs', noText:'No readable text was found. Paste a text copy of the manuscript.', errorFile:'Could not open this file. Check its format and try again.', unsupported:'This project requires another mode or a newer version.', invalid:'This file is not a Peer Review Desk project.', replaced:'Replace the manuscript? Existing notes keep their original quotes. Check their paragraph links afterwards.', replace:'Replace manuscript', cancel:'Cancel', close:'Close', confirm:'Continue', missing:'Load a manuscript to read it here.',
+  first:['Central claim in one sentence','What was measured or collected?','Who was in the sample and how was it justified?','One specific strength'], timer:'Reading time', startTimer:'Start timer', stopTimer:'Pause timer',
+  selection:'Criteria sets', general:'General review', expertise:'Say where a point falls outside your expertise. You can still consider how well the evidence supports the claims.', optional:'Reporting checklists', setHelp:'These topic prompts help you navigate each standard. Open the official checklist for its full requirements.', official:'Official guidance', question:'Diagnostic question', look:'What to look for', pattern:'Phrasing to adapt', statuses:['Choose status','No concern','Minor','Major','Not applicable'], status:'Status', custom:'Use a journal’s criteria', lines:'One criterion per line', addCriteria:'Add criteria', templates:'Criteria templates', templateName:'Template name', saveTemplate:'Save template', apply:'Apply template', exportTemplate:'Export template JSON', importTemplate:'Import template JSON', chooseTemplate:'Choose a template', badTemplate:'Choose a valid criteria template.', templateOk:'Template saved', templateApplied:'Template applied', replaceCriteria:'Replace your active selection with this template? Existing note links are kept.',
+  generalRows:[
+    ['Contribution','What does the paper add, and who could use it?',['A comparison with the closest study','A concrete audience for the finding'],'Could you clarify what this adds for [audience]?'],
+    ['Framing and literature','Do the sources support the gap and the claims built on it?',['Evidence for the proposed gap','Agreement between a citation and its use'],'How does [source] support [claim]?'],
+    ['Construct and measure','Where does the named construct appear in the instrument?',['A definition of the construct','Items or observations that represent it'],'Which measure captures [construct]?'],
+    ['Self-report and performance','What did participants report and what did they demonstrate?',['Who supplied the outcome','Language that matches the evidence'],'Could you distinguish [reported belief] from [observed outcome]?'],
+    ['Design and causal claims','What sequence of events supports the causal interpretation?',['Timing of exposure and outcome','Whether a different result was possible','Causal wording in a cross-sectional study'],'What aspect of the design helps distinguish [explanation] from [alternative]?'],
+    ['Instruments','What supports the interpretation of the scores?',['Validity evidence beyond reliability','Outcome items that assume the predictor'],'How does [item] distinguish the outcome from the predictor?'],
+    ['Analysis and results','Can the reader trace each result back to a procedure?',['Methods for each reported analysis','Numbers across text and tables','Uncertainty around a non-significant result'],'Could you reconcile [value] with [other value]?'],
+    ['Sample','How does the sample support the planned analysis?',['Reason for the sample size','Cases available for each analysis'],'How was the sample size chosen for [analysis]?'],
+    ['Ethics','How were participants and their data protected?',['Scope of ethical approval or exemption','Consent for each type of data collected'],'Could you clarify how consent covered [data source]?'],
+    ['Clarity','Can the reader follow the argument through each section?',['Consistent technical definitions','Information placed where readers need it'],'What does [term] mean in this passage?']
+  ],
+  standards:{
+    qual:['JARS-Qual','Qualitative Design Reporting Standards','2018','https://apastyle.apa.org/jars/qualitative',['Research aims','Researcher standpoint','Sampling rationale','Setting and relationship','Evidence collection','Interpretive process','Support for interpretations','Scope of transfer']],
+    quant:['JARS-Quant','Quantitative Design Reporting Standards','2018','https://apastyle.apa.org/jars/quantitative',['Study questions','Design choices','Enrollment and exclusions','Sample size rationale','Measurement evidence','Analysis decisions','Missing observations','Statistical uncertainty','Limits on inference']],
+    mixed:['JARS-Mixed','Mixed Methods Design Reporting Standards','2018','https://apastyle.apa.org/jars/mixed-methods',['Reasons for mixing','Design sequence','Sampling across strands','Timing of strands','Integration decisions','Conflicting evidence','Integrated findings']],
+    consort:['CONSORT','Consolidated Standards of Reporting Trials','2025','https://www.consort-spirit.org/published-statements',['Trial registration','Protocol access','Participant eligibility','Treatment delivery','Allocation and concealment','Masking decisions','Planned outcomes','Sample size rationale','Participant flow','Outcome estimates','Unintended effects','Access to data']],
+    prisma:['PRISMA 2020','Preferred Reporting Items for Systematic Reviews and Meta-Analyses','2020','https://www.prisma-statement.org/prisma-2020',['Review registration','Eligibility rules','Search coverage','Screening process','Selection decisions','Data collection','Bias assessment','Evidence synthesis','Missing results','Certainty of findings','Selection flow']],
+    strobe:['STROBE','Strengthening the Reporting of Observational Studies in Epidemiology','2007','https://www.strobe-statement.org/checklists/',['Study setting','Participant selection','Exposure timing','Outcome definitions','Confounding variables','Missing observations','Follow-up and attrition','Adjusted estimates','Scope of inference']],
+    coreq:['COREQ','Consolidated Criteria for Reporting Qualitative Research','2007','https://equator-network.org/reporting-guidelines/coreq/',['Research team background','Interviewer relationships','Recruitment approach','Interview setting','Interview guide','Recording and field notes','Coding decisions','Participant excerpts','Variation across accounts']],
+    srqr:['SRQR','Standards for Reporting Qualitative Research','2014','https://equator-network.org/reporting-guidelines/srqr/',['Research purpose','Inquiry tradition','Researcher positioning','Study context','Case selection','Ethical arrangements','Evidence collection','Analytic decisions','Support for interpretations','Limits on transfer']]
+  },
+  read:'Reading pane', notes:'Note list', shortcuts:'Keyboard shortcuts', keys:'N adds a note to the selection or focused paragraph. J and K move between notes. ? opens this list.', addNote:'Add note', edit:'Edit note', quote:'Quoted passage', para:'Paragraph', noteOn:'Note on ¶{n}', noteMark:'Open note {n}', kind:'Kind', selectKind:'Choose a kind', selectSeverity:'Choose severity', kinds:['Documented problem','Possible alternative explanation','Question for the authors','Minor or editorial'], severity:'Severity', levels:['Major','Minor'], criterion:'Linked criterion', none:'None', retired:'Inactive criterion', loc:'Page/line in the manuscript', comment:'Your comment', keepNote:'Save note', remove:'Delete note', delAsk:'Delete this note?', filter:'Filter notes', all:'All notes', empty:'No notes match this view.', noMajor:'There are no major notes to rank.', up:'Move up', down:'Move down', multi:'Select text within one paragraph to keep its location precise.', pick:'Focus a paragraph or select a passage first.', noQuote:'Paragraph note without a quote.', orderOk:'I have reviewed the order.', notesOk:'I have finished making notes.',
+  recs:['Accept','Minor revision','Major revision','Reject'], choose:'Choose a recommendation', mismatchOne:'You recommend {r} and have one major concern.', mismatch:'You recommend {r} and have {n} major concerns.', noMajorReject:'You recommend rejection and have no major concerns.', consistent:'No mismatch found between the recommendation and marked concerns.',
+  authors:'Comments to the authors', editor:'Confidential comments to the editor', editorHint:'Explain your recommendation, a confidential matter, or a limit of your expertise.', summary:'Summary', strengths:'Strengths', majors:'Major concerns', minors:'Minor points', questions:'Questions for the authors', rebuild:'Rebuild from current notes', rebuildAsk:'Replace the author draft with your current notes? Your edits in that box will be replaced.',
+  final:['Verbatim quotes','Repeated sentences','Language to reconsider','Reviewer identity','Major criteria with no note','Word counts'], show:'Show me', matches:'{n} to inspect', clear:'No matches', noIssues:'No passages flagged by this check.', oneWord:'1 word', count:'{n} words', checked:'I have reviewed the results.', goDraft:'Open draft', goNotes:'Open notes', goCriteria:'Open criteria', name:'Reviewer name', institution:'Institution', phrases:'Phrases to check, one per line', defaults:['completely','fails to','there is no','obviously','poorly written','nonsense'], preferences:'These settings stay in this browser and are excluded from project exports.', save:'Save settings', copyA:'Copy author comments', copyE:'Copy editor comments', copied:'Copied to clipboard', copyFail:'Select the draft text and copy it manually.', downloadWord:'Download Word document', exported:'Download prepared', privateDoc:'The Word file includes confidential editor comments. Use the separate copy buttons when submitting.', source:'Source', manual:'Pasted text', fileErr:'This operation could not finish. Your existing work is still available.', noDecision:'Undecided', finish:'Return to start', guideTab:'Guide', stepTab:'Current step', single:'Select a passage in a single paragraph.', checkLabels:[['Manuscript details entered','Three invitation checks confirmed'],['Manuscript loaded','Four first-read questions addressed'],['Criteria selected','Each criterion has a status'],['Notes reviewed'],['Order reviewed'],['Recommendation chosen'],['Author comments drafted'],['Final checks reviewed'],['Review copied or downloaded']], pdfLoading:'Reading the PDF in this browser…', fileLoading:'Reading the file…', pdfPassword:'This PDF needs a password. Enter the password and choose Open PDF.', pdfWrongPassword:'That password did not unlock the PDF. Try again.', passwordLabel:'PDF password', unlock:'Open PDF', pdfInvalid:'This file could not be read as a PDF. Open it in your PDF viewer and save a fresh PDF, or paste selectable text below.', pdfReaderError:'This browser could not start the PDF reader. Open the extracted index.html in a current browser, or paste the manuscript text below.', pdfOther:'The reader could not extract this PDF. Try saving a fresh PDF from your PDF viewer, or paste its text below.', pdfFileAccess:'The browser could not read the selected file. Save a copy on this device and select that copy.', noPdf:'This PDF needs a readable text layer. Paste the manuscript text instead.', privateHint:'Use a personal browser profile on a device you trust. Clearing site data removes saved projects.', active:'Active', draft:'Draft', menu:'Project', add:'Add', evidence:'Evidence', statusSaved:'Settings saved', draftQuote:'Draft quotation', fileType:'Choose a supported file type.', backup:'Project JSON', inReview:'Current review', deleteProject:'Delete local project', deleteAsk:'Delete this project from this browser? Keep a project file if you need it again.'
+};
+const fmt = (s,vars={}) => s.replace(/\{(\w+)\}/g, (_,k)=>String(vars[k] ?? ''));
+
+const APP='peer-review-desk', SCHEMA=1;
+const uid=()=>crypto.randomUUID();
+const phases=[0,1,2,2,2,3,3,3,3], minutes=[4,30,15,20,3,2,15,5,2];
+const ids=['contribution','framing','construct','self-report','design','instruments','analysis','sample','ethics','clarity'];
+const str=v=>typeof v==='string'?v:'';
+const strings=v=>Array.isArray(v)?v.filter(x=>typeof x==='string'):[];
+const obj=v=>v && typeof v==='object' && !Array.isArray(v)?v:{};
+const uniq=a=>[...new Set(a)];
+function criteriaFor(set){
+  const names=set==='general'?STR.generalRows.map(r=>r[0]):STR.standards[set][4];
+  return names.map((name,i)=>({id:set==='general'?ids[i]:set+'-'+i,set,name,status:''}));
+}
+function splitParagraphs(text){
+  const clean=str(text).replace(/\r\n?/g,'\n').trim();
+  if(!clean)return [];
+  return clean.split(/\n[ \t]*\n/.test(clean)?/\n[ \t]*\n(?:[ \t]*\n)*/:/\n/).map(x=>x.trim()).filter(Boolean);
+}
+function cleanCriteria(rows){
+  const seen=new Set();
+  return (Array.isArray(rows)?rows:[]).filter(r=>r && str(r.id) && str(r.name) && !seen.has(r.id) && seen.add(r.id)).map(r=>{
+    const set=r.set==='general'||Object.hasOwn(STR.standards,r.set)?r.set:'custom';
+    return {id:r.id,set,name:r.name,status:['ok','minor','major','na'].includes(r.status)?r.status:'',active:r.active!==false};
+  });
+}
+function normalize(raw={}){
+  const r=obj(raw),d=obj(r.details),m=obj(r.manuscript),s=obj(r.steps),b=obj(r.boxes),c=obj(r.checks),now=new Date().toISOString();
+  const criteria=cleanCriteria(r.criteria===undefined?criteriaFor('general').filter(c=>['contribution','construct','design','analysis','sample'].includes(c.id)):r.criteria);
+  const notes=[], used=new Set();
+  for(const n of Array.isArray(r.notes)?r.notes:[]){
+    if(!n || !Number.isInteger(n.paragraph) || n.paragraph<0)continue;
+    const id=str(n.id)||uid(); if(used.has(id))continue; used.add(id);
+    notes.push({id,originalQuote:str(n.originalQuote),originalParagraph:Number.isInteger(n.originalParagraph)?n.originalParagraph:null,paragraph:n.paragraph,quote:str(n.quote),kind:['problem','alternative','question','editorial'].includes(n.kind)?n.kind:'problem',severity:n.severity==='major'?'major':'minor',criterion:str(n.criterion),location:str(n.location),comment:str(n.comment)});
+  }
+  const majors=notes.filter(n=>n.severity==='major').map(n=>n.id);
+  return {sample:r.sample===true,criteriaChosen:r.criteriaChosen===true||(r.criteriaChosen===undefined&&criteria.some(c=>c.status)),app:APP,appVersion:VERSION,schemaVersion:SCHEMA,kind:['journal','response','proposal','practice'].includes(r.kind)?r.kind:'journal',id:str(r.id)||uid(),name:str(r.name)||str(d.title)||STR.untitled,createdAt:str(r.createdAt)||now,savedAt:str(r.savedAt)||now,
+    manuscript:{source:str(m.source),pdf:str(m.pdf),documentId:str(m.documentId),paragraphs:strings(m.paragraphs)},questionLabels:Array.from({length:4},(_,i)=>str(r.questionLabels?.[i])),prompts:r.prompts!==false,customQuestions:(Array.isArray(r.customQuestions)?r.customQuestions:[]).filter(q=>str(q?.id)&&str(q?.label)).map(q=>({id:q.id,label:q.label})),excerpts:(Array.isArray(r.excerpts)?r.excerpts:[]).filter(e=>str(e?.question)&&str(e?.text)&&Number.isInteger(e.page)&&e.page>0).map(e=>({question:e.question,text:e.text,page:e.page,source:str(e.source),documentId:str(e.documentId),rects:(Array.isArray(e.rects)?e.rects:[]).filter(a=>Array.isArray(a)&&a.length===5&&a.every(Number.isFinite))})),details:{journal:str(d.journal),msid:str(d.msid),title:str(d.title),due:str(d.due),round:d.round==='second'?'second':'first',ethical:[0,1,2].map(i=>d.ethical?.[i]===true),first:[0,1,2,3].map(i=>str(d.first?.[i])),seconds:Math.max(0,Number(d.seconds)||0)},
+    steps:{current:Number.isInteger(s.current)?Math.max(0,Math.min(8,s.current)):0,done:Array.from({length:9},(_,i)=>s.done?.[i]===true)},criteria,notes,ranking:uniq([...strings(r.ranking).filter(id=>majors.includes(id)),...majors]),recommendation:['accept','minor','major','reject'].includes(r.recommendation)?r.recommendation:'',
+    boxes:{authors:str(b.authors),editor:str(b.editor),initialized:b.initialized===true||!!b.authors},checks:{notes:c.notes===true,rank:c.rank===true,final:c.final===true,export:c.export===true}};
+}
+function readProject(r){
+  if(r?.type==="criteria-template")throw Error(STR.v2.templateWrong);
+  if(r?.app!==APP || !r.manuscript || !Array.isArray(r.manuscript.paragraphs))throw Error(STR.invalid);
+  if((r.kind && r.kind!=='journal') || Number(r.schemaVersion)>SCHEMA)throw Error(STR.unsupported);
+  return normalize(r);
+}
+function active(p){return p.criteria.filter(c=>c.active!==false)}
+function ordered(p){const map=new Map(p.notes.filter(n=>n.severity==='major').map(n=>[n.id,n]));return uniq([...p.ranking,...map.keys()]).filter(id=>map.has(id)).map(id=>map.get(id))}
+function consistency(p){
+  const count=p.notes.filter(n=>n.severity==='major').length;
+  const unlinked=active(p).filter(c=>c.status==='major'&&!p.notes.some(n=>n.criterion===c.id&&n.severity==='major')).length;
+  const n=count+unlinked;
+  if(n && ['minor','accept'].includes(p.recommendation))return fmt(n===1?STR.mismatchOne:STR.mismatch,{r:STR.recs[p.recommendation==='minor'?1:0].toLowerCase(),n});
+  if(!n && p.recommendation==='reject')return STR.noMajorReject;
+  return '';
+}
+function evidenceSummary(project){
+ return [...STR.first.map((label,i)=>({id:'q'+i,label:project.questionLabels[i]||label})),...project.customQuestions].map(q=>{
+  const excerpts=project.excerpts.filter(e=>e.question===q.id);
+  return excerpts.length?[q.label,...excerpts.map(e=>'“'+e.text+'” ('+e.source+', '+STR.reading.page+' '+e.page+')')].join('\n'):'';
+ }).filter(Boolean).join('\n\n');
+}
+function scaffold(p){
+  const d=p.details.first;
+  const section=(label,parts)=>parts.filter(Boolean).length?label+'\n'+parts.filter(Boolean).join('\n\n'):'';
+  const render=(n,i)=>[(i+1)+'. '+n.comment,n.quote?'“'+n.quote+'”':'',['¶'+(n.paragraph+1),n.location].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
+  const minor=p.notes.filter(n=>n.severity!=='major');
+  return [section(STR.summary,[d.slice(0,3).filter(Boolean).join(' ')]),section(STR.strengths,[d[3]]),evidenceSummary(p),section(STR.majors,ordered(p).map(render)),section(STR.minors,minor.filter(n=>n.kind!=='question').map(render)),section(STR.questions,minor.filter(n=>n.kind==='question').map(render))].filter(Boolean).join('\n\n');
+}
+function orphan(p,n){const text=p.manuscript.paragraphs[n.paragraph];return text===undefined||!!n.quote&&!text.includes(n.quote)}
+function quoteIssues(p){
+  const out=p.notes.filter(n=>orphan(p,n)).map(n=>({text:STR.v2.orphan+' · ¶'+(n.paragraph+1)+' · '+(n.quote||n.comment),step:3,id:n.id}));
+  for(const box of ['authors','editor']){
+    for(const m of p.boxes[box].matchAll(/“([^”]+)”|"([^"]+)"/gu)){
+      const q=m[1]??m[2]; if(!p.manuscript.paragraphs.some(t=>t.includes(q)))out.push({text:q,step:6,box});
+    }
+  }return out;
+}
+const tokens=s=>(s.normalize('NFKC').toLocaleLowerCase('en').match(/[\p{L}\p{N}]+/gu)||[]);
+const sentences=s=>Array.from(new Intl.Segmenter('en',{granularity:'sentence'}).segment(s),v=>v.segment.trim()).filter(Boolean);
+function repetition(a,b){
+  const right=sentences(b).map(s=>({s,t:tokens(s)}));
+  return sentences(a).flatMap(s=>{
+    const t=tokens(s); if(!t.length)return [];
+    return right.filter(r=>{
+      if(Math.min(t.length,r.t.length)/Math.max(t.length,r.t.length)<.8)return false;
+      const freq=new Map();for(const w of t)freq.set(w,(freq.get(w)||0)+1);
+      let hit=0;for(const w of r.t)if(freq.get(w)>0){hit++;freq.set(w,freq.get(w)-1)}
+      return hit/Math.max(t.length,r.t.length)>=.8;
+    }).map(r=>({text:s,other:r.s,step:6,box:'authors'}));
+  });
+}
+function phraseHits(text,phrases){
+  const hits=[];
+  for(const word of uniq(phrases.map(v=>v.trim()).filter(Boolean))){
+    const pattern=word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+');
+    const re=new RegExp('(?<![\\p{L}\\p{N}])'+pattern+'(?![\\p{L}\\p{N}])','giu');
+    for(const match of text.matchAll(re))hits.push({text:match[0],offset:match.index});
+  }return hits;
+}
+function finalResults(p,prefs){
+  return [quoteIssues(p),repetition(p.boxes.authors,p.boxes.editor),
+    ['authors','editor'].flatMap(box=>phraseHits(p.boxes[box],prefs.phrases).map(h=>({...h,step:6,box}))),
+    phraseHits(p.boxes.authors,[prefs.name,prefs.institution]).map(h=>({...h,step:6,box:'authors'})),
+    active(p).filter(c=>c.status==='major'&&!p.notes.some(n=>n.criterion===c.id)).map(c=>({text:c.name,step:2,id:c.id})),
+    ['authors','editor'].map(box=>({text:STR[box]+' · '+(tokens(p.boxes[box]).length===1?STR.oneWord:fmt(STR.count,{n:tokens(p.boxes[box]).length})),step:6,box}))];
+}
+function checklist(p){
+  const d=p.details,c=active(p);return [[!!(d.title.trim()&&d.journal.trim()&&d.msid.trim()&&d.due),d.ethical.every(Boolean)],[!!p.manuscript.paragraphs.length,d.first.every((v,i)=>v.trim()||p.excerpts.some(e=>e.question==='q'+i))],[p.criteriaChosen&&!!c.length,!!c.length&&c.every(v=>v.status)],[p.checks.notes],[p.checks.rank],[!!p.recommendation],[!!p.boxes.authors.trim()],[p.checks.final],[p.checks.export]];
+}
+
+
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const btn=(a,t,extra='',cls='')=>`<button type="button" class="btn ${cls}" data-act="${a}" ${extra}>${esc(t)}</button>`;
+const input=(id,label,value='',type='text',extra='')=>`<label class="field" for="${id}">${esc(label)}<input id="${id}" type="${type}" value="${esc(value)}" ${extra}></label>`;
+const area=(id,label,value='',rows=3,extra='')=>`<label class="field" for="${id}">${esc(label)}<textarea id="${id}" rows="${rows}" ${extra}>${esc(value)}</textarea></label>`;
+const options=(list,v)=>list.map(([x,t])=>`<option value="${esc(x)}" ${x===v?'selected':''}>${esc(t)}</option>`).join('');
+const select=(id,label,list,v,extra='')=>`<label class="field" for="${id}">${esc(label)}<select id="${id}" ${extra}>${options(list,v)}</select></label>`;
+const pairs=(keys,labels)=>keys.map((x,i)=>[x,labels[i]]);
+const tick=(id,label,on,extra='')=>`<label class="tickbox"><input type="checkbox" id="${id}" ${on?'checked':''} ${extra}>${esc(label)}</label>`;
+const link=(url,label)=>`<a href="${esc(url)}" rel="noopener noreferrer" target="_blank">${esc(label)}</a>`;
+const feedback='mailto:tianshihao@hiroshima-u.ac.jp?subject='+encodeURIComponent(STR.app+' '+VERSION);
+const kinds=['problem','alternative','question','editorial'], levels=['major','minor'], statuses=['','ok','minor','major','na'], recs=['accept','minor','major','reject'];
+let p=null,prefs={name:'',institution:'',phrases:[...STR.defaults]},templates=[],projects=[],mobile='step',filter='',selected=null,noteCursor='',timerStart=0,alpha=true;
+let lastManuscript=null,lastBackup='';
+let localStatus='',saveError='',revision=0,saveQueue=Promise.resolve(),lastStamp='',generation=0;
+function header(){
+  return `<header class="top"><button class="brand" data-act="home">${STR.app}</button><span class="ver">v${VERSION} · ${STR.alpha}</span><span class="spacer"></span>${p?`<span id="saveStatus" class="saveState" role="status">${esc(localStatus)}</span>`:''}${btn('settings',STR.settings,'','small')}</header>${alpha&&!p?`<div id="alphaBar"><p>${STR.alpha}. ${STR.alphaText}</p>${btn('dismiss',STR.close,'','ghost small')}</div>`:''}`;
+}
+function homeView(){
+ const sections=[[STR.why,STR.whyText],[STR.privacy,STR.privacyText+' '+STR.privateHint],[STR.issues,STR.issuesText],[STR.changes,STR.changeText]];
+ return `<main id="welcome"><div class="wIn"><h1>${STR.app}</h1><p class="sub">${STR.sub}</p><p class="metaLine">${fmt(STR.meta,{v:VERSION})}</p><p>${STR.v2.flow}</p><div class="paths"><button class="path" data-act="new"><b>${STR.modes[0][0]}</b><span>${STR.modes[0][1]}</span><em>${STR.start}</em></button>${btn('sample',STR.v2.sample)}</div><small>${STR.v2.coming}</small><div class="ctaRow">${btn('open',STR.open)}</div>${projects.length?`<h2>${STR.resume}</h2>${projects.map(r=>`<div class="projectRow">${btn('resume',(r.sample?STR.v2.sampleTag+' · ':'')+r.name,`data-id="${esc(r.id)}"`)}<span class="muted">${esc(new Date(r.savedAt).toLocaleDateString())}</span>${btn('deleteProject',STR.deleteProject,`data-id="${esc(r.id)}"`,'ghost small')}</div>`).join('')}`:''}<!-- Tianshi will rewrite the maker paragraph. -->${sections.map(([h,t])=>`<h2>${h}</h2><p>${t}</p>`).join('')}<footer class="wFoot">${fmt(STR.cite,{v:VERSION})}${link(feedback,STR.feedback)}</footer></div></main>`;
+}
+function detailsView(){
+ const d=p.details;
+ return `<div class="two">${['journal','msid','title','due'].map(k=>input(k,STR[k],d[k],k==='due'?'date':'text',`data-detail="${k}"`)).join('')}${select('round',STR.round,pairs(['first','second'],STR.rounds),d.round,'data-detail="round"')}<span id="days"></span></div>${STR.ethical.map(([t,h],i)=>`<div class="ethics">${tick('eth'+i,t,d.ethical[i],`data-eth="${i}"`)}<small>${h} ${link('https://doi.org/10.24318/cope.2019.1.9',STR.cope)}</small></div>`).join('')}`;
+}
+function reader(withNotes){
+ const paras=p.manuscript.paragraphs;
+ return `<div id="reader" tabindex="0" aria-label="${STR.read}">${paras.length?paras.map((s,i)=>`<div class="paragraph"><div class="margin">${withNotes?btn('paragraph','¶'+(i+1),`data-index="${i}" aria-label="${fmt(STR.noteOn,{n:i+1})}"`,'ghost small'):'¶'+(i+1)}${withNotes?p.notes.filter(n=>n.paragraph===i).map(n=>btn('edit',String(p.notes.indexOf(n)+1),`data-id="${esc(n.id)}" aria-label="${fmt(STR.noteMark,{n:p.notes.indexOf(n)+1})}"`,'marker small')).join(''):''}</div><p tabindex="${withNotes?0:-1}" data-par="${i}">${esc(s)}</p></div>`).join(''):`<p class="muted">${STR.missing}</p>`}</div>`;
+}
+function firstView(){
+ if(p.manuscript.pdf)return '<div class="row">'+btn('openReading',STR.reading.open,'','primary')+btn('load',STR.replace)+'</div><details><summary>'+STR.reading.optional+'</summary>'+STR.first.map((t,i)=>area('first'+i,(p.questionLabels[i]||t)+' · '+p.excerpts.filter(e=>e.question==='q'+i).length+' '+STR.v2.linked,p.details.first[i],2,'data-first="'+i+'"')).join('')+'</details>';
+ return `<div class="row">${btn('load',STR.import,'','primary')}<span class="muted">${esc(p.manuscript.source)} ${p.manuscript.paragraphs.length?'· '+fmt(STR.loaded,{n:p.manuscript.paragraphs.length}):''}</span></div>${reader(false)}<div class="row">${btn('timer',timerStart?STR.stopTimer:STR.startTimer)}<span>${STR.timer} <output id="time"></output></span></div>${STR.first.map((t,i)=>area('first'+i,(p.questionLabels[i]||t)+' · '+p.excerpts.filter(e=>e.question==='q'+i).length+' '+STR.v2.linked,p.details.first[i],2,`data-first="${i}"`)).join('')}`;
+}
+function criteriaView(){
+ const sets=Object.keys(STR.standards);
+ return `<p>${STR.expertise}</p><div class="row">${btn('core',STR.v2.core)}${btn('full',STR.v2.full)}${btn('confirmCriteria',STR.v2.confirmCriteria)}</div><details class="box"><summary>${STR.v2.report}</summary><p class="muted">${STR.setHelp}</p><div class="setgrid">${sets.map(k=>{const info=STR.standards[k];return `<div>${tick('set-'+k,info?info[0]:STR.general,active(p).some(c=>c.set===k),`data-set="${k}"`)}${info?`<small>${link(info[3],info[1]+' · '+info[2])}</small>`:''}</div>`}).join('')}</div></details><details class="box"><summary>${STR.custom}</summary>${area('custom',STR.lines)}${btn('custom',STR.addCriteria)}</details><details class="box"><summary>${STR.templates}</summary>${input('templateName',STR.templateName)}<div class="row">${btn('saveTemplate',STR.saveTemplate)}${btn('exportTemplate',STR.exportTemplate)}${btn('importTemplate',STR.importTemplate)}</div>${templates.length?select('template',STR.chooseTemplate,templates.map(t=>[t.id,t.name]),'')+btn('applyTemplate',STR.apply):''}</details>${active(p).map((c,i)=>{
+ const g=c.set==='general'?STR.generalRows[ids.indexOf(c.id)]:null;
+ return `<section class="criterion" data-criterion-id="${esc(c.id)}"><h3>${esc(c.name)}</h3>${g?`<p>${g[1]}</p><ul>${g[2].map(x=>`<li>${x}</li>`).join('')}</ul><details><summary>${STR.pattern}</summary><p>${g[3]}</p></details>`:''}${select('status'+i,STR.status+' · '+c.name,pairs(statuses,STR.statuses),c.status,`data-criterion="${esc(c.id)}"`)}</section>`}).join('')}`;
+}
+function noteList(){
+ const list=p.notes.filter(n=>!filter || n.severity===filter||n.kind===filter);
+ return `${select('filter',STR.filter,[['',STR.all],...pairs(levels,STR.levels),...pairs(kinds,STR.kinds)],filter)}${list.length?list.map(n=>`<article class="noteItem" data-note-id="${esc(n.id)}"><div class="eyeline">${orphan(p,n)?STR.v2.orphan+' · ':''}¶${n.paragraph+1} · ${STR.levels[levels.indexOf(n.severity)]} · ${STR.kinds[kinds.indexOf(n.kind)]}</div>${n.quote?`<blockquote>${esc(n.quote)}</blockquote>`:''}<p>${esc(n.comment)}</p><small>${esc([n.location,p.criteria.find(c=>c.id===n.criterion)?.name].filter(Boolean).join(' · '))}</small>${btn('edit',STR.edit,`data-id="${esc(n.id)}"`,'small')}</article>`).join(''):`<p class="muted">${STR.empty}</p>`}`;
+}
+function notesView(){
+ return (p.manuscript.pdf?btn('openReading',STR.reading.open):'')+`<div class="notesGrid"><section class="readingPanel"><div class="row"><h3>${STR.read}</h3>${btn('addNote',STR.addNote,'','primary small')}${btn('keys','?',`aria-label="${STR.shortcuts}"`,'small')}</div>${reader(true)}</section><section class="notesPanel"><h3>${STR.notes}</h3><div id="noteList">${noteList()}</div></section></div>${tick('notesOk',STR.notesOk,p.checks.notes,'data-check="notes"')}`;
+}
+function rankView(){
+ return `<ol class="rankList">${ordered(p).map((n,i,arr)=>`<li draggable="true" data-rank="${esc(n.id)}"><p>${esc(n.comment)}</p><small>¶${n.paragraph+1} · ${esc(n.location)}</small><div class="row">${btn('up',STR.up,`data-id="${esc(n.id)}" ${i?'':'disabled'}`,'small')}${btn('down',STR.down,`data-id="${esc(n.id)}" ${i===arr.length-1?'disabled':''}`,'small')}</div></li>`).join('')}</ol>${ordered(p).length?'':`<p>${STR.noMajor}</p>`}${tick('rankOk',STR.orderOk,p.checks.rank,'data-check="rank"')}`;
+}
+function decisionView(){return select('recommendation',STR.steps[5],[['',STR.choose],...pairs(recs,STR.recs)],p.recommendation)+`<p id="consistency" role="status">${p.recommendation?esc(consistency(p)||STR.consistent):''}</p>`}
+function draftView(){return area('authors',STR.authors,p.boxes.authors,12,'data-box="authors"')+btn('rebuild',STR.rebuild)+area('editor',STR.editor,p.boxes.editor,5,'data-box="editor" aria-describedby="editorHint"')+`<small id="editorHint">${STR.editorHint}</small>`}
+function finalView(){
+ const results=finalResults(p,prefs);return `<div class="audits">${results.map((a,i)=>`<div class="audit"><div><strong>${STR.final[i]}</strong><small>${i===5?a.map(r=>esc(r.text)).join('<br>'):a.length?fmt(STR.matches,{n:a.length}):STR.clear}</small></div>${btn('show',STR.show,`data-index="${i}" aria-label="${STR.show} · ${STR.final[i]}"`,'small')}</div>`).join('')}</div>${tick('finalOk',STR.checked,p.checks.final,'data-check="final"')}`;
+}
+function exportView(){
+ const gaps=[];
+ for(const [step,checks] of checklist(p).slice(0,8).entries()){
+  checks.forEach((done,j)=>{
+   if(done)return;
+   let labels=[STR.checkLabels[step][j]];
+   if(step===0)labels=j===0?['journal','msid','title','due'].filter(k=>!p.details[k].trim()).map(k=>STR[k]):STR.ethical.filter((_,i)=>!p.details.ethical[i]).map(r=>r[0]);
+   if(step===1&&j===1)labels=STR.first.flatMap((q,i)=>p.details.first[i].trim()||p.excerpts.some(e=>e.question==='q'+i)?[]:[p.questionLabels[i]||q]);
+   if(step===2&&j===1&&active(p).length)labels=active(p).filter(c=>!c.status).map(c=>c.name);
+   for(const label of labels)gaps.push(btn('step',STR.steps[step]+' · '+label,'data-index="'+step+'"'));
+  });
+ }
+ return `${gaps.length?'<h3>'+STR.v2.missing+'</h3><div class="row">'+gaps.join('')+'</div>':''}<div class="row">${btn('copyA',STR.copyA,p.boxes.authors.trim()?'':'disabled')}${btn('copyE',STR.copyE,p.boxes.editor.trim()?'':'disabled')}</div><div class="row">${btn('word',STR.v2.authorWord,p.boxes.authors.trim()?'':'disabled','primary')}${btn('editorWord',STR.v2.editorWord)}${btn('project',STR.saveFile)}</div>`}
+const views=[detailsView,firstView,criteriaView,notesView,rankView,decisionView,draftView,finalView,exportView];
+function rail(){
+ return STR.phases.map((name,i)=>`<section class="gPh"><h3>${name}</h3>${STR.steps.map((s,j)=>phases[j]===i?`<button class="gSt ${j===p.steps.current?'on':''} ${p.steps.done[j]?'done':''}" data-act="step" data-index="${j}" ${j===p.steps.current?'aria-current="step"':''}><span class="dot"></span>${j+1}. ${s}</button>`:'').join('')}</section>`).join('');
+}
+function guide(){
+ const i=p.steps.current;
+ return `<main id="guide" data-tab="${mobile}"><div class="gTop"><div class="gTopIn"><div class="gMeta"><span id="gStepOf">${fmt(STR.of,{x:i+1})} · ${esc(p.name)}</span><span id="gLeft"></span></div><div class="gBar" role="progressbar" aria-label="${STR.progress}" aria-valuemin="0" aria-valuemax="9"><i></i></div></div></div><div class="gBody"><nav class="gRail" aria-label="${STR.stepsNav}">${rail()}</nav><div class="gMain"><article class="gCard enter"><p class="gKick">${STR.phases[phases[i]]}</p><h2 tabindex="-1">${STR.steps[i]}</h2><p class="gWhy">${STR.intro[i]} ${({1:STR.v2.firstHelp,3:STR.v2.notesHelp,4:STR.v2.rankHelp,5:STR.v2.recHelp})[i]||''}</p><div class="gDo">${views[i]()}</div><ul class="checks" id="checks"></ul><div class="gFoot">${btn('back',STR.back,i?'':'disabled')}<span class="sp"></span>${btn(i===8?'home':'next',i===8?STR.finish:STR.next,'','primary')}</div></article><div class="footActions">${btn('project',STR.saveFile,'','ghost small')}${btn('open',STR.open,'','ghost small')}</div></div></div><nav class="bottom">${(i===3?[['rail',STR.guideTab],['step',STR.read],['notes',STR.notes]]:[['rail',STR.guideTab],['step',STR.stepTab]]).map(([k,s])=>btn('tab',s,`data-tab="${k}" aria-pressed="${mobile===k}"`)).join('')}</nav></main>`;
+}
+function render(){
+ $('#appRoot').innerHTML=header()+(p?guide():homeView());
+ if(p)refresh();
+}
+function refresh(){
+ const checks=checklist(p),i=p.steps.current; p.steps.done=checks.map(r=>r.every(Boolean));
+ $('#checks').innerHTML=checks[i].map((ok,j)=>`<li class="${ok?'ok':''}"><span class="sr">${ok?STR.done:STR.pending} </span>${STR.checkLabels[i][j]}</li>`).join('');
+ $('.gRail').innerHTML=rail(); const count=p.steps.done.filter(Boolean).length;
+ $('.gBar i').style.width=(count/9*100)+'%';$('.gBar').setAttribute('aria-valuenow',count);
+ $('#gLeft').textContent=fmt(STR.left,{n:minutes.reduce((a,t,j)=>a+(p.steps.done[j]?0:t),0)});
+ $('#gStepOf').textContent=fmt(STR.of,{x:i+1})+' · '+p.name;
+ if($('#days')){const d=new Date();const delta=Math.round((Date.parse(p.details.due+'T00:00:00Z')-Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/86400000);$('#days').textContent=Number.isFinite(delta)?delta===0?STR.today:fmt(delta<0?STR.overdue:STR.days,{n:Math.abs(delta)}):''}
+ if($('#time'))updateClock();
+}
+
+
+
+const dbReady=new Promise((resolve,reject)=>{
+ const req=indexedDB.open('peer-review-desk',2);
+ req.onupgradeneeded=()=>{for(const s of ['projects','catalog','prefs','templates','manuscripts'])if(!req.result.objectStoreNames.contains(s))req.result.createObjectStore(s,{keyPath:'id'})};
+ req.onerror=()=>reject(req.error);req.onsuccess=()=>resolve(req.result);
+});
+async function transact(stores,mode,work){
+ const db=await dbReady;
+ return new Promise((resolve,reject)=>{
+ const tx=db.transaction(stores,mode);let result;
+ tx.oncomplete=()=>resolve(result?.result);tx.onabort=()=>reject(tx.error||Error(STR.fileErr));tx.onerror=()=>{};
+ try{result=work(tx)}catch(e){tx.abort();reject(e)}
+ });
+}
+function setStatus(msg){localStatus=msg;if($('#saveStatus'))$('#saveStatus').textContent=msg}
+function save(){
+ if(!p)return Promise.resolve();
+ const target=p,token=++revision;setStatus(STR.saving);
+ saveQueue=saveQueue.catch(()=>{}).then(async()=>{
+  if(token!==revision || target!==p)return;
+  if(saveError===STR.conflict){setStatus(saveError);return}
+  let conflict=false;const expected=lastStamp;
+  const manuscript=target.manuscript;
+  const stamp=new Date(Math.max(Date.now(),(Date.parse(expected)||0)+1)).toISOString();
+  try{
+   await transact(['projects','catalog','manuscripts'],'readwrite',tx=>{
+    const store=tx.objectStore('projects'),get=tx.objectStore('catalog').get(target.id);
+    get.onsuccess=()=>{
+     if((get.result?.savedAt||'')!==expected){conflict=true;tx.abort();return}
+     const record={...target,manuscript:null,savedAt:stamp};
+     if(lastManuscript!==manuscript)tx.objectStore('manuscripts').put({id:record.id,...manuscript});
+     store.put(record);tx.objectStore('catalog').put({id:record.id,name:record.name,sample:record.sample,savedAt:stamp});
+    };
+   });
+   if(target===p){lastStamp=stamp;lastManuscript=manuscript;target.savedAt=stamp;saveError='';if(token===revision)setStatus(STR.saved+' · '+new Date(stamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' · '+STR.v2.backup)}
+  }catch{if(target===p){saveError=conflict?STR.conflict:STR.saveFail;setStatus(saveError)}}
+ });return saveQueue;
+}
+const getAll=s=>transact([s],'readonly',t=>t.objectStore(s).getAll());
+const getOne=(s,id)=>transact([s],'readonly',t=>t.objectStore(s).get(id));
+async function loadProject(id){
+ const db=await dbReady;
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(['projects','manuscripts'],'readonly');
+  const project=tx.objectStore('projects').get(id), manuscript=tx.objectStore('manuscripts').get(id);
+  tx.oncomplete=()=>{const r=project.result;if(r&&!r.manuscript)r.manuscript=manuscript.result;resolve(r)};
+  tx.onabort=()=>reject(tx.error);
+ });
+}
+const putOne=(s,v)=>transact([s],'readwrite',t=>t.objectStore(s).put(v));
+async function catalog(){projects=(await getAll('catalog')).sort((a,b)=>b.savedAt.localeCompare(a.savedAt))}
+let modalSubmit=null;
+function modal(title,body,submit='',action=null){
+ const d=$('#dialog');if(d.open)d.close();modalSubmit=action;
+ d.innerHTML=`<form><div class="dlgHead"><h2 id="dialogTitle">${esc(title)}</h2></div><div class="dlgBody">${body}</div><div class="dlgFoot">${btn('close',submit?STR.cancel:STR.close)}${submit?`<button type="submit" class="btn primary">${esc(submit)}</button>`:''}</div></form>`;d.showModal();
+}
+const closeDialog=()=>$('#dialog').close();
+function ask(title,label,action){modal(title,'',label,async()=>{closeDialog();await action()})}
+const undoActions=new Map();
+function clearUndo(id){undoActions.delete(id);document.getElementById(id)?.remove();$('#undoBar').hidden=!undoActions.size}
+function offerUndo(fn){const id=uid();undoActions.set(id,fn);const bar=$('#undoBar');bar.hidden=false;bar.insertAdjacentHTML('beforeend','<span id="'+id+'">'+STR.v2.deleted+' '+btn('undoRemoval',STR.v2.undo,'data-id="'+id+'"')+'</span>');setTimeout(()=>clearUndo(id),15000)}
+let messageTimer;
+function notify(text){const el=$('#message');el.textContent=text;el.classList.add('show');clearTimeout(messageTimer);messageTimer=setTimeout(()=>el.classList.remove('show'),4000)}
+function handled(action){Promise.resolve().then(action).catch(e=>notify([...Object.values(STR),...Object.values(STR.v2)].includes(e.message)?e.message:STR.fileErr))}
+function updateClock(){const sec=p.details.seconds+(timerStart?Math.floor((Date.now()-timerStart)/1000):0);if($('#time'))$('#time').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
+function pause(){if(p && timerStart){p.details.seconds+=Math.floor((Date.now()-timerStart)/1000);timerStart=0}}
+function download(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),120000);
+}
+function jsonFile(data,name){download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),name)}
+const VENDOR={
+ mammoth:['mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js','sha384-/cXAMbzovUIKbBERjPmR3SnPTh8siWr5lsvFYj1Uq4XP0yaJUZJmsh0YXyGv5P0y'],
+ docx:['docx.iife.js','https://cdn.jsdelivr.net/npm/docx@9.6.1/dist/index.iife.js','sha384-NFScaGYD8NnHsUV2z0M1gCuKoEsGy7LB1EuWKYFsmQbO4k23nzZzEHFySoCvt8Xn'],
+ pdf:['pdf.min.mjs','https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/legacy/build/pdf.min.mjs','sha384-WZ19eSKLd5nvuF6gSf5+dWLC1OM7omDgxo0gENWkgmOr43sLyle/LJp+TKHjDAKY'],
+ worker:['pdf.worker.min.mjs','https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/legacy/build/pdf.worker.min.mjs','sha384-XQpM4ft9oqgzszJDEejhnb/lm8/sxo2oTDykD8DHEXahzhSdDUhNYfrnJ/4ndOpb']
+};
+const loaded={};
+function loadAsset(key){
+ if(!loaded[key])loaded[key]=(async()=>{
+  const [file,remote,integrity]=VENDOR[key];
+  const sources=key==='pdf'?['vendor/'+file]:['vendor/'+file,remote];
+  for(const src of sources){
+   try{await new Promise((resolve,reject)=>{const s=document.createElement('script');if(file.endsWith('.mjs'))s.type='module';s.src=src;s.integrity=integrity;s.crossOrigin='anonymous';s.onload=resolve;s.onerror=()=>{s.remove();reject(Error())};document.head.append(s)});return}catch{}
+  }throw Error(STR.errorFile);
+ })().catch(e=>{delete loaded[key];throw e});
+ return loaded[key];
+}
+let embeddedPdfAssets;
+function pdfBytes(key){
+ if(!embeddedPdfAssets)embeddedPdfAssets=globalThis.deskPdfAssets;
+ const encoded=Object.hasOwn(embeddedPdfAssets,key) && embeddedPdfAssets[key];
+ if(!encoded)throw Error(STR.pdfReaderError);
+ return Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));
+}
+class EmbeddedPdfData {
+ async fetch({kind,filename}){
+  const dir={cMapUrl:'cmaps',standardFontDataUrl:'standard_fonts'}[kind];
+  return pdfBytes(dir+'/'+filename);
+ }
+}
+async function embeddedModule(file){
+ const url=URL.createObjectURL(new Blob([pdfBytes(file)],{type:'text/javascript'}));
+ try{return await import(url)}finally{URL.revokeObjectURL(url)}
+}
+let embeddedReader;
+function getEmbeddedReader(){
+ if(!embeddedReader)embeddedReader=(async()=>{
+  // Register the matching worker handler before the reader first opens a document.
+  if(!globalThis.deskPdfAssets)await new Promise((ok,fail)=>{const tag=document.createElement('script');tag.src='vendor/pdf-offline.js';tag.onload=ok;tag.onerror=fail;document.head.append(tag)});
+  await embeddedModule('pdf.worker.min.mjs');
+  const api=await embeddedModule('pdf.min.mjs');
+  return {api,options:{BinaryDataFactory:EmbeddedPdfData,useWorkerFetch:false}};
+ })().catch(()=>{embeddedReader=null;throw Error(STR.pdfReaderError)});
+ return embeddedReader;
+}
+async function openPdf(buffer,password){
+ const base=new URL('vendor/',location.href).href;
+ const options={password,isEvalSupported:false,useSystemFonts:true,useWasm:false,cMapUrl:base+'cmaps/',cMapPacked:true,standardFontDataUrl:base+'standard_fonts/'};
+ async function openWith(api,extra){
+  const task=api.getDocument({...options,...extra,data:new Uint8Array(buffer.slice(0))});
+  try{return await task.promise}catch(error){try{await task.destroy()}catch{}throw error}
+ }
+ if(!location.href.startsWith('file:')){
+  let api;
+  try{await loadAsset('pdf');api=globalThis.pdfjsLib;api.GlobalWorkerOptions.workerSrc=base+'pdf.worker.min.mjs'}catch{}
+  if(api){
+   try{return await openWith(api,{})}catch(error){
+    if(error.name==='PasswordException'||error.name==='InvalidPDFException')throw error;
+    if(!/worker|module|import|MIME|fetch|network|security|access|load failed|policy/i.test(String(error)))throw error;
+   }
+  }
+ }
+ const reader=await getEmbeddedReader();
+ return openWith(reader.api,reader.options);
+}
+async function pdfParagraphs(buffer,password){
+ const doc=await openPdf(buffer,password);
+ const paragraphs=[];
+ try{
+  for(let i=1;i<=doc.numPages;i++){
+   const page=await doc.getPage(i),content=await page.getTextContent();let line='',para='',y=null,h=0,prevX=0;
+   function flush(){if(line.trim())para+=(para?' ':'')+line.trim();line=''}
+   function finish(){flush();if(para)paragraphs.push(para);para=''}
+   for(const item of content.items){
+    if(!('str' in item))continue;
+    const pos=item.transform[5],size=Math.max(1,Math.abs(item.height)||h);
+    if(y!==null && Math.abs(pos-y)>Math.max(h,size)*1.55)finish();
+    else if(y!==null && Math.abs(pos-y)>size*.5)flush();
+    if(line && item.str && item.transform[4]-prevX>size*.15 && !/\s$/.test(line))line+=' ';
+    line+=item.str;prevX=item.transform[4]+item.width;y=pos;h=size;if(item.hasEOL)flush();
+   }finish();page.cleanup();
+  }
+ }finally{await doc.destroy()}
+ if(!paragraphs.length)throw Error(STR.noPdf);return paragraphs;
+}
+async function manuscriptFile(f,password=''){
+ const ext=f.name.split('.').pop().toLowerCase();
+ if(ext==='txt')return splitParagraphs(await f.text());
+ if(ext==='docx'){await loadAsset('mammoth');const r=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});return splitParagraphs(r.value)}
+ if(ext==='pdf'||f.type==='application/pdf')return pdfParagraphs(await f.arrayBuffer(),password);
+ throw Error(STR.fileType);
+}
+function commitManuscript(source,paragraphs,pdf='',password=''){
+ if(!paragraphs.length)throw Error(STR.noText);
+ const commit=()=>{p.manuscript={source,paragraphs,pdf,documentId:uid()};p.checks.final=false;selected=null;render();save();if(pdf)openReading(password)};
+ if(p.manuscript.paragraphs.length)ask(STR.replaced,STR.replace,commit);else{closeDialog();commit()}
+}
+let pendingPdf=null,importAttempt=0;
+function importMessage(error,isPdf){
+ if(Object.values(STR).includes(error?.message))return error.message;
+ if(error?.name==='NotReadableError'||error?.name==='NotFoundError')return STR.pdfFileAccess;
+ if(!isPdf)return STR.errorFile;
+ if(error?.name==='InvalidPDFException')return STR.pdfInvalid;
+ if(error?.name==='PasswordException')return error.code===2?STR.pdfWrongPassword:STR.pdfPassword;
+ return STR.pdfOther;
+}
+async function readManuscript(file,password=''){
+ const dialog=$('#dialog'),picker=$('#msFile'),status=$('#importStatus'),unlock=$('#unlockArea');
+ const attempt=++importAttempt, project=p, isPdf=/\.pdf$/i.test(file.name)||file.type==='application/pdf';
+ const current=()=>attempt===importAttempt&&project===p&&dialog.open&&$('#msFile')===picker;
+ pendingPdf=null;unlock.replaceChildren();
+ status.textContent=isPdf?STR.pdfLoading:STR.fileLoading;
+ try{
+  const paragraphs=await manuscriptFile(file,password);
+  const pdf=isPdf?encodePdf(await file.arrayBuffer()):'';
+  if(current())commitManuscript(file.name,paragraphs,pdf,password);
+ }catch(error){
+  if(!current())return;
+  status.textContent=importMessage(error,isPdf);
+  if(isPdf&&error.name==='PasswordException'){
+   pendingPdf=file;
+   unlock.innerHTML=input('pdfPassword',STR.passwordLabel,'','password','autocomplete="off"')+btn('unlockPdf',STR.unlock,'','primary');
+   $('#pdfPassword').focus();
+  }
+ }
+}
+document.getElementById('dialog').addEventListener('close',()=>{
+ if(!document.getElementById('dialog').open){pendingPdf=null;importAttempt++}
+});
+async function wordFile(confidential=false){
+ await loadAsset('docx');const {Document,Paragraph,HeadingLevel,Packer}=docx;
+ const blocks=[];const para=(s,heading)=>blocks.push(new Paragraph({text:s,heading}));
+ para(p.name,HeadingLevel.TITLE);
+ for(const key of ['journal','msid','title','due','round']){para(STR[key],HeadingLevel.HEADING_2);para(key==='round'?STR.rounds[p.details.round==='second'?1:0]:p.details[key])}
+ if(confidential){para(STR.steps[5],HeadingLevel.HEADING_2);para(STR.recs[recs.indexOf(p.recommendation)]||STR.noDecision)}
+ for(const k of (confidential?['authors','editor']:['authors'])){para(STR[k],HeadingLevel.HEADING_1);for(const line of p.boxes[k].split('\n'))para(line)}
+ const file=new Document({creator:STR.app,sections:[{children:blocks}]});download(await Packer.toBlob(file),confidential?'editor-confidential.docx':'author-comments.docx');
+}
+function templateRecord(name,criteria){
+ return {app:APP,type:'criteria-template',schemaVersion:1,id:uid(),name,criteria:cleanCriteria(criteria).map(c=>({...c,status:'',active:true}))};
+}
+function checkTemplate(r){if(r?.app===APP&&r.manuscript)throw Error(STR.v2.projectWrong);if(r?.app!==APP||r.type!=='criteria-template'||r.schemaVersion!==1||!str(r.name).trim()||!Array.isArray(r.criteria)||!r.criteria.length||cleanCriteria(r.criteria).length!==r.criteria.length)throw Error(STR.badTemplate);return templateRecord(r.name,r.criteria)}
+
+
+const readingCopy=STR.reading;
+let pdfSession=null,holdTimer=0;
+function readingQuestions(){
+ return [...STR.first.map((label,i)=>({id:'q'+i,label:p.questionLabels[i]||label})),...p.customQuestions];
+}
+function encodePdf(buffer){
+ const bytes=new Uint8Array(buffer),chunks=[];
+ for(let i=0;i<bytes.length;i+=24576)chunks.push(btoa(String.fromCharCode(...bytes.subarray(i,i+24576))));
+ return chunks.join('');
+}
+function stopHold(){clearTimeout(holdTimer);holdTimer=0;document.querySelector('#holdDiscard')?.classList.remove('holding')}
+function showPdfPanel(mode){
+ stopHold();$('#readingDialog .pdfTools').inert=mode==='new';const panel=$('#pdfPanel'),s=pdfSession;panel.hidden=false;panel.dataset.mode=mode;
+ const q=readingQuestions();
+ if(mode==='new'){
+  panel.innerHTML=input('newPrompt',s.edit?readingCopy.edit:readingCopy.newQuestion,s.edit?q.find(x=>x.id===s.edit)?.label:'')+btn('createReadingQuestion',s.edit?readingCopy.apply:STR.add)+btn('holdDiscard',readingCopy.discard,'id="holdDiscard"');$('#newPrompt').focus();return;
+ }
+ const assigning=!!s.selection;
+ const list=mode==='quick'?q.slice(0,5):q;
+ panel.innerHTML='<div class="row"><strong>'+esc(assigning?readingCopy.assign:readingCopy.questions)+'</strong>'+btn('closeShelf','×','aria-label="'+readingCopy.dismiss+'"')+'</div>'+
+ list.map(question=>{const items=p.excerpts.filter(e=>e.question===question.id);
+ return assigning?btn('linkEvidence',question.label,'style="border-left:5px solid '+qColor(question.id)+'" data-q="'+esc(question.id)+'"'):'<details><summary style="border-left:5px solid '+qColor(question.id)+';padding-left:6px">'+esc(question.label)+' ('+items.length+')</summary>'+btn('editReadingQuestion',readingCopy.edit,'data-q="'+esc(question.id)+'"')+questionItems(question.id).map(({e,i})=>'<blockquote>'+esc(e.text)+'</blockquote>'+btn('jumpExcerpt',readingCopy.jump+' · '+readingCopy.page+' '+e.page,'data-index="'+i+'" '+(matchingSource(e)?'':'disabled'))).join('')+'</details>';
+ }).join('')+(mode==='quick'&&q.length>5?btn('allReadingQuestions','5 / '+q.length+' · '+STR.v2.all):'')+btn('newReadingQuestion',readingCopy.addQuestion);
+}
+function addEvidence(id){
+ const s=pdfSession;if(s.selection){const rects=s.rects||[];if(!p.excerpts.some(e=>matchingSource(e)&&e.question===id&&e.text===s.selection&&e.page===(rects[0]?.[0]||s.page)&&JSON.stringify(e.rects||[])===JSON.stringify(rects)))p.excerpts.push({question:id,text:s.selection,page:rects[0]?.[0]||s.page,source:p.manuscript.source,documentId:p.manuscript.documentId,rects});$$('#pdfPage .pageSheet[data-ready]').forEach(drawHighlights);s.selection='';window.getSelection()?.removeAllRanges()}
+ $('#readingDialog .pdfTools').inert=false;$('#pdfPanel').hidden=true;$('#pdfInfo').textContent=readingCopy.saved;refresh();save();
+}
+function qColor(id){
+ const i=Math.max(0,readingQuestions().findIndex(q=>q.id===id));
+ return 'hsl('+Math.round((47+i*137.508)%360)+' 78% 49%)';
+}
+function matchingSource(e){return e.documentId?p.manuscript.documentId===e.documentId:e.source===p.manuscript.source}
+function drawHighlights(sheet){
+ sheet.querySelector('.inkLayer')?.remove();const overlay=document.createElement('div');overlay.className='inkLayer';
+ for(const [i,e] of p.excerpts.entries()){
+  if(!matchingSource(e))continue;
+  for(const rect of e.rects||[]){
+   const [page,x,y,w,h]=rect;if(page!==Number(sheet.dataset.page))continue;
+   const mark=document.createElement('i');mark.dataset.excerpt=i;
+   Object.assign(mark.style,{left:x*100+'%',top:y*100+'%',width:w*100+'%',height:h*100+'%',color:qColor(e.question),backgroundColor:qColor(e.question)});
+   overlay.append(mark);
+  }
+ }
+ sheet.append(overlay);
+}
+function captureRects(range){
+ const result=[];
+ for(const r of range.getClientRects()){
+  if(!r.width||!r.height)continue;
+  for(const sheet of $$('#pdfPage .pageSheet[data-ready]')){
+   const box=sheet.getBoundingClientRect();
+   if(r.top<box.top-1||r.bottom>box.bottom+1||r.left<box.left-2||r.right>box.right+2)continue;
+   // Ignore whole-page/element boxes returned for cross-page DOM selections.
+   if(r.height>box.height*.18||r.width>box.width*1.01)continue;
+   const coord=[+sheet.dataset.page,(r.left-box.left)/box.width,(r.top-box.top)/box.height,r.width/box.width,r.height/box.height].map(v=>Math.round(v*100000)/100000);
+   if(!result.some(a=>a.every((v,i)=>v===coord[i])))result.push(coord);
+   break;
+  }
+ }return result;
+}
+function questionItems(id){return p.excerpts.map((e,i)=>({e,i})).filter(x=>x.e.question===id).sort((a,b)=>a.e.page-b.e.page||(a.e.rects?.[0]?.[2]||0)-(b.e.rects?.[0]?.[2]||0))}
+function inspectHighlight(ev){
+ const sheet=ev.target.closest('.pageSheet');if(!sheet||!window.getSelection()?.isCollapsed)return;
+ const hits=new Set();
+ for(const el of sheet.querySelectorAll('[data-excerpt]')){
+  const r=el.getBoundingClientRect();if(ev.clientX>=r.left&&ev.clientX<=r.right&&ev.clientY>=r.top&&ev.clientY<=r.bottom)hits.add(+el.dataset.excerpt);
+ }
+ if(!hits.size)return;
+ const panel=$('#pdfPanel');panel.hidden=false;panel.dataset.mode='inspect';pdfSession.selection='';
+ panel.innerHTML=btn('closeShelf',STR.close)+[...hits].map(i=>{const e=p.excerpts[i],q=readingQuestions().find(q=>q.id===e.question);return '<section><strong>'+esc(q?.label)+'</strong><blockquote>'+esc(e.text)+'</blockquote>'+btn('removeExcerpt',readingCopy.unlink,'data-index="'+i+'"')+'</section>'}).join('');
+}
+document.addEventListener('click',inspectHighlight);
+async function jumpExcerpt(i){
+ const e=p.excerpts[i];if(!e||!matchingSource(e))return;
+ const sheet=$('#pdfPage').querySelector('[data-page="'+e.page+'"]');if(!sheet)return;
+ $('#pdfPanel').hidden=true;sheet.scrollIntoView({block:'start'});await renderSheet(sheet);
+ const mark=sheet.querySelector('[data-excerpt="'+i+'"]');mark?.scrollIntoView({block:'center'});if(mark)mark.classList.add('jumpMark');
+ const list=questionItems(e.question).filter(x=>matchingSource(x.e)),j=list.findIndex(x=>x.i===i);
+ $('#pdfInfo').innerHTML=esc(readingQuestions().find(q=>q.id===e.question)?.label)+' · '+(j+1)+' / '+list.length+' '+btn('jumpExcerpt',readingCopy.previous,'data-index="'+(list[j-1]?.i??0)+'" '+(j?'':'disabled'))+btn('jumpExcerpt',readingCopy.following,'data-index="'+(list[j+1]?.i??0)+'" '+(j+1<list.length?'':'disabled'));
+}
+async function paintPdf(){
+ const s=pdfSession;if(!s?.doc)return;s.observer?.disconnect();
+ const frame=$('#pdfPage'),oldPage=s.page,first=await s.doc.getPage(1);if(pdfSession!==s)return;
+ const base=first.getViewport({scale:1});s.width=Math.max(220,Math.min(1100,$('#pdfSpace').clientWidth-24))*s.zoom;
+ frame.replaceChildren();s.observer=new IntersectionObserver(entries=>{for(const item of entries)if(item.isIntersecting)renderSheet(item.target).catch(e=>{if(pdfSession===s)$('#pdfInfo').textContent=importMessage(e,true)})},{root:$('#pdfSpace'),rootMargin:'75% 0px'});
+ for(let n=1;n<=s.doc.numPages;n++){const sheet=document.createElement('div');sheet.className='pageSheet';sheet.dataset.page=n;sheet.style.width=s.width+'px';sheet.style.height=s.width*base.height/base.width+'px';frame.append(sheet);s.observer.observe(sheet)}
+ const start=frame.children[oldPage-1]||frame.firstElementChild;if(oldPage>1)start.scrollIntoView();await renderSheet(start);
+}
+function renderSheet(sheet){
+ if(sheet.task)return sheet.task;
+ sheet.task=(async()=>{
+ const s=pdfSession,pg=await s.doc.getPage(+sheet.dataset.page);if(!sheet.isConnected||pdfSession!==s)return;
+ const scale=s.width/pg.getViewport({scale:1}).width,viewport=pg.getViewport({scale});
+ sheet.style.height=viewport.height+'px';sheet.style.setProperty('--total-scale-factor',String(scale*pg.userUnit));sheet.style.setProperty('--scale-round-x','1px');sheet.style.setProperty('--scale-round-y','1px');
+ const canvas=document.createElement('canvas'),layer=document.createElement('div');layer.className='textLayer';const ratio=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.ceil(viewport.width*ratio);canvas.height=Math.ceil(viewport.height*ratio);sheet.append(canvas,layer);
+ await pg.render({canvasContext:canvas.getContext('2d'),viewport,transform:[ratio,0,0,ratio,0,0],background:'white'}).promise;
+ if(!sheet.isConnected||pdfSession!==s)return;
+ await new globalThis.pdfjsLib.TextLayer({textContentSource:pg.streamTextContent(),container:layer,viewport}).render();
+ sheet.dataset.ready='1';drawHighlights(sheet);
+ })();return sheet.task;
+}
+async function readPdfPage(password=''){
+ const s=pdfSession;try{
+  const bytes=Uint8Array.from(atob(p.manuscript.pdf),c=>c.charCodeAt(0));
+  const doc=await openPdf(bytes.buffer,password);
+  if(pdfSession!==s){await doc.destroy();return}
+  s.doc=doc;$('#pageCount').textContent=readingCopy.page+' 1 / '+doc.numPages;$('#pdfUnlock').replaceChildren();await paintPdf();
+ }catch(e){if(pdfSession!==s)return;$('#pdfInfo').textContent=importMessage(e,true);if(e.name==='PasswordException')$('#pdfUnlock').innerHTML=input('readerPass',STR.passwordLabel,'','password')+btn('unlockReader',STR.unlock)}
+}
+function openReading(password=''){
+ const d=$('#readingDialog');pdfSession={page:1,zoom:1,selection:'',enabled:p.prompts!==false,paint:0,doc:null};
+ d.innerHTML='<div class="pdfTools">'+btn('finishReading',readingCopy.back)+'<span id="pageCount"></span>'+btn('zoomOut','−','aria-label="'+readingCopy.out+'"')+btn('zoomIn','+','aria-label="'+readingCopy.in+'"')+btn('questionShelf',readingCopy.see)+'<strong>'+STR.v2.prompts+'</strong>'+btn('enablePop',STR.v2.enabled,'aria-pressed="'+pdfSession.enabled+'"')+btn('pausePop',STR.v2.paused,'aria-pressed="'+!pdfSession.enabled+'"')+'</div><div id="pdfInfo" role="status">'+readingCopy.hint+'</div><div id="pdfUnlock"></div><div id="pdfSpace"><div id="pdfPage"></div></div><aside id="pdfPanel" hidden></aside>';
+ d.showModal();$('#pdfSpace').onscroll=()=>{const s=pdfSession,space=$('#pdfSpace');if(!s?.doc)return;const top=space.getBoundingClientRect().top;const page=$$('#pdfPage .pageSheet').find(el=>el.getBoundingClientRect().bottom>top+8);if(page)s.page=+page.dataset.page;$('#pageCount').textContent=readingCopy.page+' '+s.page+' / '+s.doc.numPages};readPdfPage(password);
+}
+function selectionPopup(){
+ const s=pdfSession,sel=window.getSelection();if(!s?.enabled||!sel?.rangeCount||sel.isCollapsed)return;
+ if(!$('#pdfPage')?.contains(sel.anchorNode)||!$('#pdfPage').contains(sel.focusNode))return;
+ const text=sel.toString().trim();if(!text)return;const rects=captureRects(sel.getRangeAt(0));if(text===s.selection&&JSON.stringify(rects)===JSON.stringify(s.rects)&&!$('#pdfPanel').hidden)return;if($('#pdfPanel').dataset.mode==='new'&&!$('#pdfPanel').hidden)return;s.rects=rects;s.selection=text;showPdfPanel('quick');
+}
+document.addEventListener('pointerup',e=>{if(e.target.closest('#pdfPage'))setTimeout(selectionPopup,0);stopHold()});
+document.addEventListener('keyup',e=>{if(e.target.closest('#readingDialog')&&e.key==='Shift')selectionPopup();if([' ','Enter'].includes(e.key))stopHold()});
+function startHold(e){
+ const b=e.target.closest('#holdDiscard');if(!b||holdTimer||e.repeat||(e.type==='keydown'&&![' ','Enter'].includes(e.key)))return;
+ e.preventDefault();b.classList.add('holding');holdTimer=setTimeout(()=>{stopHold();showPdfPanel(pdfSession.selection?'quick':'all')},1500);
+}
+document.addEventListener('pointerdown',startHold);document.addEventListener('keydown',startHold);
+for(const ev of ['pointercancel','focusout','pointerout'])document.addEventListener(ev,e=>{if(e.target.id==='holdDiscard')stopHold()});
+window.addEventListener?.('blur',stopHold);
+document.addEventListener('close',e=>{if(e.target.id==='readingDialog'){stopHold();const s=pdfSession;pdfSession=null;s?.observer?.disconnect();s?.doc?.destroy().catch(()=>{});refresh()}},true);
+async function readingAction(a,b){
+ const s=pdfSession;
+ switch(a){
+ case 'openReading':openReading();break;
+ case 'finishReading':$('#readingDialog').close();break;
+ case 'unlockReader':{const pw=$('#readerPass').value;$('#readerPass').value='';await readPdfPage(pw);break}
+ case 'zoomOut':case 'zoomIn':case 'nextPdf':case 'prevPdf':
+ if(!s.doc)return;
+ if(a==='zoomIn'||a==='zoomOut')s.zoom=Math.max(.5,Math.min(3,s.zoom*(a==='zoomIn'?1.25:.8)));else s.page=Math.max(1,Math.min(s.doc.numPages,s.page+(a==='nextPdf'?1:-1)));
+ s.selection='';$('#pdfPanel').hidden=true;await paintPdf();break;
+ case 'hideReadingPanel':case 'pausePop':case 'enablePop':
+ s.enabled=a==='enablePop';p.prompts=s.enabled;s.selection='';$('#pdfPanel').hidden=true;
+ for(const k of ['enablePop','pausePop'])$('#readingDialog [data-act="'+k+'"]').setAttribute('aria-pressed',String((k==='enablePop')===s.enabled));save();break;
+ case 'closeShelf':s.selection='';window.getSelection()?.removeAllRanges();$('#pdfPanel').hidden=true;break;
+ case 'removeExcerpt':p.excerpts.splice(+b.dataset.index,1);$$('#pdfPage .pageSheet[data-ready]').forEach(drawHighlights);$('#pdfPanel').hidden=true;refresh();save();break;
+ case 'jumpExcerpt':await jumpExcerpt(+b.dataset.index);break;
+ case 'editReadingQuestion':s.edit=b.dataset.q;showPdfPanel('new');break;
+ case 'questionShelf':s.selection='';showPdfPanel('all');break;
+ case 'allReadingQuestions':showPdfPanel('all');break;
+ case 'newReadingQuestion':s.edit=null;showPdfPanel('new');break;
+ case 'createReadingQuestion':{const label=$('#newPrompt').value.trim();if(!label){$('#newPrompt').focus();return}if(s.edit){const custom=p.customQuestions.find(q=>q.id===s.edit);if(custom)custom.label=label;else p.questionLabels[Number(s.edit.slice(1))]=label;s.edit=null;showPdfPanel('all');refresh();save();break}const q={id:uid(),label};p.customQuestions.push(q);addEvidence(q.id);break}
+ case 'linkEvidence':addEvidence(b.dataset.q);break;
+ }
+}
+
+let readingSelectionTimer;
+document.addEventListener('selectionchange',()=>{
+ clearTimeout(readingSelectionTimer);
+ if(pdfSession?.enabled)readingSelectionTimer=setTimeout(selectionPopup,350);
+});
+
+document.addEventListener('cancel',e=>{
+ if(e.target.id==='readingDialog'&&$('#pdfPanel')?.dataset.mode==='new'&&!$('#pdfPanel').hidden)e.preventDefault();
+},true);
+
+
+function openNote(paragraph,quote='',original=null){
+ if(!p.manuscript.paragraphs[paragraph]&&!original){notify(STR.pick);return}
+ const n=original||{paragraph,quote,kind:'',severity:'',criterion:'',location:'',comment:''};
+ const choices=p.criteria.filter(c=>c.active!==false||c.id===n.criterion).map(c=>[c.id,c.name+(c.active===false?' · '+STR.retired:'')]);
+ if(n.criterion&&!choices.some(([id])=>id===n.criterion))choices.push([n.criterion,STR.retired]);
+ modal(original?STR.edit:STR.addNote,`<div class="eyeline">¶${n.paragraph+1}</div>${original&&orphan(p,n)?select('repair',STR.v2.anchor,[['',STR.choose],...p.manuscript.paragraphs.map((t,i)=>[String(i),'¶'+(i+1)+' '+t.slice(0,90)])],''):''}${n.quote?`<blockquote>${esc(n.quote)}</blockquote>`:`<small>${STR.noQuote}</small>`}${n.originalQuote?'<blockquote>'+esc(n.originalQuote)+'</blockquote>':''}${area('comment',STR.comment,n.comment,3,'required autofocus')}${select('kind',STR.kind,[['',STR.selectKind],...pairs(kinds,STR.kinds)],n.kind,'required')}<div class="two">${select('severity',STR.severity,[['',STR.selectSeverity],...pairs(levels,STR.levels)],n.severity,'required')}${select('criterion',STR.criterion,[['',STR.none],...choices],n.criterion)}</div>${input('location',STR.loc,n.location)}${original?btn('delete',STR.remove,`data-id="${esc(n.id)}"`,'danger small'):''}`,STR.keepNote,()=>{
+  const entry={...n,id:n.id||uid(),comment:$('#comment').value.trim(),kind:$('#kind').value,severity:$('#severity').value,criterion:$('#criterion').value,location:$('#location').value};
+  if($('#repair')?.value){entry.originalQuote=n.originalQuote||n.quote;entry.originalParagraph=n.originalParagraph??n.paragraph;entry.paragraph=Number($('#repair').value);if(!p.manuscript.paragraphs[entry.paragraph].includes(entry.quote))entry.quote=''}
+  if(!entry.comment){$('#comment').focus();return}
+  if(original)p.notes[p.notes.indexOf(original)]=entry;else p.notes.push(entry);
+  noteCursor=entry.id;noteChange();
+ });
+}
+function noteChange(){p.ranking=ordered(p).map(n=>n.id);for(const k of ['notes','rank','final'])p.checks[k]=false;closeDialog();render();save()}
+function capture(){
+ const sel=window.getSelection();if(!sel?.rangeCount||sel.isCollapsed)return;
+ const r=sel.getRangeAt(0),par=n=>(n.nodeType===1?n:n.parentElement)?.closest('[data-par]');
+ const a=par(r.startContainer),b=par(r.endContainer);
+ if(!a&&!b)return;
+ selected=a&&a===b?{i:Number(a.dataset.par),quote:r.toString()}:{multi:true};
+}
+function addSelection(){capture();if(selected?.multi){notify(STR.multi);return}if(!selected){notify(STR.pick);return}openNote(selected.i,selected.quote)}
+function navigate(step){
+ pause();p.steps.current=step;mobile='step';selected=null;
+ if(step===6&&!p.boxes.initialized){p.boxes.authors=scaffold(p);p.boxes.initialized=true}
+ render();save();$('#guide').scrollTop=0;$('.gCard h2')?.focus({preventScroll:true});
+}
+async function activate(record,stamp=''){
+ if(p){pause();await save()}
+ lastBackup='';lastManuscript=null;p=record;lastStamp=stamp;saveError='';localStatus=stamp?STR.saved:STR.saving;mobile='step';filter='';selected=null;noteCursor='';generation++;
+ navigate(p.steps.current);
+}
+async function home(){
+ if(p){pause();await save();if(saveError){notify(saveError);if(!lastBackup || lastBackup!==JSON.stringify([p.details,p.manuscript,p.criteria,p.notes,p.ranking,p.recommendation,p.boxes]))return}}
+ generation++;p=null;try{await catalog()}catch{}render();
+}
+function swapRank(from,to){
+ const list=ordered(p).map(n=>n.id);if(from<0||to<0||to>=list.length||from===to)return;
+ list.splice(to,0,...list.splice(from,1));p.ranking=list;p.checks.rank=p.checks.final=false;render();save();
+}
+function showFindings(i){
+ const list=finalResults(p,prefs)[i];
+ modal(STR.final[i],list.length?list.map((hit,j)=>`<section class="finding">${hit.box?`<small>${STR[hit.box]}</small>`:''}<p>${esc(hit.text)}</p>${hit.other?`<small>${STR.editor}</small><p>${esc(hit.other)}</p>`:''}${btn('locate',hit.step===6?STR.goDraft:hit.step===2?STR.goCriteria:STR.goNotes,`data-check-index="${i}" data-index="${j}"`,'small')}</section>`).join(''):`<p>${STR.noIssues}</p>`);
+}
+function locate(i,j){
+ const h=finalResults(p,prefs)[i][j];closeDialog();navigate(h.step);
+ if(h.box){const el=$('#'+h.box);el.focus();const off=h.offset??el.value.indexOf(h.text);if(off>=0)el.setSelectionRange(off,off+h.text.length)}
+ else if(h.step===3){const n=p.notes.find(x=>x.id===h.id);if(n)openNote(n.paragraph,n.quote,n)}
+ else{const el=$$('[data-criterion]').find(a=>a.dataset.criterion===h.id);el?.focus()}
+}
+function applyCriteria(template){p.criteriaChosen=true;
+ for(const c of p.criteria)c.active=false;
+ for(const fresh of template.criteria){let c=p.criteria.find(x=>x.id===fresh.id);if(c)c.active=true;else p.criteria.push({...fresh,active:true,status:''})}
+ p.checks.final=false;render();save();notify(STR.templateApplied);
+}
+function exportDone(){p.checks.export=true;refresh();save()}
+function openSettings(){
+ modal(STR.settings,`<p>${STR.preferences}</p>`+input('reviewer',STR.name,prefs.name)+input('institution',STR.institution,prefs.institution)+area('phrases',STR.phrases,prefs.phrases.join('\n'),5),STR.save,async()=>{
+  const value={id:'settings',name:$('#reviewer').value.trim(),institution:$('#institution').value.trim(),phrases:$('#phrases').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean)};
+  await putOne('prefs',value);prefs=value;closeDialog();if(p){p.checks.final=false;render();save()}notify(STR.statusSaved);
+ });
+}
+async function action(a,b){
+ const id=b?.dataset.id,i=Number(b?.dataset.index);
+ if(a==='openReading'||b?.closest?.('#readingDialog'))return readingAction(a,b);
+ switch(a){
+ case 'sample':{const sample=normalize({sample:true,details:{title:'Feedback and revision confidence',journal:'Sample journal',msid:'DEMO',first:['Students reported greater confidence.','A confidence questionnaire.','One class of twenty students.','The questionnaire is reproduced.']},manuscript:{source:'Sample',paragraphs:['Twenty students completed two writing activities.','Students reported greater confidence after receiving feedback.','We interpret this as improved writing performance.']},notes:[{id:'example',paragraph:2,quote:'improved writing performance',severity:'major',kind:'question',comment:'Which evidence shows a change in writing performance?',criterion:'construct'}],recommendation:'major'});await activate(sample);break}
+ case 'core':case 'full':{const rows=criteriaFor('general').filter(c=>a==='full'||['contribution','construct','design','analysis','sample'].includes(c.id));applyCriteria({criteria:rows});break}
+ case 'confirmCriteria':p.criteriaChosen=true;refresh();save();break;
+ case 'undoRemoval':{const f=undoActions.get(id);if(f){await f();clearUndo(id)}break}
+ case 'new':await activate(normalize());break;
+ case 'resume':{const r=await loadProject(id);if(r)await activate(readProject(r),r.savedAt);break}
+ case 'deleteProject':ask(STR.deleteAsk,STR.deleteProject,async()=>{const record=await loadProject(id);await transact(['projects','catalog','manuscripts'],'readwrite',t=>{t.objectStore('manuscripts').delete(id);t.objectStore('projects').delete(id);t.objectStore('catalog').delete(id)});await catalog();render();offerUndo(async()=>{await activate(readProject(record))})});break;
+ case 'home':await home();break;
+ case 'settings':openSettings();break;
+ case 'dismiss':alpha=false;render();break;
+ case 'open':$('#projectInput').click();break;
+ case 'close':closeDialog();break;
+ case 'back':navigate(Math.max(0,p.steps.current-1));break;
+ case 'next':{const i=p.steps.current;if(checklist(p)[i].every(Boolean))notify(STR.complete);navigate(Math.min(8,i+1));break}
+ case 'step':navigate(i);break;
+ case 'tab':mobile=b.dataset.tab;$('#guide').dataset.tab=mobile;$$('.bottom button').forEach(el=>el.setAttribute('aria-pressed',el.dataset.tab===mobile));$('#guide').scrollTop=0;break;
+ case 'load':pendingPdf=null;modal(STR.import,`<label class="field">${STR.file}<input type="file" id="msFile" accept=".docx,.txt,.pdf"></label><p id="importStatus" role="status" aria-live="polite"></p><div id="unlockArea"></div>${area('paste',STR.paste,'',8)}<output id="pasteCount"></output>${btn('paste',STR.usePaste,'','primary')}`);break;
+ case 'unlockPdf':if(pendingPdf)await readManuscript(pendingPdf,$('#pdfPassword').value);break;
+ case 'paste':commitManuscript(STR.manual,splitParagraphs($('#paste').value));break;
+ case 'timer':if(timerStart)pause();else timerStart=Date.now();render();save();break;
+ case 'custom':{const names=$('#custom').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(names.length){p.criteriaChosen=true;p.criteria.push(...names.map(name=>({id:uid(),name,set:'custom',active:true,status:''})));p.checks.final=false;render();save()}break}
+ case 'saveTemplate':case 'exportTemplate':{
+ const name=$('#templateName').value.trim();if(!name||!active(p).length){$('#templateName').required=true;$('#templateName').reportValidity();if(name)notify(STR.badTemplate);break}
+ const r=templateRecord(name,active(p));if(a==='exportTemplate')jsonFile(r,'criteria-template.json');else{await putOne('templates',r);templates=await getAll('templates');render();notify(STR.templateOk)}break}
+ case 'importTemplate':$('#templateInput').click();break;
+ case 'applyTemplate':{const t=templates.find(x=>x.id===$('#template').value);if(t)ask(STR.replaceCriteria,STR.apply,()=>applyCriteria(t));break}
+ case 'paragraph':openNote(i);break;
+ case 'addNote':addSelection();break;
+ case 'edit':{const n=p.notes.find(n=>n.id===id);if(n){noteCursor=id;openNote(n.paragraph,n.quote,n)}break}
+ case 'delete':ask(STR.delAsk,STR.remove,()=>{const record=p,n=p.notes.find(n=>n.id===id),rank=p.ranking.indexOf(id);p.notes=p.notes.filter(n=>n.id!==id);noteChange();offerUndo(async()=>{if(p?.id!==record.id){const saved=await loadProject(record.id);if(!saved)return;await activate(readProject(saved),saved.savedAt)}if(!p.notes.some(x=>x.id===id)){p.notes.push(n);if(rank>=0)p.ranking.splice(rank,0,id);render();await save()}})});break;
+ case 'keys':modal(STR.shortcuts,`<p>${STR.keys}</p>`);break;
+ case 'up':case 'down':{const j=ordered(p).findIndex(n=>n.id===id);swapRank(j,j+(a==='up'?-1:1));$$(`[data-act="${a}"]`).find(el=>el.dataset.id===id&&!el.disabled)?.focus();break}
+ case 'rebuild':ask(STR.rebuildAsk,STR.rebuild,()=>{p.boxes.authors=scaffold(p);p.checks.final=false;render();save()});break;
+ case 'show':showFindings(i);break;
+ case 'locate':locate(Number(b.dataset.checkIndex),i);break;
+ case 'copyA':case 'copyE':try{await navigator.clipboard.writeText(p.boxes[a==='copyA'?'authors':'editor']);exportDone();notify(STR.copied)}catch{notify(STR.copyFail)}break;
+ case 'editorWord':ask(STR.v2.editorWarning,STR.v2.editorWord,async()=>{await wordFile(true);exportDone()});break;
+ case 'word':await wordFile();exportDone();notify(STR.exported);break;
+ case 'project':{lastBackup=JSON.stringify([p.details,p.manuscript,p.criteria,p.notes,p.ranking,p.recommendation,p.boxes]);if(timerStart){pause();timerStart=Date.now()}exportDone();jsonFile({...p,savedAt:new Date().toISOString()},'peer-review.json');break}
+ }
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)handled(()=>action(b.dataset.act,b))});
+document.addEventListener('submit',e=>{if(e.target.closest('#dialog')){e.preventDefault();if(pendingPdf&&$('#pdfPassword'))handled(()=>action('unlockPdf'));else if(modalSubmit)handled(modalSubmit)}});
+document.addEventListener('selectionchange',capture);
+document.addEventListener('focusin',e=>{if(e.target.matches('[data-par]'))selected={i:Number(e.target.dataset.par),quote:''}});
+document.addEventListener('input',e=>{
+ if(e.target.id==='paste'){const rows=splitParagraphs(e.target.value);$('#pasteCount').textContent=STR.v2.preview+' · '+fmt(STR.loaded,{n:rows.length})+' '+rows.slice(0,2).map((t,i)=>'¶'+(i+1)+' '+t.slice(0,90)).join(' / ');return}if(!p)return;const el=e.target,d=el.dataset,was=p.steps.done[p.steps.current];let invalidates=true;
+ if(d.detail){p.details[d.detail]=el.value;if(d.detail==='title')p.name=el.value.trim()||STR.untitled}
+ else if(d.eth!==undefined)p.details.ethical[Number(d.eth)]=el.checked;
+ else if(d.first!==undefined)p.details.first[Number(d.first)]=el.value;
+ else if(d.criterion){p.criteriaChosen=true;p.criteria.find(c=>c.id===d.criterion).status=el.value}
+ else if(d.box)p.boxes[d.box]=el.value;
+ else if(d.check){p.checks[d.check]=el.checked;invalidates=false}
+ else if(el.id==='recommendation'){p.recommendation=el.value;$('#consistency').textContent=el.value?consistency(p)||STR.consistent:''}
+ else return;
+ if(invalidates)p.checks.final=false;
+ refresh();save();
+ if(!was&&p.steps.done[p.steps.current])notify(STR.complete);
+});
+document.addEventListener('change',e=>handled(async()=>{
+ const el=e.target;
+ if(el.id==='filter'){filter=el.value;$('#noteList').innerHTML=noteList();$('#filter').focus();return}
+ if(el.dataset.set){p.criteriaChosen=true;
+ const set=el.dataset.set,enabled=el.checked;
+ for(const c of p.criteria.filter(c=>c.set===set))c.active=enabled;
+ if(enabled)for(const c of criteriaFor(set))if(!p.criteria.some(x=>x.id===c.id))p.criteria.push({...c,active:true});
+ p.checks.final=false;render();$('#set-'+set)?.focus();save();return;
+ }
+ if(el.type!=='file'||!el.files[0])return;
+ const f=el.files[0];el.value='';
+ if(el.id==='msFile'){await readManuscript(f);return}
+ let data;try{data=JSON.parse(await f.text())}catch{throw Error(el.id==='templateInput'?STR.badTemplate:STR.invalid)}
+ if(el.id==='projectInput'){const imported=readProject(data);imported.id=uid();await activate(imported)}
+ if(el.id==='templateInput'){const t=checkTemplate(data);await putOne('templates',t);templates=await getAll('templates');ask(STR.replaceCriteria,STR.apply,()=>applyCriteria(t))}
+}));
+document.addEventListener('keydown',e=>{
+ if(!p||p.steps.current!==3||$('#dialog').open||e.ctrlKey||e.metaKey||e.altKey||e.target.matches('input,textarea,select')||!e.target.closest('.notesGrid'))return;
+ const k=e.key.toLowerCase();if(!['n','j','k','?'].includes(k))return;e.preventDefault();
+ if(k==='?')action('keys');else if(k==='n')addSelection();else{
+ const list=p.notes.filter(n=>!filter||n.severity===filter||n.kind===filter);if(!list.length)return;
+ const idx=list.findIndex(n=>n.id===noteCursor);const n=list[(idx<0?(k==='j'?0:list.length-1):(idx+(k==='j'?1:-1)+list.length)%list.length)];
+ noteCursor=n.id;const para=$(`[data-par="${n.paragraph}"]`);para?.focus();para?.scrollIntoView({block:'nearest'});$$('.noteItem').forEach(el=>el.classList.toggle('current',el.dataset.noteId===n.id));
+ }
+});
+let dragged='';
+document.addEventListener('dragstart',e=>{const row=e.target.closest('[data-rank]');if(row){dragged=row.dataset.rank;e.dataTransfer.setData('text/plain',dragged)}});
+document.addEventListener('dragover',e=>{if(dragged&&e.target.closest('[data-rank]'))e.preventDefault()});
+document.addEventListener('drop',e=>{const row=e.target.closest('[data-rank]');if(!row||!dragged)return;e.preventDefault();const rank=ordered(p).map(n=>n.id);swapRank(rank.indexOf(dragged),rank.indexOf(row.dataset.rank));dragged=''});
+document.addEventListener('dragend',()=>dragged='');
+setInterval(()=>{if(timerStart&&p)updateClock()},500);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&p&&timerStart){pause();if($('#time'))render();save()}});
+async function init(){
+ document.title=STR.app+' · Tianshi Hao';$('#projectInput').ariaLabel=STR.open;$('#templateInput').ariaLabel=STR.importTemplate;
+ try{await catalog();templates=await getAll('templates');prefs=(await getOne('prefs','settings'))||prefs}catch{notify(STR.saveFail)}
+ render();
+}
+init();
+
+
+</script></body></html>
