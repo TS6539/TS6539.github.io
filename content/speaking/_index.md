@@ -81,7 +81,7 @@ collaboration_intro: "I am interested in joining or building projects in these a
 collaborations:
   - lead: "Epistemic network analysis partner."
     text: "If you have interview, discussion, or writing-process data and want to model how ideas connect, I can help with coding design, ENA modeling, and interpretation."
-    extra: 'The free <a href="/coder/">Transcript Coder</a> is a good way to see how I set up coding for ENA.'
+    extra: 'The free <a href="/coder/" target="_blank" rel="noopener">Transcript Coder</a> is a good way to see how I set up coding for ENA.'
   - lead: "AI-assisted evidence synthesis."
     text: "Systematic and scoping reviews that use AI for screening or data extraction, with attention to validation and transparent reporting."
   - lead: "Generative AI policy in language education."

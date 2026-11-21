@@ -97,30 +97,42 @@
           <p class="v4-role v4-hero-item">{{ $profile.role }}{{ with $profile.postnominals }}, {{ delimit . ", " }}{{ end }}</p>
           <p class="v4-tagline v4-hero-item">{{ site.Params.hugoblox.identity.tagline }}</p>
           <div class="v4-hero-actions v4-hero-item">
-            {{/* Contact row (review brief, 2026-11-19): Download CV is
-                 the single filled primary button; every other contact
-                 and profile link is a small monochrome icon link using
-                 the theme's own icon packs (the icon names come from
-                 data/authors/me.yaml). The two e-mail links get distinct
-                 glyphs so they stay distinguishable without text:
-                 envelope for the personal Gmail address, academic cap
-                 for the university address. Hrefs unchanged.
-                 Astra round (2026-11-19): one quiet text link sits
-                 between the pill and the icon row, "Discuss a research
-                 idea", deep-linking to the Research collaboration
+            {{/* Contact row. History: the 2026-11-19 brief made
+                 Download CV the single filled pill with "Discuss a
+                 research idea" as a quiet text link beside it. Owner
+                 round (2026-11-21, option B): the emphasis flips -
+                 "Discuss a research idea" is now the single filled
+                 pill, deep-linking to the Research collaboration
                  section of /speaking/ (id added to that section in
-                 layouts/speaking/list.html). CV stays the only filled
-                 button. */}}
-            <a class="v4-pill v4-pill--filled" href="{{ "uploads/resume.pdf" | relURL }}">Download CV</a>
-            <a class="v4-text-link" href="{{ "speaking/#research-collaboration" | relURL }}">Discuss a research idea</a>
+                 layouts/speaking/list.html), and Download CV leaves
+                 the hero for the top of /experience/, where it belongs
+                 with the record it summarises.
+                 The two e-mail links (envelope = personal Gmail,
+                 academic cap = university address) now carry visible
+                 text labels, "Email" and "University email": as bare
+                 glyphs they were too easy to confuse. They render as
+                 labelled chips in the same row family (same height,
+                 radius and hover wash); the four profile links stay
+                 icon-only. Icon names and hrefs come from
+                 data/authors/me.yaml, unchanged. */}}
+            <a class="v4-pill v4-pill--filled" href="{{ "speaking/#research-collaboration" | relURL }}">Discuss a research idea</a>
             <nav class="v4-icon-row" aria-label="Contact and profiles">
               {{- range $profile.links }}
+              {{- $isUni := strings.Contains .url "hiroshima-u.ac.jp" }}
+              {{- $isMail := hasPrefix .url "mailto:" }}
               {{- $iconName := .icon }}
-              {{- if strings.Contains .url "hiroshima-u.ac.jp" }}{{ $iconName = "academic-cap" }}
-              {{- else if hasPrefix .url "mailto:" }}{{ $iconName = "envelope" }}{{ end }}
+              {{- if $isUni }}{{ $iconName = "academic-cap" }}
+              {{- else if $isMail }}{{ $iconName = "envelope" }}{{ end }}
+              {{- if $isMail }}
+              <a class="v4-icon-link v4-icon-link--labeled" href="{{ .url }}" aria-label="{{ .label }}" title="{{ .label }}">
+                {{- partial "functions/get_icon" (dict "name" $iconName "attributes" "class=\"v4-icon-svg\" aria-hidden=\"true\"") -}}
+                <span class="v4-icon-label">{{ if $isUni }}University email{{ else }}Email{{ end }}</span>
+              </a>
+              {{- else }}
               <a class="v4-icon-link" href="{{ .url }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }} aria-label="{{ .label }}" title="{{ .label }}">
                 {{- partial "functions/get_icon" (dict "name" $iconName "attributes" "class=\"v4-icon-svg\" aria-hidden=\"true\"") -}}
               </a>
+              {{- end }}
               {{- end }}
             </nav>
           </div>

@@ -10,6 +10,15 @@ design:
 
 # Page sections
 sections:
+  # Download CV pill at the top of the page (owner round, 2026-11-21):
+  # the button moved here from the homepage hero. Styled by the
+  # .exp-cv-* rules in assets/css/custom.css.
+  - block: markdown
+    content:
+      text: |-
+        <div class="exp-cv-row"><a class="exp-cv-btn" href="/uploads/resume.pdf">Download CV</a></div>
+    design:
+      columns: '1'
   - block: resume-experience
     content:
       username: me
