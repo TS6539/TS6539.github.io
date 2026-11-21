@@ -30,6 +30,8 @@ This is a practical studio course on written English communication. I work with 
 - **Place:** CALL Room J209, Higashihiroshima campus; mainly in person, with hybrid access via Zoom where needed
 - **Open to:** Hiroshima University students, faculty, and staff (capacity approximately 40; TOEFL iBT 85 recommended, not required)
 
+[Syllabus (PDF)](/uploads/syllabus-writing-english-with-ai.pdf)
+
 ## Guest lectures in this course
 
 - **Futuring.** Guest lecture by Eric Hamilton, November 10, 2026.
