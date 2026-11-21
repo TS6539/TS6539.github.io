@@ -3,8 +3,14 @@
      2026-11-19): identical to the theme file except the input
      placeholder reads "Search publications and projects" instead of
      the FAQ-oriented "Search for answers...", and the "Powered by
-     Hugo Blox" credit link is removed from the footer. If the theme
-     updates this partial, re-copy and re-apply these two changes. */}}
+     Hugo Blox" credit link is removed from the footer. A third local
+     change (2026-11-21): the panel div carries the hook class
+     "hb-search"; assets/css/custom.css uses it to restyle the modal
+     from the site palette keyed to the site's own .dark theme class,
+     because the Tailwind dark: utilities below follow the OS
+     prefers-color-scheme instead and mismatched the site whenever
+     the two disagreed. If the theme updates this partial, re-copy
+     and re-apply these three changes. */}}
 <div
   x-data="searchModal()"
   x-show="$store.search.open"
@@ -29,7 +35,7 @@
     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
     x-transition:leave-end="opacity-0 translate-y-4 scale-95"
   >
-    <div class="mx-4 overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-gray-900/10 dark:ring-white/10">
+    <div class="hb-search mx-4 overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-gray-900/10 dark:ring-white/10">
       
       {{/* Search Header */}}
       <div class="border-b border-gray-200 dark:border-gray-800">

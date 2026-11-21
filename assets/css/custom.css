@@ -848,3 +848,125 @@ body {
   #site-header .nav-link { padding-inline: .375rem; }
   #site-header #nav-menu > :not(:last-child) { margin-inline-end: .375rem; }
 }
+
+/* ==========================================================================
+   Search modal: follow the site theme toggle (2026-11-21). The modal
+   partial (layouts/_partials/components/search-modal.html) is styled
+   with Tailwind dark: utilities, which follow the operating system's
+   prefers-color-scheme, while the rest of the site follows its own
+   toggle (the .dark class on <html>). When the two disagreed, the
+   modal rendered light on the dark site: white panel, pale
+   placeholder, and footer labels ("Navigate", "Select", the filter
+   count) washed out to near-invisible. The rules below are scoped to
+   the .hb-search hook class on the modal panel and restyle it from
+   the site palette, keyed to .dark like everything else in this
+   file, so the modal matches the site in both modes. Panel children,
+   in order: header wrap, results container, footer strip; the header
+   wrap's children are the header row and the filter row. Nothing
+   outside the modal is touched.
+   ========================================================================== */
+
+/* Panel: card surface and main text; the ring takes the line tone. */
+.hb-search {
+  background-color: #fcfdfe;
+  color: #1a1d20;
+  --tw-ring-color: rgba(26, 29, 32, .10);
+}
+.dark .hb-search {
+  background-color: #1c1a17;
+  color: #ece7dc;
+  --tw-ring-color: rgba(255, 255, 255, .10);
+}
+
+/* Header and footer hairlines in the site's border tone. */
+.hb-search > :first-child,
+.hb-search > :last-child { border-color: var(--v3-line); }
+
+/* Header row: search icon, input text and placeholder. */
+.hb-search > :first-child > :first-child > svg { color: var(--v3-text-3); }
+.hb-search input { color: #1a1d20; }
+.dark .hb-search input { color: #ece7dc; }
+.hb-search input::placeholder { color: var(--v3-text-3); opacity: 1; }
+
+/* Kbd chips (the header's ESC hint, the footer's Navigate/Select
+   keys): quiet filled chips whose labels stay readable in both
+   modes. The ESC chip sits on the panel, the footer keys on the
+   footer strip, so their fills step in opposite directions. */
+.hb-search > :first-child kbd {
+  background-color: #e9eef1; border-color: rgba(26, 29, 32, .18); color: #1a1d20;
+}
+.dark .hb-search > :first-child kbd {
+  background-color: #2a2721; border-color: rgba(255, 255, 255, .18); color: #ece7dc;
+}
+.hb-search > :last-child kbd {
+  background-color: #fcfdfe; border-color: rgba(26, 29, 32, .18); color: #1a1d20;
+}
+.dark .hb-search > :last-child kbd {
+  background-color: #2a2721; border-color: rgba(255, 255, 255, .18); color: #ece7dc;
+}
+
+/* Close button: muted glyph, accent wash on hover (the same wash
+   the hero icon links use). */
+.hb-search > :first-child > :first-child > button { color: var(--v3-text-3); }
+.hb-search > :first-child > :first-child > button:hover {
+  background-color: rgba(63, 90, 122, .09); color: var(--v3-accent);
+}
+.dark .hb-search > :first-child > :first-child > button:hover {
+  background-color: rgba(147, 169, 196, .14);
+}
+
+/* Filter row: hairline above it, quiet accent wash on the inactive
+   chips. The active chip is the one Alpine marks with the
+   bg-primary-100 class string; it becomes a filled accent pill
+   (the --v3-accent / --v3-on-accent pair flips with .dark, and the
+   rule is placed last so it also holds on hover). */
+.hb-search > :first-child > :last-child { border-color: var(--v3-line); }
+.hb-search > :first-child > :last-child button {
+  background-color: rgba(63, 90, 122, .08); color: var(--v3-text-2);
+}
+.dark .hb-search > :first-child > :last-child button {
+  background-color: rgba(147, 169, 196, .13);
+}
+.hb-search > :first-child > :last-child button:hover {
+  background-color: rgba(63, 90, 122, .15);
+}
+.dark .hb-search > :first-child > :last-child button:hover {
+  background-color: rgba(147, 169, 196, .22);
+}
+.hb-search > :first-child > :last-child button.bg-primary-100 {
+  background-color: var(--v3-accent); color: var(--v3-on-accent);
+}
+
+/* Results: headings and excerpts in the site's text tones (the
+   empty-state section labels stay muted), row hover in the numbers
+   band's wash, and the keyboard-selected row - the one Alpine marks
+   with bg-primary-50 - in a stronger wash with an accent edge. */
+.hb-search h3 { color: #1a1d20; }
+.dark .hb-search h3 { color: #ece7dc; }
+.hb-search .p-6 h3 { color: var(--v3-text-3); }
+.hb-search .search-result p { color: var(--v3-text-2); }
+.hb-search .search-result:hover { background-color: rgba(63, 90, 122, .05); }
+.dark .hb-search .search-result:hover { background-color: rgba(147, 169, 196, .07); }
+.hb-search .search-result:hover h3 { color: var(--v3-accent); }
+.hb-search .search-result.bg-primary-50 {
+  background-color: rgba(63, 90, 122, .10);
+  border-left-color: var(--v3-accent);
+}
+.dark .hb-search .search-result.bg-primary-50 {
+  background-color: rgba(147, 169, 196, .14);
+}
+
+/* Pagefind's <mark> highlight inside result excerpts: dark text on
+   a light ink-blue tint, readable in both modes. */
+.hb-search mark {
+  background-color: #cfdce9; color: #1a1d20;
+  border-radius: .25rem; padding: .05rem .15rem;
+}
+.dark .hb-search mark { background-color: #a9bed6; color: #171512; }
+
+/* Footer strip: the site's footer surface, with its labels and the
+   filter count at text-2 contrast in both modes (the washed-out
+   footer was part of the bug). */
+.hb-search > :last-child { background-color: #e9eef1; }
+.dark .hb-search > :last-child { background-color: #201d18; }
+.hb-search > :last-child > div { color: var(--v3-text-2); }
