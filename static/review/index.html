@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Review Kit · Pre-alpha</title>
 <meta name="description" content="A simple systematic review tool in your browser. Screen titles, abstracts, and full texts, extract data, appraise quality, and draw your PRISMA 2020 flow diagram. No account, no upload.">
-<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
-<meta property="og:title" content="Review Kit">
-<meta property="og:description" content="A simple systematic review tool in your browser. Screen titles, abstracts, and full texts, extract data, appraise quality, and draw your PRISMA 2020 flow diagram. No account, no upload.">
-<meta property="og:image" content="https://tianshihao.org/media/sharing.jpg">
 <style>
 :root{
   --serif:"Source Serif 4","Newsreader","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif SC",Georgia,serif;
@@ -164,8 +160,6 @@ textarea{resize:vertical;line-height:1.45}
 .prog{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.84rem;margin-bottom:12px}
 .prog .bar{flex:1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
 .prog .bar i{display:block;height:100%;background:var(--accent);transition:width .5s var(--ease)}
-/* polish: changing figures in tabular numbers */
-.steps .cnt,.prog,.stat b,.rec .links,#prismaSvg text{font-variant-numeric:tabular-nums}
 .rec{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px 26px;box-shadow:var(--shadow);position:relative}
 .rec.swap{animation:swapIn .28s var(--ease) both}
 .rec .meta{color:var(--muted);font-size:.86rem;margin-bottom:6px}
@@ -192,6 +186,16 @@ textarea{resize:vertical;line-height:1.45}
 .noteRow{margin-top:12px}
 .navRow{display:flex;align-items:center;gap:10px;margin-top:16px}
 .navRow .hint{flex:1;text-align:center;color:var(--muted);font-size:.8rem}
+.job{color:var(--muted);margin:0 0 12px;font-size:.92rem;line-height:1.5;max-width:72ch}
+.job b{color:var(--ink)}
+.nextUp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--inc);background:var(--inc-soft);border-radius:12px;padding:10px 14px;margin:0 0 14px;animation:rise .25s var(--ease) both}
+.nextUp span{flex:1;min-width:180px;font-weight:600}
+.decNote{font-size:.84rem;color:var(--muted);margin:10px 0 0;line-height:1.45}
+.menu .mnote{font-size:.8rem;color:var(--muted);padding:8px 12px 10px;max-width:300px;line-height:1.4;border-bottom:1px solid var(--line);margin-bottom:4px}
+.menu button small.sub{display:block;font-size:.74rem;color:var(--muted);font-weight:400;white-space:normal;margin-top:1px}
+.help{margin-top:18px}
+.help summary{cursor:pointer;font-weight:700}
+.help ol{margin:8px 0 0 18px;padding:0;line-height:1.55}
 .navRow .hint.flash,#sHint.flash{display:block!important;color:var(--ink);font-weight:600;line-height:1.3;animation:rise .2s var(--ease) both}
 .kwBar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .kwBar label{font-size:.74rem;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:3px}
@@ -233,7 +237,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 .err{color:var(--exc);font-size:.86rem;min-height:1em;margin:0}
 .note{color:var(--muted);font-size:.84rem;margin:0}
 .chk{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}.chk input{margin-top:4px;accent-color:var(--accent)}.chk small{display:block;color:var(--muted)}
-#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:.9rem;z-index:100;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s var(--ease),transform .25s var(--ease)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.9rem;z-index:100;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s var(--ease),transform .25s var(--ease)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
 @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -259,7 +263,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   #projName{order:9;flex:1 0 100%;min-width:0;max-width:none;width:auto!important;min-height:40px;margin:0 -4px;font-size:1rem}
   .steps{padding:6px 10px;overflow:visible}
   .steps > button{display:none}
-  .stepsMini{display:flex;align-items:center;gap:8px;width:100%}
+  .stepsMini{display:flex;align-items:center;gap:6px;width:100%}
   .stepsMini .arr{flex:none;width:44px;height:44px;border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;font-size:1.2rem;color:var(--ink);cursor:pointer}
   .stepsMini .arr:disabled{opacity:.35;cursor:default}
   .stepSel{flex:1;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;padding:3px 12px}
@@ -268,7 +272,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   .stepSel .txt b{font-weight:700;font-size:.95rem}
   .stepSel::after{content:"▾";color:var(--muted);font-size:.8rem;flex:none}
   .stepSel select{position:absolute;inset:0;opacity:0;width:100%;height:100%;font-size:16px;cursor:pointer}
-  .rec{padding:16px}
+  .rec{padding:18px 16px}
   .badge{position:static;margin:0 0 10px}
   .decide{gap:8px;align-items:stretch}
   .decide button{min-height:56px;height:100%;padding:8px 6px;line-height:1.2;text-align:center;flex-direction:column;gap:2px}
@@ -276,14 +280,19 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   .brand{min-height:44px;min-width:44px;justify-content:center}
   #kwBtn{min-height:44px}
   #recNote{min-height:44px}
-  #toast{top:calc(env(safe-area-inset-top,0px) + 112px);bottom:auto;transform:translate(-50%,-12px)}
-  #toast.show{transform:translate(-50%,0)}
+  #toast{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
   .tplRow{grid-template-columns:1fr 1fr}.tplRow .drag{display:none}
   .feats{grid-template-columns:1fr}
 }
 @media (hover:none) and (pointer:coarse){ .decide kbd,.reasons kbd,#sHint,.keyHint{display:none!important} .navRow{justify-content:space-between} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* polish: changing figures in tabular numbers */
+.steps .cnt,.prog,.stat b,.rec .links,#prismaSvg text{font-variant-numeric:tabular-nums}
 </style>
+<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
+<meta property="og:title" content="Review Kit">
+<meta property="og:description" content="A simple systematic review tool in your browser. Screen titles, abstracts, and full texts, extract data, appraise quality, and draw your PRISMA 2020 flow diagram. No account, no upload.">
+<meta property="og:image" content="https://tianshihao.org/media/sharing.jpg">
 </head>
 <body>
 <header class="top">
@@ -296,11 +305,12 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   <div class="menuWrap">
     <button class="btn" id="menuBtn" aria-haspopup="true" aria-expanded="false">Review ▾</button>
     <div class="menu" id="menu" role="menu">
+      <p class="mnote">Your work saves in this browser as you go. Closing the tab keeps it. Save a review file as a backup or to move to another computer.</p>
       <button data-m="export" class="onlySm">Export</button>
       <button data-m="save">Save review file</button>
-      <button data-m="open">Open review file</button>
-      <button data-m="link">Autosave to a file <small>Chrome, Edge</small></button>
-      <button data-m="openLink">Open and autosave a file</button>
+      <button data-m="open">Open review file<small class="sub">Loads a copy of a saved file into this browser.</small></button>
+      <button data-m="link">Autosave to a file <small>Chrome, Edge</small><small class="sub">Keeps one file on your computer updated as you work. Only Chrome and Edge let a web page write to a file.</small></button>
+      <button data-m="openLink">Open and autosave a file<small class="sub">Loads a saved file and keeps saving into it.</small></button>
       <button data-m="unlink" id="unlinkItem" hidden>Stop autosaving to file</button>
       <hr>
       <button data-m="keys">Keyboard shortcuts <small>?</small></button>
@@ -312,18 +322,19 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   <button class="btn primary" id="exportBtn" hidden>Export</button>
 </header>
 <nav class="steps" id="steps" hidden></nav>
-<div id="alphaBar" hidden><span class="pill"><i></i>Pre-alpha</span><p>Early version. Save a review file often, and please <a href="#" data-m="feedback">tell me what breaks</a>.</p><button class="btn small ghost" id="alphaClose" aria-label="Dismiss">✕</button></div>
+<div id="alphaBar" hidden><span class="pill"><i></i>Pre-alpha</span><p>Your work saves in this browser as you go, and closing the tab keeps it. A review file is your backup and the way to move to another computer. Clearing this browser's data deletes the copy here. Early version, so please <a href="#" data-m="feedback">tell me what breaks</a>.</p><button class="btn small ghost" id="alphaClose" aria-label="Dismiss">✕</button></div>
 
 <section id="welcome" aria-label="Welcome">
   <div class="wIn">
     <div class="hero">
       <div>
-        <span class="pill reveal"><i></i>Pre-alpha 0.1.1 · Free to use · Works on phones</span>
+        <span class="pill reveal"><i></i>Pre-alpha 0.1.2 · Free to use · Works on phones</span>
         <h1 class="reveal d1">A systematic review, <em>without the overhead.</em></h1>
-        <p class="lede reveal d2">Import your search results, screen titles and abstracts with one key per decision, check full texts, extract data into a form you control, and get a PRISMA 2020 flow diagram that fills itself in.</p>
+        <p class="lede reveal d2">A systematic review gathers every study on a question with a planned search, then decides in the open which ones count, so others can check and repeat it. The steps here follow that order. Import your search results, screen titles and abstracts with one key per decision, check full texts, extract data into a form you control, and get a PRISMA 2020 flow diagram that fills itself in.</p>
         <div class="ctaRow reveal d3">
           <button class="btn primary big" data-go="demo">Try the demo review</button>
-          <button class="btn big" data-go="start">Start a review</button>
+          <button class="btn big" data-go="start" id="startBtn">Start a review</button>
+          <button class="btn ghost" data-go="new" id="newBtn" hidden>Start a new review</button>
         </div>
         <div class="trust reveal d4">
           <span>🔒 Your records stay in your browser</span><span>No account, no upload</span><span>RIS · BibTeX · CSV · Web of Science · PubMed</span>
@@ -338,14 +349,14 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
       </div>
     </div>
     <div class="feats">
-      <div class="feat reveal d2"><div class="k">1</div><h3>Import and deduplicate</h3><p>Bring in exports from each database. Duplicates are found by DOI and title, and you can restore any that are not.</p></div>
-      <div class="feat reveal d3"><div class="k">2</div><h3>Screen fast</h3><p>Title and abstract, then full text with exclusion reasons. Highlight your keywords. Press I, E, or M and move on.</p></div>
+      <div class="feat reveal d2"><div class="k">1</div><h3>Import and deduplicate</h3><p>Bring in the files each database lets you export. Copies of the same paper found in more than one database are set aside (deduplicated) by DOI and title, and you can bring back any that are not real copies.</p></div>
+      <div class="feat reveal d3"><div class="k">2</div><h3>Screen fast</h3><p>Screening means judging each record against your inclusion criteria. First by title and abstract, then by full text, with a reason for each exclusion.</p></div>
       <div class="feat reveal d4"><div class="k">3</div><h3>Extract your way</h3><p>Start from a standard template and add, rename, or reorder fields. One row per study. Optional MMAT or custom quality appraisal.</p></div>
-      <div class="feat reveal d5"><div class="k">4</div><h3>PRISMA and export</h3><p>A PRISMA 2020 flow diagram built from your decisions, as SVG or PNG, and one Excel workbook with everything.</p></div>
+      <div class="feat reveal d5"><div class="k">4</div><h3>PRISMA and export</h3><p>PRISMA 2020 is the standard flow diagram that reports how records moved through a review. It is built from your decisions, as SVG or PNG, and one Excel workbook with everything.</p></div>
     </div>
     <div class="wFoot">
-      <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Version 0.1.1, pre-alpha, with a phone layout pass. No AI or automation: every decision is yours. <a href="#" data-m="feedback">Send feedback</a></span>
-      <span class="cite">Cite as: Hao, T. (2026). <i>Review Kit</i> (Version 0.1.1) [Computer software]. https://tianshihao.org/review/</span>
+      <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Version 0.1.2, pre-alpha, with a phone layout pass and a guidance pass. No AI or automation: every decision is yours. <a href="#" data-m="feedback">Send feedback</a></span>
+      <span class="cite">Cite as: Hao, T. (2026). <i>Review Kit</i> (Version 0.1.2) [Computer software]. https://tianshihao.org/review/</span>
     </div>
   </div>
 </section>
@@ -354,14 +365,21 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   <!-- IMPORT -->
   <section class="view" id="v-import" hidden><div class="wrap">
     <div class="vHead"><div class="grow"><h1>Import records</h1><p>Add one file per database search. Each import is listed as a source on your PRISMA diagram.</p></div></div>
-    <div class="drop" id="drop"><h3>Drop search exports here</h3><p>RIS, BibTeX (.bib), CSV (Scopus, Publish or Perish, and others), Web of Science plain text, or PubMed (.nbib / .txt).</p><button class="btn primary" id="pickBtn">Choose files</button></div>
+    <div class="drop" id="drop"><h3>Drop search exports here</h3><p>RIS, BibTeX (.bib), CSV (Scopus, Publish or Perish, and others), Web of Science plain text, or PubMed (.nbib / .txt). RIS and BibTeX are file formats that databases and reference managers export.</p><button class="btn primary" id="pickBtn">Choose files</button></div>
+    <details class="card help"><summary>How do I get a search export?</summary>
+      <ol>
+        <li>Run your search in the database and check the number of results.</li>
+        <li>Find the export option. In PubMed it is <b>Send to</b>, then <b>Citation manager</b> (an .nbib file). In Web of Science it is <b>Export</b>, then <b>RIS</b>. In Scopus it is <b>Export</b>, then <b>RIS</b> or <b>CSV</b>.</li>
+        <li>Export every result, with abstracts. Some databases export in batches, for example 1,000 at a time, so save each batch.</li>
+        <li>Drop the files here, one search at a time. Each database becomes a source on your PRISMA diagram.</li>
+      </ol></details>
     <div class="card" style="margin-top:18px">
       <h3 style="margin:0 0 8px">Sources</h3>
       <div id="srcTable"></div>
     </div>
     <div class="card" style="margin-top:18px">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0;flex:1">Duplicates</h3><span class="muted small" id="dupSum"></span><button class="btn small" id="redupBtn">Check again</button></div>
-      <p class="note" style="margin:6px 0 10px">A record counts as a duplicate when its DOI matches, or its title matches and the years agree. The earliest imported copy is kept. Restore any record that is not really a duplicate.</p>
+      <p class="note" style="margin:6px 0 10px">Deduplicating means setting aside copies of the same paper found in more than one search. A DOI is the permanent ID printed on most papers (it starts with 10.). A record counts as a duplicate when its DOI matches, or its title matches and the years agree. The earliest imported copy is kept. If a record is not really a copy, press <b>Not a duplicate</b> to put it back into screening.</p>
       <div id="dupTable"></div>
     </div>
   </div></section>
@@ -377,11 +395,13 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
         <div class="items" id="sItems"></div>
       </aside>
       <div class="sMain"><div class="sIn">
-        <div class="prog"><span id="sProgTx"></span><div class="bar"><i id="sProgBar"></i></div><button class="btn small ghost" id="kwBtn">Highlight keywords</button></div>
+        <p class="job" id="sJob"></p>
+        <div class="nextUp" id="sNext" hidden></div>
+        <div class="prog"><span id="sProgTx"></span><div class="bar"><i id="sProgBar"></i></div><button class="btn small ghost" id="kwBtn" title="Type your own words to colour them in titles and abstracts">Highlight your keywords</button></div>
         <div class="card" id="kwCard" hidden style="margin-bottom:12px"><div class="kwBar">
           <label>Include terms (green)<input id="kwInc" placeholder="writing, generative AI, ChatGPT"></label>
           <label>Exclude terms (red)<input id="kwExc" placeholder="protocol, children, medical"></label>
-        </div><p class="note" style="margin-top:8px">Separate terms with commas. Highlighting only helps you read; it never makes a decision.</p></div>
+        </div><p class="note" style="margin-top:8px">Type words from your inclusion and exclusion criteria, separated by commas. They are coloured in every title and abstract. Highlighting only helps you read. It never makes a decision.</p></div>
         <div id="sEmpty" class="empty" hidden></div>
         <article class="rec" id="rec">
           <span class="badge" id="recBadge" hidden></span>
@@ -391,6 +411,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
           <div class="links" id="recLinks"></div>
           <div class="decide" id="decide"></div>
           <div class="reasons" id="reasons" hidden></div>
+          <p class="decNote" id="decNote"></p>
           <div class="noteRow"><input id="recNote" placeholder="Note (optional)" aria-label="Note for this record"></div>
         </article>
         <div class="navRow"><button class="btn" id="prevBtn">← Previous</button><span class="hint" id="sHint"></span><button class="btn primary" id="nextBtn">Next →</button></div>
@@ -416,7 +437,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 
   <!-- PRISMA -->
   <section class="view" id="v-prisma" hidden><div class="wrap">
-    <div class="vHead"><div class="grow"><h1>PRISMA 2020 flow diagram</h1><p>Built from your sources and decisions. It updates as you screen.</p></div>
+    <div class="vHead"><div class="grow"><h1>PRISMA 2020 flow diagram</h1><p>PRISMA is the standard flow diagram that reports how records moved through a review: how many were found, set aside as duplicates, screened, excluded and why, and finally included. This one is built from your sources and decisions, and it updates as you screen.</p></div>
       <button class="btn" id="svgBtn">Download SVG</button><button class="btn primary" id="pngBtn">Download PNG</button></div>
     <div class="prismaWrap"><div id="prismaHost"></div></div>
     <p class="note" style="margin-top:10px">Records marked "Maybe" at title and abstract screening move on to full-text review. Each included study is counted as one report. Check the counts against your own records before publishing.</p>
@@ -458,7 +479,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 <dialog id="exportDlg"><form method="dialog" id="exportForm">
   <div class="dlgHead"><h2>Export</h2><p>One Excel workbook with every record and decision, your extraction table, appraisal, PRISMA counts, and sources.</p></div>
   <div class="dlgBody">
-    <label class="chk"><input type="checkbox" id="exAll" checked><span>Include every record<small>Off keeps only records that reached full-text review.</small></span></label>
+    <label class="chk"><input type="checkbox" id="exAll" checked><span>Include every record<small>On lists every imported record, duplicates and title-and-abstract exclusions included. Off keeps only records that reached full-text review.</small></span></label>
     <p class="note">For the diagram itself, use Download SVG or PNG on the PRISMA page.</p>
   </div>
   <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Export Excel</button></div>
@@ -490,7 +511,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.1.1';
+const VERSION = '0.1.2';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Review Kit feedback (v' + VERSION + ')');
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'] };
 const $ = (s, r=document) => r.querySelector(s);
@@ -595,7 +616,7 @@ function toast(m){
     const h = [...document.querySelectorAll('.navRow .hint')].find(e => { const row = e.closest('.navRow'); if (!row || row.hidden || !row.offsetParent) return false; const r = row.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; });
     if (h){ if (h.dataset.orig == null) h.dataset.orig = h.textContent; h.textContent = m; h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash'); clearTimeout(slotT); slotT = setTimeout(() => { h.classList.remove('flash'); h.textContent = h.dataset.orig; delete h.dataset.orig; }, 2800); return; }
   }
-  const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800);
+  const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => { t.classList.remove('show'); toastT = setTimeout(() => { t.textContent = ''; }, 300); }, 2800);
 }
 $$('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close('cancel')));
 function ask({ title, label, value='', ok='Save', hint='' }){ return new Promise(res => { const d = $('#askDlg'); $('#askTitle').textContent = title; $('#askLabel').textContent = label; $('#askHint').textContent = hint; $('#askOk').textContent = ok; const i = $('#askInput'); i.value = value; d.returnValue = ''; d.showModal(); i.select(); d.onclose = () => res(d.returnValue === 'ok' ? i.value.trim() : null); }); }
@@ -756,6 +777,7 @@ function go(step){
   render();
 }
 function renderTop(){
+  { const has = S.records.length > 0; const sb = $('#startBtn'); if (sb){ sb.textContent = has ? 'Continue your review' : 'Start a review'; $('#newBtn').hidden = !has; } }
   const inApp = UI.view === 'app';
   $('#projName').hidden = !inApp; $('#saveState').hidden = !inApp; $('#undoBtn').hidden = !inApp; $('#exportBtn').hidden = !inApp; $('#steps').hidden = !inApp;
   $('#unlinkItem').hidden = !FS.handle;
@@ -808,7 +830,7 @@ const drop = $('#drop');
 ['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', e => { const f = [...(e.dataTransfer?.files || [])]; if (f.length) importFiles(f); });
 $('#v-import').addEventListener('click', async e => {
-  const k = e.target.closest('[data-keep]'); if (k){ mutate(() => { const r = byId(k.dataset.keep); r.dup = null; r.dupKeep = true; }); toast('Restored as a unique record.'); return; }
+  const k = e.target.closest('[data-keep]'); if (k){ mutate(() => { const r = byId(k.dataset.keep); r.dup = null; r.dupKeep = true; }); toast('Put back as a separate record. It now goes through screening.'); return; }
   const rb = e.target.closest('[data-rmb]');
   if (rb){ const b = batch(rb.dataset.rmb); if (await confirmBox({ title:`Remove "${b.name}"?`, body:'Its records and any decisions on them are removed. Undo brings them back.', ok:'Remove source' })) mutate(() => { S.records = S.records.filter(r => r.batchId !== b.id); S.batches = S.batches.filter(x => x.id !== b.id); S.records.forEach(r => { if (r.dup && !byId(r.dup)) r.dup = null; }); dedupe(true); }); }
 });
@@ -841,6 +863,14 @@ function renderScreen(){
   const st = stageKey(); const pool = POOL[st]();
   $('#sFilters').innerHTML = FILTERS[st].map(([k, l]) => { const n = k === 'all' ? pool.length : k === 'todo' ? pool.filter(r => !decisionOf(r)).length : pool.filter(r => decisionOf(r) === k).length; return `<button data-f="${k}" aria-pressed="${UI.filter[st] === k}">${l} ${n}</button>`; }).join('');
   const done = pool.filter(r => decisionOf(r)).length;
+  $('#sJob').innerHTML = st === 'ta'
+    ? '<b>Title and abstract.</b> Screening means judging each record against your inclusion criteria. Here you read only the title and abstract and choose Include, Exclude, or Maybe.'
+    : '<b>Full text.</b> Open the full paper of every record you kept and decide for good. Each exclusion needs a reason, because PRISMA reports how many were excluded and why.';
+  const nx = $('#sNext'); const allDone = pool.length && done === pool.length;
+  nx.hidden = !allDone;
+  if (allDone) nx.innerHTML = st === 'ta'
+    ? `<span>All ${pool.length} records are screened.</span><button class="btn primary" data-step-go="ft">Continue to Full text →</button>`
+    : `<span>All ${pool.length} full texts are decided.</span><button class="btn primary" data-step-go="ex">Continue to Extract →</button>`;
   $('#sProgTx').textContent = pool.length ? `${done} of ${pool.length} screened` : '';
   $('#sProgBar').style.width = (pool.length ? done / pool.length * 100 : 0) + '%';
   $('#kwCard').hidden = !UI.kwOpen; $('#kwInc').value = S.kw.inc; $('#kwExc').value = S.kw.exc;
@@ -871,6 +901,10 @@ function renderScreen(){
     : `<button class="exc" data-d="exclude" aria-pressed="${d==='exclude'}">Exclude <kbd>E</kbd></button><button class="may" data-d="notRetrieved" aria-pressed="${d==='notRetrieved'}">Not retrieved <kbd>R</kbd></button><button class="inc" data-d="include" aria-pressed="${d==='include'}">Include <kbd>I</kbd></button>`;
   const rs = $('#reasons'); rs.hidden = !(st === 'ft' && UI.askReason === r.id || (st === 'ft' && d === 'exclude'));
   rs.innerHTML = S.reasons.map((x, i) => `<button data-reason="${esc(x)}" aria-pressed="${r.ftReason === x}">${i < 9 ? `<kbd>${i+1}</kbd>` : ''}${esc(x)}</button>`).join('') + `<button data-reason="__new">+ New reason</button>`;
+  const tch = coarse();
+  $('#decNote').innerHTML = st === 'ta'
+    ? 'Maybe means you are not sure yet. Maybe records go on to full-text review with the ones you include, and you decide there.'
+    : (d === 'exclude' ? '' : `Not retrieved means you could not get the full paper. PRISMA counts these separately. Exclusion reasons: ${S.reasons.map((x, i) => (tch || i >= 9 ? '' : (i + 1) + ' ') + esc(x)).join(' · ')}. ${tch ? 'Tap Exclude, then pick one.' : 'Press E, then the number.'}`);
   const note = $('#recNote'); if (document.activeElement !== note) note.value = st === 'ta' ? r.taNote : r.ftNote;
   { const sh = $('#sHint'); const hv = st === 'ta' ? 'I include · E exclude · M maybe · → next · ? all shortcuts' : 'I include · E exclude, then 1 to 9 for the reason · R not retrieved'; if (sh.classList.contains('flash')) sh.dataset.orig = hv; else sh.textContent = hv; }
 }
@@ -921,23 +955,27 @@ function renderExtract(){
   const pool = POOL.ex(); let r = byId(S.cur.ex); if (!r || !pool.includes(r)) r = pool[0] || null; if (r) S.cur.ex = r.id;
   $('#exItems').innerHTML = pool.map(x => `<button class="it${x === r && UI.exMode === 'form' ? ' cur' : ''}" data-x="${x.id}"><span class="st ${exDone(x) ? 'include' : exPct(x) ? 'maybe' : ''}"></span><span><span class="t">${esc(studyId(x))}</span><small>${esc(x.title.slice(0, 70))}${x.title.length > 70 ? '…' : ''} · ${exPct(x)}%</small></span></button>`).join('') || '<div class="more">Included studies appear here.</div>';
   const main = $('#exMain');
-  if (!pool.length){ main.innerHTML = `<div class="empty"><h2>No included studies yet</h2><p>Studies you include at full-text review appear here for data extraction.</p><button class="btn primary" data-step-go="ft">Go to full text</button></div>`; return; }
+  const exJob = `<p class="job"><b>Extract.</b> Extraction means copying the data you need from each included study into one table, one row per study. Start with the first study in the list and work down. The form saves as you type. Change the fields with Edit template.</p>`
+    + (pool.length && pool.every(exDone) ? `<div class="nextUp"><span>Every study is extracted.</span><button class="btn primary" data-step-go="${S.qa.on ? 'qa' : 'prisma'}">Continue to ${S.qa.on ? 'Appraise' : 'PRISMA'} →</button>${S.qa.on ? '' : '<button class="btn" data-step-go="qa">Appraise quality (optional)</button>'}</div>` : '');
+  if (!pool.length){ main.innerHTML = exJob + `<div class="empty"><h2>No included studies yet</h2><p>Studies you include at full-text review appear here for data extraction.</p><button class="btn primary" data-step-go="ft">Go to full text</button></div>`; return; }
   if (UI.exMode === 'table'){
     main.style.maxWidth = 'none';
-    main.innerHTML = `<div class="vHead"><div class="grow"><h1>Extraction table</h1><p>${pool.length} included ${pool.length === 1 ? 'study' : 'studies'}, ${pool.filter(exDone).length} complete. Click a row to edit it.</p></div></div>
+    main.innerHTML = exJob + `<div class="vHead"><div class="grow"><h1>Extraction table</h1><p>${pool.length} included ${pool.length === 1 ? 'study' : 'studies'}, ${pool.filter(exDone).length} complete. Click a row to edit it.</p></div></div>
       <div class="tableWrap"><table class="tbl"><thead><tr><th>Study</th><th>Title</th>${S.template.map(f => `<th>${esc(f.label)}</th>`).join('')}</tr></thead><tbody>${pool.map(x => `<tr data-x="${x.id}" style="cursor:pointer"><td><b>${esc(studyId(x))}</b></td><td>${esc(x.title)}</td>${S.template.map(f => `<td>${esc(x.ex[f.id] ?? '')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     return;
   }
   main.style.maxWidth = '';
+  const GLOSS = { 'intervention or exposure':'What was done, given, or tested, such as a tool, a programme, or a teaching method. Together with population, comparison, and outcome this is the PICO way of describing a study.', 'comparison':'What it was compared with, such as no tool or the usual class. Leave it empty if there was no comparison.' };
+  const lab = f => esc(f.label) + (GLOSS[f.label.toLowerCase()] ? `<span class="hint">${GLOSS[f.label.toLowerCase()]}</span>` : '');
   const field = f => {
     const v = r.ex[f.id] ?? '';
-    if (f.type === 'long') return `<label class="fld">${esc(f.label)}<textarea data-fid="${f.id}" rows="3">${esc(v)}</textarea></label>`;
+    if (f.type === 'long') return `<label class="fld">${lab(f)}<textarea data-fid="${f.id}" rows="3">${esc(v)}</textarea></label>`;
     if (f.type === 'number') return `<label class="fld">${esc(f.label)}<input type="number" data-fid="${f.id}" value="${esc(v)}"></label>`;
     if (f.type === 'choice') return `<label class="fld">${esc(f.label)}<select data-fid="${f.id}"><option value=""></option>${f.options.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
     if (f.type === 'yesno') return `<div class="fld">${esc(f.label)}<span class="seg">${['Yes','No','Unclear'].map(o => `<label><input type="radio" name="yn-${f.id}" data-fid="${f.id}" value="${o}"${o === v ? ' checked' : ''}>${o}</label>`).join('')}</span></div>`;
-    return `<label class="fld">${esc(f.label)}<input data-fid="${f.id}" value="${esc(v)}"></label>`;
+    return `<label class="fld">${lab(f)}<input data-fid="${f.id}" value="${esc(v)}"></label>`;
   };
-  main.innerHTML = `<div class="rec swap"><div class="meta">${esc(r.authors)} · ${esc(r.year)} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
+  main.innerHTML = exJob + `<div class="rec swap"><div class="meta">${esc(r.authors)} · ${esc(r.year)} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
     <div class="links">${r.doi ? `<a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener">DOI ${esc(r.doi)}</a>` : ''}<span class="muted">Study ID: <b>${esc(studyId(r))}</b></span><span class="muted">${exPct(r)}% complete</span></div>
     <hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><div class="form">${S.template.map(field).join('')}</div></div>
     <div class="navRow"><button class="btn" data-exnav="-1">← Previous study</button><span class="hint">Changes save as you type.</span><button class="btn primary" data-exnav="1">Next study →</button></div>`;
@@ -987,12 +1025,14 @@ function qaItemsFor(r){
 const qaDone = r => { if (!S.qa.on) return true; if (S.qa.tool === 'mmat' && !r.qa.cat) return false; return qaItemsFor(r).every(([k]) => r.qa[k]); };
 function renderQA(){
   const pool = POOL.ex(); const main = $('#qaMain');
-  if (!S.qa.on){ $('#qaItems').innerHTML = ''; main.innerHTML = `<div class="empty"><h2>Quality appraisal is off</h2><p>It is optional. Turn it on if your review appraises study quality, using MMAT 2018 or your own checklist.</p><button class="btn primary" id="qaTurnOn">Set up appraisal</button></div>`; return; }
+  const qaJob = `<p class="job"><b>Appraise.</b> Quality appraisal judges how far you can trust each included study. It is optional. MMAT, the Mixed Methods Appraisal Tool (Hong et al., 2018), is one checklist that works for qualitative, quantitative, and mixed methods studies. You can also use your own checklist.</p>`
+    + (S.qa.on && pool.length && pool.every(qaDone) ? `<div class="nextUp"><span>Every study is appraised.</span><button class="btn primary" data-step-go="prisma">Continue to PRISMA →</button></div>` : '');
+  if (!S.qa.on){ $('#qaItems').innerHTML = ''; main.innerHTML = qaJob + `<div class="empty"><h2>Quality appraisal is off</h2><p>Turn it on if your review appraises study quality, using MMAT 2018 or your own checklist. If not, go straight to PRISMA.</p><button class="btn primary" id="qaTurnOn">Set up appraisal</button> <button class="btn" data-step-go="prisma">Skip to PRISMA →</button></div>`; return; }
   let r = byId(S.cur.qa); if (!r || !pool.includes(r)) r = pool[0] || null; if (r) S.cur.qa = r.id;
   $('#qaItems').innerHTML = pool.map(x => `<button class="it${x === r ? ' cur' : ''}" data-q="${x.id}"><span class="st ${qaDone(x) ? 'include' : ''}"></span><span><span class="t">${esc(studyId(x))}</span><small>${S.qa.tool === 'mmat' ? esc(MMAT[x.qa.cat]?.name || 'No category yet') : ''}</small></span></button>`).join('') || '<div class="more">Included studies appear here.</div>';
-  if (!r){ main.innerHTML = `<div class="empty"><h2>No included studies yet</h2><p>Include studies at full-text review first.</p></div>`; return; }
+  if (!r){ main.innerHTML = qaJob + `<div class="empty"><h2>No included studies yet</h2><p>Include studies at full-text review first.</p></div>`; return; }
   const ans = k => `<span class="seg">${['Yes','No',"Can't tell"].map(o => `<label><input type="radio" name="qa-${k}" data-qk="${k}" value="${o}"${r.qa[k] === o ? ' checked' : ''}>${o}</label>`).join('')}</span>`;
-  main.innerHTML = `<div class="rec swap"><div class="meta">${esc(studyId(r))} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
+  main.innerHTML = qaJob + `<div class="rec swap"><div class="meta">${esc(studyId(r))} · ${esc(r.journal)}</div><h2>${esc(r.title)}</h2>
     ${S.qa.tool === 'mmat' ? `<label class="fld" style="margin:10px 0">Study category<select id="qaCat"><option value="">Choose a category</option>${['1','2','3','4','5'].map(k => `<option value="${k}"${r.qa.cat === k ? ' selected' : ''}>${k}. ${MMAT[k].name}</option>`).join('')}</select></label>` : ''}
     ${qaItemsFor(r).map(([k, l]) => `<div class="qaItem"><span class="lab"><b>${esc(k)}</b>${esc(l)}</span>${ans(k)}</div>`).join('')}
     <label class="fld" style="margin-top:14px">Comments<textarea id="qaNote" rows="3">${esc(r.qa.note || '')}</textarea></label>

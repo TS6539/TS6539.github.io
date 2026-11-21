@@ -6,10 +6,6 @@
 <title>Transcript Coder · Pre-alpha</title>
 <meta name="description" content="Code interview transcripts sentence by sentence in your browser, then export a thematic analysis workbook or an ENA-ready datasheet. Your transcripts never leave your computer.">
 <meta name="robots" content="index,follow">
-<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
-<meta property="og:title" content="Transcript Coder">
-<meta property="og:description" content="Code interview transcripts sentence by sentence in your browser, then export a thematic analysis workbook or an ENA-ready datasheet. Your transcripts never leave your computer.">
-<meta property="og:image" content="https://tianshihao.org/media/sharing.jpg">
 <style>
 :root{
   --ui:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
@@ -164,7 +160,7 @@ textarea{resize:vertical;line-height:1.45}
 .chip button:hover{opacity:1;background:rgba(0,0,0,.08)}
 .noCodes{font-size:.86rem;color:var(--muted)}
 .codeInputWrap{position:relative}
-.codeRow{display:flex;gap:8px}.codeRow input{flex:1;min-width:0}
+.codeRow{display:flex;gap:6px}.codeRow input{flex:1;min-width:0}
 #codeAddBtn{display:none}
 .tabNav{display:none!important}
 #suggest{position:absolute;left:0;right:0;top:calc(100% + 2px);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);list-style:none;margin:0;padding:3px;z-index:20;max-height:260px;overflow:auto;box-shadow:0 6px 18px rgba(0,0,0,.12)}
@@ -180,8 +176,6 @@ textarea{resize:vertical;line-height:1.45}
 .qc.flash{animation:fadeIn .25s ease-out}
 .navRow{display:flex;align-items:center;gap:10px;margin-top:14px}
 .navRow .hint{flex:1;text-align:center;color:var(--muted);font-size:.8rem}
-/* polish: changing figures in tabular numbers */
-.where .pos,.gMeta,#gStrip .st,.groupHead .cnt,.code .cnt,.selBar .n{font-variant-numeric:tabular-nums}
 .cbTools{padding:0 12px 8px;display:flex;flex-direction:column;gap:8px}
 .selBar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:7px}
 .selBar .n{font-size:.84rem;font-weight:600;flex-basis:100%}
@@ -194,7 +188,7 @@ textarea{resize:vertical;line-height:1.45}
 .group.ungrouped .groupHead{border-bottom-style:dashed}
 .group.ungrouped .groupHead h3{font-weight:500;color:var(--muted)}
 .code.open{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin:3px 0}
-.codeRow{display:flex;align-items:center;gap:8px;padding:1px 4px}
+.codeRow{display:flex;align-items:center;gap:6px;padding:1px 4px}
 .codeRow input[type=checkbox]{width:16px;height:16px;flex:none;accent-color:var(--accent)}
 .codeApply{flex:1;display:flex;align-items:center;gap:8px;border:0;background:transparent;text-align:left;padding:5px 6px;border-radius:3px;cursor:pointer;min-width:0}
 .codeApply:hover{background:var(--surface)}
@@ -267,6 +261,11 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100dvh - 42px)}
 #roleBar p{margin:0;max-width:110ch}
 body.second .segTools{display:none}
 .codeDetail.ro .fld span{font-weight:400;color:var(--ink);font-size:.9rem}
+.menu .mnote{font-size:.8rem;color:var(--muted);padding:8px 12px 10px;margin:0 0 4px;max-width:300px;line-height:1.4;border-bottom:1px solid var(--line);white-space:normal}
+.cbHint{font-size:.8rem;color:var(--muted);margin:0 0 8px;line-height:1.4}
+.defs{border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;background:var(--panel);font-size:.92rem}
+.defs p{margin:0 0 4px}.defs p:last-child{margin:0}
+.plan{margin:0;padding-left:20px;line-height:1.6}.plan li{margin-bottom:4px}
 #gStrip{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:.84rem;background:var(--surface);border-bottom:1px solid var(--line)}
 #gStrip .st{color:var(--muted);white-space:nowrap}
 #gStrip .tt{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -524,11 +523,15 @@ body.second .segTools{display:none}
 @media (hover:none){.groupHead .btn{display:inline-block}.hint{visibility:hidden}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+<link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
+<meta property="og:title" content="Transcript Coder">
+<meta property="og:description" content="Code interview transcripts sentence by sentence in your browser, then export a thematic analysis workbook or an ENA-ready datasheet. Your transcripts never leave your computer.">
+<meta property="og:image" content="https://tianshihao.org/media/sharing.jpg">
 </head>
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.4.1 pre-alpha</span>
+  <span class="ver hideSm">v0.4.2 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -537,6 +540,7 @@ body.second .segTools{display:none}
   <div class="menuWrap">
     <button class="btn" id="projectBtn" aria-haspopup="true" aria-expanded="false">Menu</button>
     <div class="menu" id="projectMenu" role="menu">
+      <p class="mnote">Your work saves in this browser as you go, and closing the tab keeps it. Save a project file as a backup or to move to another computer. Clearing this browser's data deletes the copy here.</p>
       <button role="menuitem" data-m="undo" class="onlySm">Undo</button>
       <div class="mh">Transcripts</div>
       <button role="menuitem" data-m="import">Import transcripts <small>.txt .docx</small></button>
@@ -574,7 +578,7 @@ body.second .segTools{display:none}
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.4.1 · pre-alpha · updated 21 November 2026 · phone layout pass · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.4.2 · pre-alpha · updated 21 November 2026 · phone layout pass and guidance pass · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -617,6 +621,7 @@ body.second .segTools{display:none}
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.4.2</dt><dd>November 2026. Guidance pass. Plain definitions of code, codebook, and agreement at the start of the guide, clearer labels and buttons, a plan for the two self-guided methods, and the save explanation in the Menu.</dd>
       <dt>0.4.1</dt><dd>November 2026. Phone layout pass. Prev and Next sit in the bottom bar, recent codes scroll in one row, and touch screens get an Add button next to the code box.</dd>
       <dt>0.4</dt><dd>November 2026. Guided path for codebook thematic analysis: method chooser, codebook versions, a second-coder file, Cohen's kappa per code, a decision log, a theme board, and a draft methods paragraph.</dd>
       <dt>0.3</dt><dd>November 2026. Web version, separate exports for thematic analysis and ENA, participant attributes, phone layout.</dd>
@@ -626,7 +631,7 @@ body.second .segTools{display:none}
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.1) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.2) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -702,6 +707,7 @@ body.second .segTools{display:none}
       <button class="btn small" id="selectModeBtn">Select</button>
       <button class="btn small" id="newCodeBtn">New code</button>
     </div>
+    <p class="cbHint">Every code you use is listed here with how many times it is applied. Open a code to write its definition. Select codes to merge them or group them under a higher-level code, which can later become a theme.</p>
     <div class="cbTools">
       <input type="search" id="cbSearch" placeholder="Search codes" aria-label="Search codes">
       <div class="selBar" id="selBar" hidden>
@@ -764,6 +770,7 @@ body.second .segTools{display:none}
   <div class="dlgHead"><h2>Paste a transcript</h2></div>
   <div class="dlgBody">
     <label class="fld">Transcript name<input id="pasteName" value="Pasted transcript"></label>
+    <p class="note" style="margin:0 0 8px">Start each turn with a speaker label and a colon, such as “Interviewer:” or “P3:”. P stands for participant, so P3 is the third person you interviewed. The app splits the text into sentences and asks who is who next.</p>
     <label class="fld">Text<textarea id="pasteText" rows="12" placeholder="Interviewer: How did you start the essay?&#10;P3: I asked the AI to explain the prompt first."></textarea></label>
     <p class="err" id="pasteErr"></p>
   </div>
@@ -851,7 +858,7 @@ body.second .segTools{display:none}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.4.1';
+const VERSION = '0.4.2';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -1417,6 +1424,7 @@ function renderAll(){
   const pn = $('#projName'); if (document.activeElement !== pn) pn.value = S.name;
   pn.style.width = Math.max(8, Math.min(34, (pn.value.length || 8) + 2)) + 'ch';
   $('#undoBtn').disabled = !undoStack.length;
+  $('#undoBtn').title = undoStack.length ? 'Undo the last change (Ctrl+Z)' : 'Nothing to undo yet. Undo becomes available after you change something.';
   renderTop();
   if (UI.view === 'guide'){ renderGuide(); return; }
   if (UI.view !== 'app') return;
@@ -2085,7 +2093,7 @@ const REF = {
   braun2021:['Braun & Clarke, 2021','Braun, V., & Clarke, V. (2021). One size fits all? What counts as quality practice in (reflexive) thematic analysis? <i>Qualitative Research in Psychology, 18</i>(3), 328–352. https://doi.org/10.1080/14780887.2020.1769238'],
   cohen:['Cohen, 1960','Cohen, J. (1960). A coefficient of agreement for nominal scales. <i>Educational and Psychological Measurement, 20</i>(1), 37–46. https://doi.org/10.1177/001316446002000104'],
   devries:['De Vries et al., 2008','De Vries, H., Elliott, M. N., Kanouse, D. E., & Teleki, S. S. (2008). Using pooled kappa to summarize interrater agreement across many items. <i>Field Methods, 20</i>(3), 272–282. https://doi.org/10.1177/1525822X08317166'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.1) [Computer software]. https://tianshihao.org/coder/'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.2) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
@@ -2196,7 +2204,9 @@ const STEP_SHARED = [
  { id:'method', ph:'setup', title:'Choose your approach',
    est: () => 5, done: () => !!G().method,
    body(){
-     const g = G(); const c = g.chooser; let html = '';
+     const g = G(); const c = g.chooser;
+     let html = `<div class="defs"><p><b>Code.</b> A short label that says what a sentence is about, such as “Own voice” or “Grammar help”.</p><p><b>Codebook.</b> The list of your codes, each with a definition and rules for when to use it, so anyone can apply them the same way.</p><p><b>Agreement.</b> Two people code the same sentences without seeing each other’s codes. Cohen’s kappa then says how often they chose the same codes beyond chance, from 0 (chance) to 1 (always). The guide asks you to set a floor, .60 by default. Below it, you sharpen the codebook and check again on new transcripts.</p></div>
+       <p class="note">Guided steps are ready for codebook thematic analysis. The other two approaches are self-guided for now. You get the setup steps and a short plan to follow on your own.</p>`;
      CHOOSER.forEach(q => {
        if (q.when && !q.when(c)) return;
        html += `<div class="q"><b>${q.q}</b><div class="opts">${q.opts.map(([v,l,s]) => `<button class="opt" data-a="choose" data-q="${q.id}" data-v="${v}" aria-pressed="${c[q.id] === v}"><span>${l}</span>${s ? `<small>${s}</small>` : ''}</button>`).join('')}</div></div>`;
@@ -2204,11 +2214,11 @@ const STEP_SHARED = [
      const rec = recommend(c);
      if (rec){ const m = METHODS[rec];
        html += `<div class="result"><h3>${g.method === rec ? 'Your method' : 'Suggested'}: ${m.name}</h3><p>${m.what}</p><p><b>Fits when.</b> ${m.fit}</p><p><b>You end with.</b> ${m.get}</p>
-         ${m.ready ? '' : '<p class="note">The guided steps for this method are next on my list. If you choose it now, you get the setup steps and then free coding with every export.</p>'}
+         ${m.ready ? '' : '<p class="note"><b>Self-guided for now.</b> If you choose it, you get the setup steps and then a short plan to follow in the normal coding view, with every export ready.</p>'}
          <p class="note">${cite(...m.refs)}</p>
-         ${g.method === rec ? `<span class="gDone">${tickSvg}Chosen</span>` : `<button class="btn primary" data-a="pickMethod" data-m="${rec}">Use this method</button>`}</div>`;
+         ${g.method === rec ? `<span class="gDone">${tickSvg}Chosen</span>` : `<button class="btn primary" data-a="pickMethod" data-m="${rec}">${m.ready ? 'Use this method and continue' : 'Use this method (self-guided) and continue'}</button>`}</div>`;
      }
-     html += `<details${rec ? '' : ' open'}><summary class="note" style="cursor:pointer;margin:6px 0">Compare all three</summary><div class="mGrid" style="margin-top:8px">${Object.entries(METHODS).map(([id,m]) => `<div class="mCard${g.method === id ? ' pick' : ''}"><b>${m.name}</b><span>${m.fit}</span>${m.ready ? '' : '<span class="soonTag">Guided steps coming next</span>'}<button class="btn small" data-a="pickMethod" data-m="${id}"${g.method === id ? ' disabled' : ''}>${g.method === id ? 'Chosen' : 'Choose'}</button></div>`).join('')}</div></details>`;
+     html += `<details${rec ? '' : ' open'}><summary class="note" style="cursor:pointer;margin:6px 0">Compare all three</summary><div class="mGrid" style="margin-top:8px">${Object.entries(METHODS).map(([id,m]) => `<div class="mCard${g.method === id ? ' pick' : ''}"><b>${m.name}</b><span>${m.fit}</span><span class="soonTag">${m.ready ? 'Guided steps ready' : 'Self-guided for now'}</span><button class="btn small${g.method === id ? '' : ' primary'}" data-a="pickMethod" data-m="${id}"${g.method === id ? ' disabled' : ''}>${g.method === id ? '✓ Chosen' : 'Choose and continue'}</button></div>`).join('')}</div></details>`;
      return { why:'Different kinds of thematic and network analysis ask for different steps, and reviewers check that you followed the one you name. Three questions are enough to pick one.', html };
    } },
  { id:'project', ph:'setup', title:'Name the project and write the research question',
@@ -2227,9 +2237,9 @@ const STEP_SHARED = [
    body(){
      const list = S.transcripts.map(t => { const p = partSegs(t); const sps = [...new Set(p.map(x => spk(x.sp)?.name).filter(Boolean))]; return `<div class="tCard"><div><div class="nm">${esc(t.name)}</div><div class="meta">${p.length} participant sentences · ${sps.length ? esc(sps.join(', ')) : 'no participant set'} · about ${tWords(t)} words</div></div></div>`; }).join('');
      return { why:'The app splits each transcript into sentences and needs to know who is speaking. Interviewer lines stay on screen as context and are never coded, so a wrong label quietly drops data.',
-       html:`${list ? `<div class="tCards">${list}</div>` : '<p class="note">No transcripts yet. Plain text and Word files work. Speaker labels such as “Interviewer:” and “P1:” are picked up.</p>'}
-         <div class="ctaRow" style="margin:0"><button class="btn${S.transcripts.length ? '' : ' primary'}" data-a="import">Import transcripts</button><button class="btn" data-a="paste">Paste text</button>${S.transcripts.length ? '<button class="btn" data-a="speakers">Check participants</button>' : ''}</div>`,
-       foot:`<button class="btn primary" data-a="mark" data-s="data" data-ready>Speakers look right</button>` }; } },
+       html:`${list ? `<div class="tCards">${list}</div>` : '<p class="note">No transcripts yet. Plain text and Word files work. Speaker labels such as “Interviewer:” and “P1:” (P for participant) are picked up.</p>'}
+         <div class="ctaRow" style="margin:0"><button class="btn${S.transcripts.length ? '' : ' primary'}" data-a="import">Import transcripts</button><button class="btn" data-a="paste">Paste text</button>${S.transcripts.length ? '<button class="btn" data-a="speakers">Edit participants</button>' : ''}</div>`,
+       foot:`<button class="btn primary" data-a="mark" data-s="data" data-ready>Speakers look right, continue</button><span class="note">Something wrong? Use Edit participants first.</span>` }; } },
  { id:'lang', ph:'setup', title:'Decide the coding language',
    est: () => 3, done: () => !!G().lang.mode && !!G().lang.langs.trim(),
    checks: () => [chk(!!G().lang.mode, 'How you will code is chosen'), chk(!!G().lang.langs.trim(), 'The languages in the data are named')],
@@ -2402,9 +2412,14 @@ const STEP_CB = [
          <div class="ctaRow"><button class="btn" data-a="copyMP">Copy paragraph</button><button class="btn" data-a="copyMPR">Copy with references</button><button class="btn" data-a="exportTA">Export the workbook</button><button class="btn" data-a="cbExport">Download the codebook</button><button class="btn" data-a="saveProj">Save project file</button></div>`,
        foot:`<button class="btn primary" data-a="mark" data-s="write">Finish</button>` }; } },
 ];
-function stepSoon(m){ return { id:'soon', ph: m === 'ena' ? 'code' : 'code', title:`Next: the ${METHODS[m].name} steps`, est: () => 0, done: () => false, soon:true,
-  body(){ return { why:'The guided steps for this method are being built. Until then, code in the normal view, where every tool and both exports are ready.',
-    html: m === 'ena' ? '<p>For ENA, use a fixed codebook, check kappa with a colleague, and export the ENA datasheet. In webENA, a common setup uses Transcript as the conversation, Speaker as the unit, and the code columns as codes.</p>' : '<p>For reflexive thematic analysis, keep a journal of your decisions as you code, let codes change, and build themes from patterns of meaning. There is no agreement score in this approach.</p>',
+function stepSoon(m){ return { id:'soon', ph:'code', title: m === 'ena' ? 'Your plan for ENA' : 'Your plan for reflexive thematic analysis', est: () => 0, done: () => false, soon:true,
+  body(){ return m === 'ena' ? { why:`Guided steps for ENA are being built. Until then, follow this plan in the normal coding view ${cite('shaffer2017')}.`,
+    html:`<ol class="plan"><li>Write a codebook with a definition for every code, in the Codebook pane.</li><li>Have a colleague code part of the data with the same codebook and check agreement with Cohen’s kappa. Quantitative ethnography usually also reports Shaffer’s rho, which the rhoR package for R calculates.</li><li>Code every transcript with the fixed codebook.</li><li>Export the ENA datasheet (Export, then ENA datasheet).</li><li>Load it in webENA or rENA. A common setup uses Transcript as the conversation, Speaker as the unit, and the code columns as codes.</li></ol>
+      <p class="note">Steps 1 to 3 are the same as in codebook thematic analysis. If you want the guide to walk you through them, including the second-coder file and kappa, switch to that path. You can still export the ENA datasheet at the end.</p>`,
+    foot:'<button class="btn primary" data-a="toCoding">Go to coding</button><button class="btn" data-a="pickMethod" data-m="codebook">Use the guided codebook steps</button>' }
+  : { why:`Guided steps for reflexive thematic analysis are being built. Until then, follow these six phases in the normal coding view ${cite('braun2006','braun2019')}.`,
+    html:`<ol class="plan"><li>Read every transcript and note your first ideas.</li><li>Code in the coding view. Create codes freely, and rename or merge them as your understanding changes.</li><li>Keep a short journal of your decisions and why you made them, in any document.</li><li>Group codes into possible themes with “Group under higher-level code” in the Codebook pane.</li><li>Check each theme against its quotes and the whole dataset, then define and name it.</li><li>Export the thematic analysis workbook and write up.</li></ol>
+      <p class="note">There is no agreement score in this approach. Your interpretation is part of the method, so the journal is what shows your reasoning.</p>`,
     foot:'<button class="btn primary" data-a="toCoding">Go to coding</button>' }; } }; }
 function stepList(){ const g = G(); if (!g) return []; const L = [...STEP_SHARED]; if (g.method === 'codebook') L.push(...STEP_CB); else if (g.method) L.push(stepSoon(g.method)); return L; }
 function curStep(){ const L = stepList(); const pick = UI.gStep && L.find(s => s.id === UI.gStep); return pick || L.find(s => !s.done()) || L[L.length - 1]; }
@@ -2572,7 +2587,7 @@ function renderGuide(){
   const real = L.filter(s => !s.soon); const nDone = real.filter(s => s.done()).length;
   const left = L.filter(s => !s.done()).reduce((m,s) => m + (s.est() || 0), 0);
   const waiting = g.method === 'codebook' && lastRound() && lastRound().status === 'sent';
-  $('#gStepOf').textContent = g.method ? `Step ${idx + 1} of ${L.length} · ${PHASES[cur.ph]}` : 'Step 1 · Choose your approach';
+  $('#gStepOf').textContent = g.method ? `Step ${idx + 1} of ${L.length} · ${PHASES[cur.ph]}` : `Step ${idx + 1} · ${PHASES[cur.ph]} · choose an approach to see every step`;
   $('#gLeft').textContent = g.method === 'codebook' || !g.method ? `${fmtMin(left)} of your time left${waiting ? ', plus your second coder’s' : ''}` : 'Setup only for now';
   $('#gBarFill').style.width = (real.length ? nDone / real.length * 100 : 0) + '%';
   // rail
@@ -2580,7 +2595,7 @@ function renderGuide(){
   if (ae && ae.dataset && ae.dataset.k && $('#gCard').contains(ae)){ rk = ae.dataset.k; try { rs = [ae.selectionStart, ae.selectionEnd]; } catch(e){} }
   const phs = [...new Set(L.map(s => s.ph))];
   const small = window.matchMedia && window.matchMedia('(max-width:860px)').matches;
-  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}</details>`;
+  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}${g.method ? '' : '<p class="note" style="margin:6px 6px 0">More steps appear here once you choose an approach.</p>'}</details>`;
   // card
   const b = cur.body(); const done = cur.done(); const nx = L[idx + 1];
   const card = $('#gCard');
@@ -2695,8 +2710,8 @@ async function gAct(a, b){
   const g = G();
   if (a === 'goStep'){ UI.gStep = b.dataset.s; UI.sub = null; renderGuide(); $('#guide').scrollTop = 0; return; }
   if (a === 'choose'){ mutate(() => { g.chooser[b.dataset.q] = b.dataset.v; if (b.dataset.q === 'q1'){ delete g.chooser.q2; delete g.chooser.q3; } if (b.dataset.q === 'q2') delete g.chooser.q3; }); return; }
-  if (a === 'pickMethod'){ mutate(() => { g.method = b.dataset.m; glog('decision', 'Chose the method: ' + METHODS[b.dataset.m].name); }); UI.gStep = null; return; }
-  if (a === 'mark'){ mutate(() => { g.done[b.dataset.s] = nowMs(); }); UI.gStep = null; renderGuide(); return; }
+  if (a === 'pickMethod'){ UI.gStep = null; mutate(() => { g.method = b.dataset.m; glog('decision', 'Chose the method: ' + METHODS[b.dataset.m].name); }); cheer('Method chosen: ' + METHODS[b.dataset.m].name); return; }
+  if (a === 'mark'){ UI.gStep = null; mutate(() => { g.done[b.dataset.s] = nowMs(); }); renderGuide(); return; }
   if (a === 'import'){ $('#fileIn').click(); return; }
   if (a === 'paste'){ $('#pasteErr').textContent = ''; $('#pasteDlg').showModal(); return; }
   if (a === 'speakers'){ renderSpeakers(); $('#speakersDlg').showModal(); return; }
