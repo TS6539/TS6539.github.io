@@ -18,25 +18,25 @@
   --bg:#F7F7F5; --panel:#EFEFEC; --surface:#FFFFFF; --ink:#1F2328; --muted:#5F6670; --faint:#8C939C;
   --line:#DADAD5; --line-strong:#BDBDB6; --accent:#25507A; --accent-ink:#FFFFFF; --accent-soft:#E6EDF4;
   --danger:#A33A2E; --ok:#3D7A4E; --cs:55%; --cl:90%; --cbar:45%; --cink:22%;
-  --r:4px; --tabH:0px;
+  --r:8px; --tabH:0px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#16181B; --panel:#1C1F23; --surface:#212429; --ink:#E6E8EB; --muted:#A1A8B1; --faint:#737B85;
+    --bg:#16181B; --panel:#1C1F23; --surface:#212429; --ink:#E6E8EB; --muted:#A1A8B1; --faint:#848E99;
     --line:#30343A; --line-strong:#444A52; --accent:#8DB6DD; --accent-ink:#11161C; --accent-soft:#1E2A37;
     --danger:#E58B80; --ok:#86C59A; --cs:28%; --cl:24%; --cbar:58%; --cink:86%; color-scheme:dark;
   }
 }
 *,*::before,*::after{box-sizing:border-box}
 html{height:100%;-webkit-text-size-adjust:100%}
-body{height:100%;height:100dvh;margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14.5px;line-height:1.5}
+body{height:100%;height:100dvh;margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.45}
 button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 [hidden]{display:none!important}
 a{color:var(--accent)}
 kbd{font-family:var(--mono);font-size:.78em;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:var(--surface);color:var(--muted)}
-.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r);padding:6px 12px;cursor:pointer;white-space:nowrap;line-height:1.35;transition:background .12s,border-color .12s}
+.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r);padding:7px 13px;cursor:pointer;white-space:nowrap;line-height:1.35;transition:background .12s,border-color .12s}
 .btn:hover{background:var(--panel);border-color:var(--muted)}
 .btn:active{background:var(--line)}
 .btn:disabled{opacity:.45;cursor:default;background:var(--surface);border-color:var(--line)}
@@ -50,7 +50,7 @@ kbd{font-family:var(--mono);font-size:.78em;border:1px solid var(--line-strong);
 input[type=text],input:not([type]),input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:6px 9px;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 1px var(--accent)}
 textarea{resize:vertical;line-height:1.45}
-.tag{font-size:.78rem;color:var(--muted);border:1px solid var(--line-strong);border-radius:3px;padding:0 6px;white-space:nowrap}
+.tag{font-size:.78rem;color:var(--muted);border:1px solid var(--line-strong);border-radius:999px;padding:0 6px;white-space:nowrap}
 
 /* top bar */
 .top{display:flex;align-items:center;gap:8px;padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:var(--surface);border-bottom:1px solid var(--line)}
@@ -68,7 +68,7 @@ textarea{resize:vertical;line-height:1.45}
 .top .spacer{flex:1}
 .ver{font-size:.78rem;color:var(--faint)}
 .menuWrap{position:relative}
-.menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:4px;min-width:240px;z-index:60;box-shadow:0 6px 18px rgba(0,0,0,.12);display:none}
+.menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:4px;min-width:240px;z-index:60;box-shadow:0 6px 18px rgba(0,0,0,.12);display:none}
 .menu.show{display:block}
 .menu button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:3px;cursor:pointer}
 .menu button small{color:var(--faint);font-size:.76rem}
@@ -76,9 +76,9 @@ textarea{resize:vertical;line-height:1.45}
 .menu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
 .menu .mh{font-size:.76rem;font-weight:600;color:var(--faint);padding:6px 10px 2px}
 .onlySm{display:none!important}
-#alphaBar{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:.84rem;background:#FFF8E5;color:#5C4510;border-bottom:1px solid #EADBB0}
+#alphaBar{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:.84rem;background:var(--accent-soft);color:var(--ink);border-bottom:1px solid var(--line)}
 #alphaBar p{margin:0;flex:1}
-@media (prefers-color-scheme: dark){#alphaBar{background:#2A2414;color:#E9D49A;border-color:#4A3F22}}
+
 
 /* start page */
 #welcome{flex:1;overflow:auto}
@@ -146,7 +146,7 @@ textarea{resize:vertical;line-height:1.45}
 .ctx .who{display:block;font-family:var(--ui);font-size:.74rem;font-weight:600}
 .ctx.int{font-style:italic}
 .ctxGroup{min-height:6px}
-.current{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:22px;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:20px 22px 18px;margin:6px 0;touch-action:pan-y}
+.current{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:22px;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:20px 22px 18px;margin:6px 0;touch-action:pan-y}
 .current.int{background:var(--panel);border-style:dashed}
 .current.swap .lhs{animation:swapIn .16s ease-out both}
 .banner{font-size:.84rem;color:var(--muted);background:var(--panel);border-left:3px solid var(--line-strong);padding:6px 10px;margin-bottom:12px}
@@ -164,6 +164,9 @@ textarea{resize:vertical;line-height:1.45}
 .chip button:hover{opacity:1;background:rgba(0,0,0,.08)}
 .noCodes{font-size:.86rem;color:var(--muted)}
 .codeInputWrap{position:relative}
+.codeRow{display:flex;gap:8px}.codeRow input{flex:1;min-width:0}
+#codeAddBtn{display:none}
+.tabNav{display:none!important}
 #suggest{position:absolute;left:0;right:0;top:calc(100% + 2px);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);list-style:none;margin:0;padding:3px;z-index:20;max-height:260px;overflow:auto;box-shadow:0 6px 18px rgba(0,0,0,.12)}
 #suggest li{padding:5px 8px;border-radius:3px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.9rem}
 #suggest li[aria-selected=true]{background:var(--accent-soft)}
@@ -171,12 +174,14 @@ textarea{resize:vertical;line-height:1.45}
 .sw{width:9px;height:9px;border-radius:2px;background:hsl(var(--h) 50% var(--cbar));flex:none}
 .recent{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:12px 0 4px}
 .recent .lbl{font-size:.8rem;color:var(--muted);font-weight:600;margin-right:4px}
-.qc{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);border-radius:3px;padding:3px 9px 3px 4px;cursor:pointer;font-size:.86rem}
+.qc{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:3px 9px 3px 4px;cursor:pointer;font-size:.86rem}
 .qc:hover{border-color:var(--muted)}
 .qc[aria-pressed=true]{background:hsl(var(--h) var(--cs) var(--cl));border-color:hsl(var(--h) 50% var(--cbar))}
 .qc.flash{animation:fadeIn .25s ease-out}
 .navRow{display:flex;align-items:center;gap:10px;margin-top:14px}
 .navRow .hint{flex:1;text-align:center;color:var(--muted);font-size:.8rem}
+/* polish: changing figures in tabular numbers */
+.where .pos,.gMeta,#gStrip .st,.groupHead .cnt,.code .cnt,.selBar .n{font-variant-numeric:tabular-nums}
 .cbTools{padding:0 12px 8px;display:flex;flex-direction:column;gap:8px}
 .selBar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:7px}
 .selBar .n{font-size:.84rem;font-weight:600;flex-basis:100%}
@@ -189,7 +194,7 @@ textarea{resize:vertical;line-height:1.45}
 .group.ungrouped .groupHead{border-bottom-style:dashed}
 .group.ungrouped .groupHead h3{font-weight:500;color:var(--muted)}
 .code.open{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin:3px 0}
-.codeRow{display:flex;align-items:center;gap:6px;padding:1px 4px}
+.codeRow{display:flex;align-items:center;gap:8px;padding:1px 4px}
 .codeRow input[type=checkbox]{width:16px;height:16px;flex:none;accent-color:var(--accent)}
 .codeApply{flex:1;display:flex;align-items:center;gap:8px;border:0;background:transparent;text-align:left;padding:5px 6px;border-radius:3px;cursor:pointer;min-width:0}
 .codeApply:hover{background:var(--surface)}
@@ -205,7 +210,7 @@ textarea{resize:vertical;line-height:1.45}
 .detailBtns{display:flex;gap:6px;flex-wrap:wrap}
 
 /* dialogs */
-dialog{border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 40px);box-shadow:0 12px 40px rgba(0,0,0,.22)}
+dialog{border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 40px);box-shadow:0 12px 40px rgba(0,0,0,.22)}
 dialog.wide{width:min(840px,calc(100vw - 24px))}
 dialog::backdrop{background:rgba(20,22,25,.45)}
 dialog form{display:flex;flex-direction:column;max-height:calc(100dvh - 42px)}
@@ -293,7 +298,7 @@ body.second .segTools{display:none}
 .gSt.on{color:var(--ink);font-weight:600;background:var(--surface);box-shadow:inset 2px 0 0 var(--accent)}
 .gSt.on .dot{border-color:var(--accent)}
 .gSt.soon{opacity:.6}
-.gCard{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:22px 24px 20px}
+.gCard{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:22px 24px 20px}
 .gCard.enter{animation:cardIn .32s cubic-bezier(.2,.7,.2,1) both}
 .gKick{font-size:.8rem;color:var(--muted);margin:0 0 4px;display:flex;gap:8px;flex-wrap:wrap}
 .gKick .est{color:var(--faint)}
@@ -411,13 +416,13 @@ body.second .segTools{display:none}
 .quotes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:320px;overflow:auto}
 .quotes li{font-family:var(--read);font-size:.96rem;border-left:3px solid hsl(var(--h) 50% var(--cbar));padding:2px 10px}
 .quotes li small{display:block;font-family:var(--ui);font-size:.74rem;color:var(--muted)}
-.mp{border:1px solid var(--line-strong);border-radius:var(--r);padding:14px 16px;font-family:var(--read);font-size:1.02rem;line-height:1.6;background:var(--surface)}
+.mp{border:1px solid var(--line-strong);border-radius:var(--r);padding:14px 16px;font-family:var(--read);font-size:1.02rem;line-height:1.45;background:var(--surface);max-width:72ch}
 .mp mark{background:#FFF1C2;color:inherit;border-bottom:1px solid #D9B44A;padding:0 1px}
 @media (prefers-color-scheme: dark){.mp mark{background:#3A3115;border-color:#8C7430}}
 .legend{display:flex;gap:14px;font-size:.8rem;color:var(--muted);flex-wrap:wrap;align-items:center}
 .legend mark{background:#FFF1C2;border-bottom:1px solid #D9B44A;padding:0 4px}
-.disclaim{border-left:3px solid #C9962B;background:#FFF8E5;color:#5C4510;padding:8px 12px;font-size:.88rem}
-@media (prefers-color-scheme: dark){.disclaim{background:#2A2414;color:#E9D49A}}
+.disclaim{border-left:3px solid var(--accent);background:var(--accent-soft);color:var(--ink);padding:8px 12px;font-size:.88rem}
+
 .refs{font-size:.86rem;display:flex;flex-direction:column;gap:4px;padding-left:22px;text-indent:-22px;font-family:var(--read)}
 .gRef{font-size:.8rem;color:var(--muted);margin-top:14px}
 .gCheer{position:fixed;left:50%;top:84px;transform:translate(-50%,-12px);background:var(--surface);border:1px solid var(--ok);color:var(--ink);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;font-weight:600;opacity:0;pointer-events:none;z-index:90;transition:opacity .3s,transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.12)}
@@ -426,11 +431,12 @@ body.second .segTools{display:none}
 .gCheer path{stroke-dasharray:24;stroke-dashoffset:24}
 .gCheer.show path{animation:draw .5s .15s ease-out forwards}
 .readBody{display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
-.readText{font-family:var(--read);font-size:1rem;line-height:1.55;max-height:60vh;overflow:auto;padding-right:6px}
+.readText{font-family:var(--read);font-size:1rem;line-height:1.45;max-height:60vh;overflow:auto;padding-right:6px}
 .readText p{margin:0 0 8px}.readText .who{font-family:var(--ui);font-size:.76rem;font-weight:600;color:var(--muted);display:block}
 .readText p.int{color:var(--muted);font-style:italic}
 .copyBox{display:flex;flex-direction:column;gap:6px}
 .copyBox textarea{font-size:.88rem}
+@media (hover:none) and (pointer:coarse){ #codeAddBtn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px} #codeInput{min-height:44px} }
 @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes swapIn{from{opacity:.4}to{opacity:1}}
@@ -441,7 +447,7 @@ body.second .segTools{display:none}
 /* phones and small tablets */
 @media (max-width:860px){
   :root{--tabH:56px}
-  body{font-size:15px}
+  body{font-size:16px}
   input[type=text],input:not([type]),input[type=search],select,textarea{font-size:16px}
   .top{padding:6px 10px;padding-top:calc(6px + env(safe-area-inset-top,0px));gap:6px}
   .hideSm,.saveState{display:none!important}
@@ -469,12 +475,21 @@ body.second .segTools{display:none}
   .current{padding:16px 14px 14px;gap:14px}
   .sentence{font-size:1.28rem}
   .segTools .btn{font-size:.8rem;padding:4px 8px}
-  .recent .lbl{flex-basis:100%}
+  .recent{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:10px -12px 2px;padding:0 12px 2px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .recent::-webkit-scrollbar{display:none}
+  .recent .lbl{flex:none}
+  .recent .qc{flex:none;white-space:nowrap}
+  .where{flex-wrap:nowrap;align-items:flex-start;gap:8px}
+  .spkPick{width:auto;flex:none;font-size:0;gap:0}
+  .spkPick select{max-width:36vw;min-height:40px;font-size:15px}
+  .top .btn,.top #projName{min-height:44px}
+  .navRow{display:none!important}
+  body[data-tab=code] .tabNav{display:flex!important;flex:0 0 64px}
+  .tabNav.next{color:var(--accent)!important}
   .qc{padding:7px 11px;font-size:.92rem}
   .qc kbd,.hint kbd{display:none}
   .chip{padding:5px 4px 5px 10px;font-size:.95rem}
   .chip button{padding:2px 10px;font-size:1.15rem}
-  .navRow{position:sticky;bottom:0;margin:10px -12px 0;padding:8px 12px;background:var(--bg);border-top:1px solid var(--line)}
   .navRow .hint{font-size:.74rem}
   .navRow .btn{flex:none;padding:9px 16px}
   .codeApply{padding:9px 6px}
@@ -513,7 +528,7 @@ body.second .segTools{display:none}
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.4 pre-alpha</span>
+  <span class="ver hideSm">v0.4.1 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -559,7 +574,7 @@ body.second .segTools{display:none}
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.4 · pre-alpha · updated 20 November 2026 · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.4.1 · pre-alpha · updated 21 November 2026 · phone layout pass · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -602,6 +617,7 @@ body.second .segTools{display:none}
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.4.1</dt><dd>November 2026. Phone layout pass. Prev and Next sit in the bottom bar, recent codes scroll in one row, and touch screens get an Add button next to the code box.</dd>
       <dt>0.4</dt><dd>November 2026. Guided path for codebook thematic analysis: method chooser, codebook versions, a second-coder file, Cohen's kappa per code, a decision log, a theme board, and a draft methods paragraph.</dd>
       <dt>0.3</dt><dd>November 2026. Web version, separate exports for thematic analysis and ENA, participant attributes, phone layout.</dd>
       <dt>0.2</dt><dd>November 2026. Import a codebook, select all codes, autosave to a linked file.</dd>
@@ -610,7 +626,7 @@ body.second .segTools{display:none}
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.1) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -667,7 +683,7 @@ body.second .segTools{display:none}
           <div class="lbl">Codes on this sentence</div>
           <div id="chips"></div>
           <div class="codeInputWrap">
-            <input id="codeInput" autocomplete="off" placeholder="Type a code, then Enter" aria-label="Add a code" role="combobox" aria-controls="suggest" aria-expanded="false" aria-autocomplete="list">
+            <div class="codeRow"><input id="codeInput" autocomplete="off" placeholder="Type a code, then Enter" aria-label="Add a code" role="combobox" aria-controls="suggest" aria-expanded="false" aria-autocomplete="list"><button class="btn primary" id="codeAddBtn" type="button">Add</button></div>
             <ul id="suggest" role="listbox" hidden></ul>
           </div>
         </div>
@@ -702,10 +718,14 @@ body.second .segTools{display:none}
     <div id="cbList"></div>
   </aside>
 </main>
-<nav class="tabs" role="tablist" aria-label="Sections">
+<nav class="tabs" aria-label="Sections">
+  <button class="tabNav" id="tabPrev" aria-label="Previous sentence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Prev</button>
+  <div role="tablist" aria-label="Sections" style="display:contents">
   <button role="tab" data-tab="left" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/></svg>Transcripts</button>
   <button role="tab" data-tab="code" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M17 15l2 2 3-4"/></svg>Code</button>
   <button role="tab" data-tab="right" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5z"/><path d="M13 16h6"/></svg>Codebook</button>
+  </div>
+  <button class="tabNav next" id="tabNext" aria-label="Next sentence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>Next</button>
 </nav>
 </div>
 
@@ -831,7 +851,7 @@ body.second .segTools{display:none}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.4';
+const VERSION = '0.4.1';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -1593,6 +1613,10 @@ $('#ctxPrev').addEventListener('click', e => { const b = e.target.closest('[data
 $('#ctxNext').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) setCursor(+b.dataset.i); });
 $('#ovList').addEventListener('click', e => { const b = e.target.closest('.ov'); if (b){ setCursor(+b.dataset.i); setTab('code'); } });
 $('#prevBtn').addEventListener('click', () => go(-1));
+$('#tabPrev').addEventListener('click', () => go(-1));
+$('#tabNext').addEventListener('click', () => go(1));
+$('#codeAddBtn').addEventListener('pointerdown', e => e.preventDefault());
+$('#codeAddBtn').addEventListener('click', () => { const inp = $('#codeInput'); if (!inp.value.trim()){ inp.focus(); return; } if (UI.sugItems.length) pickSuggest(UI.sugIdx); else { addCodeByName(inp.value); inp.value = ''; hideSuggest(); } inp.focus(); });
 $('#nextBtn').addEventListener('click', () => go(1));
 $('#joinPrevBtn').addEventListener('click', () => join(-1));
 $('#joinNextBtn').addEventListener('click', () => join(1));
@@ -2061,7 +2085,7 @@ const REF = {
   braun2021:['Braun & Clarke, 2021','Braun, V., & Clarke, V. (2021). One size fits all? What counts as quality practice in (reflexive) thematic analysis? <i>Qualitative Research in Psychology, 18</i>(3), 328–352. https://doi.org/10.1080/14780887.2020.1769238'],
   cohen:['Cohen, 1960','Cohen, J. (1960). A coefficient of agreement for nominal scales. <i>Educational and Psychological Measurement, 20</i>(1), 37–46. https://doi.org/10.1177/001316446002000104'],
   devries:['De Vries et al., 2008','De Vries, H., Elliott, M. N., Kanouse, D. E., & Teleki, S. S. (2008). Using pooled kappa to summarize interrater agreement across many items. <i>Field Methods, 20</i>(3), 272–282. https://doi.org/10.1177/1525822X08317166'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4) [Computer software]. https://tianshihao.org/coder/'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.1) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
