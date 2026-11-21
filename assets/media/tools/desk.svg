@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="130" viewBox="0 0 200 130" role="img" aria-label="Peer Review Desk interface schematic">
+  <title>Peer Review Desk interface schematic</title>
+  <defs>
+    <clipPath id="win"><rect x="2" y="2" width="196" height="126" rx="7"/></clipPath>
+  </defs>
+  <rect x="2" y="2" width="196" height="126" rx="7" fill="#fcfdfe"/>
+  <g clip-path="url(#win)">
+    <rect x="2" y="2" width="196" height="20" fill="#3f5a7a"/>
+  </g>
+  <circle cx="13" cy="12" r="3" fill="#f2f5f7"/>
+  <circle cx="25" cy="12" r="3" fill="#f2f5f7"/>
+  <circle cx="37" cy="12" r="3" fill="#f2f5f7"/>
+  <!-- Manuscript page -->
+  <rect x="14" y="32" width="96" height="82" rx="4" fill="#ffffff" stroke="#c3cfdb"/>
+  <rect x="22" y="41" width="62" height="7" rx="3.5" fill="#3f5a7a"/>
+  <rect x="22" y="55" width="80" height="6" rx="3" fill="#c3cfdb"/>
+  <rect x="22" y="66" width="80" height="6" rx="3" fill="#c3cfdb"/>
+  <rect x="22" y="77" width="72" height="6" rx="3" fill="#c3cfdb"/>
+  <rect x="22" y="92" width="80" height="6" rx="3" fill="rgba(63,90,122,.35)"/>
+  <rect x="22" y="103" width="66" height="6" rx="3" fill="#c3cfdb"/>
+  <!-- Checklist: three done, one open -->
+  <g stroke="#3f5a7a" stroke-width="1.8" fill="none">
+    <rect x="124" y="34" width="13" height="13" rx="3"/>
+    <path d="M126.5 40.5 l3 3 l5.5 -6"/>
+    <rect x="124" y="56" width="13" height="13" rx="3"/>
+    <path d="M126.5 62.5 l3 3 l5.5 -6"/>
+    <rect x="124" y="78" width="13" height="13" rx="3"/>
+    <path d="M126.5 84.5 l3 3 l5.5 -6"/>
+    <rect x="124" y="100" width="13" height="13" rx="3"/>
+  </g>
+  <rect x="144" y="38" width="42" height="6" rx="3" fill="#9db2c8"/>
+  <rect x="144" y="60" width="36" height="6" rx="3" fill="#9db2c8"/>
+  <rect x="144" y="82" width="42" height="6" rx="3" fill="#9db2c8"/>
+  <rect x="144" y="104" width="30" height="6" rx="3" fill="#c3cfdb"/>
+  <rect x="2" y="2" width="196" height="126" rx="7" fill="none" stroke="#3f5a7a" stroke-width="2"/>
+</svg>

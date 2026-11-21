@@ -2,6 +2,9 @@
 title: 'Three browser tools for research, now live on this site'
 date: 2026-11-21
 summary: 'Transcript Coder, Review Kit, and Peer Review Desk are now live. All three are free, run entirely in your browser, and keep your files on your own computer.'
+image:
+  filename: 'tools/tools-banner.svg'
+  alt_text: 'Schematic drawings of the Transcript Coder, Review Kit, and Peer Review Desk interfaces'
 ---
 
 Three tools I built for my own research work are now live on this site. Each one runs entirely in your browser, and each one is free to use.

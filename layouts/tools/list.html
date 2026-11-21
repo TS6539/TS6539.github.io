@@ -16,9 +16,10 @@
     {{- end }}
   </header>
 
-  <div class="plist">
+  <div class="plist plist-tools">
     {{- with .Params.tools }}
     {{ range . }}
+    {{ $tool := . }}
     <article class="plist-row">
       <div class="plist-meta">
         <span class="plist-status">{{ .status }}</span>
@@ -28,6 +29,13 @@
         <h2 class="plist-title"><a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}</a></h2>
         <p class="plist-desc">{{ .summary }}</p>
       </div>
+      {{- with .image }}
+      {{- with resources.Get (printf "media/tools/%s" .) }}
+      <div class="plist-thumb">
+        <a href="{{ $tool.link }}" target="_blank" rel="noopener"><img src="{{ .RelPermalink }}" alt="{{ $tool.title }} interface schematic" width="200" height="130" loading="lazy" decoding="async"></a>
+      </div>
+      {{- end }}
+      {{- end }}
     </article>
     {{ end }}
     {{- end }}

@@ -675,6 +675,28 @@ body {
   .plist-meta { flex-direction: column; flex-wrap: nowrap; gap: .2rem; }
 }
 
+/* Tools index thumbnails (2026-11-21): a schematic of each tool's
+   interface at the right of its row. Only layouts/tools/list.html
+   emits .plist-thumb, so Projects, Teaching and Speaking rows keep
+   the shared two-column layout untouched. The SVGs carry their own
+   paper background, so no frame is added here and dark mode needs
+   no variant. Below 820px the row is single-column and the thumb
+   stacks under the text. */
+.plist-thumb { margin-top: 1rem; }
+.plist-thumb a { display: block; width: 200px; max-width: 100%; }
+.plist-thumb img { display: block; width: 100%; height: auto; }
+@media (min-width: 820px) {
+  .plist-tools .plist-row { grid-template-columns: 190px minmax(0, 1fr) auto; }
+  .plist-thumb { margin-top: 0; }
+  .plist-thumb a { width: 184px; }
+}
+
+/* Blog cards: the tools-launch banner is a wide schematic (600x130).
+   Keep it whole inside the card's 16/9 image frame instead of letting
+   the card's object-fill stretch it. Matches only that one image,
+   wherever the card view renders it (blog index, homepage news). */
+img[src$="tools-banner.svg"] { object-fit: contain; }
+
 /* ---------- Speaking & Collaboration page ----------
    Sections stack under italic serif labels (the .v4-kicker voice, with
    the same leading hairline the homepage section labels use); the rows
