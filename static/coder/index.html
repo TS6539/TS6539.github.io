@@ -2258,7 +2258,8 @@ const STEP_SHARED = [
      return { why:`Meaning can shift in translation, and reviewers ask about it ${cite('vannes')}. Decide once, before coding, and the methods paragraph will report it.`,
        html:`<div class="choice">${o('original','Code in the original language','Quotes are translated only when you write up.')}${o('translated','Code an English translation','Useful when your team does not share the language.')}${o('both','Code the original, keep a translation beside it','Most work, and the easiest to defend.')}</div>
          <label class="fld">Languages in the data<input data-k="langs" value="${esc(L.langs)}" placeholder="For example, Japanese and English"></label>
-         <label class="fld">Who translated, and how was it checked? (optional)<textarea data-k="langNote" rows="2" placeholder="For example, quotes were translated by the first author and checked by a bilingual colleague.">${esc(L.note)}</textarea></label>` }; } },
+         <label class="fld">Who translated, and how was it checked? (optional)<textarea data-k="langNote" rows="2" placeholder="For example, quotes were translated by the first author and checked by a bilingual colleague.">${esc(L.note)}</textarea></label>`,
+      foot:`<button class="btn primary" data-a="mark" data-s="lang">Save and continue</button>` }; } },
  { id:'attrs', ph:'setup', title:'Add participant attributes',
    est: () => Math.min(10, Math.max(2, S.speakers.filter(s => s.role === 'participant').length)), done: () => !!G().done.attrs,
    body(){
