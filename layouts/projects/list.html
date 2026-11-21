@@ -4,11 +4,9 @@
      left column carries status + year in small text, right column the
      title and the full summary; hairline rules between rows, no cards,
      no shadows, no truncated text. Styling: .plist-* in custom.css.
-     After the research projects, a "tools" block from the section's
-     front matter renders the same row markup for the two browser apps
-     (Transcript Coder, Review Kit). They are deliberately NOT content
-     pages: as pages they leaked into the theme sidebar and the RSS
-     feeds with unrendered (dead) permalinks. */}}
+     The browser tools that used to close this list as data rows moved
+     to their own /tools/ page on 2026-11-21 (layouts/tools/list.html
+     renders the same row markup from that section's front matter). */}}
 
 <div class="plist-wrap">
   <header class="plist-head">
@@ -33,20 +31,6 @@
       </div>
     </article>
     {{ end }}
-    {{- with .Params.tools }}
-    {{ range . }}
-    <article class="plist-row">
-      <div class="plist-meta">
-        <span class="plist-status">{{ .status }}</span>
-        <span class="plist-year">{{ .year }}</span>
-      </div>
-      <div class="plist-main">
-        <h2 class="plist-title"><a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}</a></h2>
-        <p class="plist-desc">{{ .summary }}</p>
-      </div>
-    </article>
-    {{ end }}
-    {{- end }}
   </div>
 </div>
 

@@ -1,0 +1,37 @@
+{{ define "main" }}
+
+{{/* Tools index as editorial list rows, the same markup and styling
+     (.plist-* in custom.css) as the Projects index. The rows come from
+     the "tools" data list in content/tools/_index.md, NOT from content
+     pages: the apps are static files, and as pages they once leaked
+     into the theme sidebar and the RSS feeds with dead permalinks.
+     Split out of /projects/ on 2026-11-21 so the nav can tell tools
+     and research projects apart. */}}
+
+<div class="plist-wrap">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  <div class="plist">
+    {{- with .Params.tools }}
+    {{ range . }}
+    <article class="plist-row">
+      <div class="plist-meta">
+        <span class="plist-status">{{ .status }}</span>
+        <span class="plist-year">{{ .year }}</span>
+      </div>
+      <div class="plist-main">
+        <h2 class="plist-title"><a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}</a></h2>
+        <p class="plist-desc">{{ .summary }}</p>
+      </div>
+    </article>
+    {{ end }}
+    {{- end }}
+  </div>
+</div>
+
+{{ end }}

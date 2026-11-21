@@ -823,6 +823,14 @@ body {
    again. The tightened band therefore runs to 1359.5px and the xl
    spacing applies from 1360px, where it fits with 60px+ of slack.
    One row at every width, as before.
+   Tools round (2026-11-21): a ninth item, "Tools" (42px of text at
+   weight 600, 43px at 700, same fontTools method), joins the row.
+   Nine items need 1131px with the tightened spacing (1145px at
+   weight 700), so the 1150px lower edge still holds. But the xl
+   spacing now needs 1375px (1389px at weight 700) and would wrap
+   from 1360px up. Same remedy as the Astra round: the tightened
+   band runs to 1399.5px and the xl spacing applies from 1400px,
+   where it fits with 11px+ of slack. One row at every width.
    ========================================================================== */
 @media (min-width: 1024px) and (max-width: 1149.5px) {
   #site-header label[for="nav-toggle"] { display: flex; order: 3; }
@@ -836,7 +844,7 @@ body {
   #site-header #nav-menu > li { margin-inline: 0; }
   #site-header input#nav-toggle:checked ~ #nav-menu { display: block; }
 }
-@media (min-width: 1150px) and (max-width: 1359.5px) {
+@media (min-width: 1150px) and (max-width: 1399.5px) {
   #site-header .nav-link { padding-inline: .375rem; }
   #site-header #nav-menu > :not(:last-child) { margin-inline-end: .375rem; }
 }

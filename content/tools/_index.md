@@ -1,0 +1,27 @@
+---
+title: 'Tools'
+
+# Browser tools, rendered as list rows by layouts/tools/list.html from the
+# data list below. They are data, not pages: the apps themselves are
+# self-contained files under static/coder/, static/review/ and
+# static/peer-review/. (Until 2026-11-21 this list lived in
+# content/projects/_index.md and the rows closed the Projects list.)
+tools:
+  - title: "Transcript Coder"
+    status: "Pre-alpha"
+    year: "2026"
+    link: "/coder/"
+    summary: "A free browser tool for coding interview transcripts sentence by sentence, with exports for thematic analysis and epistemic network analysis. Transcripts never leave your computer."
+  - title: "Review Kit"
+    status: "Pre-alpha"
+    year: "2026"
+    link: "/review/"
+    summary: "A simple, free systematic review tool: import search results, screen titles, abstracts, and full texts, extract data into your own form, and generate a PRISMA 2020 flow diagram. No account and no automation."
+  - title: "Peer Review Desk"
+    status: "Pre-alpha"
+    year: "2026"
+    link: "/peer-review/"
+    summary: "A free, local-first desk for journal peer review: read a manuscript, anchor each concern in a quoted passage, rank your major points, and prepare separate comments for the authors and the editor. Manuscripts never leave your computer."
+---
+
+Free browser tools I built for my own research work and now share. Everything runs in your browser; nothing is uploaded.

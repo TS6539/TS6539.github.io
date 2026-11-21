@@ -13,18 +13,21 @@ main:
   - name: Projects
     url: projects/
     weight: 12
+  - name: Tools
+    url: tools/
+    weight: 13
   - name: Speaking & Collaboration
     url: speaking/
-    weight: 13
+    weight: 14
   - name: Teaching
     url: teaching/
-    weight: 14
+    weight: 15
   - name: Impact
     url: impact/
-    weight: 15
+    weight: 16
   - name: Experience
     url: experience/
-    weight: 16
+    weight: 17
   - name: News
     url: blog/
-    weight: 17
+    weight: 18
