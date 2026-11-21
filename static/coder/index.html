@@ -297,6 +297,7 @@ body.second .segTools{display:none}
 .gSt.on{color:var(--ink);font-weight:600;background:var(--surface);box-shadow:inset 2px 0 0 var(--accent)}
 .gSt.on .dot{border-color:var(--accent)}
 .gSt.soon{opacity:.6}
+.gPreview .gSt{cursor:default}.gPreview .gSt:hover{background:transparent;color:var(--muted)}
 .gCard{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:22px 24px 20px}
 .gCard.enter{animation:cardIn .32s cubic-bezier(.2,.7,.2,1) both}
 .gKick{font-size:.8rem;color:var(--muted);margin:0 0 4px;display:flex;gap:8px;flex-wrap:wrap}
@@ -522,6 +523,8 @@ body.second .segTools{display:none}
 }
 @media (hover:none){.groupHead .btn{display:inline-block}.hint{visibility:hidden}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* polish: changing figures in tabular numbers */
+.where .pos,.gMeta,#gStrip .st,.groupHead .cnt,.code .cnt,.selBar .n{font-variant-numeric:tabular-nums}
 </style>
 <link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
 <meta property="og:title" content="Transcript Coder">
@@ -531,7 +534,7 @@ body.second .segTools{display:none}
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.4.2 pre-alpha</span>
+  <span class="ver hideSm">v0.4.3 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -578,7 +581,7 @@ body.second .segTools{display:none}
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.4.2 · pre-alpha · updated 21 November 2026 · phone layout pass and guidance pass · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.4.3 · pre-alpha · updated 21 November 2026 · phone layout pass and two guidance passes · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -621,6 +624,7 @@ body.second .segTools{display:none}
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.4.3</dt><dd>November 2026. Second guidance pass. The guide shows the right step number on the self-guided plans and previews the full path before you choose an approach, and Undo says when there is nothing to undo.</dd>
       <dt>0.4.2</dt><dd>November 2026. Guidance pass. Plain definitions of code, codebook, and agreement at the start of the guide, clearer labels and buttons, a plan for the two self-guided methods, and the save explanation in the Menu.</dd>
       <dt>0.4.1</dt><dd>November 2026. Phone layout pass. Prev and Next sit in the bottom bar, recent codes scroll in one row, and touch screens get an Add button next to the code box.</dd>
       <dt>0.4</dt><dd>November 2026. Guided path for codebook thematic analysis: method chooser, codebook versions, a second-coder file, Cohen's kappa per code, a decision log, a theme board, and a draft methods paragraph.</dd>
@@ -631,7 +635,7 @@ body.second .segTools{display:none}
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.2) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.3) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -858,7 +862,7 @@ body.second .segTools{display:none}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.4.2';
+const VERSION = '0.4.3';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -1425,6 +1429,7 @@ function renderAll(){
   pn.style.width = Math.max(8, Math.min(34, (pn.value.length || 8) + 2)) + 'ch';
   $('#undoBtn').disabled = !undoStack.length;
   $('#undoBtn').title = undoStack.length ? 'Undo the last change (Ctrl+Z)' : 'Nothing to undo yet. Undo becomes available after you change something.';
+  $('#undoBtn').textContent = undoStack.length ? 'Undo' : 'Nothing to undo';
   renderTop();
   if (UI.view === 'guide'){ renderGuide(); return; }
   if (UI.view !== 'app') return;
@@ -2093,7 +2098,7 @@ const REF = {
   braun2021:['Braun & Clarke, 2021','Braun, V., & Clarke, V. (2021). One size fits all? What counts as quality practice in (reflexive) thematic analysis? <i>Qualitative Research in Psychology, 18</i>(3), 328–352. https://doi.org/10.1080/14780887.2020.1769238'],
   cohen:['Cohen, 1960','Cohen, J. (1960). A coefficient of agreement for nominal scales. <i>Educational and Psychological Measurement, 20</i>(1), 37–46. https://doi.org/10.1177/001316446002000104'],
   devries:['De Vries et al., 2008','De Vries, H., Elliott, M. N., Kanouse, D. E., & Teleki, S. S. (2008). Using pooled kappa to summarize interrater agreement across many items. <i>Field Methods, 20</i>(3), 272–282. https://doi.org/10.1177/1525822X08317166'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.2) [Computer software]. https://tianshihao.org/coder/'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.3) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
@@ -2412,7 +2417,9 @@ const STEP_CB = [
          <div class="ctaRow"><button class="btn" data-a="copyMP">Copy paragraph</button><button class="btn" data-a="copyMPR">Copy with references</button><button class="btn" data-a="exportTA">Export the workbook</button><button class="btn" data-a="cbExport">Download the codebook</button><button class="btn" data-a="saveProj">Save project file</button></div>`,
        foot:`<button class="btn primary" data-a="mark" data-s="write">Finish</button>` }; } },
 ];
-function stepSoon(m){ return { id:'soon', ph:'code', title: m === 'ena' ? 'Your plan for ENA' : 'Your plan for reflexive thematic analysis', est: () => 0, done: () => false, soon:true,
+const SOON = {};
+function stepSoon(m){ return SOON[m] || (SOON[m] = makeSoon(m)); }
+function makeSoon(m){ return { id:'soon', ph:'code', title: m === 'ena' ? 'Your plan for ENA' : 'Your plan for reflexive thematic analysis', est: () => 0, done: () => false, soon:true,
   body(){ return m === 'ena' ? { why:`Guided steps for ENA are being built. Until then, follow this plan in the normal coding view ${cite('shaffer2017')}.`,
     html:`<ol class="plan"><li>Write a codebook with a definition for every code, in the Codebook pane.</li><li>Have a colleague code part of the data with the same codebook and check agreement with Cohen’s kappa. Quantitative ethnography usually also reports Shaffer’s rho, which the rhoR package for R calculates.</li><li>Code every transcript with the fixed codebook.</li><li>Export the ENA datasheet (Export, then ENA datasheet).</li><li>Load it in webENA or rENA. A common setup uses Transcript as the conversation, Speaker as the unit, and the code columns as codes.</li></ol>
       <p class="note">Steps 1 to 3 are the same as in codebook thematic analysis. If you want the guide to walk you through them, including the second-coder file and kappa, switch to that path. You can still export the ENA datasheet at the end.</p>`,
@@ -2595,7 +2602,7 @@ function renderGuide(){
   if (ae && ae.dataset && ae.dataset.k && $('#gCard').contains(ae)){ rk = ae.dataset.k; try { rs = [ae.selectionStart, ae.selectionEnd]; } catch(e){} }
   const phs = [...new Set(L.map(s => s.ph))];
   const small = window.matchMedia && window.matchMedia('(max-width:860px)').matches;
-  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}${g.method ? '' : '<p class="note" style="margin:6px 6px 0">More steps appear here once you choose an approach.</p>'}</details>`;
+  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}${g.method ? '' : `<div class="gPh gPreview"><h3>After you choose an approach</h3><p class="note" style="margin:2px 6px 6px">With codebook thematic analysis, these steps follow. The other two approaches get a short plan instead.</p>${STEP_CB.map(s2 => `<div class="gSt soon" aria-disabled="true"><span class="dot"></span><span>${esc(s2.title)}</span></div>`).join('')}</div>`}</details>`;
   // card
   const b = cur.body(); const done = cur.done(); const nx = L[idx + 1];
   const card = $('#gCard');
@@ -2629,7 +2636,7 @@ function afterRender(root){
   }
 }
 let cheerT;
-function cheer(msg){ const el = $('#gCheer'); el.innerHTML = `${tickSvg}<span>${esc(msg)}</span>`; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); clearTimeout(cheerT); cheerT = setTimeout(() => el.classList.remove('show'), 2600); }
+function cheer(msg){ const el = $('#gCheer'); el.innerHTML = `${tickSvg}<span>${esc(msg)}</span>`; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); clearTimeout(cheerT); cheerT = setTimeout(() => { el.classList.remove('show'); cheerT = setTimeout(() => { el.innerHTML = ''; }, 350); }, 2600); }
 function renderStrip(){
   const el = $('#gStrip'); const g = G();
   if (!g || !g.method || S.role === 'second'){ el.hidden = true; return; }

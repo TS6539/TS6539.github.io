@@ -328,11 +328,11 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   <div class="wIn">
     <div class="hero">
       <div>
-        <span class="pill reveal"><i></i>Pre-alpha 0.1.2 · Free to use · Works on phones</span>
+        <span class="pill reveal"><i></i>Pre-alpha 0.1.3 · Free to use · Works on phones</span>
         <h1 class="reveal d1">A systematic review, <em>without the overhead.</em></h1>
         <p class="lede reveal d2">A systematic review gathers every study on a question with a planned search, then decides in the open which ones count, so others can check and repeat it. The steps here follow that order. Import your search results, screen titles and abstracts with one key per decision, check full texts, extract data into a form you control, and get a PRISMA 2020 flow diagram that fills itself in.</p>
         <div class="ctaRow reveal d3">
-          <button class="btn primary big" data-go="demo">Try the demo review</button>
+          <button class="btn primary big" data-go="demo" id="demoBtn">Try the demo review</button>
           <button class="btn big" data-go="start" id="startBtn">Start a review</button>
           <button class="btn ghost" data-go="new" id="newBtn" hidden>Start a new review</button>
         </div>
@@ -352,11 +352,11 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
       <div class="feat reveal d2"><div class="k">1</div><h3>Import and deduplicate</h3><p>Bring in the files each database lets you export. Copies of the same paper found in more than one database are set aside (deduplicated) by DOI and title, and you can bring back any that are not real copies.</p></div>
       <div class="feat reveal d3"><div class="k">2</div><h3>Screen fast</h3><p>Screening means judging each record against your inclusion criteria. First by title and abstract, then by full text, with a reason for each exclusion.</p></div>
       <div class="feat reveal d4"><div class="k">3</div><h3>Extract your way</h3><p>Start from a standard template and add, rename, or reorder fields. One row per study. Optional MMAT or custom quality appraisal.</p></div>
-      <div class="feat reveal d5"><div class="k">4</div><h3>PRISMA and export</h3><p>PRISMA 2020 is the standard flow diagram that reports how records moved through a review. It is built from your decisions, as SVG or PNG, and one Excel workbook with everything.</p></div>
+      <div class="feat reveal d5"><div class="k">4</div><h3>PRISMA and export</h3><p>PRISMA 2020 (Preferred Reporting Items for Systematic Reviews and Meta-Analyses) is the standard flow diagram that reports how records moved through a review. It is built from your decisions, as SVG or PNG, and one Excel workbook with everything.</p></div>
     </div>
     <div class="wFoot">
-      <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Version 0.1.2, pre-alpha, with a phone layout pass and a guidance pass. No AI or automation: every decision is yours. <a href="#" data-m="feedback">Send feedback</a></span>
-      <span class="cite">Cite as: Hao, T. (2026). <i>Review Kit</i> (Version 0.1.2) [Computer software]. https://tianshihao.org/review/</span>
+      <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Version 0.1.3, pre-alpha, with a phone layout pass and two guidance passes. No AI or automation: every decision is yours. <a href="#" data-m="feedback">Send feedback</a></span>
+      <span class="cite">Cite as: Hao, T. (2026). <i>Review Kit</i> (Version 0.1.3) [Computer software]. https://tianshihao.org/review/</span>
     </div>
   </div>
 </section>
@@ -437,7 +437,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 
   <!-- PRISMA -->
   <section class="view" id="v-prisma" hidden><div class="wrap">
-    <div class="vHead"><div class="grow"><h1>PRISMA 2020 flow diagram</h1><p>PRISMA is the standard flow diagram that reports how records moved through a review: how many were found, set aside as duplicates, screened, excluded and why, and finally included. This one is built from your sources and decisions, and it updates as you screen.</p></div>
+    <div class="vHead"><div class="grow"><h1>PRISMA 2020 flow diagram</h1><p>PRISMA (Preferred Reporting Items for Systematic Reviews and Meta-Analyses) is the standard flow diagram that reports how records moved through a review: how many were found, set aside as duplicates, screened, excluded and why, and finally included. This one is built from your sources and decisions, and it updates as you screen.</p></div>
       <button class="btn" id="svgBtn">Download SVG</button><button class="btn primary" id="pngBtn">Download PNG</button></div>
     <div class="prismaWrap"><div id="prismaHost"></div></div>
     <p class="note" style="margin-top:10px">Records marked "Maybe" at title and abstract screening move on to full-text review. Each included study is counted as one report. Check the counts against your own records before publishing.</p>
@@ -499,7 +499,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
   <div class="dlgBody"><table class="tbl"><tbody>
     <tr><td><b>I</b> · <b>E</b> · <b>M</b></td><td>Include, exclude, or maybe (title and abstract)</td></tr>
     <tr><td><b>I</b> · <b>E</b> · <b>R</b></td><td>Include, exclude, or not retrieved (full text)</td></tr>
-    <tr><td><b>1</b> to <b>9</b></td><td>Pick an exclusion reason at full text</td></tr>
+    <tr><td><b>1</b> to <b>9</b></td><td>Pick an exclusion reason at full text, by its number in the list (up to nine reasons have a key)</td></tr>
     <tr><td><b>→</b> · <b>←</b></td><td>Next or previous record</td></tr>
     <tr><td><b>N</b></td><td>Write a note</td></tr>
     <tr><td><b>U</b></td><td>Clear the decision on this record</td></tr>
@@ -511,7 +511,7 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.1.2';
+const VERSION = '0.1.3';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Review Kit feedback (v' + VERSION + ')');
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'] };
 const $ = (s, r=document) => r.querySelector(s);
@@ -777,7 +777,7 @@ function go(step){
   render();
 }
 function renderTop(){
-  { const has = S.records.length > 0; const sb = $('#startBtn'); if (sb){ sb.textContent = has ? 'Continue your review' : 'Start a review'; $('#newBtn').hidden = !has; } }
+  { const has = S.records.length > 0; const sb = $('#startBtn'); if (sb){ sb.textContent = has ? 'Continue your review' : 'Start a review'; $('#newBtn').hidden = !has; sb.classList.toggle('primary', has); $('#demoBtn').classList.toggle('primary', !has); if (has && sb.previousElementSibling === $('#demoBtn')) sb.parentNode.insertBefore(sb, $('#demoBtn')); if (!has && sb.nextElementSibling === $('#demoBtn')) sb.parentNode.insertBefore($('#demoBtn'), sb); } }
   const inApp = UI.view === 'app';
   $('#projName').hidden = !inApp; $('#saveState').hidden = !inApp; $('#undoBtn').hidden = !inApp; $('#exportBtn').hidden = !inApp; $('#steps').hidden = !inApp;
   $('#unlinkItem').hidden = !FS.handle;
@@ -865,7 +865,7 @@ function renderScreen(){
   const done = pool.filter(r => decisionOf(r)).length;
   $('#sJob').innerHTML = st === 'ta'
     ? '<b>Title and abstract.</b> Screening means judging each record against your inclusion criteria. Here you read only the title and abstract and choose Include, Exclude, or Maybe.'
-    : '<b>Full text.</b> Open the full paper of every record you kept and decide for good. Each exclusion needs a reason, because PRISMA reports how many were excluded and why.';
+    : '<b>Full text.</b> Open the full paper of every record you kept and decide for good. Each exclusion needs a reason, because PRISMA reports how many were excluded and why. Choose Not retrieved when you could not get the full paper. PRISMA counts those separately.';
   const nx = $('#sNext'); const allDone = pool.length && done === pool.length;
   nx.hidden = !allDone;
   if (allDone) nx.innerHTML = st === 'ta'
@@ -904,9 +904,9 @@ function renderScreen(){
   const tch = coarse();
   $('#decNote').innerHTML = st === 'ta'
     ? 'Maybe means you are not sure yet. Maybe records go on to full-text review with the ones you include, and you decide there.'
-    : (d === 'exclude' ? '' : `Not retrieved means you could not get the full paper. PRISMA counts these separately. Exclusion reasons: ${S.reasons.map((x, i) => (tch || i >= 9 ? '' : (i + 1) + ' ') + esc(x)).join(' · ')}. ${tch ? 'Tap Exclude, then pick one.' : 'Press E, then the number.'}`);
+    : (d === 'exclude' ? '' : `Exclusion reasons: ${S.reasons.map((x, i) => (tch || i >= 9 ? '' : (i + 1) + ' ') + esc(x)).join(' · ')}. ${tch ? 'Tap Exclude, then pick one.' : 'Press E, then the number.'}`);
   const note = $('#recNote'); if (document.activeElement !== note) note.value = st === 'ta' ? r.taNote : r.ftNote;
-  { const sh = $('#sHint'); const hv = st === 'ta' ? 'I include · E exclude · M maybe · → next · ? all shortcuts' : 'I include · E exclude, then 1 to 9 for the reason · R not retrieved'; if (sh.classList.contains('flash')) sh.dataset.orig = hv; else sh.textContent = hv; }
+  { const sh = $('#sHint'); const hv = st === 'ta' ? 'I include · E exclude · M maybe · → next · ? all shortcuts' : `I include · E exclude, then 1 to ${Math.max(1, Math.min(9, S.reasons.length))} for the reason · R not retrieved`; if (sh.classList.contains('flash')) sh.dataset.orig = hv; else sh.textContent = hv; }
 }
 function decide(d){
   const st = stageKey(); const r = curRec(); if (!r) return;
@@ -914,7 +914,7 @@ function decide(d){
   if (st === 'ft' && d === 'exclude'){
     UI.askReason = r.id;
     mutate(() => { r.ft = 'exclude'; });
-    if (!r.ftReason) toast(coarse() ? 'Pick an exclusion reason below.' : 'Pick an exclusion reason: press 1 to 9, or click one.');
+    if (!r.ftReason) toast(coarse() ? 'Pick an exclusion reason below.' : `Pick an exclusion reason: press 1 to ${Math.max(1, Math.min(9, S.reasons.length))}, or click one.`);
     return;
   }
   mutate(() => { if (st === 'ta') r.ta = d; else { r.ft = d; if (d !== 'exclude') r.ftReason = ''; } });
