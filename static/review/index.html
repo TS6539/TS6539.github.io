@@ -293,6 +293,25 @@ dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 42px)}
    Toast: one place, one style. Alpha bar: slim, quiet, same metrics in both apps. */
 #toast{border-radius:999px;padding:10px 16px;font-size:.9rem}
 #alphaBar{padding:4px 14px;font-size:.78rem;letter-spacing:.01em}
+
+/* === Design system phase 2 (Muse, 2026-11-21): motif layer — the editor's pencil ===
+   Paper field (light scheme only; dark keeps its own ground), a giant pilcrow watermark
+   behind the content, § step marks, and the decision badge as an editor's stamp. */
+@media (prefers-color-scheme: light){ :root{ --bg:#F1EADA } }
+#pilcrow{position:fixed;top:60px;right:-26px;font-family:var(--serif);font-weight:700;font-size:265px;line-height:1;color:#8C3B2E;opacity:.14;pointer-events:none;z-index:0}
+@media (prefers-color-scheme: dark){ #pilcrow{opacity:.05} }
+#welcome,#views,#steps,#alphaBar{position:relative;z-index:1}
+.secMark{font-family:var(--serif);font-weight:700;font-size:4.4rem;line-height:.9;color:#8C3B2E;flex:none}
+.secTag{font-family:var(--serif);font-weight:700;color:#8C3B2E;margin-right:.35em}
+@media (prefers-color-scheme: dark){ .secMark,.secTag{color:#E58B80} }
+@media (max-width:640px){ .secMark{font-size:3.4rem} }
+/* the record's decision badge lands like a stamp */
+.badge{font-family:var(--serif);text-transform:uppercase;letter-spacing:.13em;border:3px solid currentColor;border-radius:8px;padding:5px 12px;transform:rotate(-4deg)}
+@media (prefers-color-scheme: light){ .badge.exclude{color:#8C3B2E} }
+@media (prefers-reduced-motion: no-preference){
+  .badge{animation:stampLand .45s cubic-bezier(.2,.9,.3,1.25) both}
+  @keyframes stampLand{0%{transform:rotate(-4deg) scale(1.3);opacity:0}60%{transform:rotate(-4deg) scale(.96);opacity:1}100%{transform:rotate(-4deg) scale(1);opacity:1}}
+}
 </style>
 <link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
 <meta property="og:title" content="Review Kit">
@@ -1322,6 +1341,67 @@ window.__rk = { parseTagged, parseBib, parseSheet, demoReview, prismaCounts, pri
   if (S.records.length) go(firstStep()); else showWelcome();
   setSave(true);
 })();
+})();
+</script>
+<script>
+/* Design phase 2 (Muse, 2026-11-21): Review Kit motif — the editor's pencil.
+   Adds the pilcrow watermark and the § step marks. Step views re-render their inner
+   HTML on almost every action, so a MutationObserver over #views (plus #steps, whose
+   aria-current decides the screening step's number) re-applies the marks idempotently:
+   when a mark already exists with the right text, nothing is written, so the observer
+   settles instead of looping. Views with a .vHead get the large §N beside the title;
+   views without one (screening, extraction form, appraisal) get a small red §N prefix
+   on their .job line instead. The watermark is pointer-events:none and painted behind
+   the content column (see the phase-2 CSS), so it can never block a click. */
+(function(){
+  var wm = document.createElement('div');
+  wm.id = 'pilcrow'; wm.setAttribute('aria-hidden', 'true'); wm.textContent = '¶';
+  document.body.appendChild(wm);
+  var NAV = { 'v-import': 1, 'v-extract': 4, 'v-appraise': 5, 'v-prisma': 6 };
+  function navN(){
+    var btns = document.querySelectorAll('#steps button');
+    for (var i = 0; i < btns.length; i++) if (btns[i].getAttribute('aria-current') === 'page') return i + 1;
+    return 2;
+  }
+  function ensureMark(head, n){
+    var m = head.querySelector(':scope > .secMark');
+    if (!m){
+      m = document.createElement('span');
+      m.className = 'secMark'; m.setAttribute('aria-hidden', 'true');
+      head.insertBefore(m, head.firstChild);
+    }
+    var t = '§' + n;
+    if (m.textContent !== t) m.textContent = t;
+  }
+  function ensureTag(job, n){
+    var s = job.querySelector(':scope > .secTag');
+    if (!s){
+      s = document.createElement('span');
+      s.className = 'secTag'; s.setAttribute('aria-hidden', 'true');
+      job.insertBefore(s, job.firstChild);
+    }
+    var t = '§' + n;
+    if (s.textContent !== t) s.textContent = t;
+  }
+  function process(){
+    var views = document.querySelectorAll('.view');
+    for (var i = 0; i < views.length; i++){
+      var v = views[i];
+      var n = NAV[v.id] || navN();
+      var heads = v.querySelectorAll('.vHead');
+      if (heads.length){
+        for (var j = 0; j < heads.length; j++) ensureMark(heads[j], n);
+      } else {
+        var jobs = v.querySelectorAll('.job');
+        for (var k = 0; k < jobs.length; k++) ensureTag(jobs[k], n);
+      }
+    }
+  }
+  var viewsEl = document.getElementById('views');
+  if (viewsEl) new MutationObserver(process).observe(viewsEl, { childList: true, subtree: true });
+  var stepsEl = document.getElementById('steps');
+  if (stepsEl) new MutationObserver(process).observe(stepsEl, { childList: true, attributes: true, attributeFilter: ['aria-current'] });
+  process();
 })();
 </script>
 </body>

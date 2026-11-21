@@ -530,6 +530,24 @@ body.second .segTools{display:none}
    Toast: one place, one style. Alpha bar: slim, quiet, same metrics in both apps. */
 #toast{border-radius:999px;padding:10px 16px;font-size:.9rem}
 #alphaBar{padding:4px 14px;font-size:.78rem;letter-spacing:.01em}
+
+/* === Design system phase 2 (Muse, 2026-11-21): motif layer — words become a network ===
+   Hero band on the guided path only (built by the appended phase-2 script from the real
+   step list); checklist ticks become network nodes. Work views are untouched. */
+.gHero{position:relative;overflow:hidden;background:#14334F;color:#F2EFE6;border-radius:16px;padding:18px 22px 16px;margin-bottom:14px}
+.gHeroNum{position:absolute;top:-30px;right:-4px;font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:110px;line-height:1;color:#F2EFE6;opacity:.13;pointer-events:none}
+.gHeroNet{display:block;width:100%;height:auto;margin-bottom:4px}
+.gHeroKick{margin:0;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;opacity:.65;font-weight:600}
+.gHeroTitle{margin:3px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:1.5rem;font-weight:700;line-height:1.2}
+.gMain.hasHero .gCard .gKick,.gMain.hasHero .gCard>h2{display:none}
+@media (max-width:860px){.gHero{padding:14px 16px 12px}.gHeroNum{font-size:80px;top:-20px}.gHeroTitle{font-size:1.3rem}}
+@media (prefers-reduced-motion: no-preference){
+  .gHeroNet .pulseRing{transform-origin:center;transform-box:fill-box;animation:heroPulse .6s ease-out 1}
+  @keyframes heroPulse{0%{transform:scale(.35);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+}
+/* checklist ticks become nodes: lit = filled ink node, unlit = hollow ring */
+.checks li::before{border-radius:50%;width:12px;height:12px;margin-top:3px}
+.checks li.ok::before{background:var(--ink);border-color:var(--ink);box-shadow:none}
 </style>
 <link rel="icon" type="image/png" href="/media/icon_hu_5b5963f9a437ef2b.png">
 <meta property="og:title" content="Transcript Coder">
@@ -2821,6 +2839,71 @@ window.__tc = { splitSentences, detectLabel, parseLines, joinParts, guessFromFil
 
 showView(S.guide && S.guide.method && S.role === 'main' ? 'guide' : S.transcripts.length ? 'app' : 'welcome');
 setSave('ok');
+})();
+</script>
+<script>
+/* Design phase 2 (Muse, 2026-11-21): Coder hero band — a constellation built from the
+   app's real step list. Sync mechanism: the app already exposes its internals as
+   window.__tc (stepList, curStep, UI), so the hero reads the same step data renderGuide
+   uses and stays correct for every step and both methods. A MutationObserver on #gCard
+   re-syncs whenever renderGuide/lightRefresh rewrite the card (step changes, typing).
+   The hero element lives in .gMain BEFORE #gCard, outside the card's DOM, so app
+   re-renders never clobber it and it never writes into the card — the gShown /
+   lightRefresh checklist behaviour (the displayed step's checks) is untouched.
+   Rebuilds are signature-gated so keystrokes do not restart the pulse. */
+(function(){
+  var tc = window.__tc; if (!tc) return;
+  var main = document.querySelector('.gMain'), card = document.getElementById('gCard');
+  if (!main || !card) return;
+  var PHASES = { setup:'Set up', know:'Know your data', cb:'Build the codebook', agree:'Check agreement', code:'Code everything', themes:'Themes', write:'Write up' };
+  var hero = document.createElement('div');
+  hero.className = 'gHero'; hero.id = 'gHero'; hero.hidden = true;
+  main.insertBefore(hero, card);
+  var lastSig = '', lastCur = '';
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function sync(){
+    var L;
+    try { L = tc.stepList(); } catch (e) { return; }
+    if (!L || !L.length){ if (!hero.hidden){ hero.hidden = true; main.classList.remove('hasHero'); } lastSig = ''; return; }
+    var shownId = tc.UI && tc.UI.gShown;
+    var cur = null, i;
+    for (i = 0; i < L.length; i++) if (L[i].id === shownId) cur = L[i];
+    if (!cur) { try { cur = tc.curStep(); } catch (e) { cur = L[0]; } }
+    var idx = L.indexOf(cur); if (idx < 0) idx = 0;
+    var sig = L.map(function(s){ var d = 0; try { d = s.done() ? 1 : 0; } catch (e) {} return s.id + d; }).join('|') + '#' + cur.id;
+    if (sig === lastSig && !hero.hidden) return;
+    var pulse = cur.id !== lastCur;
+    lastCur = cur.id; lastSig = sig;
+    var W = 600, x0 = 42, x1 = 558;
+    var pts = L.map(function(s, j){
+      var t = L.length === 1 ? .5 : j / (L.length - 1);
+      return { x: x0 + (x1 - x0) * t, y: 44 - Math.sin(Math.PI * t) * 16 + ((j * 29) % 11) - 5, s: s };
+    });
+    var out = '';
+    for (i = 0; i + 1 < pts.length; i++) out += '<line x1="' + pts[i].x.toFixed(1) + '" y1="' + pts[i].y.toFixed(1) + '" x2="' + pts[i + 1].x.toFixed(1) + '" y2="' + pts[i + 1].y.toFixed(1) + '" stroke="#F2EFE6" stroke-width="1.1" opacity=".45"/>';
+    pts.forEach(function(p, j){
+      var done = false; try { done = !!p.s.done(); } catch (e) {}
+      if (j === idx){
+        if (pulse) out += '<circle class="pulseRing" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="11" fill="none" stroke="#E8B34B" stroke-width="2.5"/>';
+        out += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="10.5" fill="none" stroke="#E8B34B" stroke-width="2.5"/>';
+        out += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="4.5" fill="#E8B34B"/>';
+        var lx = Math.max(56, Math.min(544, p.x));
+        out += '<text x="' + lx.toFixed(1) + '" y="' + (p.y + 27).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="1.5" fill="#E8B34B">YOU ARE HERE</text>';
+      } else if (done) {
+        out += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="6" fill="#F2EFE6"/>';
+      } else {
+        out += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="5.5" fill="#F2EFE6" opacity=".3"/>';
+      }
+    });
+    hero.innerHTML = '<div class="gHeroNum" aria-hidden="true">' + (idx + 1) + '</div>'
+      + '<svg class="gHeroNet" viewBox="0 0 ' + W + ' 96" aria-hidden="true" focusable="false">' + out + '</svg>'
+      + '<p class="gHeroKick">Step ' + (idx + 1) + ' of ' + L.length + ' · ' + esc(PHASES[cur.ph] || '') + '</p>'
+      + '<h2 class="gHeroTitle">' + esc(cur.title) + '</h2>';
+    hero.hidden = false;
+    main.classList.add('hasHero');
+  }
+  new MutationObserver(sync).observe(card, { childList: true, subtree: true });
+  sync();
 })();
 </script>
 </body>
