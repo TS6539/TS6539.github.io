@@ -2597,6 +2597,7 @@ function phaseDone(ph){ const L = stepList().filter(s => s.ph === ph && !s.soon)
 function renderGuide(){
   const g = G(); if (!g){ showView(S.transcripts.length ? 'app' : 'welcome'); return; }
   const L = stepList(); const cur = curStep(); const idx = L.indexOf(cur);
+  UI.gShown = cur.id;
   const real = L.filter(s => !s.soon); const nDone = real.filter(s => s.done()).length;
   const left = L.filter(s => !s.done()).reduce((m,s) => m + (s.est() || 0), 0);
   const waiting = g.method === 'codebook' && lastRound() && lastRound().status === 'sent';
@@ -2624,7 +2625,7 @@ function renderGuide(){
   phs.forEach(ph => { if (phaseDone(ph) && !g.celebrated[ph]){ g.celebrated[ph] = nowMs(); persist(); cheer(`${PHASES[ph]}: done`); } });
 }
 function lightRefresh(skipHead){
-  const cur = curStep(); const card = $('#gCard');
+  const L0 = stepList(); const cur = (UI.gShown && L0.find(s => s.id === UI.gShown)) || curStep(); const card = $('#gCard');
   if (cur.checks){ const el = $('#gChecks'); if (el) el.innerHTML = cur.checks().join(''); }
   const ready = cur.ready ? !!cur.ready() : true;
   card.querySelectorAll('[data-ready]').forEach(b => { b.disabled = !ready; });
