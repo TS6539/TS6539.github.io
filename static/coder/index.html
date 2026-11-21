@@ -2688,7 +2688,7 @@ function bindGuide(){
   });
   root.addEventListener('change', e => {
     const el = e.target; const k = el.dataset.k; if (!k) return;
-    if (el.type !== 'radio' && el.type !== 'checkbox'){ UI.undoKey = null; if (/^c:|^th:/.test(k)){ /* keep focus flow */ } return; }
+    if (el.type !== 'radio' && el.type !== 'checkbox'){ UI.undoKey = null; setField(k, el.value, el); persist(); lightRefresh(); if (/^c:|^th:/.test(k)){ /* keep focus flow */ } return; }
     const g = G(); let m;
     mutate(() => {
       if (k === 'langMode') g.lang.mode = el.value;
