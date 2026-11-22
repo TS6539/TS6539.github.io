@@ -117,38 +117,22 @@ experience:
       the University of Southern California.
 
 skills:
-  - name: Research Methods
+  - name: Research Methods & Analytics
     items:
-      - label: Quantitative Ethnography & ENA
-        level: 5
-      - label: Systematic Reviews
-        level: 5
-      - label: AI-Supported Evidence Synthesis
-        level: 4
-      - label: Thematic Analysis
-        level: 4
-      - label: Statistical Analysis
-        level: 3
-  - name: Teaching & Field
+      - label: Quantitative Ethnography & ENA (screen-recording and process data)
+      - label: Systematic Reviews & AI-Supported Evidence Synthesis (PRISMA; AI-assisted data extraction and validation)
+      - label: Mixed-Methods Research Design (thematic coding, statistical modeling)
+  - name: Domain & Teaching
     items:
-      - label: TESOL / English Language Teaching
-        level: 5
-      - label: AI in Language Education
-        level: 5
-      - label: Educational Technology
-        level: 5
-      - label: Faculty Development
-        level: 4
-      - label: Curriculum Development
-        level: 4
+      - label: Generative AI in L2 Writing & Language Education
+      - label: TESOL & Academic English Instruction
+      - label: Course & Assessment Design
+      - label: Faculty Development (GenAI guidelines and workshops)
 
 languages:
   - name: Chinese
-    level: 5
-    label: native
+    label: Native
   - name: English
-    level: 5
-    label: professional
+    label: Full professional proficiency
   - name: Japanese
-    level: 1
-    label: beginner, studying
+    label: Elementary
