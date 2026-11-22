@@ -34,6 +34,8 @@ sections:
         - Planning Committee member, Games and Learning Alliance (GALA) 2026
         - Proposal reviewer, American Educational Research Association (Divisions C, E, H, K)
         - Session Chair, CATESOL 2021
+        - Dissertation committee member, Pepperdine University (EdD in Learning Technologies): Chia Hui Hung, 2026–present
+        - Dissertation committee member, Pepperdine University (EdD in Learning Technologies): Jingzhe Zhang, 2026–present
     design:
       columns: '1'
   - block: markdown
