@@ -19,4 +19,5 @@ tags:
   - Leadership
 research_line: other-collaborations
 featured: false
+journal_cover: "media/journals/scholarship-without-borders-journal.jpg"
 ---

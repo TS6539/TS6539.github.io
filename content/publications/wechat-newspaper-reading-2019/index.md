@@ -14,4 +14,5 @@ tags:
   - Online Learning
 research_line: other-collaborations
 featured: false
+journal_cover: "media/journals/youth-and-society.jpg"
 ---

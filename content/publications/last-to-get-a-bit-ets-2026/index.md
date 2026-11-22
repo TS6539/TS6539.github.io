@@ -20,4 +20,6 @@ featured: true
 hugoblox:
   ids:
     doi: "10.30191/ETS.202604_29(2).RP08"
+journal_cover: "media/journals/educational-technology-and-society.jpg"
+journal_note: "2025 Impact Factor 7.1 · Indexed in SSCI and Scopus"
 ---

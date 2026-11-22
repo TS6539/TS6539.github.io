@@ -20,4 +20,6 @@ featured: false
 hugoblox:
   ids:
     doi: "10.29140/tltl.v7n3.102640"
+journal_cover: "media/journals/technology-in-language-teaching-and-learning.jpg"
+journal_note: "Indexed in Scopus"
 ---

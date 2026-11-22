@@ -16,4 +16,5 @@ tags:
   - Social Psychology
 research_line: other-collaborations
 featured: false
+journal_cover: "media/journals/japanese-journal-of-law-and-psychology.jpg"
 ---
