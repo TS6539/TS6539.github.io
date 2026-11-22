@@ -32,7 +32,7 @@
       {{- with .image }}
       {{- with resources.Get (printf "media/tools/%s" .) }}
       <div class="plist-thumb">
-        <a href="{{ $tool.link }}" target="_blank" rel="noopener"><img src="{{ .RelPermalink }}" alt="{{ $tool.title }} interface schematic" width="200" height="130" loading="lazy" decoding="async"></a>
+        <a href="{{ $tool.link }}" target="_blank" rel="noopener"><img src="{{ .RelPermalink }}" alt="{{ $tool.title }} interface screenshot" width="200" height="130" loading="lazy" decoding="async"></a>
       </div>
       {{- end }}
       {{- end }}
