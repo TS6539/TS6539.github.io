@@ -2,12 +2,12 @@
 title: "\"You Start with Zero Score in This Class\" - How Gamified Classroom Motivates Students"
 authors:
   - me
-date: "2023-05-01T00:00:00Z"
-publishDate: "2023-05-01T00:00:00Z"
+date: "2023-05-03T00:00:00Z"
+publishDate: "2023-05-03T00:00:00Z"
 publication_types: ["paper-conference"]
 type_label: "Conference presentation"
 publication:
-  name: "Education Division Scholarship, Pepperdine University Graduate School of Education and Psychology (Digital Commons)"
+  name: "CABE Riverside Parent and Paraeducator Regional Conference 2023"
 tags:
   - Gamification
   - Game-Based Learning
