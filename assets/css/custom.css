@@ -1021,3 +1021,70 @@ img[src$="tools-banner.svg"] { object-fit: contain; }
 .hb-search > :last-child { background-color: #e9eef1; }
 .dark .hb-search > :last-child { background-color: #201d18; }
 .hb-search > :last-child > div { color: var(--v3-text-2); }
+
+/* ---------- Notes email subscription block (2026-11-22) ----------
+   One partial (layouts/_partials/notes_subscribe.html) in three homes:
+   note singles, /notes/, and the Notes section of /publications/. The
+   editorial language only: a hairline rule on top, a serif italic
+   label in the accent, flat pills in the hero geometry (filled for
+   Subscribe, outline for Join by email), no shadows. The block reads
+   at intro width (46rem) wherever it sits. */
+.notes-subscribe {
+  margin-top: 3rem; padding-top: 1.75rem;
+  border-top: 1px solid var(--v3-line);
+  max-width: 46rem;
+}
+.notes-subscribe-label {
+  font-family: var(--hb-font-heading); font-style: italic;
+  font-size: 1.15rem; font-weight: 600; line-height: 1.3;
+  color: var(--v3-accent); margin: 0 0 .5rem;
+}
+.notes-subscribe-intro {
+  font-size: 1rem; line-height: 1.65; color: var(--v3-text-2);
+  margin: 0 0 1.1rem;
+}
+.notes-subscribe-form { display: flex; flex-wrap: wrap; gap: .5rem; }
+.notes-subscribe-form input[type="email"] {
+  flex: 1 1 16rem; min-height: 2.75rem; padding: .55rem 1rem;
+  background: var(--v3-card);
+  border: 1px solid var(--v3-pill-line); border-radius: 999px;
+  font-family: inherit; font-size: .95rem; color: inherit;
+}
+.notes-subscribe-form input[type="email"]::placeholder { color: var(--v3-text-3); }
+.notes-subscribe-form input[type="email"]:focus-visible {
+  outline: 2px solid var(--v3-accent); outline-offset: 2px;
+}
+.notes-subscribe-form button {
+  display: inline-flex; align-items: center;
+  min-height: 2.75rem; padding: .55rem 1.15rem;
+  background: var(--v3-accent); border: 1px solid var(--v3-accent); border-radius: 999px;
+  font-family: inherit; font-size: .9rem; font-weight: 550; line-height: 1;
+  color: var(--v3-on-accent); white-space: nowrap; cursor: pointer;
+  transition: background-color .25s ease, border-color .25s ease;
+}
+.notes-subscribe-form button:hover, .notes-subscribe-form button:focus-visible {
+  background: var(--v3-accent-deep); border-color: var(--v3-accent-deep); color: var(--v3-on-accent);
+}
+.notes-subscribe-form button:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.notes-subscribe-cap {
+  font-size: .9rem; line-height: 1.6; color: var(--v3-text-3);
+  margin: 1.1rem 0 .6rem;
+}
+.notes-subscribe-join {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem;
+  margin: 0; padding-bottom: .5rem;
+}
+.notes-subscribe-joinbtn {
+  display: inline-flex; align-items: center;
+  min-height: 2.375rem; padding: .5rem 1.05rem;
+  background: var(--v3-card);
+  border: 1px solid var(--v3-pill-line); border-radius: 999px;
+  font-size: .9rem; font-weight: 550; line-height: 1; color: var(--v3-accent);
+  white-space: nowrap; text-decoration: none;
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+.notes-subscribe-joinbtn:hover, .notes-subscribe-joinbtn:focus-visible {
+  background: var(--v3-accent); border-color: var(--v3-accent); color: var(--v3-on-accent);
+}
+.notes-subscribe-joinbtn:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.notes-subscribe-addr { font-size: .95rem; color: var(--v3-text-2); }

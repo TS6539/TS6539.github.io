@@ -115,6 +115,9 @@
         {{ partial "page_footer" . }}
       </div>
 
+      {{/* Subscription block closes every note (2026-11-22). */}}
+      {{ partial "notes_subscribe.html" . }}
+
     </main>
   </article>
 </div>

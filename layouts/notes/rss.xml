@@ -1,0 +1,44 @@
+{{- /* Notes feed: summaries only, by design (owner decision, 2026-11-22).
+       Buttondown polls this feed and emails subscribers the summary and
+       a link; the full text of a note lives only on the site. Each item
+       therefore carries title, link, date, and summary and nothing else:
+       no .Content, no content:encoded. The summary is the front-matter
+       `summary` when set; otherwise the auto summary, hard-capped at
+       320 characters, because .Summary alone does not reliably
+       truncate (verified in QA, 2026-11-22: a 103-word body came back
+       whole despite summaryLength: 30). This template is scoped to
+       the notes section; every other section keeps the theme's feed. */ -}}
+{{- $pages := .RegularPages -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+  {{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ if ne .Title site.Title }}{{ with .Title }}{{ . }} | {{ end }}{{ end }}{{ site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    {{- with .OutputFormats.Get "RSS" }}
+      {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{ end -}}
+    <description>{{ .Title | default site.Title }}</description>
+    <generator>Hugo</generator>
+    {{- with site.Language.Locale }}<language>{{ . }}</language>{{ end }}
+    {{- if not .Date.IsZero }}<lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      {{- $desc := "" -}}
+      {{- with .Params.summary -}}
+        {{- $desc = . | plainify -}}
+      {{- else -}}
+        {{- $desc = .Summary | plainify | truncate 320 "…" -}}
+      {{- end }}
+      <description>{{ $desc | html }}</description>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

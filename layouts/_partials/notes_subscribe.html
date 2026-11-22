@@ -1,0 +1,22 @@
+{{/* Notes email subscription block (2026-11-22). One partial, three
+     homes: the end of every note single, the /notes/ index, and the
+     Notes section of /publications/. The form posts straight to
+     Buttondown's embed endpoint (plain form, no scripts). Subscribers
+     get the summary-only feed by email; the full text stays on the
+     site. Below the form, the 100-subscriber cap note offers a
+     one-click fallback: a mailto with the subject and body already
+     filled in, so joining by email takes one tap. Styling:
+     .notes-subscribe* in assets/css/custom.css. */}}
+<aside class="notes-subscribe" aria-label="Subscribe to Notes by email">
+  <h3 class="notes-subscribe-label">Notes by email</h3>
+  <p class="notes-subscribe-intro">Get a summary of each new note by email, with a link to read it here. The full text stays on the site.</p>
+  <form class="notes-subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/tianshihao" method="post" target="_blank">
+    <input type="email" name="email" required placeholder="Your email address" aria-label="Email address">
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="notes-subscribe-cap">This list is capped at 100 subscribers. If the form will not take your address, join by email instead:</p>
+  <p class="notes-subscribe-join">
+    <a class="notes-subscribe-joinbtn" href="mailto:haots2308@gmail.com?subject=Please%20add%20me%20to%20the%20Notes%20mailing%20list&amp;body=Please%20add%20me%20to%20your%20Notes%20mailing%20list.%20Subscribe%20this%20address%3A%20%28leave%20blank%20if%20it%20is%20the%20address%20I%20am%20sending%20from.%29">Join by email</a>
+    <span class="notes-subscribe-addr">haots2308@gmail.com</span>
+  </p>
+</aside>
