@@ -326,6 +326,17 @@ body.second .segTools{display:none}
 .opt:hover{border-color:var(--muted)}
 .opt[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
 .opt small{color:var(--muted);font-size:.84rem}
+.spec{position:relative;margin-top:4px}
+.spec::before{content:"";position:absolute;left:17%;right:17%;top:9px;height:2px;background:var(--line-strong)}
+.specFill{position:absolute;left:17%;top:9px;height:2px;background:var(--accent)}
+.specStops{display:flex;justify-content:space-between;position:relative}
+.specStop{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;width:33%;padding:0 4px;color:var(--muted);font:inherit}
+.specStop .specDot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line-strong);background:var(--surface);transition:background .2s,border-color .2s,box-shadow .2s}
+.specStop:hover .specDot{border-color:var(--muted)}
+.specStop[aria-pressed=true]{color:var(--ink)}
+.specStop[aria-pressed=true] .specDot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.specStop .specLab{font-weight:600;font-size:.95rem}
+.specStop small{font-size:.78rem;color:var(--faint);text-align:center;line-height:1.35}
 .result{border:1px solid var(--accent);border-radius:var(--r);padding:14px 16px;background:var(--accent-soft);animation:cardIn .35s ease-out both}
 .result h3{margin:0 0 6px;font-size:1.05rem}
 .result p{margin:0 0 8px}
@@ -557,7 +568,7 @@ body.second .segTools{display:none}
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.4.4 pre-alpha</span>
+  <span class="ver hideSm">v0.4.5 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -604,7 +615,7 @@ body.second .segTools{display:none}
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.4.4 · pre-alpha · updated 22 November 2026 · hybrid thematic analysis added to the guide · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.4.5 · pre-alpha · updated 22 November 2026 · the method chooser is now a spectrum from inductive to deductive · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -641,12 +652,13 @@ body.second .segTools{display:none}
       <li>On a phone, work is kept in that phone's browser. Save a project file to move it to a computer.</li>
       <li>Sentence splitting can miss unusual punctuation. Combine or split sentences by hand when it does.</li>
       <li>Projects with more than about 50 transcripts have not been tested yet.</li>
-      <li>The guided path covers codebook thematic analysis with a second coder, and hybrid thematic analysis with or without one. Guided steps for reflexive thematic analysis and ENA come next.</li>
+      <li>The guided path covers codebook and hybrid thematic analysis, with or without a second coder. Guided steps for reflexive thematic analysis and ENA come next.</li>
       <li>A second-coder file opens in place of the project in that browser, so your colleague should save their own work first if they use the tool too.</li>
     </ul>
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.4.5</dt><dd>November 2026. The method chooser asks where your codes come from on a spectrum, inductive to deductive, with hybrid in the middle. Whether a second person codes is now a separate question, and codebook and hybrid paths both work for a single coder, who freezes the codebook instead of running an agreement check.</dd>
       <dt>0.4.4</dt><dd>November 2026. The guide can now suggest hybrid thematic analysis: start from a seed codebook, add the codes the data forces during the pilot, then freeze. People coding on their own can skip the agreement check and freeze the codebook instead.</dd>
       <dt>0.4.3</dt><dd>November 2026. Second guidance pass. The guide shows the right step number on the self-guided plans and previews the full path before you choose an approach, and Undo says when there is nothing to undo.</dd>
       <dt>0.4.2</dt><dd>November 2026. Guidance pass. Plain definitions of code, codebook, and agreement at the start of the guide, clearer labels and buttons, a plan for the two self-guided methods, and the save explanation in the Menu.</dd>
@@ -659,7 +671,7 @@ body.second .segTools{display:none}
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.4) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.5) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -886,7 +898,7 @@ body.second .segTools{display:none}
 <script>
 (function(){
 'use strict';
-const VERSION = '0.4.4';
+const VERSION = '0.4.5';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -985,6 +997,13 @@ function normGuide(g){
   const o = Object.assign(d, g || {});
   for (const k of ['pilotIds','versions','rounds','log']) if (!Array.isArray(o[k])) o[k] = [];
   for (const k of ['done','chooser','famNotes','finalRecheck','celebrated']) if (!o[k] || typeof o[k] !== 'object') o[k] = {};
+  const ch = o.chooser;
+  if (ch && ch.spec === undefined && (ch.q2 !== undefined || ch.q3 !== undefined)){
+    if (ch.q2 === 'yes'){ ch.spec = 'ded'; ch.second = 'yes'; }
+    else if (ch.q2 === 'no'){ ch.spec = 'ind'; ch.second = 'no'; }
+    else if (ch.q2 === 'unsure'){ ch.second = 'unsure'; if (ch.q3 === 'yes') ch.spec = 'hyb'; else if (ch.q3 === 'no') ch.spec = 'ind'; }
+    delete ch.q2; delete ch.q3;
+  }
   o.lang = Object.assign({ mode:null, langs:'', note:'' }, o.lang || {}); o.coders = Object.assign({ me:'', second:'' }, o.coders || {});
   o.pace = Object.assign({ sec:20, n:0 }, o.pace || {});
   return o;
@@ -2123,7 +2142,7 @@ const REF = {
   cohen:['Cohen, 1960','Cohen, J. (1960). A coefficient of agreement for nominal scales. <i>Educational and Psychological Measurement, 20</i>(1), 37–46. https://doi.org/10.1177/001316446002000104'],
   devries:['De Vries et al., 2008','De Vries, H., Elliott, M. N., Kanouse, D. E., & Teleki, S. S. (2008). Using pooled kappa to summarize interrater agreement across many items. <i>Field Methods, 20</i>(3), 272–282. https://doi.org/10.1177/1525822X08317166'],
   fereday:['Fereday & Muir-Cochrane, 2006','Fereday, J., & Muir-Cochrane, E. (2006). Demonstrating rigor using thematic analysis: A hybrid approach of inductive and deductive coding and theme development. <i>International Journal of Qualitative Methods, 5</i>(1), 80–92. https://doi.org/10.1177/160940690600500107'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.4) [Computer software]. https://tianshihao.org/coder/'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.5) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
@@ -2173,12 +2192,12 @@ const passes = (k, th) => k != null && (th.strict ? k > th.min : k >= th.min - 1
 
 /* ---------- methods ---------- */
 const METHODS = {
-  codebook:{ name:'Codebook thematic analysis with a second coder', ready:true,
-    what:'You write a codebook with clear definitions, a colleague codes part of the data on their own, and you measure how often you agree with Cohen’s kappa. Then you code everything and build themes from the codes.',
+  codebook:{ name:'Codebook thematic analysis', ready:true,
+    what:'You write a codebook with clear definitions and code the data with it. If a colleague codes part of the data on their own, you can measure how often you agree with Cohen’s kappa. Then you code everything and build themes from the codes.',
     fit:'Fits when your research questions or a theory already suggest codes, when your field expects an agreement score, or when a team codes together.',
-    get:'Codebook versions, kappa for every code, a decision log, themes, and a draft methods paragraph.', refs:['braun2021','boyatzis','oconnor'] },
+    get:'Codebook versions, kappa for every code if a second coder checks agreement, a decision log, themes, and a draft methods paragraph.', refs:['braun2021','boyatzis','oconnor'] },
   hybrid:{ name:'Hybrid thematic analysis', ready:true,
-    what:'You start with a seed codebook from your theory and research questions, pilot it, and let the codes it misses emerge from the data. After a revision you freeze the codebook, then code everything and build themes. A second coder is optional: you decide when you reach the agreement step, and if you code alone you freeze the codebook and skip it.',
+    what:'You start with a seed codebook from your theory and research questions, pilot it, and let the codes it misses emerge from the data. After a revision you freeze the codebook, then code everything and build themes. A second coder is optional: if you code alone, you freeze the codebook and skip the agreement check.',
     fit:'Fits when you already have some codes in mind but expect the data to add more, which describes most interview studies.',
     get:'Seed and frozen codebook versions, a record of what the pilot changed, themes, and a draft methods paragraph.', refs:['fereday','oconnor'] },
   reflexive:{ name:'Reflexive thematic analysis', ready:false,
@@ -2192,10 +2211,10 @@ const METHODS = {
 };
 const CHOOSER = [
   { id:'q1', q:'What do you want to end up with?', opts:[['themes','Themes','Patterns of meaning that answer my research question'],['net','Networks','How codes connect with each other, compared across people or groups']] },
-  { id:'q2', when: c => c.q1 === 'themes', q:'Will a second person code part of your data, so you can report agreement?', opts:[['yes','Yes','Or my field or supervisor expects an agreement score'],['no','No','My own interpretation is part of the method'],['unsure','I am not sure yet','']] },
-  { id:'q3', when: c => c.q1 === 'themes' && c.q2 === 'unsure', q:'Do you already have codes in mind from theory, earlier studies, or your research questions?', opts:[['yes','Yes, at least some',''],['no','No','I want the codes to come out of the data']] },
+  { id:'spec', type:'spectrum', when: c => c.q1 === 'themes', q:'Where do your codes come from?', opts:[['ind','Inductive','No framework. The codes come out of the data'],['hyb','Hybrid','Some codes from theory, the rest from the data'],['ded','Deductive','Every code comes from a framework or theory']] },
+  { id:'second', when: c => c.q1 === 'themes' && (c.spec === 'hyb' || c.spec === 'ded'), q:'Will a second person code part of your data, so you can report agreement?', opts:[['yes','Yes','Or my field or supervisor expects an agreement score'],['no','No','I am coding on my own'],['unsure','I am not sure yet','You can decide at the agreement step']] },
 ];
-function recommend(c){ if (c.q1 === 'net') return 'ena'; if (c.q2 === 'yes') return 'codebook'; if (c.q2 === 'no') return 'reflexive'; if (c.q2 === 'unsure' && c.q3) return c.q3 === 'yes' ? 'hybrid' : 'reflexive'; return null; }
+function recommend(c){ if (c.q1 === 'net') return 'ena'; if (c.spec === 'ind') return 'reflexive'; if (c.spec === 'ded') return 'codebook'; if (c.spec === 'hyb') return 'hybrid'; return null; }
 
 /* ---------- versions + diffs ---------- */
 function snapshot(v, note, final){
@@ -2243,6 +2262,8 @@ const STEP_SHARED = [
        <p class="note">Guided steps are ready for codebook and hybrid thematic analysis. The other two approaches are self-guided for now. You get the setup steps and a short plan to follow on your own.</p>`;
      CHOOSER.forEach(q => {
        if (q.when && !q.when(c)) return;
+       if (q.type === 'spectrum'){ const fill = c[q.id] === 'ded' ? 66 : c[q.id] === 'hyb' ? 33 : 0;
+         html += `<div class="q"><b>${q.q}</b><div class="spec"><span class="specFill" style="width:${fill}%"></span><div class="specStops">${q.opts.map(([v,l,s]) => `<button class="specStop" data-a="choose" data-q="${q.id}" data-v="${v}" aria-pressed="${c[q.id] === v}"><span class="specDot"></span><span class="specLab">${l}</span><small>${s}</small></button>`).join('')}</div></div></div>`; return; }
        html += `<div class="q"><b>${q.q}</b><div class="opts">${q.opts.map(([v,l,s]) => `<button class="opt" data-a="choose" data-q="${q.id}" data-v="${v}" aria-pressed="${c[q.id] === v}"><span>${l}</span>${s ? `<small>${s}</small>` : ''}</button>`).join('')}</div></div>`;
      });
      const rec = recommend(c);
@@ -2458,26 +2479,30 @@ function makeSoon(m){ return { id:'soon', ph:'code', title: m === 'ena' ? 'Your 
     html:`<ol class="plan"><li>Read every transcript and note your first ideas.</li><li>Code in the coding view. Create codes freely, and rename or merge them as your understanding changes.</li><li>Keep a short journal of your decisions and why you made them, in any document.</li><li>Group codes into possible themes with “Group under higher-level code” in the Codebook pane.</li><li>Check each theme against its quotes and the whole dataset, then define and name it.</li><li>Export the thematic analysis workbook and write up.</li></ol>
       <p class="note">There is no agreement score in this approach. Your interpretation is part of the method, so the journal is what shows your reasoning.</p>`,
     foot:'<button class="btn primary" data-a="toCoding">Go to coding</button>' }; } }; }
-const FREEZE_HY = { id:'freeze', ph:'cb', title:'Freeze the codebook',
+const FREEZE_STEP = { id:'freeze', ph:'cb', title:'Freeze the codebook',
   est: () => 5, done: () => G().versions.some(v => v.final),
   body(){ const g = G();
     if (g.versions.some(v => v.final)) return { why:'The codebook is final. From here, any change is logged and transcripts you already finished get a recheck.', html: versionsHTML() + `<p><span class="gDone">${tickSvg}Final version ${esc(g.versions.find(v => v.final)?.v || '1.0')} saved</span></p>` };
     return { why:'You are coding on your own, so there is no agreement round to pass. Freeze the codebook here instead. From this point the codes stay fixed while you code the whole dataset, and a code added later counts as an exception: it is logged, and the transcripts you already finished are flagged for a recheck.',
       html: versionsHTML(), foot:`<button class="btn primary" data-a="freezeSolo">Freeze the codebook as version 1.0</button>` }; } };
+function guidedSteps(g, over){
+  const solo = () => g.soloAgree || g.chooser.second === 'no';
+  const unsure = () => g.chooser.second === 'unsure' && !g.soloAgree;
+  let L = STEP_CB.map(s => { const b = s.body;
+    if (s.id === 'plan') return Object.assign({}, s, { body(){ const r = b(); if (!G().rounds.length && (solo() || unsure())) r.html = `<div class="disclaim">Coding on your own? The agreement check needs a second coder. You can skip it: freeze the codebook after the revision instead, and code everything yourself. <button class="btn small" data-a="skipAgree">Skip the agreement check</button></div>` + r.html; return r; } });
+    const o = over && over[s.id]; if (!o) return s;
+    return Object.assign({}, s, o.title ? { title:o.title } : {}, { body(){ const r = b(); r.why = o.why; return r; } }); });
+  if (solo()) L = L.filter(s => !['plan','compare','resolve','decide'].includes(s.id)).flatMap(s => s.id === 'revise' ? [s, FREEZE_STEP] : [s]);
+  return L;
+}
 function stepsHY(g){
-  const over = {
+  return guidedSteps(g, {
     draft:{ title:'Draft the seed codebook, version 0.1', why:`These codes come from your theory, earlier studies, and your research questions, before the data has had its say. Each one still needs four parts: a definition, when to use it, when not to, and an example, so the pilot can show where the seed does not fit ${cite('macqueen','boyatzis')}.` },
     pilot:{ why:`Code one or two transcripts with the seed codebook, and write down every place it does not fit: codes that overlap, codes nobody needs, and things in the data the seed misses entirely ${cite('fereday','oconnor')}. In a hybrid approach, the codes the data adds are the point, so collect them instead of forcing the data into the seed.` },
     codeall:{ why:`Code the rest with the frozen codebook. If you add a code now, it counts as an exception: the transcripts you already finished are flagged, so the new code is applied everywhere and not only from here on, and the addition is recorded for the methods paragraph.` },
-  };
-  let L = STEP_CB.map(s => { const b = s.body;
-    if (s.id === 'plan') return Object.assign({}, s, { body(){ const r = b(); if (!G().rounds.length && !G().soloAgree) r.html = `<div class="disclaim">Coding on your own? The agreement check needs a second coder. A hybrid study can skip it: freeze the codebook after the revision instead, and code everything yourself. <button class="btn small" data-a="skipAgree">Skip the agreement check</button></div>` + r.html; return r; } });
-    const o = over[s.id]; if (!o) return s;
-    return Object.assign({}, s, o.title ? { title:o.title } : {}, { body(){ const r = b(); r.why = o.why; return r; } }); });
-  if (g.soloAgree) L = L.filter(s => !['plan','compare','resolve','decide'].includes(s.id)).flatMap(s => s.id === 'revise' ? [s, FREEZE_HY] : [s]);
-  return L;
+  });
 }
-function stepList(){ const g = G(); if (!g) return []; const L = [...STEP_SHARED]; if (g.method === 'codebook') L.push(...STEP_CB); else if (g.method === 'hybrid') L.push(...stepsHY(g)); else if (g.method) L.push(stepSoon(g.method)); return L; }
+function stepList(){ const g = G(); if (!g) return []; const L = [...STEP_SHARED]; if (g.method === 'codebook') L.push(...guidedSteps(g, null)); else if (g.method === 'hybrid') L.push(...stepsHY(g)); else if (g.method) L.push(stepSoon(g.method)); return L; }
 function curStep(){ const L = stepList(); const pick = UI.gStep && L.find(s => s.id === UI.gStep); return pick || L.find(s => !s.done()) || L[L.length - 1]; }
 const themes = () => S.categories.filter(c => S.codes.some(x => x.categoryId === c.id)).sort(byName);
 function quotesFor(catId){
@@ -2541,7 +2566,8 @@ function methodsParts(){
   const me = g.coders.me || (I ? 'I' : 'the first author');
   t(`${We} analysed `); d(numW(nT)); t(nT === 1 ? ' interview transcript from ' : ' interview transcripts from '); d(numW(nP)); t(nP === 1 ? ' participant' : ' participants');
   if (g.method === 'hybrid') t(' using hybrid thematic analysis, in which a seed codebook drawn from theory and the research questions was combined with codes that emerged from the data (Fereday & Muir-Cochrane, 2006).');
-  else t(' using thematic analysis with a structured codebook and a coding reliability check (Boyatzis, 1998; Braun & Clarke, 2021).');
+  else if (g.rounds.some(r => r.result)) t(' using thematic analysis with a structured codebook and a coding reliability check (Boyatzis, 1998; Braun & Clarke, 2021).');
+  else t(' using thematic analysis with a structured codebook (Boyatzis, 1998; Braun & Clarke, 2021).');
   if (g.rq.trim()){ const q = g.rq.trim(); t(' The analysis addressed the question: '); d(q); if (!/[.?!。？]$/.test(q)) t('.'); }
   const L = g.lang;
   if (L.mode){ const langs = L.langs.trim() || 'the original language';
@@ -2768,10 +2794,10 @@ function saveVersion(final){
 async function gAct(a, b){
   const g = G();
   if (a === 'goStep'){ UI.gStep = b.dataset.s; UI.sub = null; renderGuide(); $('#guide').scrollTop = 0; return; }
-  if (a === 'choose'){ mutate(() => { g.chooser[b.dataset.q] = b.dataset.v; if (b.dataset.q === 'q1'){ delete g.chooser.q2; delete g.chooser.q3; } if (b.dataset.q === 'q2') delete g.chooser.q3; }); return; }
+  if (a === 'choose'){ mutate(() => { g.chooser[b.dataset.q] = b.dataset.v; if (b.dataset.q === 'q1'){ delete g.chooser.spec; delete g.chooser.second; } if (b.dataset.q === 'spec') delete g.chooser.second; }); return; }
   if (a === 'pickMethod'){ UI.gStep = null; mutate(() => { g.method = b.dataset.m; glog('decision', 'Chose the method: ' + METHODS[b.dataset.m].name); }); cheer('Method chosen: ' + METHODS[b.dataset.m].name); return; }
-  if (a === 'skipAgree'){ mutate(() => { g.soloAgree = true; glog('decision', 'Hybrid, coding alone: the agreement check was skipped. The codebook will be frozen after the revision.'); }); cheer('Agreement check skipped'); return; }
-  if (a === 'freezeSolo'){ mutate(() => { g.versions.push(snapshot('1.0', 'Final codebook (hybrid, single coder)', true)); S.transcripts.forEach(t => { if (t.segments.some(s => s.seen)) g.finalRecheck[t.id] = false; }); glog('decision', 'Codebook frozen as version 1.0.'); }); UI.gStep = null; cheer('Codebook frozen as version 1.0'); return; }
+  if (a === 'skipAgree'){ mutate(() => { g.soloAgree = true; glog('decision', 'Coding alone: the agreement check was skipped. The codebook will be frozen after the revision.'); }); cheer('Agreement check skipped'); return; }
+  if (a === 'freezeSolo'){ mutate(() => { g.versions.push(snapshot('1.0', 'Final codebook (single coder)', true)); S.transcripts.forEach(t => { if (t.segments.some(s => s.seen)) g.finalRecheck[t.id] = false; }); glog('decision', 'Codebook frozen as version 1.0.'); }); UI.gStep = null; cheer('Codebook frozen as version 1.0'); return; }
   if (a === 'mark'){ UI.gStep = null; mutate(() => { g.done[b.dataset.s] = nowMs(); }); renderGuide(); return; }
   if (a === 'import'){ $('#fileIn').click(); return; }
   if (a === 'paste'){ $('#pasteErr').textContent = ''; $('#pasteDlg').showModal(); return; }
