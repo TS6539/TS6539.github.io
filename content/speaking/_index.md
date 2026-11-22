@@ -33,7 +33,7 @@ lectures:
     description: "Faculty development workshops on the digitalization of English education and AI literacy."
   - org: "Johns Hopkins University"
     date_label: "Fall 2024"
-    description: "Capstone: Current Leadership Issues. Advisor and guest lecturer."
+    description: "Capstone: Current Leadership Issues. Advisor and guest lecturer. Advised one student through the methodology of a systematic review, covering searching, screening, and data extraction."
   - org: "Pepperdine University"
     date_label: "September 2024"
     description: "PGLC 763 Global Leadership (PhD). Online multiplayer games and simulations as platforms for leadership development, with quantitative ethnography case studies."
