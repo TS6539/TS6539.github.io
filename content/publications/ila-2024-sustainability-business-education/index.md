@@ -11,6 +11,7 @@ publication_types: ["paper-conference"]
 publication:
   name: "26th International Leadership Association Global Conference, Chicago, IL"
 peer_reviewed: true
+abstract: "Integrating sustainability into business education is crucial as environmental and socio-political issues intensify. This systematic review reviewed how business schools have incorporated sustainability into their curricula from 2013 to 2023, examining integration methods and their impact on learning outcomes. The review also discusses research trends, conceptual frameworks, pedagogical advances, and student learning outcomes. The findings indicate a significant increase in sustainability-focused scholarly work, with a shift towards experiential learning, the inclusion of Sustainable Development Goals (SDGs), and an emphasis on practical technology applications. Despite these advancements, there remains an urgent need for more comprehensive integration within core curricula, using interdisciplinary approaches that tackle complex global sustainability challenges."
 tags:
   - Systematic Review
   - Business Education
