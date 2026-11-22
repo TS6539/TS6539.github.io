@@ -15,3 +15,5 @@ This project studies what second-language writers actually do with feedback gene
 The study uses quantitative ethnography, combining epistemic network analysis (ENA) of writing-process data with close analysis of drafts and revisions, so that patterns of engagement with LLM feedback can be traced rather than only self-reported.
 
 A pilot phase has been completed and was presented at ICQE 2026. The pilot mapped how L2 writers used ChatGPT during a source-based writing task, including how they sought and responded to its feedback, and the main study now isolates that feedback engagement. The main study is currently in preparation.
+
+If you study how students respond to AI feedback, especially with process data, I am looking for partners to extend this work beyond a single course.

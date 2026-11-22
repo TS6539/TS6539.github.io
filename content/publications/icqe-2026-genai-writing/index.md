@@ -12,7 +12,7 @@ publication:
   pages: "231-246"
 peer_reviewed: true
 abstract: "A quantitative ethnography pilot study of how Japanese first-year undergraduates used ChatGPT during a 45-minute source-based English argumentative writing task, and which patterns of use were associated with higher- and lower-quality writing."
-summary: "A quantitative ethnography pilot study of how Japanese first-year undergraduates used ChatGPT during a source-based English argumentative writing task, and which patterns of use were associated with higher- and lower-quality writing."
+summary: "What separated higher- from lower-quality writing was not how much students used GenAI, but what they connected it to: higher-quality writers organized AI use around reasoning and content generation, lower-quality writers around polishing and language support. Across all 16 participants, no one was observed checking AI output against the sources."
 tags:
   - Generative AI
   - L2 Writing

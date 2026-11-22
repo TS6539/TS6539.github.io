@@ -8,8 +8,9 @@ authors:
 date: "2022-10-01T00:00:00Z"
 publishDate: "2022-10-01T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 publication:
-  name: "Education Division Scholarship, Pepperdine University Graduate School of Education and Psychology (Digital Commons)"
+  name: "International Organization of Social Sciences and Behavioral Research (IOSSBR)"
 tags:
   - Leadership
   - Game-Based Learning

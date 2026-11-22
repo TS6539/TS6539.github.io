@@ -12,3 +12,5 @@ date: "2026-10-15T00:00:00Z"
 This institutional project at the Institute for Foreign Language Research and Education (FLaRE), Hiroshima University, develops guidelines for the use of generative AI in university English education, together with faculty-development training for teaching staff.
 
 I lead the evidence review behind the guidelines. It includes a systematic scan of AI guidelines across Japanese universities and university language units, so that the recommendations rest on what institutions in Japan are actually doing, and the training is designed around the gaps that the scan reveals.
+
+If your institution is drafting AI-use guidelines for language teaching, I am glad to share what we built at Hiroshima and compare contexts.

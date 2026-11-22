@@ -1,12 +1,13 @@
 ---
-title: "Adventures Together: Exploring the Potential of Video Games in Online ESOL Instruction with next generation of ESOL Instructor"
+title: "Adventures Together: Enhancing Online TESOL Instruction Through Video Games"
 authors:
   - me
-date: "2023-04-01T00:00:00Z"
-publishDate: "2023-04-01T00:00:00Z"
+date: "2023-04-29T00:00:00Z"
+publishDate: "2023-04-29T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 publication:
-  name: "Education Division Scholarship, Pepperdine University Graduate School of Education and Psychology (Digital Commons)"
+  name: "CATESOL Bay Area Chapter Spring Virtual Conference 2023"
 tags:
   - Game-Based Learning
   - Language Learning
