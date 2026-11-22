@@ -28,6 +28,9 @@
       <div class="plist-main">
         <h2 class="plist-title"><a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}</a></h2>
         <p class="plist-desc">{{ .summary }}</p>
+        {{- with .note }}
+        <p class="plist-desc">{{ . }}</p>
+        {{- end }}
       </div>
       {{- with .image }}
       {{- with resources.Get (printf "media/tools/%s" .) }}

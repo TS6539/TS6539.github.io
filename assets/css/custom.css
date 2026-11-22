@@ -672,6 +672,7 @@ body {
   font-family: var(--hb-font-heading); font-style: italic;
   color: var(--v3-accent); margin-right: .6rem;
 }
+.pub-impact-policy { font-size: 1rem; line-height: 1.65; color: var(--v3-text-2); margin: 1.1rem 0 0; max-width: 46rem; }
 .pub-map-link { margin: 1.1rem 0 0; }
 .pub-notes-intro { font-size: 1.05rem; line-height: 1.7; color: var(--v3-text-2); max-width: 46rem; }
 .pub-notes-intro p { margin: 0; }

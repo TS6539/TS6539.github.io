@@ -25,6 +25,7 @@ tools:
     link: "/peer-review/"
     image: "desk-shot.jpg"
     summary: "A free, local-first desk for journal peer review: read a manuscript, anchor each concern in a quoted passage, rank your major points, and prepare separate comments for the authors and the editor. Manuscripts never leave your computer."
+    note: "Manuscripts stay on your machine: no uploads, no external API calls, nothing leaves your browser."
 ---
 
 Free browser tools I built for my own research work and now share. Everything runs in your browser; nothing is uploaded.

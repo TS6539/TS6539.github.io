@@ -100,6 +100,10 @@
     <p class="v4-band-asof">As of November 2026</p>
     <p class="pub-impact-note">Citing works are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
     <p class="pub-impact-pr"><span class="pub-impact-pr-label">Peer review</span>45 manuscripts · 40 verified reviews (Web of Science) · AERA reviewer</p>
+    {{/* Policy & practice impact (2026-11-23, from the Gemini review
+         triage): one paragraph above the map, in the section's body
+         style, wording approved by Hao; do not strengthen it. */}}
+    <p class="pub-impact-policy">Policy &amp; practice impact: At Hiroshima University, I led the evidence review behind the Institute for Foreign Language Research and Education's generative AI guidelines for English education, and the faculty development sessions that introduced them. The guidelines now frame how English courses across the institute handle student AI use.</p>
     {{/* The citation map itself, embedded (2026-11-22): the shared
          partial renders the same interactive map as /impact/ (Esri
          tiles, chronological playback, scrubber), with its styles
@@ -108,6 +112,7 @@
     <div class="pub-map-embed">
       {{ partial "citation_map.html" (dict "styles" true) }}
     </div>
+    <p class="pub-impact-note">Citation data: OpenAlex, counted by distinct citing work.</p>
     <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relURL }}">Open the map on its own page <span aria-hidden="true">→</span></a></p>
   </section>
 
