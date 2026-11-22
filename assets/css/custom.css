@@ -624,11 +624,38 @@ body {
   vertical-align: baseline;
 }
 
+/* ---------- publications index: journal cover thumbnails ----------
+   Entries with a journal cover (the 17 journal articles) carry a
+   small framed thumbnail at the right of their citation row, in the
+   same frame language as the single page's cover (paper ground,
+   hairline border, 6px radius, contain fit, 7:10). The row becomes
+   a flex row only when the figure is present; its margin and the
+   text's flow are untouched, so the vertical rhythm is unchanged.
+   On phones the frame shrinks rather than stacking. */
+.pub-list-item:has(.pub-row-cover) {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+}
+.pub-cite-body { flex: 1 1 auto; min-width: 0; }
+.pub-row-cover { flex: none; margin: 0; }
+.pub-row-cover-frame {
+  width: 76px; aspect-ratio: 7/10;
+  background: #f2f5f7; border: 1px solid rgba(26,29,32,.16); border-radius: 6px;
+  overflow: hidden;
+}
+.pub-row-cover-frame img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+.dark .pub-row-cover-frame { background: #1c1a17; border-color: rgba(236,231,220,.18); }
+@media (max-width: 640px) {
+  .pub-list-item:has(.pub-row-cover) { gap: .9rem; }
+  .pub-row-cover-frame { width: 54px; }
+}
+
 /* ---------- publications hub: appended Impact + Notes sections ----------
    The merged Publications & Impact page (2026-11-22) appends two
-   sections under the unchanged list, in the list's own max-w-3xl
-   column (the mobile :has(.pub-group-title) gutter rule in the fix
-   round below covers them on phones). The Impact figures reuse the homepage band's inner styles
+   sections under the unchanged list, in the list's own column (the
+   :has(.pub-group-title) rules set its gutters on phones and, since
+   the widening below, its 72rem measure at every width). The Impact figures reuse the homepage band's inner styles
    (.v4-band-inner / .v4-fig / .v4-num / .v4-fig-label) inside a quiet
    non-link frame; the Notes entries reuse the homepage news rows
    (.v4-nrow). Section headings are .pub-group-title, like the
@@ -649,6 +676,22 @@ body {
 .pub-notes-intro { font-size: 1.05rem; line-height: 1.7; color: var(--v3-text-2); max-width: 46rem; }
 .pub-notes-intro p { margin: 0; }
 .pub-notes-list { margin-top: .5rem; }
+
+/* Publications hub width (2026-11-22): the list groups and the
+   appended Impact/Notes sections move from the theme's max-w-3xl
+   column to the site's wide index measure, 72rem with 1.5rem
+   gutters (the .plist-wrap / .ci-wrap convention the header above
+   the list already uses), so the whole page shares one measure and
+   the embedded citation map gets the width it was designed for.
+   The selector keys on the group headings only this page emits, so
+   no other page's column moves; no vertical spacing changes.
+   Prose inside keeps its readable measure: the self-citation note,
+   the Notes intro and the subscribe block stay capped at 46rem. */
+.container.max-w-3xl:has(.pub-group-title) {
+  max-width: 72rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
 
 /* Notes index (/notes/): entry rows under the shared list header. */
 .notes-list { margin-top: 1.5rem; padding-bottom: 2.5rem; }

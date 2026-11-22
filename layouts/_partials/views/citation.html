@@ -4,8 +4,12 @@
      abbreviation), (2) the site owner's name is bolded in each
      entry's author list so readers can scan for his position, and
      (3) a small, quiet publication-type marker derived from the entry's
-     own metadata leads each entry (review brief, 2026-11-19). */}}
-{{ $item := .item }}
+     own metadata leads each entry (review brief, 2026-11-19), and
+     (4) on the publications section list only, entries with a
+     `journal_cover` param render that cover as a thumbnail at the
+     right of the row, the citation text wrapped in .pub-cite-body
+     so the row can flex (2026-11-22). */}}
+{{ $item := .item }}{{ $hubList := .hub | default false }}
 {{ $year_value := $item.Params.event_start | default $item.Date }}
 {{ $year := (time $year_value).Format "2006" }}
 {{ $has_attachments := partial "functions/has_attachments" $item }}
@@ -36,7 +40,7 @@
 {{ end }}
 
 <div class="pub-list-item view-citation" style="margin-bottom: 1rem">
-  {{ with $typeLabel }}<span class="pub-type-marker">{{ . }}</span>{{ end }}
+  {{ if $hubList }}<div class="pub-cite-body">{{ end }}{{ with $typeLabel }}<span class="pub-type-marker">{{ . }}</span>{{ end }}
   <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
 
   {{/* APA Style */}}
@@ -79,5 +83,15 @@
   </div>
   {{ end }}
 
-  {{ end }}
+  {{ end }}{{ if $hubList }}
+  </div>{{ end }}
+  {{/* Journal cover thumbnail (2026-11-22), publications hub only:
+       entries carrying a `journal_cover` (the 17 journal articles)
+       get the same cover as their single page, in a small fixed
+       frame at the right of the row; .pub-list-item turns into a
+       flex row only when the figure is present (.pub-row-cover
+       rules in custom.css). Text content and the row's vertical
+       spacing are unchanged. Other lists reusing this view (the
+       publication_types taxonomy) render exactly as before. */}}
+  {{- if and $hubList $item.Params.journal_cover }}{{ with resources.Get $item.Params.journal_cover }}<figure class="pub-row-cover"><div class="pub-row-cover-frame"><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Cover of {{ $pub.name }}" loading="lazy"></div></figure>{{ end }}{{ end }}
 </div>

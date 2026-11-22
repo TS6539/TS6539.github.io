@@ -55,7 +55,12 @@
       {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" $block "view" $view "config" $config) }}
       <h2 class="pub-group-title">{{ .title }}</h2>
       {{ range $index, $item := $items.ByDate.Reverse }}
-        {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" $index "config" $config) }}
+        {{/* Items render through the view partial directly (not
+             render_view) so the hub can pass "hub" true: the citation
+             view adds journal-cover thumbnails only for this list.
+             The start/end fragments above and below still come from
+             render_view, so the group containers are unchanged. */}}
+        {{ partial (printf "views/%s" $view) (dict "page" . "item" . "index" $index "config" $config "hub" true) }}
       {{ end }}
       {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" $block "view" $view) }}
     {{ end }}
