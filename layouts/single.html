@@ -348,6 +348,14 @@
         {{ partial "page_footer" . }}
       </div>
 
+      {{/* Subscription block closes every News post, in the same
+           position as on note singles (after the page footer with the
+           author card). Guarded to the blog section: this template is
+           shared with publications, projects and events (2026-11-22). */}}
+      {{ if eq .Section "blog" }}
+      {{ partial "notes_subscribe.html" . }}
+      {{ end }}
+
     </main>
   </article>
 </div>

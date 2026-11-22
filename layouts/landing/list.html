@@ -335,6 +335,16 @@
     </div>
   </section>
 
+  {{/* ================= 8. NOTES BY EMAIL =================
+       The Notes subscribe block (shared partial, also on note
+       singles, /notes/, the Publications hub and News pages) closes
+       the homepage, after Contact. */}}
+  <section class="v4-section">
+    <div class="v4-wrap">
+      {{ partial "notes_subscribe.html" . }}
+    </div>
+  </section>
+
 </div>
 {{- else -}}
   {{ partial "landing_page.html" . }}
