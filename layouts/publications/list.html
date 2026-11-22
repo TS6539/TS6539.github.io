@@ -66,7 +66,8 @@
 {{/* Hub sections (2026-11-22): Publications and Impact are one page now.
      Below the unchanged list, an Impact section carries the headline
      numbers in the homepage band's style, the peer review summary, and
-     the link to the citation map, which keeps its own page at /impact/.
+     the citation map embedded from the shared partial (the map keeps
+     its own page at /impact/ as well, linked under the embed).
      A Notes section closes the page: the intro line comes from the
      notes section's _index.md (single source, shared with /notes/) and
      the entries render from the notes stream, so new notes appear here
@@ -80,9 +81,12 @@
     <h2 class="pub-group-title">Impact</h2>
     <div class="pub-band">
       <div class="v4-band-inner">
-        <div class="v4-fig"><span class="v4-num">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing works</span></div>
-        <div class="v4-fig"><span class="v4-num">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
-        <div class="v4-fig"><span class="v4-num">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
+        {{/* The three citation figures carry the citation map's counter
+             IDs, so the embedded map's playback below animates this band
+             exactly as it animates the stats row on /impact/. */}}
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-papers">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing works</span></div>
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-institutions">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-countries">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
         {{/* 45 = completed manuscripts reviewed; kept in step with the
              Peer Review stats on /impact/ and the homepage band. */}}
         <div class="v4-fig v4-fig--service"><span class="v4-num">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
@@ -91,7 +95,15 @@
     <p class="v4-band-asof">As of November 2026</p>
     <p class="pub-impact-note">Citing works are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
     <p class="pub-impact-pr"><span class="pub-impact-pr-label">Peer review</span>45 manuscripts · 40 verified reviews (Web of Science) · AERA reviewer</p>
-    <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relURL }}">Explore the citation map <span aria-hidden="true">→</span></a></p>
+    {{/* The citation map itself, embedded (2026-11-22): the shared
+         partial renders the same interactive map as /impact/ (Esri
+         tiles, chronological playback, scrubber), with its styles
+         scoped in. One small link under it keeps the standalone page
+         reachable. */}}
+    <div class="pub-map-embed">
+      {{ partial "citation_map.html" (dict "styles" true) }}
+    </div>
+    <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relURL }}">Open the map on its own page <span aria-hidden="true">→</span></a></p>
   </section>
 
   <section id="notes" class="pub-append-section">

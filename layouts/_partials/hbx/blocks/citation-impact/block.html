@@ -14,33 +14,9 @@
 {{ $data := hugo.Data.citations }}
 {{ $totals := $data.totals }}
 
-{{/* Chronological playback steps, computed from the data at build time.
-     Institutions are grouped by first citing year (year_min); the one
-     institution without a year joins the final group so the end state
-     matches the static totals. Countries are the cumulative distinct
-     country codes up to and including each year. */}}
-{{ $cyp := $data.citations_per_year }}
-{{ $lastIdx := sub (len $cyp) 1 }}
-{{ $steps := slice }}
-{{ range $i, $cy := $cyp }}
-  {{ $count := 0 }}
-  {{ $codes := slice }}
-  {{ range $data.institutions }}
-    {{ $inc := false }}
-    {{ if .year_min }}
-      {{ if le (int .year_min) (int $cy.year) }}{{ $inc = true }}{{ end }}
-    {{ else if eq $i $lastIdx }}
-      {{ $inc = true }}
-    {{ end }}
-    {{ if $inc }}
-      {{ $count = add $count 1 }}
-      {{ $codes = $codes | append .country_code }}
-    {{ end }}
-  {{ end }}
-  {{ $steps = $steps | append (dict "year" (int $cy.year) "papers" (int $cy.cumulative) "institutions" $count "countries" (len ($codes | uniq))) }}
-{{ end }}
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{{/* The chronological playback steps are computed inside the
+     shared citation map partial (layouts/_partials/citation_map.html),
+     which also emits the Leaflet stylesheet. */}}
 <style>
   .ci-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
   .ci-title { font-size: 1.875rem; font-weight: 700; text-align: center; margin-bottom: 1rem; color: #111827; }
@@ -127,16 +103,11 @@
 
   <p class="ci-note" style="text-align: center; max-width: 46rem; margin: -1.4rem auto 2.2rem;">Citing papers are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
 
-  <div class="ci-card" id="ci-map-card">
-    <h3>Where the citations come from</h3>
-    <p class="ci-sub">One marker per institution that employs a citing author. Click a marker for details.</p>
-    <div class="ci-controls" id="ci-controls" hidden>
-      <div><span class="ci-year-num" id="ci-year-num"></span><span class="ci-year-label">citations by year</span></div>
-      <div class="ci-scrub"><input type="range" id="ci-year-range" min="{{ (index $steps 0).year }}" max="{{ (index $steps $lastIdx).year }}" step="1" value="{{ (index $steps $lastIdx).year }}" aria-label="Show citations up to this year"></div>
-      <button type="button" class="ci-play-btn" id="ci-play-btn">Play</button>
-    </div>
-    <div id="ci-map"></div>
-  </div>
+  {{/* Map card + Leaflet script + playback script: shared partial,
+       also embedded in the Impact section of /publications/. This
+       block's style block above still carries the map rules, so the
+       partial is called with styles=false. */}}
+  {{ partial "citation_map.html" (dict "styles" false) }}
 
   <div class="ci-card">
     <h3>Citations received per year</h3>
@@ -167,185 +138,11 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-  const CI_DATA = {{ $data | jsonify | safeJS }};
-  const CI_STEPS = {{ $steps | jsonify | safeJS }};
-  const CI_TOTALS = {
-    papers: {{ int $totals.citing_papers }},
-    institutions: {{ int $totals.institutions }},
-    countries: {{ int $totals.countries }}
-  };
-  const CI_REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function ciEscape(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  /* ---------------- Map + chronological playback ---------------- */
-  let ciMap = null;
-  const ciGroups = CI_STEPS.map(function () { return []; });
-
-  if (window.L && document.getElementById('ci-map')) {
-    ciMap = L.map('ci-map', { scrollWheelZoom: false }).setView([25, 10], 2);
-    ciMap.on('click', function () { ciMap.scrollWheelZoom.enable(); });
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 18,
-      attribution: 'Tiles &copy; Esri, OpenStreetMap contributors, and the GIS user community'
-    }).addTo(ciMap);
-
-    const lastYear = CI_STEPS.length ? CI_STEPS[CI_STEPS.length - 1].year : null;
-    CI_DATA.institutions.forEach(function (inst) {
-      const yrs = (inst.year_min && inst.year_max)
-        ? (inst.year_min === inst.year_max ? '' + inst.year_min : inst.year_min + ' to ' + inst.year_max)
-        : 'n/a';
-      const pop = '<b>' + ciEscape(inst.name) + '</b><br>' +
-        (inst.city ? ciEscape(inst.city) + ', ' : '') + ciEscape(inst.country_code) + '<br>' +
-        'Citing authors: ' + inst.citing_authors + '<br>' +
-        'Citing papers: ' + inst.citing_papers + '<br>' +
-        'Years: ' + yrs;
-      const marker = L.circleMarker([inst.lat, inst.lng], {
-        radius: 5 + Math.min(8, inst.citing_papers * 0.75),
-        color: '#f2f5f7', weight: 1.5, fillColor: '#3f5a7a', fillOpacity: 0.92
-      }).bindPopup(pop);
-      /* Static state: every marker on the map, exactly as before. */
-      marker.addTo(ciMap);
-      let gi = CI_STEPS.findIndex(function (s) { return inst.year_min && inst.year_min <= s.year; });
-      if (gi < 0) gi = CI_STEPS.length - 1;
-      ciGroups[gi].push({ marker: marker, lat: inst.lat, lng: inst.lng });
-    });
-  }
-
-  const ciPulseIcon = window.L ? L.divIcon({
-    className: 'ci-pulse-icon', html: '<span></span>', iconSize: [0, 0], iconAnchor: [0, 0]
-  }) : null;
-
-  const ciEls = {
-    papers: document.getElementById('ci-stat-papers'),
-    institutions: document.getElementById('ci-stat-institutions'),
-    countries: document.getElementById('ci-stat-countries')
-  };
-
-  function ciTween(el, from, to, dur, done) {
-    if (!el) { if (done) done(); return; }
-    if (dur <= 0 || from === to) { el.textContent = to; if (done) done(); return; }
-    const t0 = performance.now();
-    (function frame(now) {
-      const t = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(from + (to - from) * e);
-      if (t < 1) requestAnimationFrame(frame);
-      else if (done) done();
-    })(t0);
-  }
-
-  let ciPlaying = false;
-  let ciTimers = [];
-
-  function ciClearTimers() {
-    ciTimers.forEach(function (id) { clearTimeout(id); });
-    ciTimers = [];
-  }
-
-  function ciLater(fn, ms) { ciTimers.push(setTimeout(fn, ms)); }
-
-  function ciPlay() {
-    if (!ciMap || ciPlaying) return;
-    ciPlaying = true;
-    ciClearTimers();
-    const btn = document.getElementById('ci-play-btn');
-    const yearEl = document.getElementById('ci-year-num');
-    if (btn) { btn.disabled = true; btn.textContent = 'Playing'; }
-
-    /* Rewind: hide every marker and zero the counters. */
-    ciGroups.forEach(function (g) {
-      g.forEach(function (it) { if (ciMap.hasLayer(it.marker)) ciMap.removeLayer(it.marker); });
-    });
-    const cur = { papers: 0, institutions: 0, countries: 0 };
-    Object.keys(ciEls).forEach(function (k) { if (ciEls[k]) ciEls[k].textContent = '0'; });
-
-    const STEP_MS = 1400;
-    CI_STEPS.forEach(function (step, i) {
-      ciLater(function () {
-        if (yearEl) yearEl.textContent = step.year;
-        const rangeSync = document.getElementById('ci-year-range');
-        if (rangeSync) rangeSync.value = step.year;
-        ciTween(ciEls.papers, cur.papers, step.papers, STEP_MS * 0.95);
-        ciTween(ciEls.institutions, cur.institutions, step.institutions, STEP_MS * 0.95);
-        ciTween(ciEls.countries, cur.countries, step.countries, STEP_MS * 0.95);
-        cur.papers = step.papers; cur.institutions = step.institutions; cur.countries = step.countries;
-        const group = ciGroups[i] || [];
-        const stagger = Math.min(90, (STEP_MS * 0.8) / Math.max(1, group.length));
-        group.forEach(function (it, j) {
-          ciLater(function () {
-            it.marker.addTo(ciMap);
-            if (ciPulseIcon) {
-              const pulse = L.marker([it.lat, it.lng], { icon: ciPulseIcon, interactive: false, keyboard: false }).addTo(ciMap);
-              ciLater(function () { if (ciMap.hasLayer(pulse)) ciMap.removeLayer(pulse); }, 1000);
-            }
-          }, j * stagger);
-        });
-      }, i * STEP_MS);
-    });
-
-    /* Settle on the full totals (the yearly series sums to slightly less
-       than the total citing papers; the footnote explains why). */
-    ciLater(function () {
-      ciTween(ciEls.papers, cur.papers, CI_TOTALS.papers, 500);
-      ciTween(ciEls.institutions, cur.institutions, CI_TOTALS.institutions, 300);
-      ciTween(ciEls.countries, cur.countries, CI_TOTALS.countries, 300);
-      ciPlaying = false;
-      if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
-    }, CI_STEPS.length * STEP_MS + 150);
-  }
-
-  /* Scrubber: jump straight to a year's cumulative state. Cancels any
-     running playback; Play afterwards replays the full sequence. */
-  function ciSetYear(year) {
-    if (!ciMap) return;
-    const idx = CI_STEPS.findIndex(function (s) { return s.year === year; });
-    if (idx < 0) return;
-    ciClearTimers();
-    ciPlaying = false;
-    const btn = document.getElementById('ci-play-btn');
-    if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
-    const yearEl = document.getElementById('ci-year-num');
-    if (yearEl) yearEl.textContent = year;
-    ciGroups.forEach(function (g, gi) {
-      g.forEach(function (it) {
-        const on = ciMap.hasLayer(it.marker);
-        if (gi <= idx && !on) it.marker.addTo(ciMap);
-        if (gi > idx && on) ciMap.removeLayer(it.marker);
-      });
-    });
-    const step = CI_STEPS[idx];
-    if (ciEls.papers) ciEls.papers.textContent = step.papers;
-    if (ciEls.institutions) ciEls.institutions.textContent = step.institutions;
-    if (ciEls.countries) ciEls.countries.textContent = step.countries;
-  }
-
-  /* Wire playback only when motion is allowed; otherwise the static
-     render above already shows the complete final state. */
-  if (ciMap && !CI_REDUCED) {
-    const controls = document.getElementById('ci-controls');
-    const btn = document.getElementById('ci-play-btn');
-    const yearEl = document.getElementById('ci-year-num');
-    if (controls) controls.hidden = false;
-    if (yearEl && CI_STEPS.length) yearEl.textContent = CI_STEPS[CI_STEPS.length - 1].year;
-    if (btn) btn.addEventListener('click', ciPlay);
-    const range = document.getElementById('ci-year-range');
-    if (range) range.addEventListener('input', function () { ciSetYear(parseInt(range.value, 10)); });
-    const card = document.getElementById('ci-map-card');
-    if (card && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { io.disconnect(); ciPlay(); }
-        });
-      }, { threshold: 0.3 });
-      io.observe(card);
-    }
-  }
+  /* CI_DATA, CI_REDUCED, and ciTween are defined by the citation map
+     partial's script earlier in the page (shared globals, document
+     order); the chart and peer-review sections below use them. */
 
   /* ---------------- Citations-per-year chart ---------------- */
   let ciChartBuilt = false;
