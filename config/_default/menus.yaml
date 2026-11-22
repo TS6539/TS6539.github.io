@@ -7,7 +7,7 @@ main:
   - name: Home
     url: /
     weight: 10
-  - name: Publications
+  - name: Publications & Impact
     url: /publications/
     weight: 11
   - name: Projects
@@ -22,9 +22,6 @@ main:
   - name: Teaching
     url: teaching/
     weight: 15
-  - name: Impact
-    url: impact/
-    weight: 16
   - name: Experience
     url: experience/
     weight: 17

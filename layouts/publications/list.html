@@ -63,4 +63,55 @@
 
 </div>
 
+{{/* Hub sections (2026-11-22): Publications and Impact are one page now.
+     Below the unchanged list, an Impact section carries the headline
+     numbers in the homepage band's style, the peer review summary, and
+     the link to the citation map, which keeps its own page at /impact/.
+     A Notes section closes the page: the intro line comes from the
+     notes section's _index.md (single source, shared with /notes/) and
+     the entries render from the notes stream, so new notes appear here
+     automatically. Styling: .pub-append* in custom.css. */}}
+
+{{ $totals := hugo.Data.citations.totals }}
+
+<div class="container max-w-3xl w-full mx-auto pub-append">
+
+  <section id="impact" class="pub-append-section">
+    <h2 class="pub-group-title">Impact</h2>
+    <div class="pub-band">
+      <div class="v4-band-inner">
+        <div class="v4-fig"><span class="v4-num">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing works</span></div>
+        <div class="v4-fig"><span class="v4-num">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
+        <div class="v4-fig"><span class="v4-num">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
+        {{/* 45 = completed manuscripts reviewed; kept in step with the
+             Peer Review stats on /impact/ and the homepage band. */}}
+        <div class="v4-fig v4-fig--service"><span class="v4-num">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
+      </div>
+    </div>
+    <p class="v4-band-asof">As of November 2026</p>
+    <p class="pub-impact-note">Citing works are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
+    <p class="pub-impact-pr"><span class="pub-impact-pr-label">Peer review</span>45 manuscripts · 40 verified reviews (Web of Science) · AERA reviewer</p>
+    <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relURL }}">Explore the citation map <span aria-hidden="true">→</span></a></p>
+  </section>
+
+  <section id="notes" class="pub-append-section">
+    <h2 class="pub-group-title">Notes</h2>
+    {{- with site.GetPage "notes" }}
+    <div class="pub-notes-intro">{{ .Content }}</div>
+    {{- end }}
+    {{ $notes := where site.RegularPages "Section" "notes" }}
+    {{ with $notes }}
+    <div class="pub-notes-list">
+      {{ range .ByDate.Reverse }}
+      <article class="v4-nrow">
+        <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        <h3 class="v4-ntitle"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </article>
+      {{ end }}
+    </div>
+    {{ end }}
+  </section>
+
+</div>
+
 {{ end }}

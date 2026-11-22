@@ -624,6 +624,35 @@ body {
   vertical-align: baseline;
 }
 
+/* ---------- publications hub: appended Impact + Notes sections ----------
+   The merged Publications & Impact page (2026-11-22) appends two
+   sections under the unchanged list, in the list's own max-w-3xl
+   column (the mobile :has(.pub-group-title) gutter rule in the fix
+   round below covers them on phones). The Impact figures reuse the homepage band's inner styles
+   (.v4-band-inner / .v4-fig / .v4-num / .v4-fig-label) inside a quiet
+   non-link frame; the Notes entries reuse the homepage news rows
+   (.v4-nrow). Section headings are .pub-group-title, like the
+   research-line groups above them. */
+.pub-append { margin-top: 4rem; padding-bottom: 2.5rem; }
+.pub-append-section + .pub-append-section { margin-top: 3.75rem; }
+.pub-band { border-top: 1px solid var(--v3-line); border-bottom: 1px solid var(--v3-line); }
+.pub-impact-note {
+  font-size: .85rem; line-height: 1.6; color: var(--v3-text-3);
+  margin: 1rem 0 0; max-width: 46rem;
+}
+.pub-impact-pr { font-size: 1rem; line-height: 1.65; color: var(--v3-text-2); margin: 1.1rem 0 0; }
+.pub-impact-pr-label {
+  font-family: var(--hb-font-heading); font-style: italic;
+  color: var(--v3-accent); margin-right: .6rem;
+}
+.pub-map-link { margin: 1.1rem 0 0; }
+.pub-notes-intro { font-size: 1.05rem; line-height: 1.7; color: var(--v3-text-2); max-width: 46rem; }
+.pub-notes-intro p { margin: 0; }
+.pub-notes-list { margin-top: .5rem; }
+
+/* Notes index (/notes/): entry rows under the shared list header. */
+.notes-list { margin-top: 1.5rem; padding-bottom: 2.5rem; }
+
 /* ==========================================================================
    Scroll reveals (review brief, 2026-11-19): elements are fully visible
    by default; JS adds .v4-reveal-init only when it will animate, and the

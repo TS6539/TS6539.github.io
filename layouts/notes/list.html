@@ -1,0 +1,30 @@
+{{ define "main" }}
+
+{{/* Notes index: same editorial language as the other list pages
+     (.plist-* header) with the homepage news rows (.v4-nrow) for the
+     entries themselves: date left, title right, hairline rules. The
+     intro line is the section's _index.md body, shared with the Notes
+     section on /publications/. With no notes yet, only the header and
+     intro render. */}}
+
+<div class="plist-wrap">
+  <header class="plist-head">
+    <h1 class="plist-page-title">{{ .Title }}</h1>
+    {{- with .Content }}
+    <div class="plist-intro">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  {{ with .RegularPages }}
+  <div class="notes-list">
+    {{ range .ByDate.Reverse }}
+    <article class="v4-nrow">
+      <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      <h2 class="v4-ntitle"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    </article>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+
+{{ end }}
