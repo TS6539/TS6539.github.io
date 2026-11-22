@@ -6,7 +6,7 @@
   --ui:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
   --read:"Source Serif 4",Charter,"Iowan Old Style",Georgia,"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif SC",serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --bg:#F7F7F5; --panel:#EFEFEC; --surface:#FFFFFF; --ink:#1F2328; --muted:#5F6670; --faint:#8C939C;
+  --bg:#F7F7F5; --panel:#EFEFEC; --surface:#FFFFFF; --ink:#1F2328; --muted:#5F6670; --faint:#525b65;
   --line:#DADAD5; --line-strong:#BDBDB6; --accent:#25507A; --accent-ink:#FFFFFF; --accent-soft:#E6EDF4;
   --danger:#A33A2E; --ok:#3D7A4E; --cs:55%; --cl:90%; --cbar:45%; --cink:22%;
   --r:4px; --tabH:0px;
@@ -14,7 +14,7 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#16181B; --panel:#1C1F23; --surface:#212429; --ink:#E6E8EB; --muted:#A1A8B1; --faint:#737B85;
+    --bg:#16181B; --panel:#1C1F23; --surface:#212429; --ink:#E6E8EB; --muted:#A1A8B1; --faint:#b9c8da;
     --line:#30343A; --line-strong:#444A52; --accent:#8DB6DD; --accent-ink:#11161C; --accent-soft:#1E2A37;
     --danger:#E58B80; --ok:#86C59A; --cs:28%; --cl:24%; --cbar:58%; --cink:86%; color-scheme:dark;
   }
@@ -205,14 +205,14 @@ body{height:auto;min-height:100dvh;display:block}#appRoot{min-height:100dvh}.top
 
 #readingDialog{inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;background:var(--panel)}#readingDialog[open]{display:flex;flex-direction:column}.pdfTools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px;background:var(--surface)}#pdfInfo,#pdfUnlock:not(:empty){padding:4px 12px}#pdfSpace{flex:1;min-height:0;overflow:auto;padding:8px}#pdfPage{width:max-content;min-width:100%}.pageSheet{margin:auto;position:relative;background:white}.pageSheet canvas{width:100%;height:100%;display:block}.textLayer ::selection{background:rgba(38,105,190,.32);color:transparent}#pdfPanel{position:absolute;right:12px;top:90px;width:min(340px,calc(100% - 24px));padding:14px;background:var(--surface);border:1px solid var(--line-strong);box-shadow:0 3px 16px #0002;max-height:65dvh;overflow:auto}#pdfPanel>*{display:block;width:100%;margin:5px 0;text-align:left}#pdfPanel .row{display:flex;justify-content:space-between}#holdDiscard{background-size:0 100%;position:relative;overflow:hidden}#holdDiscard:after{content:'';position:absolute;inset:0;background:#c029294d;transform-origin:left;transform:scaleX(0)}#holdDiscard.holding:after{transform:scaleX(1);transition:transform 2s linear}@media(max-width:860px){#pdfPanel{top:auto;bottom:8px}}
 #pdfPage .pageSheet{margin:0 auto 14px;isolation:isolate}.inkLayer{position:absolute;inset:0;pointer-events:none;z-index:1}.inkLayer i{position:absolute;opacity:.30;border-bottom:2px solid currentColor;mix-blend-mode:multiply}.inkLayer .jumpMark{outline:3px solid #164575}.pdfTools [aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}#holdDiscard.holding:after{transition-duration:1.5s}
-:root{--faint:#565e67;--muted:#505962}@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--faint:#b0b6bd;--muted:#b6bcc3}}
+:root{--faint:#525b65;--muted:#505962}@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--faint:#b9c8da;--muted:#b6bcc3}}
 #undoBar{position:fixed;bottom:68px;left:12px;background:var(--surface);color:var(--ink);border:1px solid var(--accent);padding:10px;z-index:99}.gFoot .primary{font-weight:700;padding:9px 20px}.footActions{border-top:1px solid var(--line);padding-top:6px}
 @media(min-width:861px){#readingDialog:has(#pdfPanel:not([hidden])) #pdfSpace{margin-right:360px}#readingDialog #pdfPanel{bottom:10px;max-height:none}#readingDialog:has(#pdfPanel:not([hidden])) #pdfPage{margin:0}}
 
 /* Review workspace */
 :root{--r:8px;--space-1:8px;--space-2:12px;--space-3:16px;--space-4:24px}
 @media(prefers-color-scheme:dark){
- :root:not([data-theme=light]){--bg:#0c1420;--panel:#182535;--surface:#233244;--ink:#edf3fa;--muted:#bac8d7;--faint:#a2b4c7;--line:#394b60;--line-strong:#576d84;--accent:#a2ccf5;--accent-ink:#102238;--accent-soft:#30465f}
+ :root:not([data-theme=light]){--bg:#0c1420;--panel:#182535;--surface:#233244;--ink:#edf3fa;--muted:#bac8d7;--faint:#b9c8da;--line:#394b60;--line-strong:#576d84;--accent:#a2ccf5;--accent-ink:#102238;--accent-soft:#30465f}
 }
 #guide{overflow:visible}
 .deskHeader{position:sticky;top:0;z-index:6;background:var(--surface)}
@@ -267,7 +267,7 @@ details[open]>summary::before{transform:rotate(90deg)}
 <div id="message" class="gCheer" role="status" aria-live="polite"></div>
 <div id="undoBar" role="status" hidden></div>
 <script>
-const VERSION = '0.3.1';
+const VERSION = '0.3.2';
 const STR = {
   v2:{flow:'Load a manuscript, take notes, draft your review, then export.',sample:'Try a sample review',sampleTag:'Sample',coming:'More modes coming',core:'Core only',full:'Full general set',report:'Add a reporting checklist',confirmCriteria:'Use this selection',undo:'Undo',deleted:'Deleted',missing:'Still to complete',authorWord:'Download author comments',editorWord:'Download confidential editor copy',editorWarning:'This document includes the confidential editor comments and your recommendation.',preview:'Paste preview',firstHelp:'Answer each question in your own words or link a PDF passage. The timer is optional.',linked:'linked passages',notesHelp:'Select within one paragraph for a structured note. Kind describes the issue. Severity determines whether it goes into Rank.',rankHelp:'Order your major notes here. This order carries into the author draft.',recHelp:'Compare your decision with your major concerns. You choose the recommendation.',anchor:'Choose a new paragraph',orphan:'Original passage needs a new anchor',templateWrong:'This is a criteria template. Import it in Step 3.',projectWrong:'This is a review project. Use Open review project.',backup:'Download a project file for a backup.',all:'See all',prompts:'Selection prompts',enabled:'Enabled',paused:'Paused'},
   reading:{edit:'Edit question',apply:'Save question',unlink:'Remove this link',previous:'Previous passage',following:'Next passage',jump:'Go to passage',linked:'Already linked',page:'Page',newQuestion:'What question would you like to add?',discard:'Hold to discard',assign:'Which question does this passage answer?',questions:'Questions and passages',dismiss:'Close and pause selection prompts',see:'See questions',addQuestion:'Add question',saved:'Saved to your questions',back:'Back to review',prev:'Previous page',next:'Next page',out:'Zoom out',in:'Zoom in',pause:'Pause prompts',resume:'Enable prompts',hint:'Select a passage to link it to a question.',open:'Read original PDF',optional:'Write additional first-read comments'},
@@ -334,6 +334,9 @@ const uniq=a=>[...new Set(a)];
 function criteriaFor(set){
   const names=set==='general'?STR.generalRows.map(r=>r[0]):STR.standards[set][4];
   return names.map((name,i)=>({id:set==='general'?ids[i]:set+'-'+i,set,name,status:''}));
+}
+function joinWrappedLines(text){
+ return text.replace(/\r\n?/g,'\n').replace(/([^\s\n])[^\S\n]*\n[^\S\n]*(?=\S)/g,'$1 ');
 }
 function splitParagraphs(text){
   const clean=str(text).replace(/\r\n?/g,'\n').trim();
@@ -460,7 +463,7 @@ function header(){
 }
 function homeView(){
  const sections=[[STR.why,STR.whyText],[STR.privacy,STR.privacyText+' '+STR.privateHint],[STR.issues,STR.issuesText],[STR.changes,STR.changeText]];
- return `<main id="welcome"><div class="wIn"><h1>${STR.app}</h1><p class="sub">${STR.sub}</p><p class="metaLine">${fmt(STR.meta,{v:VERSION})}</p><p>${STR.v2.flow}</p><div class="paths"><button class="path" data-act="new"><b>${icon("mail")}${STR.modes[0][0]}</b><span>${STR.modes[0][1]}</span><em>${STR.start}</em></button><button class="path" data-act="sample"><b>${icon("page")}${STR.v2.sample}</b><span>Explore a worked example with linked evidence and review notes.</span><em>Open sample</em></button></div><small>${STR.v2.coming}</small><p class="muted">${STR.saved}. ${STR.v2.backup}</p><div class="ctaRow">${btn('open',STR.open)}</div>${projects.length?`<h2>${STR.resume}</h2>${projects.map(r=>`<div class="projectRow">${btn('resume',(r.sample?STR.v2.sampleTag+' · ':'')+r.name,`data-id="${esc(r.id)}"`)}<span class="muted">${esc(new Date(r.savedAt).toLocaleDateString())}</span>${btn('deleteProject',STR.deleteProject,`data-id="${esc(r.id)}"`,'ghost small')}</div>`).join('')}`:''}<!-- Tianshi will rewrite the maker paragraph. -->${sections.map(([h,t])=>`<h2>${h}</h2><p>${t}</p>`).join('')}<footer class="wFoot">${fmt(STR.cite,{v:VERSION})}${link(feedback,STR.feedback)}</footer></div></main>`;
+ return `<main id="welcome"><div class="wIn"><h1>${STR.app}</h1><p class="sub">${STR.sub}</p><p class="metaLine">${fmt(STR.meta,{v:VERSION})}</p><p>${STR.v2.flow}</p><div class="paths"><button class="path" data-act="new"><b>${icon("mail")}${STR.modes[0][0]}</b><span>${STR.modes[0][1]}</span><em>${STR.start}</em></button><button class="path" data-act="sample"><b>${icon("page")}${STR.v2.sample}</b><span>This sample is partly completed so you can see what finished steps look like.</span><em>Open sample</em></button></div><small>${STR.v2.coming}</small><p class="muted">${STR.saved}. ${STR.v2.backup}</p><div class="ctaRow">${btn('open',STR.open)}</div>${projects.length?`<h2>${STR.resume}</h2>${projects.map(r=>`<div class="projectRow">${btn('resume',(r.sample?STR.v2.sampleTag+' · ':'')+r.name,`data-id="${esc(r.id)}"`)}<span class="muted">${esc(new Date(r.savedAt).toLocaleDateString())}</span>${btn('deleteProject',STR.deleteProject,`data-id="${esc(r.id)}"`,'ghost small')}</div>`).join('')}`:''}<!-- Tianshi will rewrite the maker paragraph. -->${sections.map(([h,t])=>`<h2>${h}</h2><p>${t}</p>`).join('')}<footer class="wFoot">${fmt(STR.cite,{v:VERSION})}${link(feedback,STR.feedback)}</footer></div></main>`;
 }
 function detailsView(){
  const d=p.details;
@@ -595,6 +598,25 @@ async function loadProject(id){
 }
 const putOne=(s,v)=>transact([s],'readwrite',t=>t.objectStore(s).put(v));
 async function catalog(){projects=(await getAll('catalog')).sort((a,b)=>b.savedAt.localeCompare(a.savedAt))}
+async function sampleProjectId(){
+ // A sample remains usable in memory if the browser disables IndexedDB.
+ try{await dbReady}catch{return null}
+ let id;
+ await transact(['catalog','projects','manuscripts'],'readwrite',tx=>{
+  const catalog=tx.objectStore('catalog');
+  const all=catalog.getAll();
+  all.onsuccess=()=>{
+   const existing=all.result.filter(row=>row.sample).sort((a,b)=>b.savedAt.localeCompare(a.savedAt))[0];
+   if(existing){id=existing.id;return}
+   const sample=newSample();
+   id=sample.id;
+   tx.objectStore('projects').add({...sample,manuscript:null});
+   tx.objectStore('manuscripts').add({id,...sample.manuscript});
+   catalog.add({id,name:sample.name,savedAt:sample.savedAt,sample:true});
+  };
+ });
+ return id;
+}
 let modalSubmit=null;
 function modal(title,body,submit='',action=null){
  const d=$('#dialog');if(d.open)d.close();modalSubmit=action;
@@ -947,15 +969,15 @@ function capture(){
  selected=a&&a===b?{i:Number(a.dataset.par),quote:r.toString()}:{multi:true};
 }
 function addSelection(){capture();if(selected?.multi){notify(STR.multi);return}if(!selected){notify(STR.pick);return}openNote(selected.i,selected.quote)}
-function navigate(step){
+function navigate(step,persist=true){
  pause();p.steps.current=step;mobile='step';selected=null;
  if(step===6&&!p.boxes.initialized){p.boxes.authors=scaffold(p);p.boxes.initialized=true}
- render();save();window.scrollTo?.(0,0);$('.gCard h2')?.focus({preventScroll:true});
+ render();if(persist)save();window.scrollTo?.(0,0);$('.gCard h2')?.focus({preventScroll:true});
 }
-async function activate(record,stamp=''){
+async function activate(record,stamp='',persist=true){
  if(p){pause();await save()}
  lastBackup='';lastManuscript=null;p=record;lastStamp=stamp;saveError='';localStatus=stamp?savedMessage(stamp):STR.saving;mobile='step';filter='';selected=null;noteCursor='';generation++;
- navigate(p.steps.current);
+ navigate(p.steps.current,persist);
 }
 async function home(){
  if(p){pause();await save();if(saveError){notify(saveError);if(!lastBackup || lastBackup!==JSON.stringify([p.details,p.manuscript,p.criteria,p.notes,p.ranking,p.recommendation,p.boxes]))return}}
@@ -987,11 +1009,17 @@ function openSettings(){
   await putOne('prefs',value);prefs=value;closeDialog();if(p){p.checks.final=false;render();save()}notify(STR.statusSaved);
  });
 }
+function newSample(){return normalize({sample:true,details:{title:'Feedback and revision confidence',journal:'Sample journal',msid:'DEMO',first:['Students reported greater confidence.','A confidence questionnaire.','One class of twenty students.','The questionnaire is reproduced.']},manuscript:{source:'Sample',paragraphs:['Twenty students completed two writing activities.','Students reported greater confidence after receiving feedback.','We interpret this as improved writing performance.']},notes:[{id:'example',paragraph:2,quote:'improved writing performance',severity:'major',kind:'question',comment:'Which evidence shows a change in writing performance?',criterion:'construct'}],recommendation:'major'})}
 async function action(a,b){
  const id=b?.dataset.id,i=Number(b?.dataset.index);
  if(a==='openReading'||b?.closest?.('#readingDialog'))return readingAction(a,b);
  switch(a){
- case 'sample':{const sample=normalize({sample:true,details:{title:'Feedback and revision confidence',journal:'Sample journal',msid:'DEMO',first:['Students reported greater confidence.','A confidence questionnaire.','One class of twenty students.','The questionnaire is reproduced.']},manuscript:{source:'Sample',paragraphs:['Twenty students completed two writing activities.','Students reported greater confidence after receiving feedback.','We interpret this as improved writing performance.']},notes:[{id:'example',paragraph:2,quote:'improved writing performance',severity:'major',kind:'question',comment:'Which evidence shows a change in writing performance?',criterion:'construct'}],recommendation:'major'});await activate(sample);break}
+ case 'sample':{
+  const id=await sampleProjectId();
+  if(id){const record=await loadProject(id);await activate(readProject(record),record.savedAt,false)}
+  else await activate(newSample());
+  break;
+ }
  case 'core':case 'full':{const rows=criteriaFor('general').filter(c=>a==='full'||['contribution','construct','design','analysis','sample'].includes(c.id));applyCriteria({criteria:rows});break}
  case 'confirmCriteria':p.criteriaChosen=true;refresh();save();break;
  case 'undoRemoval':{const f=undoActions.get(id);if(f){await f();clearUndo(id)}break}
@@ -1007,8 +1035,14 @@ async function action(a,b){
  case 'next':{const i=p.steps.current;if(checklist(p)[i].every(Boolean))notify(STR.complete);navigate(Math.min(8,i+1));break}
  case 'step':navigate(i);break;
  case 'tab':mobile=b.dataset.tab;$('#guide').dataset.tab=mobile;$$('.bottom button').forEach(el=>el.setAttribute('aria-pressed',el.dataset.tab===mobile));window.scrollTo?.(0,0);break;
- case 'load':pendingPdf=null;modal(STR.import,`<label class="field">${STR.file}<input type="file" id="msFile" accept=".docx,.txt,.pdf"></label><p id="importStatus" role="status" aria-live="polite"></p><div id="unlockArea"></div>${area('paste',STR.paste,'',8)}<output id="pasteCount"></output>${btn('paste',STR.usePaste,'','primary')}`);break;
+ case 'load':pendingPdf=null;modal(STR.import,`<label class="field">${STR.file}<input type="file" id="msFile" accept=".docx,.txt,.pdf"></label><p id="importStatus" role="status" aria-live="polite"></p><div id="unlockArea"></div>${area('paste',STR.paste,'',8)}<output id="pasteCount" aria-live="polite"></output>${btn('joinWrapped','Join wrapped lines','disabled')}${btn('paste',STR.usePaste,'','primary')}`);break;
  case 'unlockPdf':if(pendingPdf)await readManuscript(pendingPdf,$('#pdfPassword').value);break;
+ case 'joinWrapped':{
+  const field=$('#paste');
+  field.value=joinWrappedLines(field.value);
+  updatePastePreview(field);
+  break;
+ }
  case 'paste':commitManuscript(STR.manual,splitParagraphs($('#paste').value));break;
  case 'timer':if(timerStart)pause();else timerStart=Date.now();render();save();break;
  case 'custom':{const names=$('#custom').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(names.length){p.criteriaChosen=true;p.criteria.push(...names.map(name=>({id:uid(),name,set:'custom',active:true,status:''})));p.checks.final=false;render();save()}break}
@@ -1036,8 +1070,13 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 document.addEventListener('submit',e=>{if(e.target.closest('#dialog')){e.preventDefault();if(pendingPdf&&$('#pdfPassword'))handled(()=>action('unlockPdf'));else if(modalSubmit)handled(modalSubmit)}});
 document.addEventListener('selectionchange',capture);
 document.addEventListener('focusin',e=>{if(e.target.matches('[data-par]'))selected={i:Number(e.target.dataset.par),quote:''}});
+function updatePastePreview(field){
+ const rows=splitParagraphs(field.value);
+ $('#pasteCount').textContent=STR.v2.preview+' · '+fmt(STR.loaded,{n:rows.length})+' '+rows.slice(0,2).map((t,i)=>'¶'+(i+1)+' '+t.slice(0,90)).join(' / ');
+ $('[data-act="joinWrapped"]').disabled=joinWrappedLines(field.value)===field.value;
+}
 document.addEventListener('input',e=>{
- if(e.target.id==='paste'){const rows=splitParagraphs(e.target.value);$('#pasteCount').textContent=STR.v2.preview+' · '+fmt(STR.loaded,{n:rows.length})+' '+rows.slice(0,2).map((t,i)=>'¶'+(i+1)+' '+t.slice(0,90)).join(' / ');return}if(!p)return;const el=e.target,d=el.dataset,was=p.steps.done[p.steps.current];let invalidates=true;
+ if(e.target.id==='paste'){updatePastePreview(e.target);return}if(!p)return;const el=e.target,d=el.dataset,was=p.steps.done[p.steps.current];let invalidates=true;
  if(d.detail){p.details[d.detail]=el.value;if(d.detail==='title')p.name=el.value.trim()||STR.untitled}
  else if(d.eth!==undefined)p.details.ethical[Number(d.eth)]=el.checked;
  else if(d.first!==undefined)p.details.first[Number(d.first)]=el.value;
@@ -1090,7 +1129,8 @@ async function init(){
 init();
 
 
-</script><style id="motifStyle">
+</script>
+<style id="motifStyle">
 /* Peer Review Desk motif: the anchored concern. Drama at the door and the endpoint; work surfaces stay quiet. */
 #welcome{position:relative;overflow:hidden}
 #welcome::before{content:"¶";position:absolute;top:-96px;right:-30px;font-family:Georgia,'Times New Roman',serif;font-size:380px;line-height:1;color:rgba(140,180,225,.30);pointer-events:none;z-index:0}
@@ -1131,5 +1171,4 @@ init();
   queue();
 })();
 </script>
-
 </body></html>
