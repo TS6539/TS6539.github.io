@@ -438,6 +438,14 @@ body.second .segTools{display:none}
 .gRef{font-size:.8rem;color:var(--muted);margin-top:14px}
 .gCheer{position:fixed;left:50%;top:84px;transform:translate(-50%,-12px);background:var(--surface);border:1px solid var(--ok);color:var(--ink);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;font-weight:600;opacity:0;pointer-events:none;z-index:90;transition:opacity .3s,transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.12)}
 .gCheer.show{opacity:1;transform:translate(-50%,0)}
+.satPop{position:fixed;inset:0;background:rgba(20,18,12,.45);display:none;align-items:center;justify-content:center;z-index:120;padding:20px}
+.satPop.show{display:flex}
+.satCard{background:var(--surface);border:1px solid var(--accent);border-radius:16px;max-width:460px;width:100%;padding:30px 30px 24px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3);animation:satIn .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes satIn{from{transform:scale(.9) translateY(14px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.satGlyph{font-family:var(--read);font-size:64px;line-height:1;color:var(--accent)}
+.satCard h2{font-family:var(--read);margin:10px 0 8px}
+.satBtns{display:flex;gap:10px;justify-content:center;margin-top:16px}
+tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accent) 13%,transparent);font-weight:600}
 .gCheer svg{width:22px;height:22px;color:var(--ok)}
 .gCheer path{stroke-dasharray:24;stroke-dashoffset:24}
 .gCheer.show path{animation:draw .5s .15s ease-out forwards}
@@ -568,7 +576,7 @@ body.second .segTools{display:none}
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.4.6 pre-alpha</span>
+  <span class="ver hideSm">v0.5.0 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -615,7 +623,7 @@ body.second .segTools{display:none}
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.4.6 · pre-alpha · updated 23 November 2026 · wording pass after an external design review: lock instead of freeze, leaner Step 1 copy, a fuller methods paragraph for single coders · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.5.0 · pre-alpha · updated 24 November 2026 · a data saturation check with four methods (base and run, no-new-codes run, code coverage, meaning saturation), a milestone popup when saturation is reached while coding, and saturation reporting in the methods paragraph and the export · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -658,6 +666,7 @@ body.second .segTools{display:none}
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.5.0</dt><dd>November 2026. A data saturation check joins the guided paths after coding: four methods (Guest, Namey &amp; Chen's base and run method; a run of transcripts with no new codes; code coverage; and meaning saturation as a recorded judgement), a table and curve built from the order transcripts were finished, a popup at the moment the chosen method first reports saturation, and saturation sentences in the draft methods paragraph plus a Saturation sheet in the export.</dd>
       <dt>0.4.6</dt><dd>November 2026. Wording pass following an external design and methods review. Locking a codebook replaces freezing it, and codes added after the lock are called new data-driven codes rather than exceptions. Step 1 is leaner, and the draft methods paragraph now reports the code count at each version and, for a single coder, says why no agreement coefficient is reported.</dd>
       <dt>0.4.5</dt><dd>November 2026. The method chooser asks where your codes come from on a spectrum, inductive to deductive, with hybrid in the middle. Whether a second person codes is now a separate question, and codebook and hybrid paths both work for a single coder, who freezes the codebook instead of running an agreement check.</dd>
       <dt>0.4.4</dt><dd>November 2026. The guide can now suggest hybrid thematic analysis: start from a seed codebook, add the codes the data forces during the pilot, then freeze. People coding on their own can skip the agreement check and freeze the codebook instead.</dd>
@@ -672,7 +681,7 @@ body.second .segTools{display:none}
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.6) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.0) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -896,10 +905,18 @@ body.second .segTools{display:none}
   <div class="dlgFoot"><button class="btn primary" value="ok">Close</button></div>
 </form></dialog>
 
+  <div class="satPop" id="satPop" role="dialog" aria-label="Data saturation reached"><div class="satCard">
+    <div class="satGlyph" aria-hidden="true">⁂</div>
+    <h2>Data saturation reached</h2>
+    <p id="satPopText"></p>
+    <p class="note">Recorded for your methods paragraph and the export. You can keep coding; the saturation table keeps updating.</p>
+    <div class="satBtns"><button class="btn" data-a="satPopClose">Keep coding</button><button class="btn primary" data-a="satPopGo">See the saturation check</button></div>
+  </div></div>
+
 <script>
 (function(){
 'use strict';
-const VERSION = '0.4.6';
+const VERSION = '0.5.0';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -993,7 +1010,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const blank = () => ({ v:3, pid:uid(), role:'main', name:'Untitled project', speakers:[], attrs:[], categories:[], codes:[], transcripts:[], activeId:null, recent:[], hueSeed:0, savedAt:0, guide:null, secondOf:null });
 function normGuide(g){
-  const d = { method:null, soloAgree:false, chooser:{}, rq:'', lang:{ mode:null, langs:'', note:'' }, done:{}, coders:{ me:'', second:'' }, threshold:null, resolution:null, adjudicator:'',
+  const d = { method:null, soloAgree:false, saturation:{ method:'guest', base:2, run:2, threshold:5, consec:2, coverage:90, meaningAt:'', meaningNote:'', pop:true }, chooser:{}, rq:'', lang:{ mode:null, langs:'', note:'' }, done:{}, coders:{ me:'', second:'' }, threshold:null, resolution:null, adjudicator:'',
     pilotIds:[], versions:[], rounds:[], log:[], famNotes:{}, memo:'', finalRecheck:{}, celebrated:{}, pace:{ sec:20, n:0 } };
   const o = Object.assign(d, g || {});
   for (const k of ['pilotIds','versions','rounds','log']) if (!Array.isArray(o[k])) o[k] = [];
@@ -1005,6 +1022,7 @@ function normGuide(g){
     else if (ch.q2 === 'unsure'){ ch.second = 'unsure'; if (ch.q3 === 'yes') ch.spec = 'hyb'; else if (ch.q3 === 'no') ch.spec = 'ind'; }
     delete ch.q2; delete ch.q3;
   }
+  o.saturation = Object.assign({ method:'guest', base:2, run:2, threshold:5, consec:2, coverage:90, meaningAt:'', meaningNote:'', pop:true }, o.saturation || {});
   o.lang = Object.assign({ mode:null, langs:'', note:'' }, o.lang || {}); o.coders = Object.assign({ me:'', second:'' }, o.coders || {});
   o.pace = Object.assign({ sec:20, n:0 }, o.pace || {});
   return o;
@@ -1290,7 +1308,7 @@ $('#setupForm').addEventListener('submit', e => {
         }
       }
       if (!segs.length) return;
-      const t = { id: uid(), name: tname, segments: segs, cursor: 0 };
+      const t = { id: uid(), name: tname, segments: segs, cursor: 0, finishedAt: 0, rechecked: {} };
       t.cursor = firstCodeable(t);
       S.transcripts.push(t); built.push(t);
     });
@@ -2127,7 +2145,7 @@ function noteSeen(t, int){
   const g = G(); const n = nowMs();
   if (g && !int && UI.lastSeenAt){ const dt = (n - UI.lastSeenAt) / 1000; if (dt > 3 && dt < 300){ g.pace.sec = g.pace.n ? g.pace.sec * .85 + dt * .15 : dt; g.pace.n++; } }
   if (!int) UI.lastSeenAt = n;
-  if (!t.finishedAt && partSegs(t).every(x => x.s.seen)) t.finishedAt = n;
+  if (!t.finishedAt && partSegs(t).every(x => x.s.seen)){ t.finishedAt = n; setTimeout(() => { try { maybeSatPop(); } catch(e){} }, 0); }
 }
 function lockedTids(){ const g = G(); const s = new Set(); if (g) g.rounds.forEach(r => { if (r.status === 'sent') r.tids.forEach(id => s.add(id)); }); return s; }
 const lastRound = () => { const g = G(); return g && g.rounds.length ? g.rounds[g.rounds.length - 1] : null; };
@@ -2143,7 +2161,10 @@ const REF = {
   cohen:['Cohen, 1960','Cohen, J. (1960). A coefficient of agreement for nominal scales. <i>Educational and Psychological Measurement, 20</i>(1), 37–46. https://doi.org/10.1177/001316446002000104'],
   devries:['De Vries et al., 2008','De Vries, H., Elliott, M. N., Kanouse, D. E., & Teleki, S. S. (2008). Using pooled kappa to summarize interrater agreement across many items. <i>Field Methods, 20</i>(3), 272–282. https://doi.org/10.1177/1525822X08317166'],
   fereday:['Fereday & Muir-Cochrane, 2006','Fereday, J., & Muir-Cochrane, E. (2006). Demonstrating rigor using thematic analysis: A hybrid approach of inductive and deductive coding and theme development. <i>International Journal of Qualitative Methods, 5</i>(1), 80–92. https://doi.org/10.1177/160940690600500107'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.4.6) [Computer software]. https://tianshihao.org/coder/'],
+  guest2020:['Guest, Namey, & Chen, 2020','Guest, G., Namey, E., & Chen, M. (2020). A simple method to assess and report thematic saturation in qualitative research. <i>PLOS ONE, 15</i>(5), e0232076. https://doi.org/10.1371/journal.pone.0232076'],
+  hennink2017:['Hennink, Kaiser, & Marconi, 2017','Hennink, M. M., Kaiser, B. N., & Marconi, V. C. (2017). Code saturation versus meaning saturation: How many interviews do we need? <i>Qualitative Health Research, 27</i>(4), 591–608. https://doi.org/10.1177/0969732316665344'],
+  hennink2022:['Hennink & Kaiser, 2022','Hennink, M., & Kaiser, B. N. (2022). Sample sizes for saturation in qualitative research: A systematic review of empirical tests. <i>Social Science & Medicine, 292</i>, 114523. https://doi.org/10.1016/j.socscimed.2021.114523'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.0) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
@@ -2242,7 +2263,7 @@ function diffSince(ver){
 function rechecksFor(t){
   const g = G(); const out = [];
   if (g && g.finalRecheck[t.id] === false) out.push('the final codebook');
-  if (t.finishedAt){ const late = S.codes.filter(c => c.createdAt > t.finishedAt && !t.rechecked[c.id]); if (late.length) out.push(late.length === 1 ? `“${late[0].name}”, added after you finished it` : `${late.length} codes added after you finished it`); }
+  if (t.finishedAt){ const rc = t.rechecked || {}; const late = S.codes.filter(c => c.createdAt > t.finishedAt && !rc[c.id]); if (late.length) out.push(late.length === 1 ? `“${late[0].name}”, added after you finished it` : `${late.length} codes added after you finished it`); }
   return out;
 }
 const pendingRechecks = () => S.transcripts.filter(t => rechecksFor(t).length);
@@ -2485,6 +2506,81 @@ const FREEZE_STEP = { id:'freeze', ph:'cb', title:'Lock the codebook',
     if (g.versions.some(v => v.final)) return { why:'The codebook is final. From here, any change is logged and transcripts you already finished get a recheck.', html: versionsHTML() + `<p><span class="gDone">${tickSvg}Final version ${esc(g.versions.find(v => v.final)?.v || '1.0')} saved</span></p>` };
     return { why:'You are coding on your own, so there is no agreement round to pass. Lock the codebook here instead. From this point the codes stay fixed while you code the whole dataset. A code added later is a new data-driven code: it is logged, and the transcripts you already finished are flagged so it gets checked against them. Locking also flags the transcripts you coded earlier, pilot ones included, for a recheck against the final codebook.',
       html: versionsHTML(), foot:`<button class="btn primary" data-a="freezeSolo">Lock the codebook as version 1.0</button>` }; } };
+/* ---------- saturation ---------- */
+function saturationData(){
+  const ts = S.transcripts.filter(t => t.finishedAt).slice().sort((a, b) => a.finishedAt - b.finishedAt);
+  const seen = new Set(); const rows = ts.map(t => { const applied = new Set(); partSegs(t).forEach(x => x.s.codes.forEach(c => applied.add(c)));
+    const fresh = [...applied].filter(c => !seen.has(c)).length; applied.forEach(c => seen.add(c));
+    return { tid: t.id, name: t.name, fresh, cum: seen.size }; });
+  const total = seen.size; rows.forEach(r => r.share = total ? r.cum / total : 0);
+  return { rows, total };
+}
+function saturationReport(){
+  const g = G(); if (!g) return null; const st = g.saturation; const { rows, total } = saturationData();
+  const R = { rows, total, guest: null, consec: null, coverage: null, meaning: null };
+  if (rows.length > st.base && rows[st.base - 1].cum > 0){ const baseCodes = rows[st.base - 1].cum; const wins = []; let hit = null;
+    for (let s = st.base; s + st.run <= rows.length; s++){ const e = s + st.run; const nw = rows[e - 1].cum - rows[s - 1].cum; const pct = nw / baseCodes;
+      wins.push({ from: s, to: e, nw, pct }); if (!hit && pct <= st.threshold / 100) hit = { idx: e - 1, pct, nw }; }
+    R.guest = { baseCodes, wins, hit }; }
+  { let run0 = 0, hit = null; rows.forEach((r, i) => { run0 = r.fresh === 0 ? run0 + 1 : 0; if (!hit && run0 >= st.consec && i >= 2) hit = { idx: i }; }); R.consec = { hit }; }
+  { const i = rows.findIndex(r => total > 0 && r.share >= st.coverage / 100); R.coverage = { hit: i >= 0 ? { idx: i } : null }; }
+  if (st.meaningAt){ const i = rows.findIndex(r => r.tid === st.meaningAt); if (i >= 0) R.meaning = { idx: i }; }
+  R.primary = st.method === 'guest' ? R.guest : st.method === 'consec' ? R.consec : st.method === 'coverage' ? R.coverage : st.method === 'meaning' ? (R.meaning ? { hit: R.meaning } : { hit: null }) : null;
+  return R;
+}
+function satHitText(R, method){
+  const g = G(); const st = g.saturation; const rows = R.rows;
+  if (method === 'guest' && R.guest && R.guest.hit) return `New information fell to ${pctS(R.guest.hit.pct)} at ${rows[R.guest.hit.idx].name}, at or below your ${st.threshold}% threshold (base: first ${st.base} transcripts, ${R.guest.baseCodes} codes; runs of ${st.run}).`;
+  if (method === 'consec' && R.consec.hit) return `${st.consec} transcripts in a row added no new codes, most recently ${rows[R.consec.hit.idx].name}.`;
+  if (method === 'coverage' && R.coverage.hit) return `By ${rows[R.coverage.hit.idx].name}, ${pctS(rows[R.coverage.hit.idx].share)} of all ${R.total} codes had already appeared (your mark: ${st.coverage}%).`;
+  if (method === 'meaning' && R.meaning) return `You judged meaning saturation to be reached at ${rows[R.meaning.idx].name}.`;
+  return '';
+}
+const SAT_STEP = { id:'saturation', ph:'code', title:'Check data saturation',
+  est: () => 10,
+  done(){ const g = G(); const R = saturationReport(); return !!(g.done.saturation || (R && ((R.guest && R.guest.hit) || R.consec.hit || R.coverage.hit || R.meaning))); },
+  checks(){ const R = saturationReport(); if (!R || R.rows.length < 2) return [chk(false, 'Finish at least two transcripts to see the table')];
+    const st = G().saturation; const out = [];
+    out.push(st.method === 'guest' ? chk(!!(R.guest && R.guest.hit), R.guest && R.guest.hit ? `Base/run: reached at ${R.rows[R.guest.hit.idx].name}` : 'Base/run: not below the threshold yet', true) : chk(!!(R.guest && R.guest.hit), R.guest && R.guest.hit ? `Base/run: reached at ${R.rows[R.guest.hit.idx].name}` : 'Base/run: not reached'));
+    out.push(chk(!!R.consec.hit, R.consec.hit ? `No-new-codes run: reached at ${R.rows[R.consec.hit.idx].name}` : 'No-new-codes run: not reached', st.method === 'consec'));
+    out.push(chk(!!R.coverage.hit, R.coverage.hit ? `Coverage: reached at ${R.rows[R.coverage.hit.idx].name}` : 'Coverage: not reached', st.method === 'coverage'));
+    out.push(chk(!!R.meaning, R.meaning ? `Meaning saturation: judged at ${R.rows[R.meaning.idx].name}` : 'Meaning saturation: not judged yet', st.method === 'meaning'));
+    return out; },
+  body(){ const g = G(); const st = g.saturation; const R = saturationReport();
+    const chip = (k, v, label) => `<button class="btn small ${st[k] === v ? 'primary' : 'ghost'}" data-a="satParam" data-k="${k}" data-v="${v}">${label}</button>`;
+    const mBtn = (v, label, sub) => `<button class="opt" data-a="satMethod" data-v="${v}" aria-pressed="${st.method === v}"><span>${label}</span><small>${sub}</small></button>`;
+    let params = '';
+    if (st.method === 'guest') params = `<div class="fld"><span>Base: the first</span> ${chip('base', 2, '2')} ${chip('base', 3, '3')} <span>transcripts · Run length</span> ${chip('run', 2, '2')} ${chip('run', 3, '3')} ${chip('run', 4, '4')} <span>· New information threshold</span> ${chip('threshold', 0, '0%')} ${chip('threshold', 5, '5%')} ${chip('threshold', 10, '10%')}</div>`;
+    if (st.method === 'consec') params = `<div class="fld"><span>Transcripts in a row with no new codes</span> ${chip('consec', 2, '2')} ${chip('consec', 3, '3')}</div>`;
+    if (st.method === 'coverage') params = `<div class="fld"><span>Saturated when this share of all codes has appeared</span> ${chip('coverage', 85, '85%')} ${chip('coverage', 90, '90%')} ${chip('coverage', 95, '95%')}</div>`;
+    const hit = R.primary && R.primary.hit;
+    const curve = R.rows.length > 1 ? `<svg viewBox="0 0 100 42" style="width:100%;height:84px" role="img" aria-label="Cumulative share of codes by transcript"><polyline fill="none" stroke="var(--accent)" stroke-width="1.6" points="${R.rows.map((r, i) => `${(i / (R.rows.length - 1)) * 96 + 2},${38 - r.share * 34}`).join(' ')}"/>${R.rows.map((r, i) => `<circle cx="${(i / (R.rows.length - 1)) * 96 + 2}" cy="${38 - r.share * 34}" r="1.8" fill="var(--accent)"/>`).join('')}</svg>` : '';
+    const table = R.rows.length ? `<div class="scrollX"><table class="tbl"><thead><tr><th>#</th><th>Transcript (in the order you finished them)</th><th>New codes</th><th>Codes so far</th><th>Share of all codes</th></tr></thead><tbody>${R.rows.map((r, i) => `<tr${hit && hit.idx === i ? ' class="satHitRow"' : ''}><td>${i + 1}</td><td>${esc(r.name)}</td><td>${r.fresh}</td><td>${r.cum}</td><td>${pctS(r.share)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="note">No finished transcripts yet. This table fills in as you finish coding them.</p>';
+    const finOpts = S.transcripts.filter(t => t.finishedAt);
+    return { why:`Saturation is the point where more data stops changing the picture. Code saturation is about new codes drying up; meaning saturation is about new nuances drying up, and only you can judge that one ${cite('hennink2017')}. Pick the method you will report. The table is built from the order you finished the transcripts, and a code counts at the first transcript you used it in.`,
+      html:`<div class="q"><b>Which saturation method will you report?</b><div class="opts">
+        ${mBtn('guest', 'Base and run (Guest, Namey & Chen, 2020)', 'New codes in each run, as a share of the codes in your first transcripts')}
+        ${mBtn('consec', 'No new codes in a row (Hennink & Kaiser, 2022)', 'Code saturation: the well runs dry for several transcripts running')}
+        ${mBtn('coverage', 'Code coverage', 'The point where most of the codes you will ever find have already appeared')}
+        ${mBtn('meaning', 'Meaning saturation (Hennink et al., 2017)', 'Your judgement: later transcripts add no new nuances or dimensions')}
+      </div>${params}</div>
+      ${hit ? `<div class="result"><h3>Saturation reached</h3><p>${esc(satHitText(R, st.method))}</p><p class="note">This goes into your draft methods paragraph and the export.</p></div>` : R.rows.length >= 2 ? `<p class="note">Not reached yet by this method. The other methods are tracked in the checklist on the left.</p>` : ''}
+      ${curve}${table}
+      <div class="q"><b>Meaning saturation is a judgement, not a count</b><p class="note">When the newest transcripts stopped adding nuances, dimensions, or counter-examples, record where. It is reported next to the counts, not instead of them.</p>
+      <label class="fld">Reached at <select id="satMeaningSel"><option value="">Not yet</option>${finOpts.map(t => `<option value="${t.id}"${st.meaningAt === t.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></label>
+      <label class="fld">Why there, in one line<input id="satMeaningNote" value="${esc(st.meaningNote || '')}" placeholder="For example, the last two interviews repeated the same three tensions"></label>
+      <div><button class="btn" data-a="satMeaningSave">Save the judgement</button></div></div>
+      <p><button class="btn small" data-a="satPopToggle">Pop up while I am coding when saturation is reached: ${st.pop !== false ? 'on' : 'off'}</button></p>`,
+      foot: hit || R.meaning ? '' : `<button class="btn" data-a="mark" data-s="saturation">Continue without a saturation claim</button>` }; } };
+function maybeSatPop(){
+  const g = G(); if (!g || !g.saturation || g.saturation.pop === false || g.celebrated.saturation) return;
+  const R = saturationReport(); if (!R || !R.primary || !R.primary.hit) return;
+  const hit = R.primary.hit; const row = R.rows[hit.idx];
+  g.celebrated.saturation = { at: nowMs(), method: g.saturation.method, tid: row.tid }; persist();
+  const el = $('#satPop'); if (!el) return;
+  $('#satPopText').textContent = satHitText(R, g.saturation.method);
+  el.classList.add('show');
+}
 function guidedSteps(g, over){
   const solo = () => g.soloAgree || g.chooser.second === 'no';
   const unsure = () => g.chooser.second === 'unsure' && !g.soloAgree;
@@ -2493,8 +2589,10 @@ function guidedSteps(g, over){
     const o = over && over[s.id]; if (!o) return s;
     return Object.assign({}, s, o.title ? { title:o.title } : {}, { body(){ const r = b(); r.why = o.why; return r; } }); });
   if (solo()) L = L.filter(s => !['plan','compare','resolve','decide'].includes(s.id)).flatMap(s => s.id === 'revise' ? [s, FREEZE_STEP] : [s]);
+  const ci = L.findIndex(s => s.id === 'codeall'); if (ci >= 0) L.splice(ci + 1, 0, SAT_STEP);
   return L;
 }
+const previewSteps = () => { const L = [...STEP_CB]; const ci = L.findIndex(s => s.id === 'codeall'); if (ci >= 0) L.splice(ci + 1, 0, SAT_STEP); return L; };
 function stepsHY(g){
   return guidedSteps(g, {
     draft:{ title:'Draft the seed codebook, version 0.1', why:`These codes come from your theory, earlier studies, and your research questions, before the data has had its say. Each one still needs four parts: a definition, when to use it, when not to, and an example, so the pilot can show where the seed does not fit ${cite('macqueen','boyatzis')}.` },
@@ -2601,6 +2699,12 @@ function methodsParts(){
     else t('.');
     const late = lateCodeNames(fin.at); if (late.length){ t(' Codes added after a transcript had been finished ('); d(late.join(', ')); t(') were checked against every earlier transcript.'); } }
   if (fin && !rr.length && (g.method === 'codebook' || g.method === 'hybrid')) t(' Because one researcher did all the coding, no inter-coder agreement coefficient is reported; consistency rests on the versioned codebook and the decision log, which record every change to the codes and when it was made.');
+  const SR = saturationReport();
+  if (SR && SR.rows.length >= 2){ const st = g.saturation; const nm = i => SR.rows[i].name;
+    if (st.method === 'guest' && SR.guest){ if (SR.guest.hit){ t(' Saturation was assessed with the base and run method (Guest, Namey, & Chen, 2020), counting a code at the first transcript in which it was applied. With a base of the first '); d(numW(st.base)); t(' transcripts ('); d(numW(SR.guest.baseCodes)); t(' codes) and runs of '); d(numW(st.run)); t(', new information fell to '); d(pctS(SR.guest.hit.pct)); t(' at '); d(nm(SR.guest.hit.idx)); t(', at or below the '); d(st.threshold + '%'); t(' threshold set in advance.'); } else { t(' Saturation was assessed with the base and run method (Guest, Namey, & Chen, 2020); new information did not fall to the '); d(st.threshold + '%'); t(' threshold within the '); d(numW(SR.rows.length)); t(' transcripts coded, so saturation is not claimed on this basis.'); } }
+    if (st.method === 'consec'){ if (SR.consec.hit){ t(' Code saturation was taken to be reached when '); d(numW(st.consec)); t(' consecutively coded transcripts added no new codes (Hennink & Kaiser, 2022), which occurred at '); d(nm(SR.consec.hit.idx)); t('.'); } else { t(' No run of '); d(numW(st.consec)); t(' consecutively coded transcripts without a new code occurred, so code saturation (Hennink & Kaiser, 2022) is not claimed.'); } }
+    if (st.method === 'coverage' && SR.coverage.hit){ t(' By '); d(nm(SR.coverage.hit.idx)); t(', '); d(pctS(SR.rows[SR.coverage.hit.idx].share)); t(' of all '); d(numW(SR.total)); t(' codes had appeared, passing the '); d(st.coverage + '%'); t(' coverage mark set for this study.'); }
+    if (SR.meaning){ t(' Meaning saturation (Hennink, Kaiser, & Marconi, 2017) was judged to have been reached at '); d(nm(SR.meaning.idx)); if (st.meaningNote) { t(': '); d(st.meaningNote.replace(/[.]$/, '')); t('.'); } else t('.'); } }
   const th = themes();
   if (th.length){ t(' The codes were then grouped into '); d(numW(th.length)); t(th.length === 1 ? ' theme, which was' : ' themes, which were'); t(' reviewed against the coded extracts and the research question (Braun & Clarke, 2006).'); }
   t(' Coding was done in Transcript Coder (Hao, 2026).');
@@ -2684,7 +2788,7 @@ function renderGuide(){
   if (ae && ae.dataset && ae.dataset.k && $('#gCard').contains(ae)){ rk = ae.dataset.k; try { rs = [ae.selectionStart, ae.selectionEnd]; } catch(e){} }
   const phs = [...new Set(L.map(s => s.ph))];
   const small = window.matchMedia && window.matchMedia('(max-width:860px)').matches;
-  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}${g.method ? '' : `<div class="gPh gPreview"><h3>After you choose an approach</h3><p class="note" style="margin:2px 6px 6px">Steps for the codebook and hybrid paths. The other two approaches get a short plan.</p>${STEP_CB.map(s2 => `<div class="gSt soon" aria-disabled="true"><span class="dot"></span><span>${esc(s2.title)}</span></div>`).join('')}</div>`}</details>`;
+  $('#gRail').innerHTML = `<details${small ? '' : ' open'}><summary>All steps · ${nDone} of ${real.length} done</summary>${phs.map(ph => `<div class="gPh${phaseDone(ph) ? ' complete' : ''}"><h3>${PHASES[ph]}</h3>${L.filter(s => s.ph === ph).map(s => `<button class="gSt${s.done() ? ' done' : ''}${s === cur ? ' on' : ''}${s.soon ? ' soon' : ''}" data-a="goStep" data-s="${s.id}"${s === cur ? ' aria-current="step"' : ''}><span class="dot"></span><span>${esc(s.title)}</span></button>`).join('')}</div>`).join('')}${g.method ? '' : `<div class="gPh gPreview"><h3>After you choose an approach</h3><p class="note" style="margin:2px 6px 6px">Steps for the codebook and hybrid paths. The other two approaches get a short plan.</p>${previewSteps().map(s2 => `<div class="gSt soon" aria-disabled="true"><span class="dot"></span><span>${esc(s2.title)}</span></div>`).join('')}</div>`}</details>`;
   // card
   const b = cur.body(); const done = cur.done(); const nx = L[idx + 1];
   const card = $('#gCard');
@@ -2800,6 +2904,12 @@ async function gAct(a, b){
   if (a === 'goStep'){ UI.gStep = b.dataset.s; UI.sub = null; renderGuide(); $('#guide').scrollTop = 0; return; }
   if (a === 'choose'){ mutate(() => { g.chooser[b.dataset.q] = b.dataset.v; if (b.dataset.q === 'q1'){ delete g.chooser.spec; delete g.chooser.second; } if (b.dataset.q === 'spec') delete g.chooser.second; }); return; }
   if (a === 'pickMethod'){ UI.gStep = null; mutate(() => { g.method = b.dataset.m; glog('decision', 'Chose the method: ' + METHODS[b.dataset.m].name); }); cheer('Method chosen: ' + METHODS[b.dataset.m].name); return; }
+  if (a === 'satMethod'){ mutate(() => { g.saturation.method = b.dataset.v; glog('decision', 'Saturation method to report: ' + b.dataset.v); }); return; }
+  if (a === 'satParam'){ mutate(() => { g.saturation[b.dataset.k] = +b.dataset.v; }); return; }
+  if (a === 'satPopToggle'){ mutate(() => { g.saturation.pop = g.saturation.pop === false ? true : false; }); return; }
+  if (a === 'satMeaningSave'){ const sel = $('#satMeaningSel'); const note = $('#satMeaningNote'); mutate(() => { g.saturation.meaningAt = sel ? sel.value : ''; g.saturation.meaningNote = note ? note.value.trim() : ''; if (g.saturation.meaningAt) glog('decision', 'Meaning saturation judged at ' + (S.transcripts.find(t => t.id === g.saturation.meaningAt)?.name || '') + (g.saturation.meaningNote ? ': ' + g.saturation.meaningNote : '')); }); cheer(g.saturation.meaningAt ? 'Judgement saved' : 'Judgement cleared'); return; }
+  if (a === 'satPopClose'){ const el = $('#satPop'); if (el) el.classList.remove('show'); return; }
+  if (a === 'satPopGo'){ const el = $('#satPop'); if (el) el.classList.remove('show'); UI.gStep = 'saturation'; showView('guide'); renderGuide(); return; }
   if (a === 'skipAgree'){ mutate(() => { g.soloAgree = true; glog('decision', 'Coding alone: the agreement check was skipped. The codebook will be locked after the revision.'); }); cheer('Agreement check skipped'); return; }
   if (a === 'freezeSolo'){ mutate(() => { g.versions.push(snapshot('1.0', 'Final codebook (single coder)', true)); S.transcripts.forEach(t => { if (t.segments.some(s => s.seen)) g.finalRecheck[t.id] = false; }); glog('decision', 'Codebook locked as version 1.0.'); }); UI.gStep = null; cheer('Codebook locked as version 1.0'); return; }
   if (a === 'mark'){ UI.gStep = null; mutate(() => { g.done[b.dataset.s] = nowMs(); }); renderGuide(); return; }
@@ -2841,7 +2951,7 @@ async function gAct(a, b){
       glog('decision', a === 'pass' ? `Round ${r.n} met the threshold. Codebook locked as version 1.0.` : `Round ${r.n} was below the threshold. Continued because: ${r.reason}`); });
     UI.gStep = null; cheer('Codebook locked as version 1.0'); return; }
   if (a === 'again'){ const r = lastRound(); mutate(() => { r.decision = 'again'; r.decidedAt = nowMs(); r.status = 'closed'; glog('decision', `Round ${r.n} was below the threshold. Codebook to be revised and a new round run.`); }); UI.gStep = 'plan'; UI.sub = []; renderGuide(); return; }
-  if (a === 'rechecked'){ const t = S.transcripts.find(x => x.id === b.dataset.t); mutate(() => { const why = rechecksFor(t).join(' and '); g.finalRecheck[t.id] = true; S.codes.forEach(c => { if (c.createdAt > t.finishedAt) t.rechecked[c.id] = nowMs(); }); glog('recheck', `Rechecked ${t.name} for ${why}.`); }); return; }
+  if (a === 'rechecked'){ const t = S.transcripts.find(x => x.id === b.dataset.t); mutate(() => { const why = rechecksFor(t).join(' and '); g.finalRecheck[t.id] = true; t.rechecked = t.rechecked || {}; S.codes.forEach(c => { if (c.createdAt > t.finishedAt) t.rechecked[c.id] = nowMs(); }); glog('recheck', `Rechecked ${t.name} for ${why}.`); }); return; }
   if (a === 'addTheme'){ const n = await ask({ title:'New theme', label:'Theme name', ok:'Add theme', hint:'A short claim works better than a topic, for example “AI help feels like borrowing a voice”.' }); if (n) mutate(() => { ensureCat(n); }); return; }
   if (a === 'rmTheme'){ const c = catById(b.dataset.c); if (!c) return; mutate(() => { S.categories = S.categories.filter(x => x.id !== c.id); S.codes.forEach(x => { if (x.categoryId === c.id) x.categoryId = null; }); }); toast('Theme removed. Its codes went back to the pool. Undo brings it back.'); return; }
   if (a === 'putHere'){ if (UI.picked) moveCode(UI.picked, b.dataset.col || null); return; }
@@ -2877,6 +2987,13 @@ function guideSheets(){
   const ts = [['Theme','Definition','Codes','Extracts fit','Answers the question','Review note']];
   themes().forEach(c => ts.push([c.name, c.definition, S.codes.filter(x => x.categoryId === c.id).map(x => x.name).join('; '), c.review.fit ? 'yes' : 'no', c.review.rq ? 'yes' : 'no', c.review.note || '']));
   if (themes().length) out.push(['Themes', ts, [30,60,50,12,18,40]]);
+  const SR = saturationReport();
+  if (SR && SR.rows.length){ const st = g.saturation; const sat = [['#','Transcript (in the order finished)','New codes','Codes so far','Share of all codes'], ...SR.rows.map((r, i) => [i + 1, r.name, r.fresh, r.cum, pctS(r.share)])];
+    sat.push([]); sat.push(['Method to report', st.method]); sat.push(['Base and run (Guest, Namey & Chen, 2020)', SR.guest ? (SR.guest.hit ? 'Reached at ' + SR.rows[SR.guest.hit.idx].name + ' (new information ' + pctS(SR.guest.hit.pct) + ', threshold ' + st.threshold + '%)' : 'Not reached') : 'Not enough transcripts']);
+    sat.push(['No new codes in a row (Hennink & Kaiser, 2022)', SR.consec.hit ? 'Reached at ' + SR.rows[SR.consec.hit.idx].name : 'Not reached']);
+    sat.push(['Code coverage', SR.coverage.hit ? 'Reached at ' + SR.rows[SR.coverage.hit.idx].name + ' (' + st.coverage + '% mark)' : 'Not reached']);
+    sat.push(['Meaning saturation (Hennink et al., 2017)', SR.meaning ? 'Judged at ' + SR.rows[SR.meaning.idx].name + (st.meaningNote ? ': ' + st.meaningNote : '') : 'Not judged']);
+    out.push(['Saturation', sat, [6,44,12,14,18]]); }
   out.push(['Methods draft', [['Draft methods paragraph. Paraphrase before use.'], [mpText()], [], ['References'], ...methodsRefs(methodsParts()).map(r => [r.replace(/<[^>]+>/g, '')])], [140]]);
   return out;
 }
@@ -2886,6 +3003,7 @@ $('#sendBackBtn').addEventListener('click', sendBack);
 $('#gStrip').addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (b) gAct(b.dataset.a, b); });
 $('#speakersDlg').addEventListener('close', () => { if (UI.view === 'guide') renderGuide(); });
 bindGuide();
+$('#satPop').addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (b) gAct(b.dataset.a, b); });
 function startGuided(){
   const fresh = blank(); fresh.guide = normGuide({}); return fresh;
 }
@@ -2894,7 +3012,7 @@ function attachGuide(){
 }
 
 window.__tc = { splitSentences, detectLabel, parseLines, joinParts, guessFromFilename, demoProject, buildTA, buildENA, csvOf, readCodebookRows, get S(){ return S; }, set S(v){ S = v; }, normalize, showView,
-  kappa2, agreementOf, buildPackage, secondCopyFrom, parseProject, importReturn, methodsParts, mpText, methodsRefs, guideSheets, stepList, curStep, gAct, renderGuide, startGuided, normGuide, thrOf, seenOf, UI, mutate, setCursor, go, applyCode, toggleCode, addCodeByName, saveVersion, codeTranscript };
+  kappa2, agreementOf, buildPackage, secondCopyFrom, parseProject, importReturn, methodsParts, mpText, methodsRefs, guideSheets, stepList, curStep, gAct, renderGuide, startGuided, normGuide, thrOf, seenOf, UI, mutate, setCursor, go, applyCode, toggleCode, addCodeByName, saveVersion, codeTranscript, saturationData, saturationReport, maybeSatPop };
 
 showView(S.guide && S.guide.method && S.role === 'main' ? 'guide' : S.transcripts.length ? 'app' : 'welcome');
 setSave('ok');
