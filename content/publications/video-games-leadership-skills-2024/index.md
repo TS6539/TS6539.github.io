@@ -17,7 +17,7 @@ peer_reviewed: true
 tags:
   - Game-Based Learning
   - Leadership
-research_line: other-collaborations
+research_line: game-based-language-learning
 featured: false
 journal_cover: "media/journals/scholarship-without-borders-journal.jpg"
 ---

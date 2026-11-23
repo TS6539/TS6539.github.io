@@ -43,9 +43,60 @@
   (dict "key" "ai-l2-writing" "title" "Generative AI in Education and Writing")
   (dict "key" "qe-learning-analytics" "title" "Quantitative Ethnography and Learning Analytics")
   (dict "key" "evidence-synthesis" "title" "Evidence Synthesis and Systematic Reviews")
-  (dict "key" "game-based-language-learning" "title" "Game-Based Language Learning")
+  (dict "key" "game-based-language-learning" "title" "Games, Technology, and Learning")
   (dict "key" "other-collaborations" "title" "Other Collaborations")
 }}
+
+{{/* Publications timeline (ptl, 2026-11-24): animated overview between
+     the page header and the grouped list. The data is generated here
+     from the same grouped pages the list below renders, so a new
+     publication appears in the animation with no extra work. Fields:
+     g = group title exactly as in h2.pub-group-title; t = the type
+     label exactly as .pub-type-marker derives it in
+     views/citation.html (same rules, same order); y = the citation
+     year (event_start, else date); venue = the resolved publication
+     name; first = the site owner is first author. ptl.css and ptl.js
+     load only on this page; all ptl styles are scoped to .ptl and the
+     script makes no network calls. */}}
+{{ $ptlData := slice }}
+{{ $ptlOrder := slice }}
+{{ range $groups }}
+  {{ $ptlOrder = $ptlOrder | append .title }}
+  {{ $gkey := .key }}{{ $gtitle := .title }}
+  {{ range (where $.Pages "Params.research_line" $gkey).ByDate.Reverse }}
+    {{ $pub := partial "functions/resolve_publication.html" . }}
+    {{ $types := .Params.publication_types | default slice }}
+    {{ $venueName := $pub.name | default "" }}
+    {{ $venueLower := lower $venueName }}
+    {{ $t := "" }}
+    {{ if .Params.type_label }}{{ $t = .Params.type_label }}
+    {{ else if strings.Contains $venueLower "poster" }}{{ $t = "Poster" }}
+    {{ else if in $types "paper-conference" }}{{ $t = "Proceedings paper" }}
+    {{ else if in $types "book" }}{{ $t = "Book" }}
+    {{ else if in $types "thesis" }}{{ $t = "Dissertation" }}
+    {{ else if strings.Contains $venueLower "preprint" }}{{ $t = "Preprint" }}
+    {{ else if or (in $types "article-journal") (in $types "article") }}{{ $t = "Journal article" }}
+    {{ end }}
+    {{ $yr := int ((time (.Params.event_start | default .Date)).Format "2006") }}
+    {{ $first := false }}
+    {{ with .Params.authors }}{{ if eq (index . 0) "me" }}{{ $first = true }}{{ end }}{{ end }}
+    {{ $ptlData = $ptlData | append (dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first) }}
+  {{ end }}
+{{ end }}
+{{ $ptlY0 := 9999 }}{{ range $ptlData }}{{ if lt .y $ptlY0 }}{{ $ptlY0 = .y }}{{ end }}{{ end }}
+{{ $ptlN := len $ptlData }}
+{{ $ptlOnes := slice "zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "ten" "eleven" "twelve" "thirteen" "fourteen" "fifteen" "sixteen" "seventeen" "eighteen" "nineteen" }}
+{{ $ptlTens := slice "" "" "twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety" }}
+{{ $ptlWord := printf "%d" $ptlN }}
+{{ if lt $ptlN 20 }}{{ $ptlWord = index $ptlOnes $ptlN }}
+{{ else }}{{ $ptlWord = index $ptlTens (div $ptlN 10) }}{{ if gt (mod $ptlN 10) 0 }}{{ $ptlWord = printf "%s-%s" $ptlWord (index $ptlOnes (mod $ptlN 10)) }}{{ end }}{{ end }}
+{{ $ptlWord = printf "%s%s" (upper (substr $ptlWord 0 1)) (substr $ptlWord 1) }}
+<div class="plist-wrap">
+  {{- with resources.Get "css/ptl.css" }}<link rel="stylesheet" href="{{ (. | resources.Minify).RelPermalink }}">{{ end }}
+  <section class="ptl" id="ptl" data-order="{{ delimit $ptlOrder "|" }}" data-cta="/speaking/#research-collaboration" aria-label="Publications at a glance"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
+  <script type="application/json" id="ptl-data">{{ $ptlData | jsonify | safeJS }}</script>
+  {{- with resources.Get "js/ptl.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
+</div>
 
 <div class="flex flex-col items-center">
 

@@ -14,6 +14,6 @@ peer_reviewed: true
 tags:
   - Metaverse
   - International Students
-research_line: other-collaborations
+research_line: game-based-language-learning
 featured: false
 ---

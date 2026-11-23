@@ -15,6 +15,6 @@ publication:
 tags:
   - Leadership
   - Game-Based Learning
-research_line: other-collaborations
+research_line: game-based-language-learning
 featured: false
 ---

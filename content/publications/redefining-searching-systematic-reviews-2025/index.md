@@ -5,8 +5,8 @@ authors:
   - me
   - J. W. Hardaway
   - Hans Oh
-date: "2024-06-01T00:00:00Z"
-publishDate: "2024-06-01T00:00:00Z"
+date: "2025-09-01T00:00:00Z"
+publishDate: "2025-09-01T00:00:00Z"
 publication_types: ["article-journal"]
 publication:
   name: "Journal of Librarianship and Information Science, 57(3)"
