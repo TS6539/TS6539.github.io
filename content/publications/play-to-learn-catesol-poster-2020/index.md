@@ -6,6 +6,7 @@ authors:
 date: "2020-01-01T00:00:00Z"
 publishDate: "2020-01-01T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/catesol-poster-2020.jpg"
 publication:
   name: "CATESOL Conference (poster presentation)"
 tags:

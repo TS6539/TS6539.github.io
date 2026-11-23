@@ -6,6 +6,7 @@ authors:
 date: "2024-11-01T00:00:00Z"
 publishDate: "2024-11-01T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/icqe-2024-proceedings.jpg"
 publication:
   name: "International Conference on Quantitative Ethnography (ICQE) Proceedings, Springer Communications in Computer and Information Science (CCIS)"
   pages: "167-179"

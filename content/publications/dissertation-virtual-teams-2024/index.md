@@ -5,6 +5,7 @@ authors:
 date: "2024-01-01T00:00:00Z"
 publishDate: "2024-01-01T00:00:00Z"
 publication_types: ["thesis"]
+journal_cover: "media/covers/pepperdine-dissertation-2024.jpg"
 publication:
   name: "Pepperdine University (doctoral dissertation)"
 tags:

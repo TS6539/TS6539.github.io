@@ -5,6 +5,7 @@ authors:
 date: "2023-05-03T00:00:00Z"
 publishDate: "2023-05-03T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/cabe-riverside-2023.jpg"
 type_label: "Conference presentation"
 publication:
   name: "CABE Riverside Parent and Paraeducator Regional Conference 2023"

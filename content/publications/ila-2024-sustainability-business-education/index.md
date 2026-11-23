@@ -8,6 +8,7 @@ authors:
 date: "2024-11-01T00:00:00Z"
 publishDate: "2024-11-01T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/ila-global-2024.jpg"
 publication:
   name: "26th International Leadership Association Global Conference, Chicago, IL"
 peer_reviewed: true

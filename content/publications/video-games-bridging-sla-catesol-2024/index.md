@@ -6,6 +6,7 @@ authors:
 date: "2024-11-01T00:00:00Z"
 publishDate: "2024-11-01T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/catesol-conference-2024.jpg"
 publication:
   name: "CATESOL Conference"
 tags:

@@ -8,6 +8,7 @@ authors:
 date: "2024-04-11T00:00:00Z"
 publishDate: "2024-04-11T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/aera-proceedings-2024.jpg"
 publication:
   name: "Proceedings of the 2024 AERA Annual Meeting"
 peer_reviewed: true

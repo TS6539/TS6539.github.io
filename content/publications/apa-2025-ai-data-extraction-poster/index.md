@@ -11,6 +11,7 @@ authors:
 date: "2025-08-09T00:00:00Z"
 publishDate: "2025-08-09T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/apa-convention-2025.jpg"
 publication:
   name: "American Psychological Association Annual Convention, Denver, CO (poster presentation)"
 tags:

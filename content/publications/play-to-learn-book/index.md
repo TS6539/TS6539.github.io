@@ -5,6 +5,7 @@ authors:
 date: "2020-12-09T00:00:00Z"
 publishDate: "2020-12-09T00:00:00Z"
 publication_types: ["book"]
+journal_cover: "media/covers/play-to-learn-book.jpg"
 publication:
   name: "New Degree Press"
 abstract: "A practical book on using video games as a tool for learning a new language, drawing on game-based learning research and learner experience."

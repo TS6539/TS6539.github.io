@@ -6,6 +6,7 @@ authors:
 date: "2023-05-18T00:00:00Z"
 publishDate: "2023-05-18T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/ilrn-2023.jpg"
 publication:
   name: "Immersive Learning Research Network (iLRN) Conference Proceedings"
   pages: "63-66"

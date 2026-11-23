@@ -5,6 +5,7 @@ authors:
 date: "2024-03-14T00:00:00Z"
 publishDate: "2024-03-14T00:00:00Z"
 publication_types: ["paper-conference"]
+journal_cover: "media/covers/wam-conference-2024.jpg"
 publication:
   name: "Western Academy of Management Conference"
 peer_reviewed: true
