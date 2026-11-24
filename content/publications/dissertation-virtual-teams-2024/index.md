@@ -15,4 +15,6 @@ research_line: game-based-language-learning
 featured: false
 timeline_label: "Ph.D., Pepperdine"
 timeline_sub: "From virtual gaming to virtual teams"
+timeline_line: lead
+timeline_short: "Diss. Virtual leadership and video games"
 ---

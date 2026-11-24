@@ -19,4 +19,6 @@ tags:
   - Systematic Review
 research_line: evidence-synthesis
 featured: false
+timeline_line: lead
+timeline_short: "Poster: AI data extraction tool"
 ---

@@ -20,4 +20,6 @@ featured: false
 hugoblox:
   ids:
     doi: "10.3102/2181850"
+timeline_line: main
+timeline_short: "Conf. Mississippi undergraduates on GenAI"
 ---

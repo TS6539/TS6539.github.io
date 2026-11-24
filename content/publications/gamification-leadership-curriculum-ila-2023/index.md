@@ -21,4 +21,6 @@ featured: false
 hugoblox:
   ids:
     doi: "10.17605/osf.io/j4u2r"
+timeline_line: lead
+timeline_short: "Conf. Gamified leadership curriculum (SR)"
 ---

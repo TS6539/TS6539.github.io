@@ -21,4 +21,6 @@ tags:
 research_line: other-collaborations
 featured: false
 journal_cover: "media/journals/scholarship-without-borders-journal.jpg"
+timeline_line: collab
+timeline_short: "J. Barriers for women police chiefs"
 ---

@@ -23,4 +23,6 @@ hugoblox:
     doi: "10.46743/2160-3715/2025.7532"
 journal_cover: "media/journals/the-qualitative-report.jpg"
 journal_note: "Indexed in the Emerging Sources Citation Index and Scopus"
+timeline_line: main
+timeline_short: "J. GenAI in academia, autoethnography"
 ---

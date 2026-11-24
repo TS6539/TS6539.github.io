@@ -18,4 +18,6 @@ tags:
   - Business Education
 research_line: evidence-synthesis
 featured: false
+timeline_line: collab
+timeline_short: "Conf. Sustainability in business education"
 ---

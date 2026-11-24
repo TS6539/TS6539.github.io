@@ -23,4 +23,6 @@ hugoblox:
     doi: "10.1016/j.puhe.2026.106139"
 journal_cover: "media/journals/public-health.jpg"
 journal_note: "2025 Impact Factor 3.5 · Indexed in Scopus and Medline"
+timeline_line: collab
+timeline_short: "J. Cigarette warning labels in Japan"
 ---

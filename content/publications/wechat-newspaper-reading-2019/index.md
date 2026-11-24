@@ -17,4 +17,6 @@ featured: false
 journal_cover: "media/journals/youth-and-society.jpg"
 timeline_label: "First article"
 timeline_sub: "Online English reading on WeChat"
+timeline_line: main
+timeline_short: "J. English reading on WeChat"
 ---

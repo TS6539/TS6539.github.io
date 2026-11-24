@@ -20,4 +20,6 @@ tags:
 research_line: game-based-language-learning
 featured: false
 journal_cover: "media/journals/scholarship-without-borders-journal.jpg"
+timeline_line: lead
+timeline_short: "J. Video games build leadership skills"
 ---

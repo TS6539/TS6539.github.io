@@ -23,4 +23,6 @@ hugoblox:
     doi: "10.1177/09610006241256393"
 journal_cover: "media/journals/jlis-57-3.jpg"
 journal_note: "2025 Impact Factor 2.4 · Indexed in SSCI and Scopus"
+timeline_line: collab
+timeline_short: "J. Searching for systematic reviews"
 ---

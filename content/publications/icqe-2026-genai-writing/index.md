@@ -26,4 +26,6 @@ hugoblox:
     doi: "10.1007/978-3-032-44026-6_16"
 timeline_label: "GenAI use and writing quality"
 timeline_sub: "ICQE, Springer CCIS"
+timeline_line: main
+timeline_short: "Conf. GenAI use and writing quality (ICQE)"
 ---

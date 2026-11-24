@@ -16,4 +16,6 @@ tags:
   - Online Learning
 research_line: evidence-synthesis
 featured: false
+timeline_line: main
+timeline_short: "Conf. What makes MOOCs succeed (SR)"
 ---

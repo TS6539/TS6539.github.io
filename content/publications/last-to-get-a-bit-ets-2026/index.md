@@ -24,4 +24,6 @@ journal_cover: "media/journals/educational-technology-and-society.jpg"
 journal_note: "2025 Impact Factor 7.1 · Indexed in SSCI and Scopus"
 timeline_label: "GenAI and Mississippi undergraduates"
 timeline_sub: "Educational Technology & Society"
+timeline_line: main
+timeline_short: "J. Mississippi undergraduates on GenAI"
 ---

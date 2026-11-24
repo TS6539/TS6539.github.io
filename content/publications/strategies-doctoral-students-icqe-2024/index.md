@@ -20,4 +20,6 @@ featured: false
 hugoblox:
   ids:
     doi: "10.1007/978-3-031-76332-8_14"
+timeline_line: collab
+timeline_short: "Conf. How doctoral students publish (ICQE)"
 ---

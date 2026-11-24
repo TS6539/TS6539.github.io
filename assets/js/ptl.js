@@ -1,209 +1,368 @@
-/* Publication line (ptl). Reads <script type="application/json" id="ptl-data"> (array of {g,t,y,title,href,venue,first,m?}).
-   One hairline is drawn from the first year to today. Every work is a bead on the line, and works with an "m" label are named.
-   Plays once per browser session, about four seconds, then rests. No libraries, no network calls. */
+/* Publication line (ptl), version 3 (2026-11-25). Reads
+   <script type="application/json" id="ptl-data"> (array of
+   {g,t,y,title,href,venue,first,ln,sl,...}) and draws the
+   deck-style diagram: three parallel straight lines on one
+   density-stretched year scale (main line, leadership branch
+   below, collaborations branch above, branches from 2022), every
+   work a dot with a leader to its short label (sl). Plays once
+   per browser session, slowed to about seven seconds at Hao's
+   request, then rests. No libraries, no network calls. */
 (function () {
   const root = document.getElementById('ptl'), src = document.getElementById('ptl-data');
   if (!root || !src) return;
   let data; try { data = JSON.parse(src.textContent).filter(d => d && d.y && d.title); } catch (e) { return; }
   if (!data.length) return;
 
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
-  const kind = t => /journal/i.test(t) ? 'j' : /book|dissertation/i.test(t) ? 'k' : /accepted|forthcoming/i.test(t) ? 'a' : 'c';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const kindOf = t => /journal/i.test(t) ? 'j' : /book|dissertation/i.test(t) ? 'k' : /accepted|forthcoming/i.test(t) ? 'a' : 'c';
   const RANK = { k: 0, j: 1, c: 2, a: 3 };
-  const WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
-  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const ITEMS = data.map((d, i) => ({
+    i, y: d.y, line: ['main', 'lead', 'collab'].includes(d.ln) ? d.ln : 'main',
+    label: d.sl || null, kind: kindOf(d.t), title: d.title, venue: d.venue || '', t: d.t, href: d.href || '#'
+  }));
+  const LINES = {
+    collab: { theme: 'Collaborations and other topics' },
+    main: { theme: 'ICT (Immersive Technology; virtual space; Game-based learning; Generative AI) on language learning' },
+    lead: { theme: 'ICT and leadership education or development' }
+  };
   const NOW = new Date().getFullYear();
-  const y0 = Math.min(...data.map(d => d.y)), y1 = Math.max(...data.map(d => d.y));
-  const years = []; for (let y = y0; y <= y1; y++) years.push(y);
-  const byYear = {}; years.forEach(y => byYear[y] = data.filter(d => d.y === y).sort((a, b) => RANK[kind(a.t)] - RANK[kind(b.t)]));
-  const n = { all: data.length, j: data.filter(d => kind(d.t) === 'j').length, c: data.filter(d => /[ca]/.test(kind(d.t))).length,
-    book: data.filter(d => /book/i.test(d.t)).length, diss: data.filter(d => /dissertation/i.test(d.t)).length, first: data.filter(d => d.first).length };
-  const span = Math.min(NOW, y1) - y0;
+  const y0 = Math.min(...ITEMS.map(d => d.y)), y1 = Math.max(...ITEMS.map(d => d.y));
+  const YEARS = []; for (let y = y0; y <= y1; y++) YEARS.push(y);
+  const NOWY = Math.min(NOW, y1);
+  const SPLITY = YEARS.includes(2022) ? 2022 : y0;
+  /* Playback speed: the approved preview settled in about 4.3 s;
+     Hao asked for slower, so every phase is scaled by this factor,
+     bringing the settle to about seven seconds. */
+  const SCALE = 1.55;
 
   root.innerHTML = `
-    <p class="ptl-kicker">Publications at a glance <span class="ptl-ctl"><button type="button" data-skip>Skip</button><button type="button" data-replay hidden>Replay</button></span></p>
-    <h2 class="ptl-title"><em data-c>${n.all}</em> works across ${WORDS[span] || span} years, since ${y0}</h2>
-    <div class="ptl-stage"><div data-svg></div><div class="ptl-tip" role="status"></div></div>
-    <div class="ptl-foot">
-      <p class="ptl-sum"><b>${n.j}</b> journal articles · <b>${n.c}</b> conference papers, talks, and posters${n.book ? ` · <b>${n.book}</b> book` : ''}${n.diss ? ` · <b>${n.diss}</b> dissertation` : ''} · first author on <b>${n.first}</b></p>
-      <span class="ptl-key" aria-hidden="true"><span><i></i>journal article</span><span><i class="c"></i>conference or talk</span>${n.book || n.diss ? '<span><i class="k"></i>book or dissertation</span>' : ''}</span>
-    </div>
-    <div class="ptl-cta"><p>Working on something close to one of these? I am glad to hear about it.</p><a href="${esc(root.dataset.cta || '/speaking/#research-collaboration')}">Discuss a research idea →</a></div>`;
-  const host = root.querySelector('[data-svg]'), tip = root.querySelector('.ptl-tip'), counter = root.querySelector('[data-c]');
+    <div class="ptl-ctlrow"><span class="ptl-ctl"><button type="button" data-skip>Skip</button><button type="button" data-replay hidden>Replay</button></span></div>
+    <div class="ptl-stage"><div data-svg></div><div class="ptl-tip" role="status"></div></div>`;
+  const host = root.querySelector('[data-svg]'), tip = root.querySelector('.ptl-tip');
   const skipBtn = root.querySelector('[data-skip]'), replayBtn = root.querySelector('[data-replay]');
-  const foot = root.querySelector('.ptl-foot'), cta = root.querySelector('.ptl-cta');
 
-  let beads = [], ms = [], yrs = [], geo = null, raf = 0, playing = false, timers = [];
-  const smooth = u => u * u * (3 - 2 * u);
+  const cv = document.createElement('canvas').getContext('2d');
+  const tw = (t, font) => { cv.font = font; return cv.measureText(t).width; };
+  const LABFONT = '13px "Source Serif 4", Georgia, serif';
+  const clamp01 = v => Math.max(0, Math.min(1, v));
+  const smooth = p => p * p * (3 - 2 * p);
+  const easeIO = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  const invEase = u => { let lo = 0, hi = 1; for (let i = 0; i < 40; i++) { const mid = (lo + hi) / 2; if (easeIO(mid) < u) lo = mid; else hi = mid; } return (lo + hi) / 2; };
 
-  function layout() {
-    const W = Math.round(host.clientWidth) || 700, vertical = W < 560;
-    // Busy years get more room, so the line breathes where the work is dense.
-    const wts = years.map(y => 0.9 + 0.42 * byYear[y].length), tot = wts.reduce((a, b) => a + b, 0);
-    const bands = []; let acc = 0; years.forEach((y, i) => { bands.push({ y, a: acc / tot, b: (acc + wts[i]) / tot }); acc += wts[i]; });
-    const nowEnd = (bands.find(b => b.y === Math.min(NOW, y1)) || bands[bands.length - 1]).b;
-    let H, pt;
-    if (!vertical) {
-      H = 340; const L = 6, R = W - 6, yA = 226, yB = 150;
-      pt = u => [L + u * (R - L), yA - (yA - yB) * smooth(u)];
-    } else {
-      H = Math.max(520, 34 * years.length + 12 * data.length); const T = 6, B = H - 10, xA = 56, xB = 88;
-      pt = u => [xA + (xB - xA) * smooth(u), T + u * (B - T)];
+  /* Shared scale: density-stretched year bands (busy years get more room). */
+  function buildBands(W, L, R) {
+    const counts = {}; YEARS.forEach(yy => counts[yy] = 0);
+    ITEMS.forEach(d => counts[d.y]++);
+    const wts = YEARS.map(yy => 0.9 + 0.42 * counts[yy]);
+    const tot = wts.reduce((a, b) => a + b, 0);
+    let acc = 0; const bands = {};
+    YEARS.forEach((yy, i) => { const a = L + (R - L) * acc / tot; acc += wts[i]; bands[yy] = { x0: a, x1: L + (R - L) * acc / tot, y: yy }; });
+    return bands;
+  }
+  const byBand = (line, yy) => ITEMS.filter(d => d.line === line && d.y === yy)
+    .sort((a, b) => (RANK[a.kind] - RANK[b.kind]) || (((a.label || a.title) < (b.label || b.title)) ? -1 : 1));
+  const bead = (d, r) => `<circle class="bd bd-${d.kind}" r="${r}"/>`;
+
+  const deskPos = {}, mobPos = {};
+  let GEO = null;
+
+  /* ================= DESKTOP ================= */
+  const VW = 1160, DL = 10, DR = 1150;
+  const Y_COL = 176, Y_MAIN = 284, Y_LEAD = 396, HGT = 534;
+  let deskUp = 0, deskDn = 0;
+
+  function buildDesktop() {
+    const bands = buildBands(VW, DL, DR);
+    const splitX = bands[SPLITY].x0, nowEndX = bands[NOWY].x1;
+    const g = {};
+    ['collab', 'main', 'lead'].forEach(ln => {
+      YEARS.forEach(yy => {
+        const items = byBand(ln, yy);
+        items.forEach((d, i) => { g[d.i] = { x: bands[yy].x0 + (bands[yy].x1 - bands[yy].x0) * (i + 1) / (items.length + 1), band: bands[yy] }; });
+      });
+    });
+    /* Main-line labels split above and below the axis, balanced. */
+    YEARS.forEach(yy => {
+      byBand('main', yy).forEach(d => { if (!d.label) return; d._side = (deskUp <= deskDn) ? 'up' : 'down'; if (d._side === 'up') deskUp++; else deskDn++; });
+    });
+    function stacksFor(line, side, maxRows) {
+      const groups = [];
+      YEARS.forEach(yy => {
+        let items = byBand(line, yy).filter(d => d.label);
+        if (line === 'main') items = items.filter(d => d._side === side);
+        if (items.length) groups.push({ year: yy, items });
+      });
+      const merged = [];
+      groups.forEach(gr => {
+        const prev = merged[merged.length - 1];
+        let gapOk = false;
+        if (prev) {
+          const prevLast = Math.max(...prev.items.map(d => g[d.i].x));
+          const grFirst = Math.min(...gr.items.map(d => g[d.i].x));
+          gapOk = (grFirst - prevLast) <= 170;
+        }
+        if (prev && gapOk && prev.items.length + gr.items.length <= maxRows && gr.items.length <= 2) { prev.items = prev.items.concat(gr.items); prev.years.push(gr.year); }
+        else merged.push({ years: [gr.year], items: gr.items.slice() });
+      });
+      merged.forEach(st => st.items.sort((a, b) => g[a.i].x - g[b.i].x));
+      return merged;
     }
-    // sample the curve
-    const N = 240, S = [], cum = [0];
-    for (let i = 0; i <= N; i++) S.push(pt(i / N));
-    for (let i = 1; i <= N; i++) cum.push(cum[i - 1] + Math.hypot(S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]));
-    const lenAt = u => { const f = u * N, i = Math.floor(f); return i >= N ? cum[N] : cum[i] + (cum[i + 1] - cum[i]) * (f - i); };
-    const total = cum[N], nowLen = lenAt(nowEnd);
-    const dPath = u1 => { let d = ''; for (let i = 0; i <= N; i++) { const u = i / N; if (u > u1 + 1e-9) break; d += (i ? 'L' : 'M') + S[i][0].toFixed(1) + ' ' + S[i][1].toFixed(1); } return d; };
-    let futD = ''; for (let i = 0; i <= N; i++) { const u = i / N; if (u + 1e-9 < nowEnd) continue; futD += (futD ? 'L' : 'M') + S[i][0].toFixed(1) + ' ' + S[i][1].toFixed(1); }
-
-    beads = []; yrs = []; ms = [];
-    bands.forEach(b => {
-      const items = byYear[b.y], k = items.length;
-      items.forEach((d, i) => { const u = b.a + (b.b - b.a) * (i + 1) / (k + 1); const [x, y] = pt(u); beads.push({ d, u, x, y, at: lenAt(u) / nowLen }); });
-      const um = b.a + 0.04 * (b.b - b.a); const [x, y] = pt(vertical ? b.a + 0.02 : (b.a + b.b) / 2);
-      yrs.push({ y: b.y, x, yy: y, at: lenAt(b.a) / nowLen, fut: b.y > NOW });
-    });
-    // Milestone labels. A label may not touch another label, any leader line, the main line, or a year label,
-    // and its own leader may not pass through any other label. Candidates are tried from the shortest leader outwards.
-    const cv = document.createElement('canvas').getContext('2d');
-    const tw = (txt, font) => { cv.font = font; return cv.measureText(txt).width * 1.06 + 4; };
-    const FL = 'italic 14px Newsreader, Georgia, serif', FS = '11.5px "Source Serif 4", Georgia, serif', FY = '600 10.5px "Source Serif 4", Georgia, serif';
-    const boxes = [], leaders = [];
-    const hit = (a, b, pad) => a.x1 < b.x2 + pad && a.x2 > b.x1 - pad && a.y1 < b.y2 + pad && a.y2 > b.y1 - pad;
-    const curveY = x => pt(Math.min(1, Math.max(0, (x - 6) / (W - 12))))[1];
-    const msBeads = beads.filter(b => b.d.m);
-    // Placement order: widest label first. (v3 as delivered sorted by x, rightmost first,
-    // which left the widest label, the 2026 ETS milestone, no room beside its 2026/2027
-    // neighbours and silently dropped it on desktop. Widest-first places all seven.)
-    if (!vertical) { const wOf = b => Math.max(tw(b.d.m, FL), b.d.ms ? tw(b.d.ms, FS) : 0, tw(b.d.y + (kind(b.d.t) === 'a' ? ' \u00b7 ACCEPTED' : ''), FY)); msBeads.sort((p, q) => wOf(q) - wOf(p)); }
-    msBeads.forEach(b => {
-      const yrsTxt = b.d.y + (kind(b.d.t) === 'a' ? ' · ACCEPTED' : '');
-      let chosen = null;
-      for (const withSub of [true, false]) {
-        const sub = withSub ? (b.d.ms || '') : '';
-        const w = Math.max(tw(b.d.m, FL), sub ? tw(sub, FS) : 0, tw(yrsTxt, FY));
-        const h = sub ? 42 : 28;
-        if (vertical) {
-          let top = b.y - 10;
-          for (let k = 0; k < 40 && !chosen; k++, top += 6) { const box = { x1: b.x + 22, x2: b.x + 22 + w, y1: top, y2: top + h }; if (!boxes.some(p => hit(box, p, 4))) chosen = { box, sub, vertical: true }; }
-          break;
-        }
-        for (let level = 0; level < 7 && !chosen; level++) {
-          for (const side of ['up', 'down']) {
-            const lead = 24 + level * 26;
-            for (const anchor of ['start', 'end']) {
-              const x1 = anchor === 'start' ? b.x - 3 : b.x + 3 - w, x2 = x1 + w;
-              const y1 = side === 'up' ? b.y - lead - h : b.y + lead, y2 = y1 + h;
-              const box = { x1, x2, y1, y2 };
-              if (x1 < 0 || x2 > W || y1 < 0 || y2 > H) continue;
-              if (side === 'up' ? y2 + 6 > curveY(x2) : y1 - 6 < curveY(x1)) continue;
-              const ld = side === 'up' ? { x1: b.x, x2: b.x, y1: b.y - lead, y2: b.y - 6 } : { x1: b.x, x2: b.x, y1: b.y + 6, y2: b.y + lead };
-              if (boxes.some(p => hit(box, p, 6))) continue;
-              if (leaders.some(l => hit(box, l, 5))) continue;
-              if (boxes.some(p => hit(ld, p, 3))) continue;
-              chosen = { box, sub, side, anchor, lead, ld }; break;
-            }
-            if (chosen) break;
-          }
-        }
-        if (chosen) break;
+    function layoutStacks(line, side, maxRows) {
+      const stacks = stacksFor(line, side, maxRows);
+      const placed = []; let prevRight = DL - 14;
+      stacks.forEach(st => {
+        let maxW = 0; st.items.forEach(d => maxW = Math.max(maxW, tw(d.label, LABFONT)));
+        const firstBand = bands[st.years[0]];
+        const pref = Math.min(firstBand.x0 + 2, g[st.items[0].i].x - 2);
+        const spine = Math.max(pref, prevRight + 14);
+        st.spine = spine; st.w = maxW; st.right = spine + 9 + maxW; prevRight = st.right; placed.push(st);
+      });
+      if (placed.length && placed[placed.length - 1].right > DR) {
+        const shift = placed[placed.length - 1].right - DR;
+        placed.forEach(st => { st.spine -= shift; st.right -= shift; });
       }
-      if (!chosen) return;
-      boxes.push(chosen.box); if (chosen.ld) leaders.push(chosen.ld);
-      ms.push(Object.assign({ b, lab: b.d.m, yrsTxt, vertical }, chosen));
+      return placed;
+    }
+    const MAIN_DRAW = 3400, BR_DRAW = 1150;
+    const uOf = x => (x - DL) / (nowEndX - DL);
+    const tMain = x => invEase(clamp01(uOf(x))) * MAIN_DRAW;
+    const tSplit = tMain(splitX);
+    const tBranch = x => { const u = (x - splitX) / (DR - splitX); return tSplit + invEase(clamp01(u)) * BR_DRAW; };
+    const tOf = (ln, d, x) => d.y > NOWY ? MAIN_DRAW + 50 : (ln === 'main' ? tMain(x) : tBranch(x));
+
+    const out = { collab: '', main: '', lead: '' };
+    function drawStacks(line, side, lineY, maxRows) {
+      layoutStacks(line, side, maxRows).forEach(st => {
+        const K = st.items.length, step = 2.6;
+        const gutter = lineY + (side === 'up' ? -1 : 1) * (6 + K * step + 3 + ((line === 'main' && side === 'up') ? 4 : 0) + ((line === 'main' && side === 'down') ? 14 : 0));
+        st.items.forEach((d, r) => {
+          const gx = g[d.i].x;
+          const laneY = lineY + (side === 'up' ? -1 : 1) * (6 + r * step);
+          const base = side === 'up' ? gutter - 4 - r * 17 : gutter + 13 + r * 17;
+          const tickY = base - 4;
+          const dpath = 'M' + gx.toFixed(1) + ' ' + (lineY + (side === 'up' ? -5.5 : 5.5)).toFixed(1)
+            + ' L' + gx.toFixed(1) + ' ' + laneY.toFixed(1)
+            + ' L' + st.spine.toFixed(1) + ' ' + laneY.toFixed(1)
+            + ' L' + st.spine.toFixed(1) + ' ' + tickY.toFixed(1)
+            + ' L' + (st.spine + 5).toFixed(1) + ' ' + tickY.toFixed(1);
+          const t0 = tOf(line, d, gx);
+          out[line] += `<path class="lead-path" pathLength="1" data-line="${line}" d="${dpath}" data-anim="leader" data-t0="${Math.round(t0 + 70)}"/>`;
+          out[line] += `<text class="lab" data-i="${d.i}" data-line="${line}" x="${(st.spine + 9).toFixed(1)}" y="${base.toFixed(1)}" data-anim="fade" data-t0="${Math.round(t0 + 250)}" data-dur="300">${esc(d.label)}</text>`;
+          d._dotT0 = t0;
+        });
+      });
+    }
+    const linePath = (x0, x1, y) => 'M' + x0 + ' ' + y + ' L' + x1 + ' ' + y;
+    const arrow = (y, t0, dur, o) => `<path class="arrowhead" d="M${DR - 6} ${y - 3.4} L${DR + 1} ${y} L${DR - 6} ${y + 3.4}" data-anim="fade"${o ? ` data-o="${o}"` : ''} data-t0="${Math.round(t0)}" data-dur="${dur}"/>`;
+    /* Branch lines first, main line over them. */
+    out.collab += `<path class="axis" d="${linePath(splitX, DR, Y_COL)}" data-anim="line" data-t0="${Math.round(tSplit)}" data-dur="${BR_DRAW}"/>`;
+    out.collab += arrow(Y_COL, tSplit + BR_DRAW - 150, 300);
+    out.collab += `<text class="theme" x="${(splitX + 2).toFixed(1)}" y="${Y_COL + 16}" data-anim="fade" data-t0="${Math.round(tSplit + 600)}" data-dur="500">${esc(LINES.collab.theme)}</text>`;
+    out.lead += `<path class="axis" d="${linePath(splitX, DR, Y_LEAD)}" data-anim="line" data-t0="${Math.round(tSplit)}" data-dur="${BR_DRAW}"/>`;
+    out.lead += arrow(Y_LEAD, tSplit + BR_DRAW - 150, 300);
+    out.lead += `<text class="theme" x="${(splitX + 2).toFixed(1)}" y="${Y_LEAD - 8}" data-anim="fade" data-t0="${Math.round(tSplit + 600)}" data-dur="500">${esc(LINES.lead.theme)}</text>`;
+    out.main += `<path class="axis" d="${linePath(DL, nowEndX, Y_MAIN)}" data-anim="line" data-t0="0" data-dur="${MAIN_DRAW}"/>`;
+    out.main += `<path class="futseg" d="${linePath(nowEndX, DR, Y_MAIN)}" data-anim="fade" data-o="0.55" data-t0="${MAIN_DRAW + 100}" data-dur="500"/>`;
+    out.main += arrow(Y_MAIN, MAIN_DRAW + 500, 400, '0.55');
+    out.main += `<text class="theme" x="${DL}" y="206" data-anim="fade" data-t0="300" data-dur="500">${esc(LINES.main.theme)}</text>`;
+    /* Year strip on the main axis: rules under the leaders, year texts over them. */
+    let stripOut = '';
+    YEARS.forEach(yy => {
+      const b = bands[yy], fut = yy > NOWY;
+      out.main += `<line class="strip" x1="${(b.x0 + 3).toFixed(1)}" y1="${Y_MAIN + 10}" x2="${(b.x1 - 3).toFixed(1)}" y2="${Y_MAIN + 10}"${fut ? ' stroke-dasharray="2 3"' : ''} data-anim="fade" data-t0="${Math.round(tMain(b.x0))}" data-dur="350" opacity="0"/>`;
+      stripOut += `<text class="yr${fut ? ' fut' : ''}" x="${((b.x0 + b.x1) / 2).toFixed(1)}" y="${Y_MAIN + 24}" text-anchor="middle" data-anim="fade" data-t0="${Math.round(tMain(b.x0) + 60)}" data-dur="350">${yy}</text>`;
     });
-    const placed = ms.map(m => m.box);
-    // A year label that sits under a milestone label or leader is hidden; the milestone already names its year.
-    if (!vertical) yrs.forEach(y => { const yb = { x1: y.x - 16, x2: y.x + 16, y1: y.yy + 14, y2: y.yy + 30 }; y.hidden = boxes.some(p => hit(yb, p, 2)) || leaders.some(l => hit(yb, l, 2)); });
-    if (vertical) H = Math.max(H, ...placed.map(p => p.y2 + 6));
-    geo = { W, H, vertical, total, nowLen, dNow: dPath(nowEnd), futD, pt };
+    drawStacks('collab', 'up', Y_COL, 8);
+    drawStacks('main', 'up', Y_MAIN, 3);
+    drawStacks('main', 'down', Y_MAIN, 3);
+    drawStacks('lead', 'down', Y_LEAD, 6);
+    out.main += stripOut;
+    /* Dots on top, with generous invisible hit targets. */
+    ['collab', 'main', 'lead'].forEach(ln => {
+      const ly = ln === 'collab' ? Y_COL : ln === 'main' ? Y_MAIN : Y_LEAD;
+      YEARS.forEach(yy => {
+        byBand(ln, yy).forEach(d => {
+          const gx = g[d.i].x, t0 = d._dotT0 != null ? d._dotT0 : tOf(ln, d, gx);
+          const r = (d.kind === 'j' || d.kind === 'k') ? 4 : 3.6;
+          deskPos[d.i] = { x: gx, y: ly };
+          out[ln] += `<a class="bead" href="${esc(d.href)}" data-i="${d.i}" data-line="${ln}" tabindex="-1" aria-label="${esc(d.title)}" data-anim="dot" data-t0="${Math.round(t0)}" transform="translate(${gx.toFixed(1)} ${ly})">${bead(d, r)}<circle r="9" fill="transparent"/></a>`;
+        });
+      });
+    });
+    const tips =
+      `<g class="ln-main" id="ptl-tip-main" opacity="0"><circle class="tiphalo" r="7"/><circle class="tipdot" r="2.7"/></g>` +
+      `<g class="ln-collab" id="ptl-tip-col" opacity="0"><circle class="tiphalo" r="7"/><circle class="tipdot" r="2.7"/></g>` +
+      `<g class="ln-lead" id="ptl-tip-lead" opacity="0"><circle class="tiphalo" r="7"/><circle class="tipdot" r="2.7"/></g>`;
+    const grp = ln => `<g class="ln-${ln}">${out[ln]}</g>`;
+    return {
+      svg: `<svg viewBox="0 0 ${VW} ${HGT}" role="img" aria-label="${ITEMS.length} works from ${y0} to ${y1} on three lines: a main line for ICT on language learning, a leadership branch below, and a collaborations branch above. The full list follows below.">${grp('collab')}${grp('lead')}${grp('main')}${tips}</svg>`,
+      geo: { easeIO, MAIN_DRAW: MAIN_DRAW * SCALE, BR_DRAW: BR_DRAW * SCALE, tSplit: tSplit * SCALE, splitX, nowEndX }
+    };
   }
 
-  function draw() {
-    layout();
-    const { W, H, vertical, dNow, futD } = geo;
-    let out = `<path class="trail" d="${dNow}"/>${futD ? `<path class="trail" d="${futD}" stroke-dasharray="2 4" data-fut/>` : ''}<path class="path" d="${dNow}" data-path/>`;
-    yrs.forEach((y, i) => {
-      out += vertical ? `<text class="yr${y.fut ? ' fut' : ''}" data-yr="${i}" x="0" y="${y.yy + 4}">${y.y}</text>`
-        : (y.hidden ? `<text class="yr" data-yr="${i}" x="0" y="0" visibility="hidden"></text>` : `<text class="yr${y.fut ? ' fut' : ''}" data-yr="${i}" x="${y.x}" y="${y.yy + 26}" text-anchor="middle">${y.y}</text>`);
+  /* ================= PHONE ================= */
+  function buildPhone() {
+    const W = 390, railM = 36, railC = 70, railL = 104, labX = 120, labW = W - labX - 8;
+    const order = { main: 0, collab: 1, lead: 2 };
+    const rows = ITEMS.slice().sort((a, b) => (a.y - b.y) || (order[a.line] - order[b.line]) || (RANK[a.kind] - RANK[b.kind]) || ((a.label || a.title) < (b.label || b.title) ? -1 : 1));
+    function wrap(t) {
+      const words = t.split(' '), lines = []; let cur = '';
+      words.forEach(w => { const test = cur ? cur + ' ' + w : w; if (tw(test, '12px "Source Serif 4", Georgia, serif') > labW && cur) { lines.push(cur); cur = w; } else cur = test; });
+      if (cur) lines.push(cur); return lines;
+    }
+    let out = '', y = 6; const items = [];
+    out += `<g class="ln-main"><text class="theme" x="44" y="${y + 11}" font-size="11.5">ICT on language learning</text></g>`; y += 22;
+    const branchStart = {};
+    rows.forEach(d => {
+      if ((d.line === 'collab' || d.line === 'lead') && !branchStart[d.line]) {
+        branchStart[d.line] = true;
+        out += `<g class="ln-${d.line}"><text class="theme ptheme" x="44" y="${y + 11}" font-size="11.5">${esc(LINES[d.line].theme)}</text></g>`;
+        y += 22;
+      }
+      const lines = d.label ? wrap(d.label) : [d.title];
+      const rh = lines.length * 14 + 12;
+      items.push({ d, cy: y + rh / 2, lines, y, rh });
+      y += rh;
     });
-    ms.forEach((m, i) => {
-      const { b, box } = m;
-      if (!vertical) {
-        const tx = m.anchor === 'start' ? box.x1 + 2 : box.x2 - 2, an = m.anchor;
-        const ty = box.y1;
-        out += `<g class="ms" data-ms="${i}"><line x1="${m.ld.x1}" y1="${m.ld.y1}" x2="${m.ld.x2}" y2="${m.ld.y2}"/><text class="yrs" x="${tx}" y="${ty + 10}" text-anchor="${an}">${esc(m.yrsTxt)}</text><text class="lab" x="${tx}" y="${ty + 26}" text-anchor="${an}">${esc(m.lab)}</text>${m.sub ? `<text class="sub" x="${tx}" y="${ty + 40}" text-anchor="${an}">${esc(m.sub)}</text>` : ''}</g>`;
+    const H = y + 8;
+    const railX = line => line === 'main' ? railM : line === 'collab' ? railC : railL;
+    ['main', 'collab', 'lead'].forEach(ln => {
+      const mine = items.filter(it => it.d.line === ln);
+      if (!mine.length) return;
+      if (ln === 'main') {
+        const lastNow = mine.filter(it => it.d.y <= NOWY).pop();
+        const firstFut = mine.filter(it => it.d.y > NOWY)[0];
+        out += `<g class="ln-main"><line x1="${railM}" y1="${items[0].cy}" x2="${railM}" y2="${lastNow.cy}" stroke-width="1.6" class="axis"/></g>`;
+        if (firstFut) out += `<g class="ln-main"><line x1="${railM}" y1="${lastNow.cy}" x2="${railM}" y2="${firstFut.cy}" stroke-width="2" stroke-linecap="round" stroke-dasharray=".1 5" opacity=".55" class="futseg"/></g>`;
       } else {
-        out += `<g class="ms" data-ms="${i}"><line x1="${b.x + 7}" y1="${b.y}" x2="${box.x1 - 4}" y2="${box.y1 + 12}"/><text class="lab" x="${box.x1}" y="${box.y1 + 14}">${esc(m.lab)}</text>${m.sub ? `<text class="sub" x="${box.x1}" y="${box.y1 + 29}">${esc(m.sub)}</text>` : ''}</g>`;
+        const yA = mine[0].cy, yB = mine[mine.length - 1].cy;
+        out += `<g class="ln-${ln}"><line x1="${railX(ln)}" y1="${yA}" x2="${railX(ln)}" y2="${yB}" stroke-width="1.6" class="axis"/><line x1="${railM}" y1="${yA}" x2="${railX(ln)}" y2="${yA}" stroke-width="1.2" class="axis"/></g>`;
       }
     });
-    beads.forEach((b, i) => {
-      const k = kind(b.d.t), r = b.d.m ? 4.2 : (k === 'j' || k === 'k' ? 3.1 : 2.8);
-      out += `<a class="bead" href="${esc(b.d.href || '#')}" data-i="${i}" tabindex="-1" aria-label="${esc(b.d.title)}"><circle class="b ${k}" cx="${b.x}" cy="${b.y}" r="${r}"/><circle cx="${b.x}" cy="${b.y}" r="8" fill="transparent"/></a>`;
+    const seenYear = {};
+    items.forEach(it => {
+      const d = it.d, rx = railX(d.line);
+      mobPos[d.i] = { x: rx, y: it.cy };
+      if (!seenYear[d.y]) { seenYear[d.y] = true; out += `<text class="yr" x="${railM - 8}" y="${it.cy + 3.5}" text-anchor="end" font-size="10.5">${d.y}</text>`; }
+      const r = (d.kind === 'j' || d.kind === 'k') ? 3.8 : 3.4;
+      out += `<g class="ln-${d.line}"><a class="bead" href="${esc(d.href)}" data-i="${d.i}" data-line="${d.line}" tabindex="-1" aria-label="${esc(d.title)}" transform="translate(${rx} ${it.cy.toFixed(1)})">${bead(d, r)}<circle r="10" fill="transparent"/></a></g>`;
+      it.lines.forEach((ln2, li) => {
+        out += `<text class="lab" data-i="${d.i}" data-line="${d.line}" font-size="12" x="${labX}" y="${(it.y + 16 + li * 14).toFixed(1)}">${esc(ln2)}</text>`;
+      });
     });
-    out += `<circle class="halo" data-halo r="0" cx="0" cy="0"/><circle class="tipdot" data-tip r="2.6" cx="0" cy="0" opacity="0"/>`;
-    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${n.all} works from ${y0} to ${y1} on one timeline. The full list follows below.">${out}</svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${ITEMS.length} works from ${y0} to ${y1} listed along a vertical line, with leadership and collaboration branches.">${out}</svg>`;
   }
 
-  // tooltip
-  let tipFor = -1;
-  function showTip(i) {
-    const b = beads[i]; if (!b) return; const d = b.d;
-    tip.innerHTML = `<b>${esc(d.title)}</b><span>${esc(d.venue || '')}${d.venue ? ' · ' : ''}${d.y} · ${esc(d.t)}</span>`;
-    const box = host.getBoundingClientRect(), s = box.width / geo.W;
-    tip.classList.add('show');
-    let left = b.x * s + 14, top = b.y * s + 12; const tw = tip.offsetWidth;
-    if (left + tw > box.width) left = b.x * s - tw - 14;
-    tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, top) + 'px'; tipFor = i;
-    host.querySelectorAll('.bead.hl').forEach(x => x.classList.remove('hl')); host.querySelector(`.bead[data-i="${i}"]`)?.classList.add('hl');
+  /* ================= ANIMATION ================= */
+  let T = null, raf = 0, playing = false;
+  function collectAnim(deskSvg) {
+    T = { els: [] };
+    deskSvg.querySelectorAll('[data-anim]').forEach(el => {
+      const rec = { el, kind: el.getAttribute('data-anim'), t0: (+el.getAttribute('data-t0') || 0) * SCALE, dur: (+el.getAttribute('data-dur') || 300) * SCALE };
+      if (rec.kind === 'line') { rec.len = el.getTotalLength(); el.style.strokeDasharray = rec.len; el.style.strokeDashoffset = rec.len; }
+      if (rec.kind === 'leader') { el.style.strokeDasharray = 1; el.style.strokeDashoffset = 1; }
+      if (rec.kind === 'dot') { const m = /translate\(([\d.]+) ([\d.]+)\)/.exec(el.getAttribute('transform')); rec.x = +m[1]; rec.y = +m[2]; }
+      T.els.push(rec);
+    });
   }
-  function hideTip() { tip.classList.remove('show'); tipFor = -1; host.querySelectorAll('.bead.hl').forEach(x => x.classList.remove('hl')); }
-  host.addEventListener('pointerover', e => { const a = e.target.closest('.bead'); if (a && e.pointerType === 'mouse') showTip(+a.dataset.i); });
-  host.addEventListener('pointerout', e => { const a = e.target.closest('.bead'); if (a && e.pointerType === 'mouse') hideTip(); });
-  host.addEventListener('click', e => { const a = e.target.closest('.bead'); if (!a) { hideTip(); return; } const i = +a.dataset.i; if (window.matchMedia('(hover: none)').matches && tipFor !== i) { e.preventDefault(); showTip(i); } });
-  document.addEventListener('click', e => { if (!root.contains(e.target)) hideTip(); });
-
-  // play
-  const D = 4200, ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-  function setProgress(p) {
-    const path = host.querySelector('[data-path]'), L = geo.nowLen;
-    path.style.strokeDasharray = `${L} ${L}`; path.style.strokeDashoffset = String(L * (1 - p));
-    let pos = null; try { pos = path.getPointAtLength(L * p); } catch (e) {}
-    const td = host.querySelector('[data-tip]'), halo = host.querySelector('[data-halo]');
-    if (pos) { td.setAttribute('cx', pos.x); td.setAttribute('cy', pos.y); halo.setAttribute('cx', pos.x); halo.setAttribute('cy', pos.y); }
-    td.setAttribute('opacity', p > 0 && p < 1 ? '1' : '0'); halo.setAttribute('r', p > 0 && p < 1 ? '7' : '0');
-    let c = 0;
-    beads.forEach((b, i) => { const on = b.at <= p + 1e-6 || (p >= 1); if (on) c++; host.querySelector(`.bead[data-i="${i}"]`).classList.toggle('on', on); });
-    ms.forEach((m, i) => host.querySelector(`.ms[data-ms="${i}"]`).classList.toggle('on', m.b.at <= p - 0.02 || p >= 1));
-    yrs.forEach((y, i) => host.querySelector(`[data-yr="${i}"]`).classList.toggle('on', y.at <= p + 0.01 || p >= 1));
-    const fut = host.querySelector('[data-fut]'); if (fut) fut.style.opacity = p >= 1 ? '1' : '0';
-    counter.textContent = c;
+  function setTime(t) {
+    if (!T || !GEO) return;
+    T.els.forEach(r => {
+      const p = clamp01((t - r.t0) / r.dur);
+      if (r.kind === 'fade') { const o = r.el.getAttribute('data-o'); r.el.style.opacity = smooth(p) * (o ? +o : 1); }
+      else if (r.kind === 'line') { r.el.style.strokeDashoffset = r.len * (1 - GEO.easeIO(clamp01((t - r.t0) / r.dur))); }
+      else if (r.kind === 'leader') { r.el.style.strokeDashoffset = 1 - smooth(p); }
+      else if (r.kind === 'dot') { const s = 0.5 + 0.5 * smooth(p); r.el.style.opacity = p <= 0 ? 0 : 1; r.el.style.transform = 'translate(' + r.x + 'px ' + r.y + 'px) scale(' + s.toFixed(3) + ')'; }
+    });
+    function tip(id, t0, dur, x0, x1, yy) {
+      const el = document.getElementById(id); if (!el) return;
+      const p = (t - t0) / dur;
+      if (p <= 0 || p >= 1) { el.setAttribute('opacity', '0'); return; }
+      const x = x0 + (x1 - x0) * GEO.easeIO(p);
+      el.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + yy + ')');
+      el.setAttribute('opacity', p > 0.97 ? String((1 - p) / 0.03) : '1');
+    }
+    tip('ptl-tip-main', 0, GEO.MAIN_DRAW, DL, GEO.nowEndX, Y_MAIN);
+    tip('ptl-tip-col', GEO.tSplit, GEO.BR_DRAW, GEO.splitX, DR, Y_COL);
+    tip('ptl-tip-lead', GEO.tSplit, GEO.BR_DRAW, GEO.splitX, DR, Y_LEAD);
   }
-  function finalState() {
-    playing = false; cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers = [];
-    setProgress(1); foot.classList.add('on'); cta.classList.add('on'); skipBtn.hidden = true; replayBtn.hidden = false;
+  function settle() {
+    playing = false; cancelAnimationFrame(raf);
+    setTime(1e9);
+    skipBtn.hidden = true; replayBtn.hidden = false;
   }
   function play() {
-    draw(); hideTip(); playing = true; skipBtn.hidden = false; replayBtn.hidden = true; foot.classList.remove('on'); cta.classList.remove('on');
-    setProgress(0);
-    const t0 = performance.now();
-    const tick = now => { if (!playing) return; const p = Math.min(1, (now - t0) / D); setProgress(ease(p)); if (p < 1) raf = requestAnimationFrame(tick); else timers.push(setTimeout(finalState, 250)); };
-    raf = requestAnimationFrame(tick);
-    try { sessionStorage.setItem('ptl2-played', '1'); } catch (e) {}
+    if (window.matchMedia('(max-width: 640px)').matches) { settle(); return; }
+    hideTip(); playing = true; skipBtn.hidden = false; replayBtn.hidden = true;
+    setTime(0);
+    try { sessionStorage.setItem('ptl3-played', '1'); } catch (e) {}
+    const start = performance.now() + 300, TOTAL = 4400 * SCALE;
+    const frame = now => {
+      if (!playing) return;
+      const t = now - start;
+      if (t < 0) { raf = requestAnimationFrame(frame); return; }
+      setTime(t);
+      if (t < TOTAL) raf = requestAnimationFrame(frame); else settle();
+    };
+    raf = requestAnimationFrame(frame);
   }
-  skipBtn.addEventListener('click', finalState);
-  window.ptlReplay = play;
+  skipBtn.addEventListener('click', settle);
   replayBtn.addEventListener('click', play);
+  window.ptlReplay = play;
 
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let played = false; try { played = sessionStorage.getItem('ptl2-played') === '1'; } catch (e) {}
-  draw();
-  if (reduce || played) finalState();
-  else if ('IntersectionObserver' in window) { setProgress(0); const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: .3 }); io.observe(root); }
-  else play();
-  let lastW = host.clientWidth;
-  window.addEventListener('resize', () => { const w = host.clientWidth; if (Math.abs(w - lastW) > 30 && !playing) { lastW = w; draw(); finalState(); } });
+  /* ================= TOOLTIP ================= */
+  let tipFor = -1;
+  const phoneNow = () => window.matchMedia('(max-width: 640px)').matches;
+  function showTip(i) {
+    const d = ITEMS[i]; if (!d) return;
+    const pos = phoneNow() ? mobPos[i] : deskPos[i]; if (!pos) return;
+    tip.innerHTML = `<b>${esc(d.title)}</b><span>${esc(d.venue)}${d.venue ? ' · ' : ''}${d.y} · ${esc(d.t)}</span>`;
+    const stage = root.querySelector('.ptl-stage').getBoundingClientRect();
+    const svg = host.querySelector(phoneNow() ? '.ptl-mob svg' : '.ptl-desk svg');
+    if (!svg) return;
+    const sr = svg.getBoundingClientRect(), s = sr.width / (phoneNow() ? 390 : VW);
+    tip.classList.add('show');
+    let left = (sr.left - stage.left) + pos.x * s + 14, top = (sr.top - stage.top) + pos.y * s + 12;
+    const twd = tip.offsetWidth;
+    if (left + twd > stage.width) left = (sr.left - stage.left) + pos.x * s - twd - 14;
+    tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, top) + 'px';
+    tipFor = i;
+    host.querySelectorAll('.bead.hl').forEach(x => x.classList.remove('hl'));
+    host.querySelectorAll(`.bead[data-i="${i}"]`).forEach(x => x.classList.add('hl'));
+  }
+  function hideTip() { tip.classList.remove('show'); tipFor = -1; host.querySelectorAll('.bead.hl').forEach(x => x.classList.remove('hl')); }
+  const hitEl = e => e.target.closest ? e.target.closest('.bead, .lab[data-i]') : null;
+  host.addEventListener('pointerover', e => { const a = hitEl(e); if (a && e.pointerType === 'mouse') showTip(+a.dataset.i); });
+  host.addEventListener('pointerout', e => { const a = hitEl(e); if (a && e.pointerType === 'mouse') hideTip(); });
+  host.addEventListener('click', e => {
+    const a = hitEl(e);
+    if (!a) { hideTip(); return; }
+    const i = +a.dataset.i, noHover = window.matchMedia('(hover: none)').matches;
+    if (a.classList.contains('bead')) {
+      if (noHover && tipFor !== i) { e.preventDefault(); showTip(i); }
+    } else {
+      if (noHover && tipFor !== i) showTip(i);
+      else window.location.href = ITEMS[i].href;
+    }
+  });
+  document.addEventListener('click', e => { if (!root.contains(e.target)) hideTip(); });
+
+  /* ================= INIT ================= */
+  function init() {
+    const desk = buildDesktop();
+    GEO = desk.geo;
+    host.innerHTML = `<div class="ptl-desk">${desk.svg}</div><div class="ptl-mob">${buildPhone()}</div>`;
+    collectAnim(host.querySelector('.ptl-desk svg'));
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let played = false; try { played = sessionStorage.getItem('ptl3-played') === '1'; } catch (e) {}
+    if (reduce || played || phoneNow()) settle();
+    else if ('IntersectionObserver' in window) {
+      setTime(0);
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: .3 });
+      io.observe(root);
+    } else play();
+  }
+  if (document.fonts && document.fonts.ready) {
+    Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]).then(() => setTimeout(init, 30));
+  } else window.addEventListener('load', init);
 })();

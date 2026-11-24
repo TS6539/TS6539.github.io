@@ -17,4 +17,6 @@ tags:
   - Game-Based Learning
 research_line: game-based-language-learning
 featured: false
+timeline_line: lead
+timeline_short: "Conf. Video game alliance leaders"
 ---

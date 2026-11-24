@@ -25,4 +25,6 @@ journal_cover: "media/journals/education-and-information-technologies.jpg"
 journal_note: "2025 Impact Factor 7.2 · Indexed in SSCI and Scopus"
 timeline_label: "Gamification in leadership curricula"
 timeline_sub: "Education and Information Technologies"
+timeline_line: lead
+timeline_short: "J. Gamification in leadership curricula (SR)"
 ---

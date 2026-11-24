@@ -14,4 +14,6 @@ tags:
   - International Students
 research_line: other-collaborations
 featured: false
+timeline_line: collab
+timeline_short: "Conf. Chinese students in US universities"
 ---

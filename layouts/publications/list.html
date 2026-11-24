@@ -47,20 +47,29 @@
   (dict "key" "other-collaborations" "title" "Other Collaborations")
 }}
 
-{{/* Publications timeline (ptl, version 2, 2026-11-24): "Publications
-     at a glance" between the page header and the grouped list. One
-     hairline draws itself from the first year to today; every
-     publication is a bead on it (journal filled, conference hollow,
-     book/dissertation pale, accepted dashed); a few milestone works
-     are named. The data is generated here from the same grouped pages
-     the list below renders, so a new publication appears in the
-     animation with no extra work. Fields: g = group title exactly as
-     in h2.pub-group-title; t = the type label exactly as
+{{/* Publications timeline (ptl, version 3, 2026-11-25): the
+     deck-style diagram between the page header and the grouped list,
+     modelled on the Research Themes slides of Hao's Hiroshima
+     interview deck. Three parallel straight lines share one
+     density-stretched year scale: the main line (ICT on language
+     learning), the leadership branch below it and the collaborations
+     branch above it, both branches starting in 2022. Every work is a
+     dot on its line (journal filled, conference hollow,
+     book/dissertation dark, accepted dashed) with a leader to a
+     short label. No kicker, title, legend, summary or CTA: the
+     diagram sits in the document flow under a hairline. The data is
+     generated here from the same grouped pages the list below
+     renders. Fields: g = group title exactly as in
+     h2.pub-group-title; t = the type label exactly as
      .pub-type-marker derives it in views/citation.html (same rules,
      same order); y = the citation year (event_start, else date);
-     venue = the resolved publication name; first = the site owner is
-     first author; m/ms = the optional milestone label and sub-line,
-     from the entry's timeline_label / timeline_sub front matter.
+     venue = the resolved publication name; first = the site owner
+     is first author; ln = the diagram line (main / lead / collab)
+     from the entry's timeline_line front matter, defaulting to
+     main; sl = the short diagram label from timeline_short, when
+     set (an entry without it gets a dot and no label); m/ms = the
+     milestone label and sub-line from timeline_label /
+     timeline_sub, retained in the data but no longer rendered.
      ptl.css and ptl.js load only on this page; all ptl styles are
      scoped to .ptl and the script makes no network calls. */}}
 {{ $ptlData := slice }}
@@ -83,7 +92,8 @@
     {{ $yr := int ((time (.Params.event_start | default .Date)).Format "2006") }}
     {{ $first := false }}
     {{ with .Params.authors }}{{ if eq (index . 0) "me" }}{{ $first = true }}{{ end }}{{ end }}
-    {{ $ptlItem := dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first }}
+    {{ $ptlItem := dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first "ln" (.Params.timeline_line | default "main") }}
+    {{ with .Params.timeline_short }}{{ $ptlItem = merge $ptlItem (dict "sl" .) }}{{ end }}
     {{ $tlSub := .Params.timeline_sub }}
     {{ with .Params.timeline_label }}{{ $ptlItem = merge $ptlItem (dict "m" . "ms" ($tlSub | default "")) }}{{ end }}
     {{ $ptlData = $ptlData | append $ptlItem }}
@@ -99,7 +109,7 @@
 {{ $ptlWord = printf "%s%s" (upper (substr $ptlWord 0 1)) (substr $ptlWord 1) }}
 <div class="plist-wrap">
   {{- with resources.Get "css/ptl.css" }}<link rel="stylesheet" href="{{ (. | resources.Minify).RelPermalink }}">{{ end }}
-  <section class="ptl" id="ptl" data-cta="/speaking/#research-collaboration" aria-label="Publications at a glance"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
+  <section class="ptl" id="ptl" aria-label="Publications timeline by research line"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
   <script type="application/json" id="ptl-data">{{ $ptlData | jsonify | safeJS }}</script>
   {{- with resources.Get "js/ptl.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
 </div>

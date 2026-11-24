@@ -21,4 +21,6 @@ research_line: qe-learning-analytics
 featured: false
 timeline_label: "Reading lives through ENA"
 timeline_sub: "AERA, Toronto"
+timeline_line: main
+timeline_short: "Accepted: Reading lives through ENA"
 ---

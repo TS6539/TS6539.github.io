@@ -17,4 +17,6 @@ tags:
 research_line: other-collaborations
 featured: false
 journal_cover: "media/journals/japanese-journal-of-law-and-psychology.jpg"
+timeline_line: collab
+timeline_short: "J. Moral disappointment in Japan"
 ---

@@ -21,4 +21,6 @@ featured: false
 hugoblox:
   ids:
     doi: "10.3102/2109033"
+timeline_line: main
+timeline_short: "Conf. Scholars' AI use, autoethnography"
 ---
