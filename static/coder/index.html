@@ -576,7 +576,7 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
 <body data-tab="code">
 <header class="top">
   <button class="brand" id="brandBtn" title="Transcript Coder start page"><span class="mark" aria-hidden="true"><b></b><b></b><b></b></span><span>Transcript Coder</span></button>
-  <span class="ver hideSm">v0.5.0 pre-alpha</span>
+  <span class="ver hideSm">v0.5.1 pre-alpha</span>
   <input id="projName" aria-label="Project name" spellcheck="false" hidden>
   <span class="saveState" id="saveState" hidden><span class="dot"></span><span id="saveText">Saved in this browser</span></span>
   <span class="spacer"></span>
@@ -623,7 +623,7 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
   <div class="wIn">
     <h1>Transcript Coder</h1>
     <p class="sub">A small browser tool for coding interview transcripts one sentence at a time, then exporting the result for thematic analysis or epistemic network analysis (ENA).</p>
-    <p class="metaLine">Version 0.5.0 · pre-alpha · updated 24 November 2026 · a data saturation check with four methods (base and run, no-new-codes run, code coverage, meaning saturation), a milestone popup when saturation is reached while coding, and saturation reporting in the methods paragraph and the export · free to use · works on computers and phones</p>
+    <p class="metaLine">Version 0.5.1 · pre-alpha · updated 24 November 2026 · the saturation check from 0.5.0, with corrections from an external methods review: the no-new-codes stopping rule is credited to Francis et al. (2010), code coverage is labelled retrospective and no longer triggers the popup, the base can be four transcripts, and guardrail wording was added · free to use · works on computers and phones</p>
     <div class="paths">
       <button class="path" data-go="guided"><b>New to qualitative coding?</b><span>Take the guided path. It asks a few questions to pick a method, then walks you through every step in small pieces, with your progress and the time left always on screen. You end with a coded dataset, an agreement check, themes, and a draft methods paragraph.</span><em>Start a guided project →</em></button>
       <button class="path" data-go="free"><b>Know what you are doing?</b><span>Import transcripts and start coding straight away. Every tool is there and nothing is in your way.</span><em>Import transcripts →</em></button>
@@ -666,6 +666,7 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
 
     <h2>Changes</h2>
     <dl class="log">
+      <dt>0.5.1</dt><dd>November 2026. Saturation corrections after an external methods review (Gemini, Hydrogen Thinking): the no-new-codes stopping rule is now credited to Francis et al. (2010) instead of Hennink &amp; Kaiser (2022), who reviewed sample sizes but proposed no such rule; code coverage is labelled a retrospective summary, is worded that way in the methods draft, and no longer triggers the popup; the base and run base can be four transcripts, with a note when a small base makes the percentage thresholds behave like 0%; the popup now leads with "Keep coding" and states that it tracks code labels only; a warning appears when no new codes were added after the codebook was locked; two button labels were clarified.</dd>
       <dt>0.5.0</dt><dd>November 2026. A data saturation check joins the guided paths after coding: four methods (Guest, Namey &amp; Chen's base and run method; a run of transcripts with no new codes; code coverage; and meaning saturation as a recorded judgement), a table and curve built from the order transcripts were finished, a popup at the moment the chosen method first reports saturation, and saturation sentences in the draft methods paragraph plus a Saturation sheet in the export.</dd>
       <dt>0.4.6</dt><dd>November 2026. Wording pass following an external design and methods review. Locking a codebook replaces freezing it, and codes added after the lock are called new data-driven codes rather than exceptions. Step 1 is leaner, and the draft methods paragraph now reports the code count at each version and, for a single coder, says why no agreement coefficient is reported.</dd>
       <dt>0.4.5</dt><dd>November 2026. The method chooser asks where your codes come from on a spectrum, inductive to deductive, with hybrid in the middle. Whether a second person codes is now a separate question, and codebook and hybrid paths both work for a single coder, who freezes the codebook instead of running an agreement check.</dd>
@@ -681,7 +682,7 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
 
     <div class="wFoot">
       <span>Made by <a href="https://tianshihao.org/" target="_top">Tianshi Hao</a>, Hiroshima University. Feedback to tianshihao@hiroshima-u.ac.jp or <a href="#" data-m="feedback">send an email</a>.</span>
-      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.0) [Computer software]. https://tianshihao.org/coder/</span>
+      <span class="cite">Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.1) [Computer software]. https://tianshihao.org/coder/</span>
     </div>
   </div>
 </section>
@@ -824,7 +825,7 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
     <label class="fld">Text<textarea id="pasteText" rows="12" placeholder="Interviewer: How did you start the essay?&#10;P3: I asked the AI to explain the prompt first."></textarea></label>
     <p class="err" id="pasteErr"></p>
   </div>
-  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Continue</button></div>
+  <div class="dlgFoot"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" value="ok">Next: Check speakers</button></div>
 </form></dialog>
 
 <dialog id="mergeDlg"><form method="dialog" id="mergeForm">
@@ -909,14 +910,14 @@ tr.satHitRow td{background:var(--panel);background:color-mix(in srgb,var(--accen
     <div class="satGlyph" aria-hidden="true">⁂</div>
     <h2>Data saturation reached</h2>
     <p id="satPopText"></p>
-    <p class="note">Recorded for your methods paragraph and the export. You can keep coding; the saturation table keeps updating.</p>
-    <div class="satBtns"><button class="btn" data-a="satPopClose">Keep coding</button><button class="btn primary" data-a="satPopGo">See the saturation check</button></div>
+    <p class="note">Recorded for your methods paragraph and the export. This tracks new code labels only, not depth of meaning. Finish coding all your remaining transcripts before judging whether you have enough data.</p>
+    <div class="satBtns"><button class="btn primary" data-a="satPopClose">Keep coding</button><button class="btn" data-a="satPopGo">See the saturation check</button></div>
   </div></div>
 
 <script>
 (function(){
 'use strict';
-const VERSION = '0.5.0';
+const VERSION = '0.5.1';
 const FEEDBACK = 'mailto:tianshihao@hiroshima-u.ac.jp?subject=' + encodeURIComponent('Transcript Coder feedback (v' + VERSION + ')');
 // Libraries load from this site's own vendor/ folder. The CDN copy is only a fallback if the local file is missing.
 const VENDOR = { xlsx:['vendor/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], mammoth:['vendor/mammoth.browser.min.js','https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'] };
@@ -2164,7 +2165,8 @@ const REF = {
   guest2020:['Guest, Namey, & Chen, 2020','Guest, G., Namey, E., & Chen, M. (2020). A simple method to assess and report thematic saturation in qualitative research. <i>PLOS ONE, 15</i>(5), e0232076. https://doi.org/10.1371/journal.pone.0232076'],
   hennink2017:['Hennink, Kaiser, & Marconi, 2017','Hennink, M. M., Kaiser, B. N., & Marconi, V. C. (2017). Code saturation versus meaning saturation: How many interviews do we need? <i>Qualitative Health Research, 27</i>(4), 591–608. https://doi.org/10.1177/0969732316665344'],
   hennink2022:['Hennink & Kaiser, 2022','Hennink, M., & Kaiser, B. N. (2022). Sample sizes for saturation in qualitative research: A systematic review of empirical tests. <i>Social Science & Medicine, 292</i>, 114523. https://doi.org/10.1016/j.socscimed.2021.114523'],
-  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.0) [Computer software]. https://tianshihao.org/coder/'],
+  francis2010:['Francis et al., 2010','Francis, J. J., Johnston, M., Robertson, C., Glidewell, L., Entwistle, V., Eccles, M. P., & Grimshaw, J. M. (2010). What is an adequate sample size? Operationalising data saturation for theory-based interview studies. <i>Psychology & Health, 25</i>(10), 1229–1245. https://doi.org/10.1080/08870440903194015'],
+  hao:['Hao, 2026','Hao, T. (2026). <i>Transcript Coder</i> (Version 0.5.1) [Computer software]. https://tianshihao.org/coder/'],
   landis:['Landis & Koch, 1977','Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. <i>Biometrics, 33</i>(1), 159–174. https://doi.org/10.2307/2529310'],
   macqueen:['MacQueen et al., 1998','MacQueen, K. M., McLellan, E., Kay, K., & Milstein, B. (1998). Codebook development for team-based qualitative analysis. <i>Cultural Anthropology Methods, 10</i>(2), 31–36. https://doi.org/10.1177/1525822X980100020301'],
   mchugh:['McHugh, 2012','McHugh, M. L. (2012). Interrater reliability: The kappa statistic. <i>Biochemia Medica, 22</i>(3), 276–282. https://doi.org/10.11613/BM.2012.031'],
@@ -2347,7 +2349,7 @@ const STEP_CB = [
      return { why:`Read before you code ${cite('braun2006')}. Notes written now keep the first codes you think of from being forced onto the rest of the data.`,
        html:`<div class="tCards">${list || '<p class="note">Import transcripts first.</p>'}</div>
          <label class="fld">Ideas across transcripts<textarea data-k="memo" rows="4" placeholder="Patterns you notice, possible codes, questions to ask yourself later.">${esc(g.memo)}</textarea></label>`,
-       foot:`<button class="btn primary" data-a="mark" data-s="familiar" data-ready>Done reading</button>${missing && S.transcripts.length ? `<button class="btn ghost" data-a="mark" data-s="familiar">Continue without notes for ${missing}</button>` : ''}` }; } },
+       foot:`<button class="btn primary" data-a="mark" data-s="familiar" data-ready>Done reading</button>${missing && S.transcripts.length ? `<button class="btn ghost" data-a="mark" data-s="familiar">Continue without notes (${missing} ${missing === 1 ? 'transcript' : 'transcripts'})</button>` : ''}` }; } },
  { id:'draft', ph:'cb', title:'Draft the codebook, version 0.1',
    est: () => G().versions.length ? 0 : Math.max(15, 30 - S.codes.filter(c => c.definition).length * 4), done: () => G().versions.length >= 1,
    checks(){ const cs = S.codes; return [chk(cs.length >= 3, `At least three codes (${cs.length} so far)`), chk(cs.length && cs.every(c => (c.definition || '').trim()), 'Every code has a definition'), chk(cs.length && cs.every(c => (c.incl || '').trim() && (c.excl || '').trim()), 'Every code says when to use it and when not to', true), chk(cs.length && cs.every(c => (c.example || '').trim()), 'Every code has an example', true)]; },
@@ -2543,30 +2545,33 @@ const SAT_STEP = { id:'saturation', ph:'code', title:'Check data saturation',
     const st = G().saturation; const out = [];
     out.push(st.method === 'guest' ? chk(!!(R.guest && R.guest.hit), R.guest && R.guest.hit ? `Base/run: reached at ${R.rows[R.guest.hit.idx].name}` : 'Base/run: not below the threshold yet', true) : chk(!!(R.guest && R.guest.hit), R.guest && R.guest.hit ? `Base/run: reached at ${R.rows[R.guest.hit.idx].name}` : 'Base/run: not reached'));
     out.push(chk(!!R.consec.hit, R.consec.hit ? `No-new-codes run: reached at ${R.rows[R.consec.hit.idx].name}` : 'No-new-codes run: not reached', st.method === 'consec'));
-    out.push(chk(!!R.coverage.hit, R.coverage.hit ? `Coverage: reached at ${R.rows[R.coverage.hit.idx].name}` : 'Coverage: not reached', st.method === 'coverage'));
+    out.push(chk(!!R.coverage.hit, R.coverage.hit ? `Coverage (retrospective): mark passed at ${R.rows[R.coverage.hit.idx].name}` : 'Coverage (retrospective): mark not passed', st.method === 'coverage'));
     out.push(chk(!!R.meaning, R.meaning ? `Meaning saturation: judged at ${R.rows[R.meaning.idx].name}` : 'Meaning saturation: not judged yet', st.method === 'meaning'));
     return out; },
   body(){ const g = G(); const st = g.saturation; const R = saturationReport();
     const chip = (k, v, label) => `<button class="btn small ${st[k] === v ? 'primary' : 'ghost'}" data-a="satParam" data-k="${k}" data-v="${v}">${label}</button>`;
     const mBtn = (v, label, sub) => `<button class="opt" data-a="satMethod" data-v="${v}" aria-pressed="${st.method === v}"><span>${label}</span><small>${sub}</small></button>`;
     let params = '';
-    if (st.method === 'guest') params = `<div class="fld"><span>Base: the first</span> ${chip('base', 2, '2')} ${chip('base', 3, '3')} <span>transcripts · Run length</span> ${chip('run', 2, '2')} ${chip('run', 3, '3')} ${chip('run', 4, '4')} <span>· New information threshold</span> ${chip('threshold', 0, '0%')} ${chip('threshold', 5, '5%')} ${chip('threshold', 10, '10%')}</div>`;
+    if (st.method === 'guest') params = `<div class="fld"><span>Base: the first</span> ${chip('base', 2, '2')} ${chip('base', 3, '3')} ${chip('base', 4, '4')} <span>transcripts · Run length</span> ${chip('run', 2, '2')} ${chip('run', 3, '3')} ${chip('run', 4, '4')} <span>· New information threshold</span> ${chip('threshold', 0, '0%')} ${chip('threshold', 5, '5%')} ${chip('threshold', 10, '10%')}</div>`;
     if (st.method === 'consec') params = `<div class="fld"><span>Transcripts in a row with no new codes</span> ${chip('consec', 2, '2')} ${chip('consec', 3, '3')}</div>`;
     if (st.method === 'coverage') params = `<div class="fld"><span>Saturated when this share of all codes has appeared</span> ${chip('coverage', 85, '85%')} ${chip('coverage', 90, '90%')} ${chip('coverage', 95, '95%')}</div>`;
     const hit = R.primary && R.primary.hit;
     const curve = R.rows.length > 1 ? `<svg viewBox="0 0 100 42" style="width:100%;height:84px" role="img" aria-label="Cumulative share of codes by transcript"><polyline fill="none" stroke="var(--accent)" stroke-width="1.6" points="${R.rows.map((r, i) => `${(i / (R.rows.length - 1)) * 96 + 2},${38 - r.share * 34}`).join(' ')}"/>${R.rows.map((r, i) => `<circle cx="${(i / (R.rows.length - 1)) * 96 + 2}" cy="${38 - r.share * 34}" r="1.8" fill="var(--accent)"/>`).join('')}</svg>` : '';
     const table = R.rows.length ? `<div class="scrollX"><table class="tbl"><thead><tr><th>#</th><th>Transcript (in the order you finished them)</th><th>New codes</th><th>Codes so far</th><th>Share of all codes</th></tr></thead><tbody>${R.rows.map((r, i) => `<tr${hit && hit.idx === i ? ' class="satHitRow"' : ''}><td>${i + 1}</td><td>${esc(r.name)}</td><td>${r.fresh}</td><td>${r.cum}</td><td>${pctS(r.share)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="note">No finished transcripts yet. This table fills in as you finish coding them.</p>';
     const finOpts = S.transcripts.filter(t => t.finishedAt);
-    return { why:`Saturation is the point where more data stops changing the picture. Code saturation is about new codes drying up; meaning saturation is about new nuances drying up, and only you can judge that one ${cite('hennink2017')}. Pick the method you will report. The table is built from the order you finished the transcripts, and a code counts at the first transcript you used it in.`,
+    const baseNote = st.method === 'guest' && R.guest && R.guest.baseCodes > 0 && R.guest.baseCodes < 20 ? `<p class="note">Your base holds only ${R.guest.baseCodes} codes, so a single new code in a run is already ${Math.round(100 / R.guest.baseCodes)}% of the base. With a base this small, the 5% and 10% thresholds behave like 0%: only a run with no new codes at all can pass. A larger base (Guest and colleagues worked with four to six transcripts) makes the thresholds meaningful.</p>` : '';
+    const finV = g.versions.find(v => v.final);
+    const lockWarn = finV && R.rows.length >= 2 && !S.codes.some(c => !finV.codes.some(x => x.id === c.id)) ? `<p class="note">No new codes have been added since you locked the codebook (version ${esc(finV.v)}). Counts of new codes cannot test saturation on a fixed codebook: if nothing new can appear, nothing new appearing proves little. The meaning saturation judgement below is the honest check here.</p>` : '';
+    return { why:`Researchers distinguish code saturation, where new code labels stop appearing, from meaning saturation, where new nuances stop appearing; only you can judge the second one ${cite('hennink2017')}. Pick the method you will report. The table follows the order you finished the transcripts, and a code counts at the first transcript you used it in. If you re-code an earlier transcript, the table updates, so an earlier reading can change. Where the point falls also depends on the order the transcripts happened to be coded in, so treat it as approximate.`,
       html:`<div class="q"><b>Which saturation method will you report?</b><div class="opts">
         ${mBtn('guest', 'Base and run (Guest, Namey & Chen, 2020)', 'New codes in each run, as a share of the codes in your first transcripts')}
-        ${mBtn('consec', 'No new codes in a row (Hennink & Kaiser, 2022)', 'Code saturation: the well runs dry for several transcripts running')}
-        ${mBtn('coverage', 'Code coverage', 'The point where most of the codes you will ever find have already appeared')}
+        ${mBtn('consec', 'No new codes in a row (Francis et al., 2010)', 'Consecutive transcripts with zero new codes added')}
+        ${mBtn('coverage', 'Code coverage (retrospective)', 'Retrospective share of your final codebook identified by each transcript')}
         ${mBtn('meaning', 'Meaning saturation (Hennink et al., 2017)', 'Your judgement: later transcripts add no new nuances or dimensions')}
       </div>${params}</div>
-      ${hit ? `<div class="result"><h3>Saturation reached</h3><p>${esc(satHitText(R, st.method))}</p><p class="note">This goes into your draft methods paragraph and the export.</p></div>` : R.rows.length >= 2 ? `<p class="note">Not reached yet by this method. The other methods are tracked in the checklist on the left.</p>` : ''}
+      ${hit ? `<div class="result"><h3>${st.method === 'coverage' ? 'Coverage mark passed' : 'Saturation reached'}</h3><p>${esc(satHitText(R, st.method))}</p><p class="note">This goes into your draft methods paragraph and the export.</p></div>` : R.rows.length >= 2 ? `<p class="note">Not reached yet by this method. The other methods are tracked in the checklist on the left.</p>` : ''}${baseNote}${lockWarn}
       ${curve}${table}
-      <div class="q"><b>Meaning saturation is a judgement, not a count</b><p class="note">When the newest transcripts stopped adding nuances, dimensions, or counter-examples, record where. It is reported next to the counts, not instead of them.</p>
+      <div class="q"><b>Meaning saturation is a judgement, not a count</b><p class="note">When your core codes stopped gaining new nuances, dimensions, or counter-examples, record where. It is reported next to the counts, not instead of them.</p>
       <label class="fld">Reached at <select id="satMeaningSel"><option value="">Not yet</option>${finOpts.map(t => `<option value="${t.id}"${st.meaningAt === t.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></label>
       <label class="fld">Why there, in one line<input id="satMeaningNote" value="${esc(st.meaningNote || '')}" placeholder="For example, the last two interviews repeated the same three tensions"></label>
       <div><button class="btn" data-a="satMeaningSave">Save the judgement</button></div></div>
@@ -2574,6 +2579,7 @@ const SAT_STEP = { id:'saturation', ph:'code', title:'Check data saturation',
       foot: hit || R.meaning ? '' : `<button class="btn" data-a="mark" data-s="saturation">Continue without a saturation claim</button>` }; } };
 function maybeSatPop(){
   const g = G(); if (!g || !g.saturation || g.saturation.pop === false || g.celebrated.saturation) return;
+  if (g.saturation.method === 'coverage' || g.saturation.method === 'meaning') return;
   const R = saturationReport(); if (!R || !R.primary || !R.primary.hit) return;
   const hit = R.primary.hit; const row = R.rows[hit.idx];
   g.celebrated.saturation = { at: nowMs(), method: g.saturation.method, tid: row.tid }; persist();
@@ -2702,8 +2708,8 @@ function methodsParts(){
   const SR = saturationReport();
   if (SR && SR.rows.length >= 2){ const st = g.saturation; const nm = i => SR.rows[i].name;
     if (st.method === 'guest' && SR.guest){ if (SR.guest.hit){ t(' Saturation was assessed with the base and run method (Guest, Namey, & Chen, 2020), counting a code at the first transcript in which it was applied. With a base of the first '); d(numW(st.base)); t(' transcripts ('); d(numW(SR.guest.baseCodes)); t(' codes) and runs of '); d(numW(st.run)); t(', new information fell to '); d(pctS(SR.guest.hit.pct)); t(' at '); d(nm(SR.guest.hit.idx)); t(', at or below the '); d(st.threshold + '%'); t(' threshold set in advance.'); } else { t(' Saturation was assessed with the base and run method (Guest, Namey, & Chen, 2020); new information did not fall to the '); d(st.threshold + '%'); t(' threshold within the '); d(numW(SR.rows.length)); t(' transcripts coded, so saturation is not claimed on this basis.'); } }
-    if (st.method === 'consec'){ if (SR.consec.hit){ t(' Code saturation was taken to be reached when '); d(numW(st.consec)); t(' consecutively coded transcripts added no new codes (Hennink & Kaiser, 2022), which occurred at '); d(nm(SR.consec.hit.idx)); t('.'); } else { t(' No run of '); d(numW(st.consec)); t(' consecutively coded transcripts without a new code occurred, so code saturation (Hennink & Kaiser, 2022) is not claimed.'); } }
-    if (st.method === 'coverage' && SR.coverage.hit){ t(' By '); d(nm(SR.coverage.hit.idx)); t(', '); d(pctS(SR.rows[SR.coverage.hit.idx].share)); t(' of all '); d(numW(SR.total)); t(' codes had appeared, passing the '); d(st.coverage + '%'); t(' coverage mark set for this study.'); }
+    if (st.method === 'consec'){ if (SR.consec.hit){ t(' Code saturation was taken to be reached when '); d(numW(st.consec)); t(' consecutively coded transcripts added no new codes (Francis et al., 2010), which occurred at '); d(nm(SR.consec.hit.idx)); t('.'); } else { t(' No run of '); d(numW(st.consec)); t(' consecutively coded transcripts without a new code occurred, so code saturation (Francis et al., 2010) is not claimed.'); } }
+    if (st.method === 'coverage' && SR.coverage.hit){ t(' Looked at afterwards, by '); d(nm(SR.coverage.hit.idx)); t(', '); d(pctS(SR.rows[SR.coverage.hit.idx].share)); t(' of all '); d(numW(SR.total)); t(' codes in the final codebook had appeared, passing the '); d(st.coverage + '%'); t(' mark set for this study. This coverage figure describes how the codebook emerged across the dataset; it is a retrospective summary, not a saturation test.'); }
     if (SR.meaning){ t(' Meaning saturation (Hennink, Kaiser, & Marconi, 2017) was judged to have been reached at '); d(nm(SR.meaning.idx)); if (st.meaningNote) { t(': '); d(st.meaningNote.replace(/[.]$/, '')); t('.'); } else t('.'); } }
   const th = themes();
   if (th.length){ t(' The codes were then grouped into '); d(numW(th.length)); t(th.length === 1 ? ' theme, which was' : ' themes, which were'); t(' reviewed against the coded extracts and the research question (Braun & Clarke, 2006).'); }
@@ -2990,8 +2996,8 @@ function guideSheets(){
   const SR = saturationReport();
   if (SR && SR.rows.length){ const st = g.saturation; const sat = [['#','Transcript (in the order finished)','New codes','Codes so far','Share of all codes'], ...SR.rows.map((r, i) => [i + 1, r.name, r.fresh, r.cum, pctS(r.share)])];
     sat.push([]); sat.push(['Method to report', st.method]); sat.push(['Base and run (Guest, Namey & Chen, 2020)', SR.guest ? (SR.guest.hit ? 'Reached at ' + SR.rows[SR.guest.hit.idx].name + ' (new information ' + pctS(SR.guest.hit.pct) + ', threshold ' + st.threshold + '%)' : 'Not reached') : 'Not enough transcripts']);
-    sat.push(['No new codes in a row (Hennink & Kaiser, 2022)', SR.consec.hit ? 'Reached at ' + SR.rows[SR.consec.hit.idx].name : 'Not reached']);
-    sat.push(['Code coverage', SR.coverage.hit ? 'Reached at ' + SR.rows[SR.coverage.hit.idx].name + ' (' + st.coverage + '% mark)' : 'Not reached']);
+    sat.push(['No new codes in a row (Francis et al., 2010)', SR.consec.hit ? 'Reached at ' + SR.rows[SR.consec.hit.idx].name : 'Not reached']);
+    sat.push(['Code coverage (retrospective)', SR.coverage.hit ? 'Mark passed at ' + SR.rows[SR.coverage.hit.idx].name + ' (' + st.coverage + '% mark)' : 'Mark not passed']);
     sat.push(['Meaning saturation (Hennink et al., 2017)', SR.meaning ? 'Judged at ' + SR.rows[SR.meaning.idx].name + (st.meaningNote ? ': ' + st.meaningNote : '') : 'Not judged']);
     out.push(['Saturation', sat, [6,44,12,14,18]]); }
   out.push(['Methods draft', [['Draft methods paragraph. Paraphrase before use.'], [mpText()], [], ['References'], ...methodsRefs(methodsParts()).map(r => [r.replace(/<[^>]+>/g, '')])], [140]]);
