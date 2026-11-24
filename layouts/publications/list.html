@@ -47,21 +47,24 @@
   (dict "key" "other-collaborations" "title" "Other Collaborations")
 }}
 
-{{/* Publications timeline (ptl, 2026-11-24): animated overview between
-     the page header and the grouped list. The data is generated here
-     from the same grouped pages the list below renders, so a new
-     publication appears in the animation with no extra work. Fields:
-     g = group title exactly as in h2.pub-group-title; t = the type
-     label exactly as .pub-type-marker derives it in
-     views/citation.html (same rules, same order); y = the citation
-     year (event_start, else date); venue = the resolved publication
-     name; first = the site owner is first author. ptl.css and ptl.js
-     load only on this page; all ptl styles are scoped to .ptl and the
-     script makes no network calls. */}}
+{{/* Publications timeline (ptl, version 2, 2026-11-24): "Publications
+     at a glance" between the page header and the grouped list. One
+     hairline draws itself from the first year to today; every
+     publication is a bead on it (journal filled, conference hollow,
+     book/dissertation pale, accepted dashed); a few milestone works
+     are named. The data is generated here from the same grouped pages
+     the list below renders, so a new publication appears in the
+     animation with no extra work. Fields: g = group title exactly as
+     in h2.pub-group-title; t = the type label exactly as
+     .pub-type-marker derives it in views/citation.html (same rules,
+     same order); y = the citation year (event_start, else date);
+     venue = the resolved publication name; first = the site owner is
+     first author; m/ms = the optional milestone label and sub-line,
+     from the entry's timeline_label / timeline_sub front matter.
+     ptl.css and ptl.js load only on this page; all ptl styles are
+     scoped to .ptl and the script makes no network calls. */}}
 {{ $ptlData := slice }}
-{{ $ptlOrder := slice }}
 {{ range $groups }}
-  {{ $ptlOrder = $ptlOrder | append .title }}
   {{ $gkey := .key }}{{ $gtitle := .title }}
   {{ range (where $.Pages "Params.research_line" $gkey).ByDate.Reverse }}
     {{ $pub := partial "functions/resolve_publication.html" . }}
@@ -80,7 +83,10 @@
     {{ $yr := int ((time (.Params.event_start | default .Date)).Format "2006") }}
     {{ $first := false }}
     {{ with .Params.authors }}{{ if eq (index . 0) "me" }}{{ $first = true }}{{ end }}{{ end }}
-    {{ $ptlData = $ptlData | append (dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first) }}
+    {{ $ptlItem := dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first }}
+    {{ $tlSub := .Params.timeline_sub }}
+    {{ with .Params.timeline_label }}{{ $ptlItem = merge $ptlItem (dict "m" . "ms" ($tlSub | default "")) }}{{ end }}
+    {{ $ptlData = $ptlData | append $ptlItem }}
   {{ end }}
 {{ end }}
 {{ $ptlY0 := 9999 }}{{ range $ptlData }}{{ if lt .y $ptlY0 }}{{ $ptlY0 = .y }}{{ end }}{{ end }}
@@ -93,7 +99,7 @@
 {{ $ptlWord = printf "%s%s" (upper (substr $ptlWord 0 1)) (substr $ptlWord 1) }}
 <div class="plist-wrap">
   {{- with resources.Get "css/ptl.css" }}<link rel="stylesheet" href="{{ (. | resources.Minify).RelPermalink }}">{{ end }}
-  <section class="ptl" id="ptl" data-order="{{ delimit $ptlOrder "|" }}" data-cta="/speaking/#research-collaboration" aria-label="Publications at a glance"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
+  <section class="ptl" id="ptl" data-cta="/speaking/#research-collaboration" aria-label="Publications at a glance"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
   <script type="application/json" id="ptl-data">{{ $ptlData | jsonify | safeJS }}</script>
   {{- with resources.Get "js/ptl.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
 </div>

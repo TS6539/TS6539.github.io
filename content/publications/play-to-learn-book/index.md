@@ -18,4 +18,6 @@ featured: false
 hugoblox:
   ids:
     isbn: "9781636766362"
+timeline_label: "Play to Learn"
+timeline_sub: "A book on games and language learning"
 ---

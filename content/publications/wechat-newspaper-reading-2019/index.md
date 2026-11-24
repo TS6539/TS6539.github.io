@@ -15,4 +15,6 @@ tags:
 research_line: game-based-language-learning
 featured: false
 journal_cover: "media/journals/youth-and-society.jpg"
+timeline_label: "First article"
+timeline_sub: "Online English reading on WeChat"
 ---

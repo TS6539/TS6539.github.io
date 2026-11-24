@@ -19,4 +19,6 @@ tags:
   - ENA
 research_line: qe-learning-analytics
 featured: false
+timeline_label: "Reading lives through ENA"
+timeline_sub: "AERA, Toronto"
 ---

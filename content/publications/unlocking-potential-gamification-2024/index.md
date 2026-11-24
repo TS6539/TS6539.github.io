@@ -23,4 +23,6 @@ hugoblox:
     doi: "10.1007/s10639-023-12332-0"
 journal_cover: "media/journals/education-and-information-technologies.jpg"
 journal_note: "2025 Impact Factor 7.2 · Indexed in SSCI and Scopus"
+timeline_label: "Gamification in leadership curricula"
+timeline_sub: "Education and Information Technologies"
 ---
