@@ -13,8 +13,6 @@
   const seen = [...new Set(data.map(d => d.g))];
   const groups = [...ORDER.filter(g => seen.includes(g)), ...seen.filter(g => !ORDER.includes(g))];
   const isOther = g => /other|collaborat/i.test(g);
-  const COLORS = ['--ptl-c1', '--ptl-c2', '--ptl-c3', '--ptl-c4'];
-  const colorOf = g => isOther(g) ? 'var(--ptl-c5)' : `var(${COLORS[groups.filter(x => !isOther(x)).indexOf(g) % COLORS.length]})`;
   const kind = t => /journal/i.test(t) ? 'j' : /book|dissertation/i.test(t) ? 'b' : /accepted|forthcoming/i.test(t) ? 'a' : 'c';
   const RANK = { j: 0, b: 1, c: 2, a: 3 };
 
@@ -37,10 +35,8 @@
     <p class="ptl-lede">Each mark is one piece of work, placed by year and research area. Hover or tap a mark to see it, or scroll down for the full list. <span class="ptl-ctl"><button type="button" data-skip>Skip the animation</button><button type="button" data-replay hidden>Replay</button></span></p>
     <div class="ptl-stage"><div data-svg></div><div class="ptl-tip" role="status"></div></div>
     <div class="ptl-legend" aria-hidden="true">
-      <span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5" fill="currentColor"/></svg>Journal article</span>
-      <span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Conference paper, talk, or poster</span>
-      <span><svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" fill="currentColor"/></svg>Book or dissertation</span>
-      ${data.some(d => kind(d.t) === 'a') ? '<span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2 1.6"/></svg>Accepted, upcoming</span>' : ''}
+      <span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5" style="fill:var(--ptl-accent)"/></svg>First author</span>
+      <span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" style="fill:var(--ptl-paper);stroke:var(--ptl-accent)" stroke-width="1.6"/></svg>Co-author</span>
     </div>
     <div class="ptl-sum">
       <div class="ptl-stat"><b>${n.all}</b><span>works since ${y0}</span></div>
@@ -70,21 +66,15 @@
     groups.forEach(g => {
       const rows = Math.max(1, ...years.map(yr => Math.ceil(((cell[g + '|' + yr] || []).length) / cols)));
       const top = y, h = LABEL + rows * step + PADB;
-      const col = colorOf(g);
-      const ys = years.filter(yr => cell[g + '|' + yr]);
-      const xa = padL + (ys[0] - y0) * colW + colW / 2, xb = padL + (ys[ys.length - 1] - y0) * colW + colW / 2;
       laneSvg += `<text class="lane-label" x="${padL}" y="${top + 13}">${esc(g)}</text>`;
       laneSvg += `<line class="lane-rule" x1="${padL}" x2="${W}" y1="${top + h - 0.5}" y2="${top + h - 0.5}"/>`;
-      laneSvg += `<line class="lane-path" data-x="${xa}" x1="${xa}" x2="${xb}" y1="${top + h - 5}" y2="${top + h - 5}" style="stroke:${col}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`;
       years.forEach((yr, yi) => {
         const items = cell[g + '|' + yr] || [];
         const used = Math.min(cols, items.length), x0 = padL + yi * colW + (colW - used * step) / 2;
         items.forEach((d, k) => {
           const cx = x0 + (k % cols) * step + step / 2, cy = top + LABEL + Math.floor(k / cols) * step + step / 2;
-          const kd = kind(d.t);
-          const shape = kd === 'b' ? `<rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="${col}"/>`
-            : kd === 'j' ? `<circle cx="${cx}" cy="${cy}" r="${r + .3}" fill="${col}"/>`
-            : `<circle cx="${cx}" cy="${cy}" r="${r - .2}" fill="none" stroke="${col}" stroke-width="1.6"${kd === 'a' ? ' stroke-dasharray="2 1.6"' : ''}/>`;
+          const shape = d.first ? `<circle cx="${cx}" cy="${cy}" r="${r + .3}" fill="var(--ptl-accent)"/>`
+            : `<circle cx="${cx}" cy="${cy}" r="${r - .2}" fill="var(--ptl-paper)" stroke="var(--ptl-accent)" stroke-width="1.6"/>`;
           const i = marks.length;
           marks.push({ d, cx, cy });
           out += `<a class="mk" href="${esc(d.href || '#')}" data-i="${i}" tabindex="-1" aria-label="${esc(d.title)}">${shape}<circle cx="${cx}" cy="${cy}" r="${step / 2 + 1}" fill="transparent"/></a>`;
@@ -96,7 +86,6 @@
     let axis = '';
     years.forEach((yr, yi) => {
       const x = padL + yi * colW + colW / 2, fut = yr > thisYear;
-      axis += `<line class="grid" x1="${padL + yi * colW}" x2="${padL + yi * colW}" y1="0" y2="${y}"/>`;
       axis += `<text class="yr${fut ? ' fut' : ''}" x="${x}" y="${y + 18}">${small ? "'" + String(yr).slice(2) : yr}</text>`;
     });
     svgHost.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${n.all} works from ${y0} to ${y1}, grouped by research area. The full list follows below.">${axis}${laneSvg}<g>${out}</g><line class="sweep" x1="0" x2="0" y1="0" y2="${y}" style="opacity:0"/></svg>`;
@@ -131,7 +120,6 @@
   function finalState() {
     playing = false; cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers = [];
     root.querySelectorAll('.mk').forEach(m => { m.style.transitionDelay = '0ms'; m.classList.add('on'); });
-    root.querySelectorAll('.lane-path').forEach(l => { l.style.transition = 'none'; l.setAttribute('stroke-dashoffset', '0'); });
     const sw = root.querySelector('.sweep'); if (sw) sw.style.opacity = '0';
     counter.textContent = n.all; sumEl.classList.add('on'); ctaEl.classList.add('on');
     skipBtn.hidden = true; replayBtn.hidden = false;
@@ -141,11 +129,9 @@
     sumEl.classList.remove('on'); ctaEl.classList.remove('on'); counter.textContent = '0';
     const els = [...root.querySelectorAll('.mk')];
     els.forEach((el, i) => { const t = (marks[i].cx / W) * D + (i % 5) * 18; el.style.transitionDelay = t + 'ms'; });
-    root.querySelectorAll('.lane-path').forEach(l => { const t = (+l.dataset.x / W) * D; l.style.transition = `stroke-dashoffset ${Math.max(400, D - t)}ms linear ${t}ms`; });
     const sw = root.querySelector('.sweep');
     requestAnimationFrame(() => requestAnimationFrame(() => {
       els.forEach(el => el.classList.add('on'));
-      root.querySelectorAll('.lane-path').forEach(l => l.setAttribute('stroke-dashoffset', '0'));
     }));
     const t0 = performance.now();
     const tick = now => {

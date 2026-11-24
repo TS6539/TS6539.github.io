@@ -1,30 +1,28 @@
-/* Publication timeline (ptl). Scoped to .ptl. Light theme by default, dark when html has class "dark". */
-.ptl{--ptl-ink:#1f1c18;--ptl-muted:#6b6357;--ptl-faint:#a39a8c;--ptl-line:rgba(31,28,24,.12);--ptl-bg:transparent;--ptl-card:#fbf8f2;--ptl-accent:#4f6f96;
-  --ptl-c1:#b4711e;--ptl-c2:#4f6f96;--ptl-c3:#3f7d5a;--ptl-c4:#9a4f87;--ptl-c5:#7c7365;
+/* Publication timeline (ptl). Scoped to .ptl. Light theme by default, dark when html has class "dark".
+   Restyled 2026-11-24 to the site's own system: single ink blue, moon-white neutrals, hairlines,
+   no shadows, quiet 400ms fades. Neutrals and accent mirror the --v3-* tokens in custom.css. */
+.ptl{--ptl-ink:#1a1d20;--ptl-muted:#5a636b;--ptl-faint:#5f6a72;--ptl-line:rgba(26,29,32,.10);--ptl-bg:transparent;--ptl-card:#fcfdfe;--ptl-paper:#f2f5f7;--ptl-accent:#3f5a7a;
   position:relative;margin:0 0 3rem;color:var(--ptl-ink);font-variant-numeric:tabular-nums}
-.dark .ptl{--ptl-ink:#ece7dc;--ptl-muted:#a89f8d;--ptl-faint:#6f675b;--ptl-line:rgba(236,231,220,.14);--ptl-card:#1f1c18;--ptl-accent:#93a9c4;
-  --ptl-c1:#e0a458;--ptl-c2:#93a9c4;--ptl-c3:#8fbf9f;--ptl-c4:#c98bb9;--ptl-c5:#a89f8d}
+.dark .ptl{--ptl-ink:#ece7dc;--ptl-muted:#b8b2a6;--ptl-faint:#a39a89;--ptl-line:rgba(255,255,255,.09);--ptl-card:#1c1a17;--ptl-paper:#171512;--ptl-accent:#93a9c4}
 .ptl-kicker{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ptl-muted);margin:0 0 .35rem}
 .ptl-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.ptl-title{font-family:Newsreader,ui-serif,Georgia,serif;font-size:1.75rem;line-height:1.2;font-weight:600;margin:0}
+.ptl-title{font-family:Newsreader,ui-serif,Georgia,serif;font-size:1.75rem;line-height:1.2;font-weight:700;margin:0}
 .ptl-count{font-size:.95rem;color:var(--ptl-muted);min-width:7ch;text-align:right}
 .ptl-count b{color:var(--ptl-ink);font-size:1.25rem}
 .ptl-lede{color:var(--ptl-muted);margin:.4rem 0 1rem;font-size:.95rem;max-width:60ch}
 .ptl-stage{position:relative}
 .ptl svg{display:block;width:100%;height:auto;overflow:visible}
-.ptl .lane-label{font:600 12.5px/1 "Source Serif 4",ui-serif,Georgia,serif;fill:var(--ptl-muted);letter-spacing:.01em}
+.ptl .lane-label{font:700 13px/1 Newsreader,ui-serif,Georgia,serif;fill:var(--ptl-accent);letter-spacing:.01em}
 .ptl .lane-rule{stroke:var(--ptl-line);stroke-width:1}
-.ptl .lane-path{stroke-width:2;fill:none;stroke-linecap:round;opacity:.55}
 .ptl .yr{font:12px/1 "Source Serif 4",ui-serif,Georgia,serif;fill:var(--ptl-muted);text-anchor:middle}
 .ptl .yr.fut{fill:var(--ptl-faint)}
-.ptl .grid{stroke:var(--ptl-line);stroke-width:1;stroke-dasharray:2 4}
-.ptl .mk{cursor:pointer;opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.2);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.9,.3,1.3)}
+.ptl .mk{cursor:pointer;opacity:0;transform-box:fill-box;transform-origin:center;transform:translateY(4px);transition:opacity .4s ease,transform .4s ease}
 .ptl .mk.on{opacity:1;transform:none}
 .ptl .mk:hover,.ptl .mk.hl{filter:brightness(1.25)}
 .ptl .mk:focus-visible{outline:none}
-.ptl .mk:focus-visible circle,.ptl .mk:focus-visible rect{stroke:var(--ptl-ink);stroke-width:2}
+.ptl .mk:focus-visible circle{stroke:var(--ptl-ink);stroke-width:2}
 .ptl .sweep{stroke:var(--ptl-accent);stroke-width:1.5;opacity:.7}
-.ptl-tip{position:absolute;z-index:5;max-width:280px;background:var(--ptl-card);border:1px solid var(--ptl-line);border-radius:8px;padding:.55rem .7rem;font-size:.82rem;line-height:1.35;box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.ptl-tip{position:absolute;z-index:5;max-width:280px;background:var(--ptl-card);border:1px solid var(--ptl-line);border-radius:6px;padding:.55rem .7rem;font-size:.82rem;line-height:1.35;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
 .ptl-tip.show{opacity:1;transform:none}
 .ptl-tip b{display:block;margin-bottom:.25rem;font-weight:600}
 .ptl-tip span{color:var(--ptl-muted)}
@@ -35,13 +33,13 @@
 .ptl-sum{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;margin:1.2rem 0 0;padding:1rem 0 0;border-top:1px solid var(--ptl-line);opacity:0;transform:translateY(6px);transition:opacity .5s ease,transform .5s ease}
 .ptl-sum.on{opacity:1;transform:none}
 .ptl-stat{display:flex;flex-direction:column}
-.ptl-stat b{font-family:Newsreader,ui-serif,Georgia,serif;font-size:1.6rem;line-height:1.1;font-weight:600}
+.ptl-stat b{font-family:Newsreader,ui-serif,Georgia,serif;font-size:1.6rem;line-height:1.1;font-weight:700}
 .ptl-stat span{font-size:.8rem;color:var(--ptl-muted)}
 .ptl-cta{display:flex;align-items:center;justify-content:space-between;gap:.8rem 1.2rem;flex-wrap:wrap;margin:1.1rem 0 0;opacity:0;transition:opacity .5s ease .25s}
 .ptl-cta.on{opacity:1}
 .ptl-cta p{margin:0;color:var(--ptl-muted);font-size:.92rem}
 .ptl-cta a.btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--ptl-accent);color:var(--ptl-accent);border-radius:999px;padding:.45rem 1rem;font-size:.9rem;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s}
-.ptl-cta a.btn:hover{background:var(--ptl-accent);color:var(--ptl-card)}
+.ptl-cta a.btn:hover{background:var(--ptl-accent);color:var(--ptl-paper)}
 .ptl-ctl{font-size:.85rem;white-space:nowrap}
 .ptl-ctl button{background:none;border:0;color:var(--ptl-muted);cursor:pointer;padding:.2rem .1rem;text-decoration:underline;text-underline-offset:3px;font:inherit}
 .ptl-ctl button:hover{color:var(--ptl-ink)}
