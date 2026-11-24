@@ -44,7 +44,7 @@
     const nowEnd = (bands.find(b => b.y === Math.min(NOW, y1)) || bands[bands.length - 1]).b;
     let H, pt;
     if (!vertical) {
-      H = 290; const L = 6, R = W - 6, yA = 238, yB = 150;
+      H = 340; const L = 6, R = W - 6, yA = 226, yB = 150;
       pt = u => [L + u * (R - L), yA - (yA - yB) * smooth(u)];
     } else {
       H = Math.max(520, 34 * years.length + 12 * data.length); const T = 6, B = H - 10, xA = 56, xB = 88;
@@ -66,19 +66,58 @@
       const um = b.a + 0.04 * (b.b - b.a); const [x, y] = pt(vertical ? b.a + 0.02 : (b.a + b.b) / 2);
       yrs.push({ y: b.y, x, yy: y, at: lenAt(b.a) / nowLen, fut: b.y > NOW });
     });
-    // milestone labels with simple collision avoidance
-    const placed = [];
-    beads.filter(b => b.d.m).forEach(b => {
-      const lab = b.d.m, sub = b.d.ms || '', w = Math.max(lab.length * 6.6, sub.length * 5.6) + 8;
-      let level = 0, box;
-      for (; level < 6; level++) {
-        if (!vertical) { const lead = 30 + level * 42, top = b.y - lead - 30; const right = b.x + w > W; box = { x1: right ? b.x - w : b.x, x2: right ? b.x : b.x + w, y1: top, y2: top + 34, lead, right }; }
-        else { const top = b.y - 8 + level * 40; box = { x1: b.x + 22, x2: W, y1: top, y2: top + 34, lead: 0 }; }
-        const clearsLine = vertical || (() => { const u = Math.min(1, Math.max(0, (box.x2 - 6) / (W - 12))); return box.y2 + 10 < pt(u)[1]; })();
-        if (clearsLine && !placed.some(p => box.x1 < p.x2 + 6 && box.x2 > p.x1 - 6 && box.y1 < p.y2 + 4 && box.y2 > p.y1 - 4)) break;
+    // Milestone labels. A label may not touch another label, any leader line, the main line, or a year label,
+    // and its own leader may not pass through any other label. Candidates are tried from the shortest leader outwards.
+    const cv = document.createElement('canvas').getContext('2d');
+    const tw = (txt, font) => { cv.font = font; return cv.measureText(txt).width * 1.06 + 4; };
+    const FL = 'italic 14px Newsreader, Georgia, serif', FS = '11.5px "Source Serif 4", Georgia, serif', FY = '600 10.5px "Source Serif 4", Georgia, serif';
+    const boxes = [], leaders = [];
+    const hit = (a, b, pad) => a.x1 < b.x2 + pad && a.x2 > b.x1 - pad && a.y1 < b.y2 + pad && a.y2 > b.y1 - pad;
+    const curveY = x => pt(Math.min(1, Math.max(0, (x - 6) / (W - 12))))[1];
+    const msBeads = beads.filter(b => b.d.m);
+    // Placement order: widest label first. (v3 as delivered sorted by x, rightmost first,
+    // which left the widest label, the 2026 ETS milestone, no room beside its 2026/2027
+    // neighbours and silently dropped it on desktop. Widest-first places all seven.)
+    if (!vertical) { const wOf = b => Math.max(tw(b.d.m, FL), b.d.ms ? tw(b.d.ms, FS) : 0, tw(b.d.y + (kind(b.d.t) === 'a' ? ' \u00b7 ACCEPTED' : ''), FY)); msBeads.sort((p, q) => wOf(q) - wOf(p)); }
+    msBeads.forEach(b => {
+      const yrsTxt = b.d.y + (kind(b.d.t) === 'a' ? ' · ACCEPTED' : '');
+      let chosen = null;
+      for (const withSub of [true, false]) {
+        const sub = withSub ? (b.d.ms || '') : '';
+        const w = Math.max(tw(b.d.m, FL), sub ? tw(sub, FS) : 0, tw(yrsTxt, FY));
+        const h = sub ? 42 : 28;
+        if (vertical) {
+          let top = b.y - 10;
+          for (let k = 0; k < 40 && !chosen; k++, top += 6) { const box = { x1: b.x + 22, x2: b.x + 22 + w, y1: top, y2: top + h }; if (!boxes.some(p => hit(box, p, 4))) chosen = { box, sub, vertical: true }; }
+          break;
+        }
+        for (let level = 0; level < 7 && !chosen; level++) {
+          for (const side of ['up', 'down']) {
+            const lead = 24 + level * 26;
+            for (const anchor of ['start', 'end']) {
+              const x1 = anchor === 'start' ? b.x - 3 : b.x + 3 - w, x2 = x1 + w;
+              const y1 = side === 'up' ? b.y - lead - h : b.y + lead, y2 = y1 + h;
+              const box = { x1, x2, y1, y2 };
+              if (x1 < 0 || x2 > W || y1 < 0 || y2 > H) continue;
+              if (side === 'up' ? y2 + 6 > curveY(x2) : y1 - 6 < curveY(x1)) continue;
+              const ld = side === 'up' ? { x1: b.x, x2: b.x, y1: b.y - lead, y2: b.y - 6 } : { x1: b.x, x2: b.x, y1: b.y + 6, y2: b.y + lead };
+              if (boxes.some(p => hit(box, p, 6))) continue;
+              if (leaders.some(l => hit(box, l, 5))) continue;
+              if (boxes.some(p => hit(ld, p, 3))) continue;
+              chosen = { box, sub, side, anchor, lead, ld }; break;
+            }
+            if (chosen) break;
+          }
+        }
+        if (chosen) break;
       }
-      placed.push(box); ms.push({ b, lab, sub, box, vertical });
+      if (!chosen) return;
+      boxes.push(chosen.box); if (chosen.ld) leaders.push(chosen.ld);
+      ms.push(Object.assign({ b, lab: b.d.m, yrsTxt, vertical }, chosen));
     });
+    const placed = ms.map(m => m.box);
+    // A year label that sits under a milestone label or leader is hidden; the milestone already names its year.
+    if (!vertical) yrs.forEach(y => { const yb = { x1: y.x - 16, x2: y.x + 16, y1: y.yy + 14, y2: y.yy + 30 }; y.hidden = boxes.some(p => hit(yb, p, 2)) || leaders.some(l => hit(yb, l, 2)); });
     if (vertical) H = Math.max(H, ...placed.map(p => p.y2 + 6));
     geo = { W, H, vertical, total, nowLen, dNow: dPath(nowEnd), futD, pt };
   }
@@ -89,13 +128,14 @@
     let out = `<path class="trail" d="${dNow}"/>${futD ? `<path class="trail" d="${futD}" stroke-dasharray="2 4" data-fut/>` : ''}<path class="path" d="${dNow}" data-path/>`;
     yrs.forEach((y, i) => {
       out += vertical ? `<text class="yr${y.fut ? ' fut' : ''}" data-yr="${i}" x="0" y="${y.yy + 4}">${y.y}</text>`
-        : `<text class="yr${y.fut ? ' fut' : ''}" data-yr="${i}" x="${y.x}" y="${y.yy + 26}" text-anchor="middle">${y.y}</text>`;
+        : (y.hidden ? `<text class="yr" data-yr="${i}" x="0" y="0" visibility="hidden"></text>` : `<text class="yr${y.fut ? ' fut' : ''}" data-yr="${i}" x="${y.x}" y="${y.yy + 26}" text-anchor="middle">${y.y}</text>`);
     });
     ms.forEach((m, i) => {
       const { b, box } = m;
       if (!vertical) {
-        const tx = box.right ? b.x - 4 : b.x + 4, anchor = box.right ? 'end' : 'start';
-        out += `<g class="ms" data-ms="${i}"><line x1="${b.x}" y1="${b.y - 7}" x2="${b.x}" y2="${b.y - box.lead}"/><text class="yrs" x="${tx}" y="${b.y - box.lead - 22}" text-anchor="${anchor}">${b.d.y}${kind(b.d.t) === 'a' ? ' · ACCEPTED' : ''}</text><text class="lab" x="${tx}" y="${b.y - box.lead - 8}" text-anchor="${anchor}">${esc(m.lab)}</text>${m.sub ? `<text class="sub" x="${tx}" y="${b.y - box.lead + 6}" text-anchor="${anchor}">${esc(m.sub)}</text>` : ''}</g>`;
+        const tx = m.anchor === 'start' ? box.x1 + 2 : box.x2 - 2, an = m.anchor;
+        const ty = box.y1;
+        out += `<g class="ms" data-ms="${i}"><line x1="${m.ld.x1}" y1="${m.ld.y1}" x2="${m.ld.x2}" y2="${m.ld.y2}"/><text class="yrs" x="${tx}" y="${ty + 10}" text-anchor="${an}">${esc(m.yrsTxt)}</text><text class="lab" x="${tx}" y="${ty + 26}" text-anchor="${an}">${esc(m.lab)}</text>${m.sub ? `<text class="sub" x="${tx}" y="${ty + 40}" text-anchor="${an}">${esc(m.sub)}</text>` : ''}</g>`;
       } else {
         out += `<g class="ms" data-ms="${i}"><line x1="${b.x + 7}" y1="${b.y}" x2="${box.x1 - 4}" y2="${box.y1 + 12}"/><text class="lab" x="${box.x1}" y="${box.y1 + 14}">${esc(m.lab)}</text>${m.sub ? `<text class="sub" x="${box.x1}" y="${box.y1 + 29}">${esc(m.sub)}</text>` : ''}</g>`;
       }
@@ -152,13 +192,14 @@
     const t0 = performance.now();
     const tick = now => { if (!playing) return; const p = Math.min(1, (now - t0) / D); setProgress(ease(p)); if (p < 1) raf = requestAnimationFrame(tick); else timers.push(setTimeout(finalState, 250)); };
     raf = requestAnimationFrame(tick);
-    try { sessionStorage.setItem('ptl-played', '1'); } catch (e) {}
+    try { sessionStorage.setItem('ptl2-played', '1'); } catch (e) {}
   }
   skipBtn.addEventListener('click', finalState);
+  window.ptlReplay = play;
   replayBtn.addEventListener('click', play);
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let played = false; try { played = sessionStorage.getItem('ptl-played') === '1'; } catch (e) {}
+  let played = false; try { played = sessionStorage.getItem('ptl2-played') === '1'; } catch (e) {}
   draw();
   if (reduce || played) finalState();
   else if ('IntersectionObserver' in window) { setProgress(0); const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: .3 }); io.observe(root); }
