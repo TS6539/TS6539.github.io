@@ -4,9 +4,11 @@
    deck-style diagram: three parallel straight lines on one
    density-stretched year scale (main line, leadership branch
    below, collaborations branch above, branches from 2022), every
-   work a dot with a leader to its short label (sl). Plays once
-   per browser session, slowed to about seven seconds at Hao's
-   request, then rests. No libraries, no network calls. */
+   work a dot with a leader to its short label (sl). Leaders
+   route through one shared gutter per line and side, sized by
+   the tallest stack there, so no leader crosses a label. Plays
+   once per browser session, slowed to about seven seconds at
+   Hao's request, then rests. No libraries, no network calls. */
 (function () {
   const root = document.getElementById('ptl'), src = document.getElementById('ptl-data');
   if (!root || !src) return;
@@ -132,9 +134,18 @@
 
     const out = { collab: '', main: '', lead: '' };
     function drawStacks(line, side, lineY, maxRows) {
-      layoutStacks(line, side, maxRows).forEach(st => {
-        const K = st.items.length, step = 2.6;
-        const gutter = lineY + (side === 'up' ? -1 : 1) * (6 + K * step + 3 + ((line === 'main' && side === 'up') ? 4 : 0) + ((line === 'main' && side === 'down') ? 14 : 0));
+      const stacks = layoutStacks(line, side, maxRows);
+      /* One shared gutter per line and side, sized by the tallest
+         stack on that side: every leader's horizontal lane runs
+         inside this band next to the axis, and every label stack
+         starts beyond it, so a lane or a dot-drop can never reach
+         another stack's label text. (With per-stack gutters, a
+         short stack's label sat inside a tall neighbour's lane
+         band and its lanes struck through the text.) */
+      const step = 2.6;
+      const maxK = stacks.reduce((m, st) => Math.max(m, st.items.length), 1);
+      const gutter = lineY + (side === 'up' ? -1 : 1) * (6 + maxK * step + 3 + ((line === 'main' && side === 'up') ? 4 : 0) + ((line === 'main' && side === 'down') ? 14 : 0));
+      stacks.forEach(st => {
         st.items.forEach((d, r) => {
           const gx = g[d.i].x;
           const laneY = lineY + (side === 'up' ? -1 : 1) * (6 + r * step);
