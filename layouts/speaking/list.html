@@ -16,7 +16,7 @@
 
   {{- with .Params.topics }}
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">Talk topics</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_topics" }}</h2>
     <div class="plist">
       {{ range . }}
       <article class="plist-row">
@@ -26,7 +26,7 @@
         <div class="plist-main">
           <h3 class="plist-title">{{ .title }}</h3>
           <p class="plist-desc">{{ .description }}</p>
-          <p class="spk-suited"><em>Suited to</em> {{ .suited }}</p>
+          <p class="spk-suited"><em>{{ i18n "site_spk_suited" }}</em> {{ .suited }}</p>
         </div>
       </article>
       {{ end }}
@@ -36,14 +36,14 @@
 
   {{- with .Params.formats }}
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">Formats</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_formats" }}</h2>
     <p class="spk-body">{{ . }}</p>
   </section>
   {{- end }}
 
   {{- with .Params.lectures }}
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">Past talks and lectures</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_past" }}</h2>
     <div class="plist">
       {{ range . }}
       <article class="plist-row">
@@ -62,7 +62,7 @@
 
   {{- with .Params.presentations }}
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">Selected conference presentations</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_presentations" }}</h2>
     <div class="plist">
       {{ range . }}
       <article class="plist-row">
@@ -83,7 +83,7 @@
 
   {{- with .Params.collaborations }}
   <section class="spk-section" id="research-collaboration">
-    <h2 class="v4-kicker spk-label">Research collaboration</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_collaboration" }}</h2>
     {{- with $.Params.collaboration_intro }}
     <p class="spk-body">{{ . }}</p>
     {{- end }}
@@ -104,21 +104,21 @@
   {{- end }}
 
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">For organizers</h2>
-    <h3 class="spk-sub">Short bio</h3>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_organizers" }}</h2>
+    <h3 class="spk-sub">{{ i18n "site_spk_short_bio" }}</h3>
     <p class="spk-body">{{ .Params.short_bio }}</p>
-    <h3 class="spk-sub">Medium bio</h3>
+    <h3 class="spk-sub">{{ i18n "site_spk_medium_bio" }}</h3>
     <p class="spk-body">{{ .Params.medium_bio }}</p>
-    <h3 class="spk-sub">Downloads</h3>
+    <h3 class="spk-sub">{{ i18n "site_spk_downloads" }}</h3>
     <ul class="spk-downloads">
-      <li><a href="{{ "uploads/headshot.jpg" | relURL }}">Headshot (high resolution)</a></li>
+      <li><a href="{{ "uploads/headshot.jpg" | relURL }}">{{ i18n "site_spk_headshot" }}</a></li>
       <li><a href="{{ "uploads/resume.pdf" | relURL }}">CV</a></li>
     </ul>
   </section>
 
   {{- with .Params.invite }}
   <section class="spk-section">
-    <h2 class="v4-kicker spk-label">Invite me</h2>
+    <h2 class="v4-kicker spk-label">{{ i18n "site_spk_invite" }}</h2>
     <div class="spk-body">{{ . | markdownify }}</div>
   </section>
   {{- end }}

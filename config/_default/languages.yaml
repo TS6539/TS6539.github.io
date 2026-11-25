@@ -8,15 +8,74 @@ en:
   # Uncomment for multi-lingual sites, and move English content into `en` sub-folder.
   #contentDir: content/en
 
-# Uncomment the lines below to configure your website in a second language.
-#zh:
-#  locale: zh-Hans
-#  contentDir: content/zh
-#  title: Chinese website title...
-#  params:
-#    description: Site description in Chinese...
-#  menu:
-#    main:
-#      - name: 传
-#        url: '#about'
-#        weight: 1
+# Chinese (Simplified) — served from /zh/. English stays the canonical
+# scholarly record: publication titles, abstracts and journal names are
+# not translated in any language (see the per-language content files).
+zh:
+  locale: zh-Hans
+  params:
+    hugoblox:
+      identity:
+        tagline: "语言教育中的人工智能：以学习过程数据为据"
+        description: "郝天时，广岛大学特任助理教授。研究领域涵盖第二语言写作、学习科学与学习分析。"
+  menu:
+    main:
+      - name: 首页
+        url: /
+        weight: 10
+      - name: 发表与影响
+        url: /publications/
+        weight: 11
+      - name: 研究项目
+        url: projects/
+        weight: 12
+      - name: 工具
+        url: tools/
+        weight: 13
+      - name: 演讲与合作
+        url: speaking/
+        weight: 14
+      - name: 教学
+        url: teaching/
+        weight: 15
+      - name: 经历
+        url: experience/
+        weight: 17
+      - name: 新闻
+        url: blog/
+        weight: 18
+
+# Japanese — served from /ja/.
+ja:
+  locale: ja
+  params:
+    hugoblox:
+      identity:
+        tagline: "言語教育におけるAIを、学習プロセスデータから捉える"
+        description: "郝天時（かく・てんじ）は広島大学特任助教。第二言語ライティング、学習科学、ラーニングアナリティクスを研究しています。"
+  menu:
+    main:
+      - name: ホーム
+        url: /
+        weight: 10
+      - name: 業績・インパクト
+        url: /publications/
+        weight: 11
+      - name: プロジェクト
+        url: projects/
+        weight: 12
+      - name: ツール
+        url: tools/
+        weight: 13
+      - name: 講演・連携
+        url: speaking/
+        weight: 14
+      - name: 教育
+        url: teaching/
+        weight: 15
+      - name: 経歴
+        url: experience/
+        weight: 17
+      - name: ニュース
+        url: blog/
+        weight: 18

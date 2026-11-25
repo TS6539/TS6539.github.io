@@ -38,6 +38,9 @@
 {{ else if strings.Contains $venue "preprint" }}{{ $typeLabel = "Preprint" }}
 {{ else if or (in $types "article-journal") (in $types "article") }}{{ $typeLabel = "Journal article" }}
 {{ end }}
+{{/* Translate the marker for /zh/ and /ja/ (the i18n values for en are
+     the same strings, so the English list is unchanged). */}}
+{{ if $typeLabel }}{{ $typeKeys := dict "Journal article" "site_type_journal_article" "Proceedings paper" "site_type_proceedings_paper" "Poster" "site_type_poster" "Book" "site_type_book" "Dissertation" "site_type_dissertation" "Preprint" "site_type_preprint" "Conference presentation" "site_type_conference_presentation" "Accepted presentation" "site_type_accepted_presentation" }}{{ with index $typeKeys $typeLabel }}{{ $typeLabel = i18n . }}{{ end }}{{ end }}
 
 <div class="pub-list-item view-citation" style="margin-bottom: 1rem">
   {{ if $hubList }}<div class="pub-cite-body">{{ end }}{{ with $typeLabel }}<span class="pub-type-marker">{{ . }}</span>{{ end }}
@@ -93,5 +96,5 @@
        rules in custom.css). Text content and the row's vertical
        spacing are unchanged. Other lists reusing this view (the
        publication_types taxonomy) render exactly as before. */}}
-  {{- if and $hubList $item.Params.journal_cover }}{{ with resources.Get $item.Params.journal_cover }}<figure class="pub-row-cover"><div class="pub-row-cover-frame"><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Cover of {{ $pub.name }}" loading="lazy"></div></figure>{{ end }}{{ end }}
+  {{- if and $hubList $item.Params.journal_cover }}{{ with resources.Get $item.Params.journal_cover }}<figure class="pub-row-cover"><div class="pub-row-cover-frame"><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ i18n "site_cover_alt" (dict "Name" $pub.name) }}" loading="lazy"></div></figure>{{ end }}{{ end }}
 </div>

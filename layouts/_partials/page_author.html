@@ -32,7 +32,7 @@
   {{ if eq .Type "projects" }}
   <div class="flex pb-4">
     <p class="text-base text-neutral-700 dark:text-neutral-300">
-      Working on something related, or interested in collaborating on this project? <a href="mailto:tianshihao@hiroshima-u.ac.jp" class="font-medium">Email me</a>.
+      {{ i18n "site_invite_text" }}<a href="mailto:tianshihao@hiroshima-u.ac.jp" class="font-medium">{{ i18n "site_invite_link" }}</a>{{ i18n "site_invite_period" }}
     </p>
   </div>
   {{ end }}

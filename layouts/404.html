@@ -3,7 +3,7 @@
      replacing the theme's default template wording. */}}
 <div data-pagefind-ignore class="nf-wrap">
   <p class="nf-kicker">404</p>
-  <h1 class="nf-title">This page could not be found.</h1>
-  <p class="nf-text">The page may have moved, or the link that brought you here may be out of date. Everything on this site is reachable from the <a href="{{ "/" | relURL }}">home page</a>, and the full list of publications is <a href="{{ "/publications/" | relURL }}">here</a>.</p>
+  <h1 class="nf-title">{{ i18n "site_404_title" }}</h1>
+  <p class="nf-text">{{ i18n "site_404_a" }}<a href="{{ "/" | relLangURL }}">{{ i18n "site_404_home" }}</a>{{ i18n "site_404_b" }}<a href="{{ "/publications/" | relLangURL }}">{{ i18n "site_404_here" }}</a>{{ i18n "site_404_c" }}</p>
 </div>
 {{- end -}}

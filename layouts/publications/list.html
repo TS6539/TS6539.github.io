@@ -40,11 +40,11 @@
 {{ end }}
 
 {{ $groups := slice
-  (dict "key" "ai-l2-writing" "title" "Generative AI in Education and Writing")
-  (dict "key" "qe-learning-analytics" "title" "Quantitative Ethnography and Learning Analytics")
-  (dict "key" "evidence-synthesis" "title" "Evidence Synthesis and Systematic Reviews")
-  (dict "key" "game-based-language-learning" "title" "Games, Technology, and Learning")
-  (dict "key" "other-collaborations" "title" "Other Collaborations")
+  (dict "key" "ai-l2-writing" "title" (i18n "site_group_ai"))
+  (dict "key" "qe-learning-analytics" "title" (i18n "site_group_qe"))
+  (dict "key" "evidence-synthesis" "title" (i18n "site_group_es"))
+  (dict "key" "game-based-language-learning" "title" (i18n "site_group_games"))
+  (dict "key" "other-collaborations" "title" (i18n "site_group_other"))
 }}
 
 {{/* Publications timeline (ptl, version 3, 2026-11-25): the
@@ -92,6 +92,7 @@
     {{ $yr := int ((time (.Params.event_start | default .Date)).Format "2006") }}
     {{ $first := false }}
     {{ with .Params.authors }}{{ if eq (index . 0) "me" }}{{ $first = true }}{{ end }}{{ end }}
+    {{ if $t }}{{ $typeKeys := dict "Journal article" "site_type_journal_article" "Proceedings paper" "site_type_proceedings_paper" "Poster" "site_type_poster" "Book" "site_type_book" "Dissertation" "site_type_dissertation" "Preprint" "site_type_preprint" "Conference presentation" "site_type_conference_presentation" "Accepted presentation" "site_type_accepted_presentation" }}{{ with index $typeKeys $t }}{{ $t = i18n . }}{{ end }}{{ end }}
     {{ $ptlItem := dict "g" $gtitle "t" $t "y" $yr "title" .Title "href" .RelPermalink "venue" $venueName "first" $first "ln" (.Params.timeline_line | default "main") }}
     {{ with .Params.timeline_short }}{{ $ptlItem = merge $ptlItem (dict "sl" .) }}{{ end }}
     {{ $tlSub := .Params.timeline_sub }}
@@ -109,8 +110,10 @@
 {{ $ptlWord = printf "%s%s" (upper (substr $ptlWord 0 1)) (substr $ptlWord 1) }}
 <div class="plist-wrap">
   {{- with resources.Get "css/ptl.css" }}<link rel="stylesheet" href="{{ (. | resources.Minify).RelPermalink }}">{{ end }}
-  <section class="ptl" id="ptl" aria-label="Publications timeline by research line"><noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript></section>
+  <section class="ptl" id="ptl" aria-label="{{ i18n "site_ptl_aria" }}">{{ if eq site.Language.Lang "en" }}<noscript><p>{{ $ptlWord }} works since {{ $ptlY0 }} are listed below by research area.</p></noscript>{{ else }}<noscript><p>{{ i18n "site_ptl_noscript" (dict "Count" $ptlN "Year" $ptlY0) }}</p></noscript>{{ end }}</section>
   <script type="application/json" id="ptl-data">{{ $ptlData | jsonify | safeJS }}</script>
+  {{ $ptlY1 := 0 }}{{ range $ptlData }}{{ if gt .y $ptlY1 }}{{ $ptlY1 = .y }}{{ end }}{{ end }}
+  {{ if ne site.Language.Lang "en" }}<script>window.PTL_I18N = { themes: { collab: {{ i18n "site_ptl_theme_collab" | jsonify }}, main: {{ i18n "site_ptl_theme_main" | jsonify }}, lead: {{ i18n "site_ptl_theme_lead" | jsonify }} }, mainShort: {{ i18n "site_ptl_theme_main_short" | jsonify }}, svgAria: {{ i18n "site_ptl_svg_aria" (dict "Count" $ptlN "Y0" $ptlY0 "Y1" $ptlY1) | jsonify }}, svgAriaPhone: {{ i18n "site_ptl_svg_aria_phone" (dict "Count" $ptlN "Y0" $ptlY0 "Y1" $ptlY1) | jsonify }}, skip: {{ i18n "site_ptl_skip" | jsonify }}, replay: {{ i18n "site_ptl_replay" | jsonify }} };</script>{{ end }}
   {{- with resources.Get "js/ptl.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
 </div>
 
@@ -150,27 +153,27 @@
 <div class="container max-w-3xl w-full mx-auto pub-append">
 
   <section id="impact" class="pub-append-section">
-    <h2 class="pub-group-title">Impact</h2>
+    <h2 class="pub-group-title">{{ i18n "site_impact" }}</h2>
     <div class="pub-band">
       <div class="v4-band-inner">
         {{/* The three citation figures carry the citation map's counter
              IDs, so the embedded map's playback below animates this band
              exactly as it animates the stats row on /impact/. */}}
-        <div class="v4-fig"><span class="v4-num" id="ci-stat-papers">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing works</span></div>
-        <div class="v4-fig"><span class="v4-num" id="ci-stat-institutions">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
-        <div class="v4-fig"><span class="v4-num" id="ci-stat-countries">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-papers">{{ $totals.citing_papers }}</span><span class="v4-fig-label">{{ i18n "site_citing_works" }}</span></div>
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-institutions">{{ $totals.institutions }}</span><span class="v4-fig-label">{{ i18n "site_institutions" }}</span></div>
+        <div class="v4-fig"><span class="v4-num" id="ci-stat-countries">{{ $totals.countries }}</span><span class="v4-fig-label">{{ i18n "site_countries" }}</span></div>
         {{/* 45 = completed manuscripts reviewed; kept in step with the
              Peer Review stats on /impact/ and the homepage band. */}}
-        <div class="v4-fig v4-fig--service"><span class="v4-num">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
+        <div class="v4-fig v4-fig--service"><span class="v4-num">45</span><span class="v4-fig-label">{{ i18n "site_manuscripts_reviewed" }}</span></div>
       </div>
     </div>
-    <p class="v4-band-asof">As of November 2026</p>
-    <p class="pub-impact-note">Citing works are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
-    <p class="pub-impact-pr"><span class="pub-impact-pr-label">Peer review</span>45 manuscripts · 40 verified reviews (Web of Science) · AERA reviewer</p>
+    <p class="v4-band-asof">{{ i18n "site_asof" }}</p>
+    <p class="pub-impact-note">{{ i18n "site_impact_disclosure" }}</p>
+    <p class="pub-impact-pr"><span class="pub-impact-pr-label">{{ i18n "site_peer_review_label" }}</span>{{ i18n "site_peer_review_line" }}</p>
     {{/* Policy & practice impact (2026-11-23, from the Gemini review
          triage): one paragraph above the map, in the section's body
          style, wording approved by Hao; do not strengthen it. */}}
-    <p class="pub-impact-policy">Policy &amp; practice impact: At Hiroshima University, I led the evidence review behind the Institute for Foreign Language Research and Education's generative AI guidelines for English education, and the faculty development sessions that introduced them. The guidelines now frame how English courses across the institute handle student AI use.</p>
+    <p class="pub-impact-policy">{{ i18n "site_policy_impact" }}</p>
     {{/* The citation map itself, embedded (2026-11-22): the shared
          partial renders the same interactive map as /impact/ (Esri
          tiles, chronological playback, scrubber), with its styles
@@ -179,12 +182,12 @@
     <div class="pub-map-embed">
       {{ partial "citation_map.html" (dict "styles" true) }}
     </div>
-    <p class="pub-impact-note">Citation data: OpenAlex, counted by distinct citing work.</p>
-    <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relURL }}">Open the map on its own page <span aria-hidden="true">→</span></a></p>
+    <p class="pub-impact-note">{{ i18n "site_citation_data_note" }}</p>
+    <p class="pub-map-link"><a class="v4-more" href="{{ "/impact/" | relLangURL }}">{{ i18n "site_open_map" }} <span aria-hidden="true">→</span></a></p>
   </section>
 
   <section id="notes" class="pub-append-section">
-    <h2 class="pub-group-title">Notes</h2>
+    <h2 class="pub-group-title">{{ i18n "site_notes" }}</h2>
     {{- with site.GetPage "notes" }}
     <div class="pub-notes-intro">{{ .Content }}</div>
     {{- end }}
@@ -193,7 +196,7 @@
     <div class="pub-notes-list">
       {{ range .ByDate.Reverse }}
       <article class="v4-nrow">
-        <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (i18n "site_date_format") }}</time>
         <h3 class="v4-ntitle"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       </article>
       {{ end }}

@@ -16,21 +16,24 @@
   if (!data.length) return;
 
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const kindOf = t => /journal/i.test(t) ? 'j' : /book|dissertation/i.test(t) ? 'k' : /accepted|forthcoming/i.test(t) ? 'a' : 'c';
+  const I18N = window.PTL_I18N || {};
+  const kindOf = t => /journal|期刊|学術/i.test(t) ? 'j' : /book|dissertation|书籍|書籍|学位論文/i.test(t) ? 'k' : /accepted|forthcoming|已录用|採録/i.test(t) ? 'a' : 'c';
   const RANK = { k: 0, j: 1, c: 2, a: 3 };
   const ITEMS = data.map((d, i) => ({
     i, y: d.y, line: ['main', 'lead', 'collab'].includes(d.ln) ? d.ln : 'main',
     label: d.sl || null, kind: kindOf(d.t), title: d.title, venue: d.venue || '', t: d.t, href: d.href || '#'
   }));
   const LINES = {
-    collab: { theme: 'Collaborations and other topics' },
-    main: { theme: 'ICT (Immersive Technology; virtual space; Game-based learning; Generative AI) on language learning' },
-    lead: { theme: 'ICT and leadership education or development' }
+    collab: { theme: (I18N.themes && I18N.themes.collab) || 'Collaborations and other topics' },
+    main: { theme: (I18N.themes && I18N.themes.main) || 'ICT (Immersive Technology; virtual space; Game-based learning; Generative AI) on language learning' },
+    lead: { theme: (I18N.themes && I18N.themes.lead) || 'ICT and leadership education or development' }
   };
   const NOW = new Date().getFullYear();
   const y0 = Math.min(...ITEMS.map(d => d.y)), y1 = Math.max(...ITEMS.map(d => d.y));
   const YEARS = []; for (let y = y0; y <= y1; y++) YEARS.push(y);
   const NOWY = Math.min(NOW, y1);
+  const ARIA_DESK = I18N.svgAria || `${ITEMS.length} works from ${y0} to ${y1} on three lines: a main line for ICT on language learning, a leadership branch below, and a collaborations branch above. The full list follows below.`;
+  const ARIA_PHONE = I18N.svgAriaPhone || `${ITEMS.length} works from ${y0} to ${y1} listed along a vertical line, with leadership and collaboration branches.`;
   const SPLITY = YEARS.includes(2022) ? 2022 : y0;
   /* Playback speed: the approved preview settled in about 4.3 s;
      Hao asked for slower, so every phase is scaled by this factor,
@@ -38,7 +41,7 @@
   const SCALE = 1.55;
 
   root.innerHTML = `
-    <div class="ptl-ctlrow"><span class="ptl-ctl"><button type="button" data-skip>Skip</button><button type="button" data-replay hidden>Replay</button></span></div>
+    <div class="ptl-ctlrow"><span class="ptl-ctl"><button type="button" data-skip>${esc(I18N.skip || 'Skip')}</button><button type="button" data-replay hidden>${esc(I18N.replay || 'Replay')}</button></span></div>
     <div class="ptl-stage"><div data-svg></div><div class="ptl-tip" role="status"></div></div>`;
   const host = root.querySelector('[data-svg]'), tip = root.querySelector('.ptl-tip');
   const skipBtn = root.querySelector('[data-skip]'), replayBtn = root.querySelector('[data-replay]');
@@ -206,7 +209,7 @@
       `<g class="ln-lead" id="ptl-tip-lead" opacity="0"><circle class="tiphalo" r="7"/><circle class="tipdot" r="2.7"/></g>`;
     const grp = ln => `<g class="ln-${ln}">${out[ln]}</g>`;
     return {
-      svg: `<svg viewBox="0 0 ${VW} ${HGT}" role="img" aria-label="${ITEMS.length} works from ${y0} to ${y1} on three lines: a main line for ICT on language learning, a leadership branch below, and a collaborations branch above. The full list follows below.">${grp('collab')}${grp('lead')}${grp('main')}${tips}</svg>`,
+      svg: `<svg viewBox="0 0 ${VW} ${HGT}" role="img" aria-label="${esc(ARIA_DESK)}">${grp('collab')}${grp('lead')}${grp('main')}${tips}</svg>`,
       geo: { easeIO, MAIN_DRAW: MAIN_DRAW * SCALE, BR_DRAW: BR_DRAW * SCALE, tSplit: tSplit * SCALE, splitX, nowEndX }
     };
   }
@@ -222,7 +225,7 @@
       if (cur) lines.push(cur); return lines;
     }
     let out = '', y = 6; const items = [];
-    out += `<g class="ln-main"><text class="theme" x="44" y="${y + 11}" font-size="11.5">ICT on language learning</text></g>`; y += 22;
+    out += `<g class="ln-main"><text class="theme" x="44" y="${y + 11}" font-size="11.5">${esc(I18N.mainShort || 'ICT on language learning')}</text></g>`; y += 22;
     const branchStart = {};
     rows.forEach(d => {
       if ((d.line === 'collab' || d.line === 'lead') && !branchStart[d.line]) {
@@ -261,7 +264,7 @@
         out += `<text class="lab" data-i="${d.i}" data-line="${d.line}" font-size="12" x="${labX}" y="${(it.y + 16 + li * 14).toFixed(1)}">${esc(ln2)}</text>`;
       });
     });
-    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${ITEMS.length} works from ${y0} to ${y1} listed along a vertical line, with leadership and collaboration branches.">${out}</svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(ARIA_PHONE)}">${out}</svg>`;
   }
 
   /* ================= ANIMATION ================= */

@@ -1,0 +1,19 @@
+---
+title: "Play to Learn: Video Games as an Effective Tool for Language Learning"
+authors:
+  - me
+  - Jacqueline Vega Lopez
+date: "2020-01-01T00:00:00Z"
+publishDate: "2020-01-01T00:00:00Z"
+publication_types: ["paper-conference"]
+journal_cover: "media/covers/catesol-poster-2020.jpg"
+publication:
+  name: "CATESOL Conference (poster presentation)"
+tags:
+  - Game-Based Learning
+  - Language Learning
+research_line: game-based-language-learning
+featured: false
+timeline_line: main
+timeline_short: "Poster: Play to Learn at CATESOL"
+---

@@ -1,0 +1,92 @@
+# Japanese overrides for the owner profile. The theme's
+# functions/get_authors_data partial merges data/ja/authors/ on top of
+# data/authors/, so only translated fields live here; links, name and
+# dates are inherited from data/authors/me.yaml. Lists (interests,
+# education, experience, skills, languages) replace the base lists, so
+# they are given in full.
+role: 特任助教
+bio: |
+  郝天時（かく・てんじ）は、広島大学外国語教育研究センターの特任助教です。第二言語ライティング、学習科学、ラーニングアナリティクスを横断して研究しています。生成AIが求めに応じて起草し、要約し、説明し、推敲できる時代に、学生の側ではなおどのような学びが起きているのか、そしてその学びを自己報告だけでなくプロセスデータからどう捉えることができるのかを問うています。主な研究手法は、量的エスノグラフィーとエピステミック・ネットワーク分析（ENA）です。もう一つの研究の柱は、システマティックレビューとAIを活用したエビデンス統合です。
+
+  広島大学では、学生がAIとともに書くことを学ぶ英語科目を担当し、英語教育における生成AIガイドラインの策定を主導しています。2024年にペパーダイン大学でグローバル・リーダーシップと変革の博士号を取得し、博士研究では教育テクノロジーとバーチャル・リーダーシップを扱いました。2020年には南カリフォルニア大学でTESOLのMAT（教育修士）を取得しています。著書に『Play to Learn: Use Video Games to Learn a New Language』（2020年）があります。
+
+affiliations:
+  - name: 広島大学
+    url: https://www.hiroshima-u.ac.jp/en
+
+interests:
+  - 言語教育におけるAI
+  - 量的エスノグラフィー
+  - エピステミック・ネットワーク分析
+  - エビデンス統合
+  - ゲームベース学習
+
+education:
+  - degree: グローバル・リーダーシップと変革の博士号
+    institution: ペパーダイン大学
+    end: 2024-12-31
+    summary: |
+      量的エスノグラフィーを用いて、バーチャルゲームとバーチャルチームを研究しました。
+  - degree: TESOLのMAT（教育修士）
+    institution: 南カリフォルニア大学
+    end: 2020-12-31
+    summary: |
+      Master of Arts in Teaching（Teaching English to Speakers of Other Languages）。カリフォルニア州で指導教員の下での教育実習を行いました。
+
+experience:
+  - role: 特任助教
+    org: 広島大学
+    start: 2026-04-01
+    summary: |
+      『Writing English with AI, On Your Own Terms』を担当しています。これは大学の学生・教職員を対象とした、10回完結の単位外研修プログラムの科目です。科目担当教員とともに、オンライン科目 Communication Basics および Communication Exercises のカリキュラム、教材、評価方法を開発し、専任教員の授業を参観してフィードバックを行っています。英語教育における生成AIガイドラインの策定を主導し、英語教育のデジタル化とAIリテラシーに関するFDワークショップを企画しています。研究テーマは、第二言語ライティングと学習プロセスにおける生成AIであり、量的エスノグラフィーとエピステミック・ネットワーク分析を用いています。
+  - role: ナレッジエンジニア
+    org: Hyperthesis LLC
+    start: 2025-01-01
+    end: 2025-12-31
+    summary: |
+      NIH の資金提供を受けたプロジェクトで、AIを活用したシステマティックレビュー支援ソフトウェアの開発に携わりました。研究論文から重要な情報を抽出するAIへのプロンプトを設計し、抽出結果をレビュー・修正して正確さを確保しました。
+  - role: 大学院生アシスタント（ABLEプロジェクト）
+    org: ペパーダイン大学
+    start: 2024-06-01
+    end: 2024-12-31
+    summary: |
+      教育・心理大学院における大学院生アシスタントです。
+  - role: 大学院生アシスタント（博士論文支援・APAレビュー）
+    org: ペパーダイン大学
+    start: 2023-03-01
+    end: 2024-12-31
+    summary: |
+      博士論文について、APAスタイル、書式、学術的な体裁をレビューしました。
+  - role: 非常勤講師
+    org: 北京服装学院
+    start: 2021-04-01
+    end: 2021-07-31
+    summary: |
+      1学期間、非常勤で英語科目を担当しました。
+  - role: 教育実習生
+    org: エルモンテ・ローズミード成人学校
+    start: 2020-03-01
+    end: 2020-12-31
+    summary: |
+      南カリフォルニア大学のTESOLのMAT在学中に、指導の下で行った教育実習です。
+
+skills:
+  - name: 研究方法と分析
+    items:
+      - label: 量的エスノグラフィーとENA（画面録画とプロセスデータ）
+      - label: システマティックレビューとAI支援エビデンス統合（PRISMA、AIによるデータ抽出と検証）
+      - label: 混合研究法のデザイン（テーマ分析コーディング、統計モデリング）
+  - name: 専門領域と教育
+    items:
+      - label: 第二言語ライティングと言語教育における生成AI
+      - label: TESOLとアカデミック英語教育
+      - label: カリキュラムと評価のデザイン
+      - label: FD（生成AIガイドラインとワークショップ）
+
+languages:
+  - name: 中国語
+    label: ネイティブ
+  - name: 英語
+    label: 業務対応レベル
+  - name: 日本語
+    label: 初級

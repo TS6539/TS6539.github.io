@@ -1,0 +1,92 @@
+# Chinese overrides for the owner profile. The theme's
+# functions/get_authors_data partial merges data/zh/authors/ on top of
+# data/authors/, so only translated fields live here; links, name and
+# dates are inherited from data/authors/me.yaml. Lists (interests,
+# education, experience, skills, languages) replace the base lists, so
+# they are given in full.
+role: 特任助理教授
+bio: |
+  郝天时是日本广岛大学外国语教育研究中心特任助理教授。他的研究横跨第二语言写作、学习科学与学习分析。他关注的问题是：当生成式人工智能能够随时起草、概括、解释和修改文本时，学生一侧究竟还发生了什么学习，以及这种学习如何从过程数据中追踪、而非仅凭自我报告来判断。他的主要研究方法是定量民族志与认知网络分析（ENA）。他的另一条研究主线是系统综述与人工智能支持的证据综合。
+
+  在广岛大学，他教授学生运用人工智能进行写作的英语课程，并主持英语教育生成式人工智能指南的制定。他于 2024 年获佩珀代因大学全球领导力与变革博士学位，博士研究聚焦教育技术与虚拟领导力。他还于 2020 年获南加州大学 TESOL 教学硕士学位（MAT）。他是《Play to Learn: Use Video Games to Learn a New Language》（2020）一书的作者。
+
+affiliations:
+  - name: 广岛大学
+    url: https://www.hiroshima-u.ac.jp/en
+
+interests:
+  - 语言教育中的人工智能
+  - 定量民族志
+  - 认知网络分析
+  - 证据综合
+  - 游戏化学习
+
+education:
+  - degree: 全球领导力与变革博士学位
+    institution: 佩珀代因大学
+    end: 2024-12-31
+    summary: |
+      博士研究以定量民族志方法研究虚拟游戏与虚拟团队。
+  - degree: TESOL 教学硕士（MAT）
+    institution: 南加州大学
+    end: 2020-12-31
+    summary: |
+      教学文学硕士（对外英语教学方向），在加利福尼亚州完成有督导的教育实习。
+
+experience:
+  - role: 特任助理教授
+    org: 广岛大学
+    start: 2026-04-01
+    summary: |
+      主持《Writing English with AI, On Your Own Terms》课程。这是一门为期 10 次课的非学分培训课程（研修项目），面向全校学生、教职员工开放。与学科教师合作，为在线课程 Communication Basics 和 Communication Exercises 开发课程大纲、教学材料与评估；观摩专任教师的课堂并提供反馈。主持英语教育生成式人工智能指南的制定，并组织关于英语教育数字化与人工智能素养的教师发展工作坊。研究方向：以定量民族志与认知网络分析研究生成式人工智能在第二语言写作与学习过程中的应用。
+  - role: 知识工程师
+    org: Hyperthesis LLC
+    start: 2025-01-01
+    end: 2025-12-31
+    summary: |
+      参与美国国立卫生研究院（NIH）资助的项目，开发人工智能支持的系统综述证据综合软件。负责设计引导人工智能从研究论文中提取关键信息的提示词，并审查、修正提取结果以确保准确。
+  - role: 研究生助教（ABLE 项目）
+    org: 佩珀代因大学
+    start: 2024-06-01
+    end: 2024-12-31
+    summary: |
+      在教育与心理研究生院担任研究生助教。
+  - role: 研究生助教（博士论文支持与 APA 审查）
+    org: 佩珀代因大学
+    start: 2023-03-01
+    end: 2024-12-31
+    summary: |
+      审查博士学位论文的 APA 格式、排版与学术呈现。
+  - role: 兼职讲师
+    org: 北京服装学院
+    start: 2021-04-01
+    end: 2021-07-31
+    summary: |
+      兼职教授英语课程一个学期。
+  - role: 实习教师
+    org: 埃尔蒙特-罗斯米德成人学校
+    start: 2020-03-01
+    end: 2020-12-31
+    summary: |
+      在南加州大学攻读 TESOL 教学硕士期间完成的有督导教育实习。
+
+skills:
+  - name: 研究方法与分析
+    items:
+      - label: 定量民族志与认知网络分析（屏幕录制与过程数据）
+      - label: 系统综述与人工智能支持的证据综合（PRISMA；人工智能辅助数据提取与验证）
+      - label: 混合方法研究设计（主题编码、统计建模）
+  - name: 学科领域与教学
+    items:
+      - label: 生成式人工智能在第二语言写作与语言教育中的应用
+      - label: TESOL 与学术英语教学
+      - label: 课程与评估设计
+      - label: 教师发展（生成式人工智能指南与工作坊）
+
+languages:
+  - name: 中文
+    label: 母语
+  - name: 英语
+    label: 完全专业熟练度
+  - name: 日语
+    label: 初级

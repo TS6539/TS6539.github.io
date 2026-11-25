@@ -115,8 +115,8 @@
                  radius and hover wash); the four profile links stay
                  icon-only. Icon names and hrefs come from
                  data/authors/me.yaml, unchanged. */}}
-            <a class="v4-pill v4-pill--filled" href="{{ "speaking/#research-collaboration" | relURL }}">Discuss a research idea</a>
-            <nav class="v4-icon-row" aria-label="Contact and profiles">
+            <a class="v4-pill v4-pill--filled" href="{{ "speaking/#research-collaboration" | relURL }}">{{ i18n "site_discuss_idea" }}</a>
+            <nav class="v4-icon-row" aria-label="{{ i18n "site_contact_profiles" }}">
               {{- range $profile.links }}
               {{- $isUni := strings.Contains .url "hiroshima-u.ac.jp" }}
               {{- $isMail := hasPrefix .url "mailto:" }}
@@ -126,7 +126,7 @@
               {{- if $isMail }}
               <a class="v4-icon-link v4-icon-link--labeled" href="{{ .url }}" aria-label="{{ .label }}" title="{{ .label }}">
                 {{- partial "functions/get_icon" (dict "name" $iconName "attributes" "class=\"v4-icon-svg\" aria-hidden=\"true\"") -}}
-                <span class="v4-icon-label">{{ if $isUni }}University email{{ else }}Email{{ end }}</span>
+                <span class="v4-icon-label">{{ if $isUni }}{{ i18n "site_university_email" }}{{ else }}{{ i18n "site_email" }}{{ end }}</span>
               </a>
               {{- else }}
               <a class="v4-icon-link" href="{{ .url }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }} aria-label="{{ .label }}" title="{{ .label }}">
@@ -140,7 +140,7 @@
         {{- with $avatar }}
         <figure class="v4-portrait v4-hero-item">
           {{- $img := .Fill "760x950 webp q88" -}}
-          <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="Portrait of {{ $profile.title }}" loading="eager">
+          <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ i18n "site_portrait_alt" (dict "Name" $profile.title) }}" loading="eager">
         </figure>
         {{- end }}
       </div>
@@ -155,20 +155,20 @@
              at x=1000: centered at its dot (940) the ~191-unit caption
              reached x≈1036 and painted past the screen edge (fifth
              review, 2026-11-19). All paint now stays inside the box. */}}
-        <svg class="v4-path-svg" viewBox="-12 0 1024 94" role="img" aria-label="Path from Beijing to Los Angeles to Hiroshima">
+        <svg class="v4-path-svg" viewBox="-12 0 1024 94" role="img" aria-label="{{ i18n "site_path_aria" }}">
           <path class="path-base" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18"/>
           <path class="path-draw" fill="none" d="M 60 18 C 200 15.6, 360 20.4, 500 18 C 640 15.8, 800 20.2, 940 18" pathLength="1"/>
           <g class="path-dot"><circle class="halo" cx="60" cy="18" r="11"/><circle class="core" cx="60" cy="18" r="5.5"/></g>
           <g class="path-dot"><circle class="halo" cx="500" cy="18" r="11"/><circle class="core" cx="500" cy="18" r="5.5"/></g>
           <g class="path-dot"><circle class="halo" cx="940" cy="18" r="11"/><circle class="core" cx="940" cy="18" r="5.5"/></g>
-          <text x="60" y="54" text-anchor="middle">Beijing</text>
-          <text x="500" y="54" text-anchor="middle">Los Angeles</text>
-          <text x="940" y="54" text-anchor="middle">Hiroshima</text>
+          <text x="60" y="54" text-anchor="middle">{{ i18n "site_city_beijing" }}</text>
+          <text x="500" y="54" text-anchor="middle">{{ i18n "site_city_la" }}</text>
+          <text x="940" y="54" text-anchor="middle">{{ i18n "site_city_hiroshima" }}</text>
           {{/* One-line story under each city (review brief, 2026-11-19),
                set in the serif body font. */}}
-          <text class="path-cap" x="60" y="82" text-anchor="middle">Born and raised</text>
-          <text class="path-cap" x="500" y="82" text-anchor="middle">USC, Pepperdine</text>
-          <text class="path-cap" x="1000" y="82" text-anchor="end">Hiroshima University, 2026–</text>
+          <text class="path-cap" x="60" y="82" text-anchor="middle">{{ i18n "site_cap_born" }}</text>
+          <text class="path-cap" x="500" y="82" text-anchor="middle">{{ i18n "site_cap_la" }}</text>
+          <text class="path-cap" x="1000" y="82" text-anchor="end">{{ i18n "site_cap_hiroshima" }}</text>
         </svg>
         {{/* Narrow screens (fifth review, 2026-11-19): the horizontal
              strip shrinks until the captions clip, so under 640px the
@@ -179,18 +179,18 @@
         <div class="v4-path-v" aria-hidden="true">
           <div class="v4-path-stop">
             <span class="v4-path-vdot"></span>
-            <p class="v4-path-vcity">Beijing</p>
-            <p class="v4-path-vcap">Born and raised</p>
+            <p class="v4-path-vcity">{{ i18n "site_city_beijing" }}</p>
+            <p class="v4-path-vcap">{{ i18n "site_cap_born" }}</p>
           </div>
           <div class="v4-path-stop">
             <span class="v4-path-vdot"></span>
-            <p class="v4-path-vcity">Los Angeles</p>
-            <p class="v4-path-vcap">USC, Pepperdine</p>
+            <p class="v4-path-vcity">{{ i18n "site_city_la" }}</p>
+            <p class="v4-path-vcap">{{ i18n "site_cap_la" }}</p>
           </div>
           <div class="v4-path-stop">
             <span class="v4-path-vdot"></span>
-            <p class="v4-path-vcity">Hiroshima</p>
-            <p class="v4-path-vcap">Hiroshima University, 2026–</p>
+            <p class="v4-path-vcity">{{ i18n "site_city_hiroshima" }}</p>
+            <p class="v4-path-vcap">{{ i18n "site_cap_hiroshima" }}</p>
           </div>
         </div>
       </div>
@@ -200,7 +200,7 @@
         <div class="v4-bio-text">{{ $profile.bio | markdownify }}</div>
         <aside class="v4-bio-rail">
           {{- with $profile.interests }}
-          <h2 class="v4-rail-title">Interests</h2>
+          <h2 class="v4-rail-title">{{ i18n "site_interests" }}</h2>
           <ul class="v4-rail-list">
             {{- range . }}<li>{{ . }}</li>{{ end }}
           </ul>
@@ -216,26 +216,26 @@
 
   {{/* ================= 2. NUMBERS BAND ================= */}}
   <div class="v4-wrap">
-    <a class="v4-band v4-reveal" href="{{ "/publications/" | relURL }}#impact" aria-label="Impact: citing papers, institutions, countries and manuscripts reviewed. See the Impact page.">
+    <a class="v4-band v4-reveal" href="{{ "/publications/" | relURL }}#impact" aria-label="{{ i18n "site_band_aria" }}">
       <div class="v4-band-inner">
-        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.citing_papers }}">{{ $totals.citing_papers }}</span><span class="v4-fig-label">Citing papers</span></div>
-        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.institutions }}">{{ $totals.institutions }}</span><span class="v4-fig-label">Institutions</span></div>
-        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.countries }}">{{ $totals.countries }}</span><span class="v4-fig-label">Countries</span></div>
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.citing_papers }}">{{ $totals.citing_papers }}</span><span class="v4-fig-label">{{ i18n "site_citing_papers" }}</span></div>
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.institutions }}">{{ $totals.institutions }}</span><span class="v4-fig-label">{{ i18n "site_institutions" }}</span></div>
+        <div class="v4-fig"><span class="v4-num" data-count="{{ $totals.countries }}">{{ $totals.countries }}</span><span class="v4-fig-label">{{ i18n "site_countries" }}</span></div>
         {{/* 45 = completed manuscripts reviewed; kept in step with the
              Peer Review stats on /impact/. It is a service metric, not a
              citation metric, so the figure is visually separated from
              the three citation figures (review brief, 2026-11-19). */}}
-        <div class="v4-fig v4-fig--service"><span class="v4-num" data-count="45">45</span><span class="v4-fig-label">Manuscripts reviewed</span></div>
+        <div class="v4-fig v4-fig--service"><span class="v4-num" data-count="45">45</span><span class="v4-fig-label">{{ i18n "site_manuscripts_reviewed" }}</span></div>
       </div>
     </a>
-    <p class="v4-band-asof">As of November 2026</p>
+    <p class="v4-band-asof">{{ i18n "site_asof" }}</p>
   </div>
 
   {{/* ================= 3. RESEARCH ================= */}}
   <section class="v4-section" id="research">
     <div class="v4-wrap">
       <header class="v4-sec-head v4-reveal">
-        <p class="v4-kicker">Research</p>
+        <p class="v4-kicker">{{ i18n "site_kicker_research" }}</p>
         {{- if $rOK }}<p class="v4-sec-intro">{{ $rIntro | markdownify }}</p>{{ end }}
       </header>
       {{- if $rOK }}
@@ -259,10 +259,10 @@
   <section class="v4-section" id="speaking">
     <div class="v4-wrap">
       <header class="v4-sec-head v4-reveal">
-        <p class="v4-kicker">Speaking &amp; collaboration</p>
+        <p class="v4-kicker">{{ i18n "site_kicker_speaking" }}</p>
       </header>
       <div class="v4-prose v4-reveal">{{ . | markdownify }}</div>
-      <p class="v4-reveal"><a class="v4-more" href="{{ "/speaking/" | relURL }}">Topics, past talks and how to invite me <span aria-hidden="true">→</span></a></p>
+      <p class="v4-reveal"><a class="v4-more" href="{{ "/speaking/" | relURL }}">{{ i18n "site_speaking_more" }} <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
   {{- end }}
@@ -272,7 +272,7 @@
   <section class="v4-section" id="papers">
     <div class="v4-wrap">
       <header class="v4-sec-head v4-reveal">
-        <p class="v4-kicker">Featured Publications</p>
+        <p class="v4-kicker">{{ i18n "site_kicker_featured" }}</p>
       </header>
       {{/* Every featured publication gets the same full text card
            (venue, title, authors, summary, link); the typographic cover
@@ -291,11 +291,11 @@
           {{- with (.Params.summary | default .Params.abstract) }}
           <p class="v4-feature-summary">{{ . }}</p>
           {{- end }}
-          <a class="v4-more" href="{{ .RelPermalink }}">Read more <span aria-hidden="true">→</span></a>
+          <a class="v4-more" href="{{ .RelPermalink }}">{{ i18n "site_read_more" }} <span aria-hidden="true">→</span></a>
         </div>
       </article>
       {{- end }}
-      <p class="v4-allpubs v4-reveal"><a class="v4-more" href="{{ "/publications/" | relURL }}">All publications <span aria-hidden="true">→</span></a></p>
+      <p class="v4-allpubs v4-reveal"><a class="v4-more" href="{{ "/publications/" | relURL }}">{{ i18n "site_all_publications" }} <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
   {{- end }}
@@ -305,12 +305,12 @@
   <section class="v4-section" id="news">
     <div class="v4-wrap">
       <header class="v4-sec-head v4-reveal">
-        <p class="v4-kicker">Recent News</p>
+        <p class="v4-kicker">{{ i18n "site_kicker_news" }}</p>
       </header>
       <div class="v4-nlist">
         {{- range $news }}
         <article class="v4-nrow v4-reveal">
-          <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+          <time class="v4-ndate" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (i18n "site_date_format") }}</time>
           <h3 class="v4-ntitle"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         </article>
         {{- end }}
@@ -324,11 +324,11 @@
     <div class="v4-wrap">
       <div class="v4-closing-grid">
         <div class="v4-reveal">
-          <p class="v4-kicker">Teaching</p>
+          <p class="v4-kicker">{{ i18n "site_kicker_teaching" }}</p>
           <div class="v4-prose">{{ index $md "teaching" | markdownify }}</div>
         </div>
         <div class="v4-reveal">
-          <p class="v4-kicker">Contact</p>
+          <p class="v4-kicker">{{ i18n "site_kicker_contact" }}</p>
           <div class="v4-prose">{{ index $md "contact" | markdownify }}</div>
         </div>
       </div>

@@ -81,12 +81,12 @@
 {{ end }}
 
 <div class="ci-card" id="ci-map-card">
-  <h3>Where the citations come from</h3>
-  <p class="ci-sub">One marker per institution that employs a citing author. Click a marker for details.</p>
+  <h3>{{ i18n "site_map_title" }}</h3>
+  <p class="ci-sub">{{ i18n "site_map_sub" }}</p>
   <div class="ci-controls" id="ci-controls" hidden>
-    <div><span class="ci-year-num" id="ci-year-num"></span><span class="ci-year-label">citations by year</span></div>
-    <div class="ci-scrub"><input type="range" id="ci-year-range" min="{{ (index $steps 0).year }}" max="{{ (index $steps $lastIdx).year }}" step="1" value="{{ (index $steps $lastIdx).year }}" aria-label="Show citations up to this year"></div>
-    <button type="button" class="ci-play-btn" id="ci-play-btn">Play</button>
+    <div><span class="ci-year-num" id="ci-year-num"></span><span class="ci-year-label">{{ i18n "site_map_year_label" }}</span></div>
+    <div class="ci-scrub"><input type="range" id="ci-year-range" min="{{ (index $steps 0).year }}" max="{{ (index $steps $lastIdx).year }}" step="1" value="{{ (index $steps $lastIdx).year }}" aria-label="{{ i18n "site_map_scrub_aria" }}"></div>
+    <button type="button" class="ci-play-btn" id="ci-play-btn">{{ i18n "site_map_play" }}</button>
   </div>
   <div id="ci-map"></div>
 </div>
@@ -101,6 +101,7 @@
     countries: {{ int $totals.countries }}
   };
   const CI_REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CI_I18N = { playing: {{ i18n "site_map_playing" | jsonify }}, replay: {{ i18n "site_map_replay" | jsonify }}, citingAuthors: {{ i18n "site_map_citing_authors" | jsonify }}, citingPapers: {{ i18n "site_map_citing_papers" | jsonify }}, years: {{ i18n "site_map_years" | jsonify }}, to: {{ i18n "site_map_to" | jsonify }} };
 
   function ciEscape(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -121,13 +122,13 @@
     const lastYear = CI_STEPS.length ? CI_STEPS[CI_STEPS.length - 1].year : null;
     CI_DATA.institutions.forEach(function (inst) {
       const yrs = (inst.year_min && inst.year_max)
-        ? (inst.year_min === inst.year_max ? '' + inst.year_min : inst.year_min + ' to ' + inst.year_max)
+        ? (inst.year_min === inst.year_max ? '' + inst.year_min : inst.year_min + CI_I18N.to + inst.year_max)
         : 'n/a';
       const pop = '<b>' + ciEscape(inst.name) + '</b><br>' +
         (inst.city ? ciEscape(inst.city) + ', ' : '') + ciEscape(inst.country_code) + '<br>' +
-        'Citing authors: ' + inst.citing_authors + '<br>' +
-        'Citing papers: ' + inst.citing_papers + '<br>' +
-        'Years: ' + yrs;
+        CI_I18N.citingAuthors + inst.citing_authors + '<br>' +
+        CI_I18N.citingPapers + inst.citing_papers + '<br>' +
+        CI_I18N.years + yrs;
       const marker = L.circleMarker([inst.lat, inst.lng], {
         radius: 5 + Math.min(8, inst.citing_papers * 0.75),
         color: '#f2f5f7', weight: 1.5, fillColor: '#3f5a7a', fillOpacity: 0.92
@@ -179,7 +180,7 @@
     ciClearTimers();
     const btn = document.getElementById('ci-play-btn');
     const yearEl = document.getElementById('ci-year-num');
-    if (btn) { btn.disabled = true; btn.textContent = 'Playing'; }
+    if (btn) { btn.disabled = true; btn.textContent = CI_I18N.playing; }
 
     /* Rewind: hide every marker and zero the counters. */
     ciGroups.forEach(function (g) {
@@ -219,7 +220,7 @@
       ciTween(ciEls.institutions, cur.institutions, CI_TOTALS.institutions, 300);
       ciTween(ciEls.countries, cur.countries, CI_TOTALS.countries, 300);
       ciPlaying = false;
-      if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
+      if (btn) { btn.disabled = false; btn.textContent = CI_I18N.replay; }
     }, CI_STEPS.length * STEP_MS + 150);
   }
 
@@ -232,7 +233,7 @@
     ciClearTimers();
     ciPlaying = false;
     const btn = document.getElementById('ci-play-btn');
-    if (btn) { btn.disabled = false; btn.textContent = 'Replay'; }
+    if (btn) { btn.disabled = false; btn.textContent = CI_I18N.replay; }
     const yearEl = document.getElementById('ci-year-num');
     if (yearEl) yearEl.textContent = year;
     ciGroups.forEach(function (g, gi) {

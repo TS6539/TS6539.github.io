@@ -1,0 +1,28 @@
+---
+title: "Perceived effectiveness of cigarette warning labels in reducing household smoking: A mixed method study with Japanese smokers"
+authors:
+  - Xinyu Zhao
+  - me
+  - J. Ma
+  - C. Wu
+  - E. Watamura
+date: "2026-01-01T00:00:00Z"
+publishDate: "2026-01-01T00:00:00Z"
+publication_types: ["article-journal"]
+publication:
+  name: "Public Health, 252"
+  pages: "106139"
+peer_reviewed: true
+tags:
+  - Public Health
+  - Mixed Methods
+research_line: other-collaborations
+featured: false
+hugoblox:
+  ids:
+    doi: "10.1016/j.puhe.2026.106139"
+journal_cover: "media/journals/public-health.jpg"
+journal_note: "2025 Impact Factor 3.5 · Indexed in Scopus and Medline"
+timeline_line: collab
+timeline_short: "J. Cigarette warning labels in Japan"
+---

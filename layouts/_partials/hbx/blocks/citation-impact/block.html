@@ -93,15 +93,15 @@
 
 <div class="ci-wrap">
   <h2 class="ci-title">{{ $title }}</h2>
-  <p class="ci-intro">My research has been cited by scholars at {{ $totals.institutions }} institutions in {{ $totals.countries }} countries. The map shows where those citing researchers are based, and the chart traces how the citations have grown year by year.</p>
+  <p class="ci-intro">{{ i18n "site_ci_intro" (dict "Institutions" $totals.institutions "Countries" $totals.countries) }}</p>
 
   <div class="ci-stats">
-    <div class="ci-stat"><b id="ci-stat-papers">{{ $totals.citing_papers }}</b><span>Citing papers</span></div>
-    <div class="ci-stat"><b id="ci-stat-institutions">{{ $totals.institutions }}</b><span>Institutions</span></div>
-    <div class="ci-stat"><b id="ci-stat-countries">{{ $totals.countries }}</b><span>Countries</span></div>
+    <div class="ci-stat"><b id="ci-stat-papers">{{ $totals.citing_papers }}</b><span>{{ i18n "site_citing_papers" }}</span></div>
+    <div class="ci-stat"><b id="ci-stat-institutions">{{ $totals.institutions }}</b><span>{{ i18n "site_institutions" }}</span></div>
+    <div class="ci-stat"><b id="ci-stat-countries">{{ $totals.countries }}</b><span>{{ i18n "site_countries" }}</span></div>
   </div>
 
-  <p class="ci-note" style="text-align: center; max-width: 46rem; margin: -1.4rem auto 2.2rem;">Citing papers are unique works that cite my publications, merged from OpenAlex and Google Scholar and deduplicated; the total includes self-citations (2 of 113).</p>
+  <p class="ci-note" style="text-align: center; max-width: 46rem; margin: -1.4rem auto 2.2rem;">{{ i18n "site_ci_note_dedup" }}</p>
 
   {{/* Map card + Leaflet script + playback script: shared partial,
        also embedded in the Impact section of /publications/. This
@@ -110,15 +110,15 @@
   {{ partial "citation_map.html" (dict "styles" false) }}
 
   <div class="ci-card">
-    <h3>Citations received per year</h3>
-    <p class="ci-sub">Bars count citing papers by their publication year. The line is the cumulative total.</p>
+    <h3>{{ i18n "site_ci_chart_title" }}</h3>
+    <p class="ci-sub">{{ i18n "site_ci_chart_sub" }}</p>
     <div class="ci-chart-wrap"><canvas id="ci-chart"></canvas></div>
-    <p class="ci-note">Data from OpenAlex merged with Google Scholar citing works exported via Publish or Perish, compiled November 2026. A few citing works have no publication year in either source, so the yearly chart sums to slightly less than the total number of citing papers. Citing works found only through Google Scholar may lack institution data and do not appear on the map.</p>
+    <p class="ci-note">{{ i18n "site_ci_data_note" }}</p>
   </div>
 
   <div class="ci-card" id="ci-pr-card">
-    <h3>Peer Review</h3>
-    <p class="ci-intro-line">Reviewer for journals including:</p>
+    <h3>{{ i18n "site_ci_peer_title" }}</h3>
+    <p class="ci-intro-line">{{ i18n "site_ci_reviewer_for" }}</p>
     <div class="ci-chips">
       <span class="ci-chip">TESOL Journal</span>
       <span class="ci-chip">Education and Information Technologies</span>
@@ -130,11 +130,11 @@
       <span class="ci-chip">Frontiers in Education</span>
     </div>
     <div class="ci-stats2">
-      <div class="ci-stat2"><b class="ci-count" data-target="45">45</b><span>Manuscripts reviewed</span></div>
-      <div class="ci-stat2"><b class="ci-count" data-target="40">40</b><span>Verified reviews (Web of Science)</span></div>
-      <div class="ci-stat2"><b>AERA</b><span>Annual meeting proposal reviewer</span></div>
+      <div class="ci-stat2"><b class="ci-count" data-target="45">45</b><span>{{ i18n "site_manuscripts_reviewed" }}</span></div>
+      <div class="ci-stat2"><b class="ci-count" data-target="40">40</b><span>{{ i18n "site_ci_verified" }}</span></div>
+      <div class="ci-stat2"><b>AERA</b><span>{{ i18n "site_ci_aera_role" }}</span></div>
     </div>
-    <p class="ci-note">Web of Science counts individual verified reviews; one manuscript can appear in more than one review, and the verified reviews cover 32 of the manuscripts.</p>
+    <p class="ci-note">{{ i18n "site_ci_wos_note" }}</p>
   </div>
 </div>
 
@@ -156,9 +156,9 @@
       data: {
         labels: cy.map(function (d) { return d.year; }),
         datasets: [
-          { type: 'bar', label: 'Citations received', data: cy.map(function (d) { return d.count; }),
+          { type: 'bar', label: {{ i18n "site_ci_chart_citations" | jsonify }}, data: cy.map(function (d) { return d.count; }),
             backgroundColor: 'rgba(63,90,122,0.85)', borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 }, maxBarThickness: 48, yAxisID: 'y' },
-          { type: 'line', label: 'Cumulative', data: cy.map(function (d) { return d.cumulative; }),
+          { type: 'line', label: {{ i18n "site_ci_chart_cumulative" | jsonify }}, data: cy.map(function (d) { return d.cumulative; }),
             borderColor: lineColor, backgroundColor: 'rgba(63,90,122,0.10)', fill: true, pointBackgroundColor: lineColor,
             pointBorderColor: '#ffffff', pointBorderWidth: 1.5, pointRadius: 3, tension: 0.35, yAxisID: 'y1' }
         ]
@@ -173,8 +173,8 @@
         },
         scales: {
           x: { grid: { display: false } },
-          y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'Citations' } },
-          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { precision: 0 }, title: { display: true, text: 'Cumulative' } }
+          y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: {{ i18n "site_ci_chart_y" | jsonify }} } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { precision: 0 }, title: { display: true, text: {{ i18n "site_ci_chart_cumulative" | jsonify }} } }
         }
       }
     });
