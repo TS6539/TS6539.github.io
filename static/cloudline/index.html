@@ -1111,12 +1111,15 @@ function propDisc(c, x, y, R, prop){
   const g = c.createRadialGradient(x - .8, y - .8, 0, x, y, 3); g.addColorStop(0, '#f4f4f2'); g.addColorStop(1, '#6f7275'); c.fillStyle = g; c.beginPath(); c.arc(x, y, 2.8, 0, 7); c.fill();
 }
 function glass(c, path){ const g = c.createLinearGradient(-6, -24, 6, -8); g.addColorStop(0, '#9fb9c9'); g.addColorStop(.35, '#2b4253'); g.addColorStop(1, '#0f1d27'); c.fillStyle = g; path(); c.fill(); }
+let _POSC = null; function planeOSC(){ if (!_POSC) _POSC = mk(352, 352); return _POSC; }
 function drawPlane(c, p, liv, prop, shadow, bank = 0, night = false){
   const [body, wingC, acc] = liv.c, S = shadow;
   const sk = 1 - Math.min(.22, Math.abs(bank) * .12);
+  let _oc = null, _orig = null;
+  if (!S){ _oc = planeOSC(); _orig = c; const _o = _oc.getContext('2d'); _o.setTransform(1, 0, 0, 1, 0, 0); _o.clearRect(0, 0, 352, 352); _o.translate(176, 176); _o.scale(2, 2); c = _o; }
   c.save(); c.scale(sk, 1);
   const fill = (col) => { c.fillStyle = S ? '#000' : col; };
-  c.lineWidth = .55; c.strokeStyle = 'rgba(0,0,0,.2)';
+  c.lineWidth = .45; c.strokeStyle = 'rgba(0,0,0,.13)';
   if (p.shape === 'jet'){
     // wings
     const wingP = () => { c.beginPath(); c.moveTo(5, -8); c.lineTo(46, 15); c.lineTo(45, 21); c.lineTo(5, 13); c.lineTo(-5, 13); c.lineTo(-45, 21); c.lineTo(-46, 15); c.lineTo(-5, -8); c.closePath(); };
@@ -1149,7 +1152,7 @@ function drawPlane(c, p, liv, prop, shadow, bank = 0, night = false){
       const tl = wy1 - 3.5; panel(c, [span * .5, tl, span * .93, tl, -span * .5, tl, -span * .93, tl, span * .5, tl, span * .5, wy1, -span * .5, tl, -span * .5, wy1, 9, tl, span * .48, tl, -9, tl, -span * .48, tl]);
       c.fillStyle = acc; rr(c, span - 6, wy0 + (twin ? 6 : 0), 6, twin ? 9 : wy1 - wy0, 2.5); c.fill(); rr(c, -span, wy0 + (twin ? 6 : 0), 6, twin ? 9 : wy1 - wy0, 2.5); c.fill();
       c.save(); c.fillStyle = 'rgba(30,30,30,.55)'; c.font = '600 4.6px -apple-system,system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(p.reg, span * .5, (wy0 + wy1) / 2 + (twin ? 2 : 0)); c.restore();
-      if (bi){ c.strokeStyle = 'rgba(40,30,20,.6)'; c.lineWidth = .9; panel(c, [span * .62, wy0 + 1, span * .62, wy1 + 7, -span * .62, wy0 + 1, -span * .62, wy1 + 7, span * .2, wy0 + 1, span * .2, wy1 + 7, -span * .2, wy0 + 1, -span * .2, wy1 + 7]); c.strokeStyle = 'rgba(0,0,0,.2)'; c.lineWidth = .55; }
+      if (bi){ c.strokeStyle = 'rgba(40,30,20,.6)'; c.lineWidth = .9; panel(c, [span * .62, wy0 + 1, span * .62, wy1 + 7, -span * .62, wy0 + 1, -span * .62, wy1 + 7, span * .2, wy0 + 1, span * .2, wy1 + 7, -span * .2, wy0 + 1, -span * .2, wy1 + 7]); c.strokeStyle = 'rgba(0,0,0,.13)'; c.lineWidth = .45; }
     }
     if (twin){ [-1, 1].forEach(s => { fill(S ? 0 : cylGrad(c, 4.4, body)); c.save(); c.translate(s * 21, 0); c.beginPath(); c.moveTo(0, -20); c.bezierCurveTo(4.6, -18, 4.6, 8, 2.5, 14); c.lineTo(-2.5, 14); c.bezierCurveTo(-4.6, 8, -4.6, -18, 0, -20); c.fill(); c.restore(); }); }
     if (!S){
@@ -1174,6 +1177,11 @@ function drawPlane(c, p, liv, prop, shadow, bank = 0, night = false){
     c.globalCompositeOperation = 'source-over';
   }
   c.restore();
+  if (_oc){ const _o = _oc.getContext('2d'); _o.save(); _o.setTransform(1, 0, 0, 1, 0, 0); _o.globalCompositeOperation = 'source-atop';
+    _o.fillStyle = `rgba(${WX.warm},.16)`; _o.fillRect(0, 0, 352, 352);
+    _o.fillStyle = `rgba(${WX.sea.sky.map(v => Math.round(v * 255)).join(',')},.07)`; _o.fillRect(0, 0, 352, 352);
+    const _g = _o.createLinearGradient(40, 30, 312, 322); _g.addColorStop(0, 'rgba(255,255,255,.14)'); _g.addColorStop(.45, 'rgba(255,255,255,0)'); _g.addColorStop(1, 'rgba(8,16,28,.15)'); _o.fillStyle = _g; _o.fillRect(0, 0, 352, 352);
+    _o.restore(); _orig.drawImage(_oc, -88, -88, 176, 176); }
 }
 
 /* ============================ thumbnails ============================ */
