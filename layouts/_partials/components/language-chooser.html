@@ -1,0 +1,19 @@
+{{ $page := .page }}
+{{- if $page.IsTranslated -}}
+  {{- $items := slice -}}
+  {{- range $code := slice "en" "zh" "ja" -}}
+    {{- range $page.AllTranslations -}}
+      {{- if eq .Lang $code -}}{{- $items = $items | append . -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  <nav class="hb-lang-links" aria-label="{{ T "languages" }}">
+    {{- range $i, $t := $items -}}
+      {{- if $i }}<span class="hb-lang-sep" aria-hidden="true">·</span>{{ end -}}
+      {{- if eq $t.Lang $page.Lang -}}
+        <span class="hb-lang-cur" aria-current="true">{{ index hugo.Data.languages $t.Lang }}</span>
+      {{- else -}}
+        <a href="{{ $t.Permalink }}">{{ index hugo.Data.languages $t.Lang }}</a>
+      {{- end -}}
+    {{- end -}}
+  </nav>
+{{- end -}}

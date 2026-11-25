@@ -1133,13 +1133,20 @@ img[src$="tools-banner.svg"] { object-fit: contain; }
 .notes-subscribe-joinbtn:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
 .notes-subscribe-addr { font-size: .95rem; color: var(--v3-text-2); }
 
-/* Language chooser: read as a tappable pill, obvious on phones too */
-button[data-hb-language-chooser]{
+/* Language links: plain anchors in a pill, no JavaScript needed */
+.hb-lang-links{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
   border:1px solid rgba(90,110,135,.5);
   border-radius:999px;
   padding:.34rem .72rem;
-  height:auto;
   font-size:.8rem;
-  font-weight:600;
+  line-height:1.2;
+  white-space:nowrap;
 }
-.dark button[data-hb-language-chooser]{ border-color:rgba(200,212,226,.45); }
+.hb-lang-links a{ color:inherit; opacity:.6; text-decoration:none; }
+.hb-lang-links a:hover{ opacity:1; }
+.hb-lang-links .hb-lang-cur{ font-weight:700; }
+.hb-lang-links .hb-lang-sep{ opacity:.35; }
+.dark .hb-lang-links{ border-color:rgba(200,212,226,.45); }
