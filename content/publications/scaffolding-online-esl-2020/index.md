@@ -5,6 +5,7 @@ authors:
 date: "2020-05-01T00:00:00Z"
 publishDate: "2020-05-01T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 journal_cover: "media/covers/iceel-kyoto-2020.jpg"
 publication:
   name: "International Conference on Education and eLearning, Kyoto, Japan"

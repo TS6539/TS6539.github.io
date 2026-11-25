@@ -6,6 +6,7 @@ authors:
 date: "2024-01-03T00:00:00Z"
 publishDate: "2024-01-03T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 journal_cover: "media/covers/hice-2024.jpg"
 publication:
   name: "Hawaii International Conference on Education"

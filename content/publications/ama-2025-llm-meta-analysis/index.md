@@ -11,6 +11,7 @@ authors:
 date: "2025-08-22T00:00:00Z"
 publishDate: "2025-08-22T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 journal_cover: "media/covers/ama-conference-2025.jpg"
 publication:
   name: "American Marketing Association Conference"

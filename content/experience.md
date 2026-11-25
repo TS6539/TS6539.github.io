@@ -42,9 +42,9 @@ sections:
     content:
       title: Grants
       text: |-
-        - Provost Grant, Pepperdine University, 2022: Gamification of Leadership Studies Curriculum: A Systematic Review (2012-2022)
-        - Provost Grant, Pepperdine University, 2022: Adapted Media Communication Strategies: A Comparison between Men and Women Police Chiefs and Sheriffs
-        - Provost Grant, Pepperdine University, 2023: Assessing the Role of AI Tools in Enhancing Learning and Motivation: An Experimental Study
+        - Provost Grant, Pepperdine University, 2022 (PI): Gamification of Leadership Studies Curriculum: A Systematic Review (2012-2022)
+        - Provost Grant, Pepperdine University, 2022 (Co-PI): Adapted Media Communication Strategies: A Comparison between Men and Women Police Chiefs and Sheriffs
+        - Provost Grant, Pepperdine University, 2023 (PI): Assessing the Role of AI Tools in Enhancing Learning and Motivation: An Experimental Study
         - Knowledge Engineer on an NIH-funded project developing AI-supported meta-analysis and systematic review software (Hyperthesis LLC; total award $3.9M across Phases I and II)
     design:
       columns: '1'

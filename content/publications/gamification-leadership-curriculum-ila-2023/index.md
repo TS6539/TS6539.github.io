@@ -7,6 +7,7 @@ authors:
 date: "2023-10-01T00:00:00Z"
 publishDate: "2023-10-01T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 journal_cover: "media/covers/ila-global-2023.jpg"
 publication:
   name: "International Leadership Association (ILA) Global Conference"

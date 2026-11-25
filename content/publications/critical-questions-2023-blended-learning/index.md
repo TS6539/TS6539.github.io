@@ -5,6 +5,7 @@ authors:
 date: "2023-02-27T00:00:00Z"
 publishDate: "2023-02-27T00:00:00Z"
 publication_types: ["paper-conference"]
+type_label: "Conference presentation"
 journal_cover: "media/covers/critical-questions-2023.jpg"
 publication:
   name: "Critical Questions in Education Conference, San Diego, CA"
