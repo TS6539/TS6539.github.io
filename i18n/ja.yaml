@@ -104,6 +104,8 @@ site_invite_text: "関連する研究をされている方、あるいはこの�
 site_invite_link: "メールでご連絡ください"
 site_invite_period: "。"
 site_cover_alt: "{{ .Name }}の表紙"
+site_cpx_open: "論文を開く"
+site_cpx_close: "閉じる"
 
 # --- Citation map ---
 site_map_title: "引用はどこから来ているか"

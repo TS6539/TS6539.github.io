@@ -1,0 +1,68 @@
+/* Book companion overlay (cpx, 2026-11-26): opened from a publication's
+   cover on the hub and on single pages. All styles scoped to .cpx-*;
+   palette follows the site (ink #3f5a7a, paper #f2f5f7). The script
+   (companion.js) makes no network calls beyond the static images. */
+.cpx-overlay { position: fixed; inset: 0; z-index: 120; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 3.5vh 12px 5vh; }
+.cpx-overlay[hidden] { display: none; }
+.cpx-backdrop { position: fixed; inset: 0; background: rgba(18, 24, 32, .58); }
+.cpx-panel { position: relative; background: #f2f5f7; color: #1a1d20; border-radius: 10px; max-width: 1180px; width: 100%; padding: 26px 28px 30px; box-shadow: 0 18px 50px rgba(10, 16, 24, .35); }
+.dark .cpx-panel { background: #171512; color: #ece7dc; }
+.cpx-close { position: absolute; top: 10px; right: 14px; border: 0; background: none; font-size: 30px; line-height: 1; color: #5b6670; cursor: pointer; padding: 4px 8px; }
+.cpx-close:hover { color: #3f5a7a; }
+.cpx-title { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: 1.45rem; line-height: 1.25; margin: 0 44px 18px 0; }
+.cpx-grid { display: grid; grid-template-columns: 290px 1fr; gap: 28px; align-items: start; }
+.cpx-page img { width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 6px 22px rgba(20, 30, 45, .28); background: #fff; }
+.cpx-tags-label { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: .92rem; color: #3f5a7a; margin: 2px 0 8px; }
+.dark .cpx-tags-label { color: #93a9c4; }
+.cpx-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.cpx-tag { border: 1px solid rgba(26, 29, 32, .18); border-radius: 7px; padding: 5px 12px; font-family: Newsreader, Georgia, serif; font-size: .95rem; color: #2e4258; }
+.cpx-tag b { font-weight: 700; color: #1a1d20; margin-left: .35em; }
+.dark .cpx-tag { color: #1a1d20; }
+.cpx-scraps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 14px; margin-bottom: 18px; }
+.cpx-col { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.cpx-scrap { background: #fffdf6; color: #1a1d20; border: 1px solid rgba(120, 110, 88, .35); border-radius: 3px; padding: 5px 11px; font-family: Newsreader, Georgia, serif; font-size: .93rem; line-height: 1.3; box-shadow: 0 2px 6px rgba(20, 30, 45, .13); }
+.cpx-scrap.stat { font-weight: 700; color: #2e4258; }
+.dark .cpx-scrap { background: #efe9db; }
+.cpx-hero { background: #fcfdfe; border: 1px solid rgba(26, 29, 32, .13); border-radius: 8px; padding: 15px 20px 13px; margin-bottom: 18px; }
+.dark .cpx-hero { background: #1c1a17; border-color: rgba(236, 231, 220, .16); }
+.cpx-hero-head { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: 1.22rem; line-height: 1.3; margin: 0 0 4px; }
+.cpx-hero-sub { font-size: .95rem; color: #5b6670; margin: 0; }
+.dark .cpx-hero-sub { color: #a89f8d; }
+.cpx-figs { display: flex; flex-wrap: wrap; gap: 14px; }
+.cpx-fig { flex: 1 1 170px; max-width: 330px; margin: 0; }
+.cpx-fig button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.cpx-fig img { width: 100%; height: auto; display: block; background: #fff; border: 1px solid rgba(26, 29, 32, .14); border-radius: 6px; padding: 6px; }
+.cpx-fig figcaption { font-style: italic; font-size: .82rem; color: #5b6670; margin-top: 5px; }
+.dark .cpx-fig figcaption { color: #a89f8d; }
+/* pop-in: elements start at the page image and burst out (JS sets
+   --dx/--dy/--d per element; --rot keeps each scrap's slight tilt). */
+.cpx-pop { opacity: 0; }
+.cpx-overlay.play .cpx-pop { animation: cpxpop .6s cubic-bezier(.22, .9, .26, 1.12) forwards; animation-delay: var(--d, 0ms); }
+@keyframes cpxpop {
+  from { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(.35) rotate(0deg); }
+  to { opacity: 1; transform: translate(0, 0) scale(1) rotate(var(--rot, 0deg)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpx-overlay.play .cpx-pop { animation: none; opacity: 1; }
+}
+/* cover affordance on hub rows and single pages */
+[data-cpx-open] { cursor: pointer; }
+.cpx-open-line { display: block; margin-top: .35rem; font-size: .8rem; font-style: normal; color: #3f5a7a; text-align: center; }
+.dark .cpx-open-line { color: #93a9c4; }
+[data-cpx-open]:hover .cpx-open-line, [data-cpx-open]:focus-visible .cpx-open-line { text-decoration: underline; }
+/* figure lightbox */
+.cpx-lightbox { position: fixed; inset: 0; z-index: 130; display: flex; align-items: center; justify-content: center; padding: 4vh 16px; }
+.cpx-lightbox[hidden] { display: none; }
+.cpx-lb-card { position: relative; background: #fff; color: #1a1d20; border-radius: 10px; max-width: 880px; width: 100%; max-height: 92vh; overflow-y: auto; padding: 18px 20px 16px; box-shadow: 0 18px 50px rgba(10, 16, 24, .4); }
+.cpx-lb-card img { width: 100%; height: auto; display: block; }
+.cpx-lb-cap { font-style: italic; margin: 10px 0 2px; font-size: .95rem; }
+.cpx-lb-look { color: #3f5a7a; margin: 0; font-size: .95rem; }
+@media (max-width: 860px) {
+  .cpx-grid { grid-template-columns: 1fr; }
+  .cpx-page { max-width: 290px; }
+  .cpx-scraps { grid-template-columns: 1fr 1fr; }
+  .cpx-panel { padding: 20px 16px 24px; }
+}
+@media (max-width: 560px) {
+  .cpx-scraps { grid-template-columns: 1fr; }
+}

@@ -96,5 +96,5 @@
        rules in custom.css). Text content and the row's vertical
        spacing are unchanged. Other lists reusing this view (the
        publication_types taxonomy) render exactly as before. */}}
-  {{- if and $hubList $item.Params.journal_cover }}{{ with resources.Get $item.Params.journal_cover }}<figure class="pub-row-cover"><div class="pub-row-cover-frame"><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ i18n "site_cover_alt" (dict "Name" $pub.name) }}" loading="lazy"></div></figure>{{ end }}{{ end }}
+  {{- if and $hubList $item.Params.journal_cover }}{{ with resources.Get $item.Params.journal_cover }}{{ $cpxSlug := $item.File.ContentBaseName }}{{ $hasCpx := index site.Data.companions $cpxSlug }}<figure class="pub-row-cover"{{ if $hasCpx }} data-cpx-open="{{ $cpxSlug }}"{{ end }}><div class="pub-row-cover-frame"><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ i18n "site_cover_alt" (dict "Name" $pub.name) }}" loading="lazy"></div>{{ if $hasCpx }}<figcaption class="cpx-open-line">{{ i18n "site_cpx_open" }}</figcaption>{{ end }}</figure>{{ end }}{{ end }}
 </div>

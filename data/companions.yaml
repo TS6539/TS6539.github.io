@@ -1,0 +1,39 @@
+last-to-get-a-bit-ets-2026:
+  page1: "page1.jpg"
+  tags_label: "Themes in the coding tree (Figure 1)"
+  tags:
+    - { name: "Perception", count: "9", tint: "#dbe4ee" }
+    - { name: "Usage experience", count: "6", tint: "#e3e8d8" }
+    - { name: "Challenges", count: "6", tint: "#f0e2d0" }
+    - { name: "Suggestions", count: "3", tint: "#ecd9d2" }
+  scraps:
+    - [ "Awareness deficit", "Skepticism", "Perceived usefulness", "Perception change", { t: "7 negative to 8 positive", stat: true } ]
+    - [ "Academic support", "Career development", "Behavior change", "Limited understanding", { t: "7 of 10 had never used GenAI", stat: true } ]
+    - [ "Digital literacy barrier", "Cost concerns", "Ethical concerns", "Mindset", { t: "8 of 10 ended as frequent users", stat: true } ]
+  hero:
+    head: "What held them back was not willingness. It was access."
+    sub: "Digital skills, resources, and nobody to teach them."
+  figures:
+    - { img: "fig1.jpg", caption: "Figure 1 · Codes and themes", look: "Four themes across three interview rounds. Perception alone carries nine codes." }
+    - { img: "fig2.jpg", caption: "Figure 2 · Behavior changes", look: "Look at “Never Used”: 7 at the start, 0 by the end." }
+    - { img: "fig3.jpg", caption: "Figure 3 · Attitude changes", look: "Attitudes flip from 7 negative to 8 positive over one semester." }
+
+icqe-2026-genai-writing:
+  page1: "page1.jpg"
+  tags_label: "What students did with GenAI: 11 activities in 3 families"
+  tags:
+    - { name: "Functional GenAI use", count: "5", tint: "#dbe4ee" }
+    - { name: "Engagement with output", count: "2", tint: "#e3e8d8" }
+    - { name: "Relation to writing", count: "4", tint: "#f0e2d0" }
+  scraps:
+    - [ "Idea & reasoning support", "Language support", "Content generation", "Source interpretation", "Evaluation & feedback" ]
+    - [ "Transforming AI output", "Taking it as-is", { t: "0 checked AI output against the sources", stat: true } ]
+    - [ "Revision & polishing", "Moves into writing", "Replaces writing", "Source integration", { t: "Group difference: d = 2.53", stat: true } ]
+  hero:
+    head: "Nobody checked."
+    sub: "In 20,827 coded moments from 16 students, not one checked AI output against the source text."
+  figures:
+    - { img: "fig1.jpg", caption: "Figure 1 · Aggregate network", look: "The whole class in one map. The thickest tie: polishing linked to taking AI text as-is (0.25)." }
+    - { img: "fig2a.jpg", caption: "Figure 2a · Higher-quality writers", look: "Thinking support sits at the centre of this map." }
+    - { img: "fig2b.jpg", caption: "Figure 2b · Lower-quality writers", look: "The map narrows into a polishing loop." }
+    - { img: "fig2sub.jpg", caption: "Figure 2 · Difference (higher − lower)", look: "Blue: idea support tied to uptake (+0.22). Red: language support tied to polishing (−0.17)." }

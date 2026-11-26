@@ -108,6 +108,8 @@ site_invite_text: "Working on something related, or interested in collaborating 
 site_invite_link: "Email me"
 site_invite_period: "."
 site_cover_alt: "Cover of {{ .Name }}"
+site_cpx_open: "Open the paper"
+site_cpx_close: "Close"
 
 # --- Citation map (citation_map.html) ---
 site_map_title: "Where the citations come from"

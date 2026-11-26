@@ -104,6 +104,8 @@ site_invite_text: "正在做相关的研究，或有兴趣在这个项目上合�
 site_invite_link: "给我发邮件"
 site_invite_period: "。"
 site_cover_alt: "{{ .Name }} 的封面"
+site_cpx_open: "打开论文"
+site_cpx_close: "关闭"
 
 # --- Citation map ---
 site_map_title: "引用来源分布"

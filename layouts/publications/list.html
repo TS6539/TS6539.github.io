@@ -117,6 +117,10 @@
   {{- with resources.Get "js/ptl.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
 </div>
 
+{{- with resources.Get "css/companion.css" }}<link rel="stylesheet" href="{{ (. | resources.Minify).RelPermalink }}">{{ end }}
+{{ partial "companion.html" (dict "pages" $.Pages) }}
+{{- with resources.Get "js/companion.js" }}<script src="{{ (. | resources.Minify).RelPermalink }}"></script>{{ end }}
+
 <div class="flex flex-col items-center">
 
   {{ range $groups }}

@@ -1,0 +1,42 @@
+{{/* Book companion overlay (2026-11-26). Include once per page that can
+     open a companion; pass the publication pages to consider as
+     (dict "pages" $pages). Emits the overlay skeleton, the figure
+     lightbox and a JSON block built from data/companions.yaml for the
+     pages that carry companion data. Renders nothing when none do. */}}
+{{- $with := dict -}}
+{{- range .pages -}}
+  {{- $pg := . -}}
+  {{- $slug := .File.ContentBaseName -}}
+  {{- with index site.Data.companions $slug -}}
+    {{- $with = merge $with (dict $slug (merge . (dict "title" $pg.Title))) -}}
+  {{- end -}}
+{{- end -}}
+{{- if $with -}}
+<div class="cpx-overlay" id="cpx-overlay" hidden role="dialog" aria-modal="true">
+  <div class="cpx-backdrop" data-cpx-close></div>
+  <div class="cpx-panel">
+    <button class="cpx-close" type="button" data-cpx-close aria-label="{{ i18n "site_cpx_close" }}">&times;</button>
+    <h3 class="cpx-title"></h3>
+    <div class="cpx-grid">
+      <div class="cpx-page"><img alt=""></div>
+      <div class="cpx-field">
+        <p class="cpx-tags-label"></p>
+        <div class="cpx-tags"></div>
+        <div class="cpx-scraps"></div>
+        <div class="cpx-hero"><p class="cpx-hero-head"></p><p class="cpx-hero-sub"></p></div>
+        <div class="cpx-figs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cpx-lightbox" id="cpx-lightbox" hidden role="dialog" aria-modal="true">
+  <div class="cpx-backdrop" data-cpx-close></div>
+  <div class="cpx-lb-card">
+    <button class="cpx-close" type="button" data-cpx-close aria-label="{{ i18n "site_cpx_close" }}">&times;</button>
+    <img alt="">
+    <p class="cpx-lb-cap"></p>
+    <p class="cpx-lb-look"></p>
+  </div>
+</div>
+<script type="application/json" id="cpx-data">{{ $with | jsonify | safeJS }}</script>
+{{- end -}}
