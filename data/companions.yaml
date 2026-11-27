@@ -37,3 +37,781 @@ icqe-2026-genai-writing:
     - { img: "fig2a.jpg", caption: "Figure 2a · Higher-quality writers", look: "Thinking support sits at the centre of this map." }
     - { img: "fig2b.jpg", caption: "Figure 2b · Lower-quality writers", look: "The map narrows into a polishing loop." }
     - { img: "fig2sub.jpg", caption: "Figure 2 · Difference (higher − lower)", look: "Blue: idea support tied to uptake (+0.22). Red: language support tied to polishing (−0.17)." }
+aera-2025-last-to-get-a-bit:
+  page1: page1.jpg
+  tags_label: 'The codebook: 10 codes from the interviews (Appendix B)'
+  tags:
+  - name: Understanding
+    count: '2'
+    tint: '#dbe4ee'
+  - name: Perceptions
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Usage
+    count: '2'
+    tint: '#f0e2d0'
+  - name: Challenges & support
+    count: '4'
+    tint: '#ecd9d2'
+  scraps:
+  - - Limited / no understanding
+    - Require support
+    - Perceived negative
+    - t: 'ENA shift: d = 2.91'
+      stat: true
+  - - Perceived benefit
+    - Academic usage
+    - More understanding
+    - t: 5 of 10 had never heard of GenAI
+      stat: true
+  - - Professional usage
+    - Ethical concerns
+    - No challenges
+  hero:
+    head: They began the semester never having heard of GenAI, and ended it wanting to keep it.
+    sub: Ten Mississippi Delta undergraduates, interviewed before and after a semester with GenAI; the ENA shift was d = 2.91.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · ENA graphs, pre and post
+    look: 'Red gives way to blue: the post-study network hangs on Perceived Benefit and Academic Usage.'
+  - img: fig2.jpg
+    caption: Appendix C · Subtracted ENA graph
+    look: The thick blue edges run from More Understanding to Perceived Benefit and on to Academic Usage.
+building-pathways-female-leaders-2024:
+  page1: page1.jpg
+  tags_label: 'Women''s economic empowerment: change at 3 levels (Pereznieto & Taylor, 2014)'
+  tags:
+  - name: The individual
+    count: '3'
+    tint: '#dbe4ee'
+  - name: The community
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Institutions and laws
+    count: '3'
+    tint: '#f0e2d0'
+  scraps:
+  - - Unpaid labor
+    - Gender harassment
+    - Glass ceiling
+    - Lack of legal protection
+  - - Mentorship
+    - Patrons, not only mentors
+    - Networking
+    - Retention in academic medicine
+  - - t: Women hold about 5% of CEO positions
+      stat: true
+    - t: 'Guinea: 25.6 vs 7.2 weekly hours of domestic labor, women vs men'
+      stat: true
+  hero:
+    head: 'Two barriers recur in country after country, and one way through: mentors.'
+    sub: A literature analysis of female leaders' economic empowerment. Unpaid labor and workplace harassment block the path in Western and non-Western societies alike.
+  figures: []
+critical-questions-2023-blended-learning:
+  page1: page1.jpg
+  tags_label: Benefits the cited studies point to (studies cited for each)
+  tags:
+  - name: Motivation
+    count: '3'
+    tint: '#dbe4ee'
+  - name: Knowledge transfer
+    count: '1'
+    tint: '#e3e8d8'
+  - name: Academic performance
+    count: '1'
+    tint: '#f0e2d0'
+  - name: Hand-eye coordination
+    count: '1'
+    tint: '#ecd9d2'
+  scraps:
+  - - Balance of exploration and instruction
+    - Facilitation of knowledge exchange
+  - - Development of transferable skills
+    - Evaluation of results
+  - - t: 3.2 billion gamers worldwide in 2021
+      stat: true
+    - t: 2.27 mobile devices per US household (2020)
+      stat: true
+  hero:
+    head: Move the games into the asynchronous part of blended learning, as one choice among several.
+    sub: 'The device problem dissolves: by 2020 the average US household already had 2.27 mobile devices and 2.12 computers (Laricchia, 2022).'
+  figures: []
+cultural-influences-leadership-2024:
+  page1: page1.jpg
+  tags_label: Cultural markers the review names on each side
+  tags:
+  - name: Eastern markers
+    count: '6'
+    tint: '#dbe4ee'
+  - name: Western markers
+    count: '6'
+    tint: '#e3e8d8'
+  - name: Servant-leadership study countries
+    count: '5'
+    tint: '#f0e2d0'
+  scraps:
+  - - Hierarchy and power distance
+    - Confucian roots
+    - Collectivism
+    - Conflict avoided
+  - - Transformational
+    - Shared decision-making
+    - Growth mindset
+    - Emotional intelligence
+  - - Fusion leadership
+    - t: Arab programs blend 80% Western and 20% Arab practice
+      stat: true
+    - t: 29 Eastern vs 173 Western reviews under the same search
+      stat: true
+  hero:
+    head: The East borrowed the West's leadership curriculum, then found it did not quite fit.
+    sub: A literature analysis with a scoping review. Eastern programs lean theoretical, and Chinese principals report too little practice-based learning.
+  figures: []
+female-leadership-development-2024:
+  page1: page1.jpg
+  tags_label: Women's share of leadership roles, as reported in the review (%)
+  tags:
+  - name: 'India: business leaders'
+    count: '3'
+    tint: '#dbe4ee'
+  - name: 'UAE: private companies led by women'
+    count: '4.4'
+    tint: '#e3e8d8'
+  - name: 'Arab states: leadership representatives'
+    count: '5.6'
+    tint: '#f0e2d0'
+  - name: 'Japan: leader roles'
+    count: '12.6'
+    tint: '#ecd9d2'
+  - name: 'China: leadership roles'
+    count: '17'
+    tint: '#e8e4f0'
+  scraps:
+  - - Gender discrimination
+    - Family-first expectations
+    - Few female role models
+    - Missing equality laws
+  - - Relational and inclusive style
+    - Achievement-oriented
+    - Task-oriented
+    - Caring and nurturing
+  - - t: MENA female labor force participation is 18.61%, the world's lowest
+      stat: true
+    - t: US women held 25.1% of senior executive roles in 2017
+      stat: true
+  hero:
+    head: Family first is the expectation placed on women; leadership has to wait.
+    sub: A secondary-data comparison of MENA and Asia with the West. In several countries women's share of leadership stays in single digits.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · Female labor force participation rate (LFPR) in the world
+    look: 'Read down to the bottom bar: Middle East and North Africa at 18.61%, against a world figure of 46.3% (ILO, 2021).'
+gamification-leadership-competencies-2024:
+  page1: page1.jpg
+  tags_label: Parts in the frameworks this review builds on
+  tags:
+  - name: Gallup leadership dimensions
+    count: '4'
+    tint: '#dbe4ee'
+  - name: Self-determination needs
+    count: '3'
+    tint: '#e3e8d8'
+  - name: Boyatzis intelligences
+    count: '3'
+    tint: '#f0e2d0'
+  - name: Day et al. competency types
+    count: '2'
+    tint: '#ecd9d2'
+  scraps:
+  - - Points
+    - Levels
+    - Leaderboards
+  - - t: Only 10.2% of instructors use games or simulation in leadership programs
+      stat: true
+    - The Honeymoon Effect
+  - - U-shaped effect over time
+    - Novelty effect, then familiarity
+    - ELESS design model
+  hero:
+    head: Gamification is proven in other classrooms, but leadership training has barely tested it.
+    sub: 'A literature review: strong results in teacher training, e-learning and workplaces, while leadership models still lack empirical validation.'
+  figures: []
+genai-academia-autoethnography-2025:
+  page1: page1.jpg
+  tags_label: The study in numbers
+  tags:
+  - name: Scholars as their own participants
+    count: '4'
+    tint: '#dbe4ee'
+  - name: Dominant themes
+    count: '5'
+    tint: '#e3e8d8'
+  - name: Kinds of data each scholar wrote
+    count: '3'
+    tint: '#f0e2d0'
+  - name: Planning steps
+    count: '4'
+    tint: '#ecd9d2'
+  scraps:
+  - - Linguistic barriers
+    - Curiosity
+    - Academic innovation
+  - - Proofreading & polishing
+    - Data analysis
+    - Literature review
+    - Instructional design
+  - - A 'great equalizer'
+    - Over-reliance
+    - Hallucination
+    - Plagiarism worries
+  hero:
+    head: For the two PhD students, GenAI leveled the language. For the two professors, it fed curiosity.
+    sub: Four scholars, two NNES and two NES, wrote and analyzed their own GenAI use through the Technology Acceptance Model.
+  figures: []
+hice-2024-unpacking-success-moocs:
+  page1: page1.jpg
+  tags_label: The PRISMA funnel, stage by stage
+  tags:
+  - name: Records identified
+    count: '607'
+    tint: '#dbe4ee'
+  - name: Screened after duplicates
+    count: '434'
+    tint: '#e3e8d8'
+  - name: Full texts assessed
+    count: '54'
+    tint: '#f0e2d0'
+  - name: Studies included
+    count: '29'
+    tint: '#ecd9d2'
+  scraps:
+  - - Instructor presence
+    - Course design
+    - Student motivation
+    - Digital literacy
+  - - t: Over 90% of learners never finish a MOOC
+      stat: true
+    - t: 12,000 enrolled in one course; 535 finished
+      stat: true
+  - - Low engagement
+    - Time constraints
+    - Individualized course design
+    - Learning analytics
+  hero:
+    head: Instructor presence, course design, motivation and digital literacy decide whether a MOOC works.
+    sub: 'PRISMA systematic review: 29 studies kept from 607 records, published 2012 to 2023.'
+  figures:
+  - img: fig1.jpg
+    caption: Figure A · PRISMA chart
+    look: 607 records enter at the top; only 29 studies reach the bottom box.
+  - img: fig2.jpg
+    caption: Graph B · Number and type of quantitative research design
+    look: Surveys lead with 6; every other design appears once or twice.
+ila-2024-sustainability-business-education:
+  page1: page1.jpg
+  tags_label: How the 80 studies were done (Table 2)
+  tags:
+  - name: Qualitative
+    count: '42'
+    tint: '#dbe4ee'
+  - name: Theoretical
+    count: '23'
+    tint: '#e3e8d8'
+  - name: Mixed methods
+    count: '8'
+    tint: '#f0e2d0'
+  - name: Quantitative
+    count: '7'
+    tint: '#ecd9d2'
+  scraps:
+  - - Experiential learning
+    - SDG integration
+    - Simulations and games
+  - - t: Only 20 of 80 studies measured student learning outcomes
+      stat: true
+    - Skill development
+    - Awareness
+  - - t: 2021 was the peak year, with 17 publications
+      stat: true
+    - 'Teaching focus: 55% of studies'
+  hero:
+    head: Sustainability is reaching business courses, but mostly as an add-on, not the core.
+    sub: 'Systematic review of 80 studies (2013 to 2023): just 20 of them checked what students actually learned.'
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · PRISMA chart
+    look: 476 records narrow to 80 studies; 273 duplicates fall away first.
+  - img: fig2.jpg
+    caption: Figure 1 · Publications by year
+    look: The 2021 spike (17) towers over every other year; the trend line still climbs.
+  - img: fig3.jpg
+    caption: Figure 2 · Percentage of the framework
+    look: Adopted frameworks are the biggest slice; 34% of studies used no framework at all.
+leadership-styles-virtual-teams-wam-2024:
+  page1: page1.jpg
+  tags_label: Leadership styles by number of mentions in the 39 studies (Table 2)
+  tags:
+  - name: Transformational
+    count: '23'
+    tint: '#dbe4ee'
+  - name: Transactional
+    count: '15'
+    tint: '#e3e8d8'
+  - name: Shared
+    count: '7'
+    tint: '#f0e2d0'
+  - name: Laissez-faire
+    count: '4'
+    tint: '#ecd9d2'
+  - name: Emergent leadership
+    count: '3'
+    tint: '#e8e4f0'
+  scraps:
+  - - Trust
+    - Use of technology
+    - Emotional intelligence
+    - Communication
+  - - t: 226 records identified across 17 databases
+      stat: true
+    - t: 39 studies included in the review
+      stat: true
+  - - No one-size-fits-all style
+    - Adaptability
+    - Situational responsiveness
+  hero:
+    head: Transformational leadership dominates the research, but the review's verdict is that no single style fits every virtual team.
+    sub: 39 peer-reviewed studies from 2013-2023, screened under PRISMA from 17 databases; trust was the most-cited mediator, named in 7 studies.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · PRISMA flow diagram for the search and screening process
+    look: 'Follow the funnel down: 226 records identified, 150 screened, and 39 studies included at the bottom.'
+  - img: fig2.jpg
+    caption: Table 2 · Leadership styles mentioned in the reviewed studies
+    look: Transformational leadership tops the count at 23 mentions, well ahead of transactional at 15.
+  - img: fig3.jpg
+    caption: Table 3 · Mediating factors between leadership style and team effectiveness
+    look: Trust heads the list with a frequency of 7; below it stretches a long tail of factors mentioned only once.
+lingering-effects-class-ceiling-2024:
+  page1: page1.jpg
+  tags_label: Less likely to reach management in the US, by disadvantage (Ingram & Oh, 2022)
+  tags:
+  - name: Social class
+    count: 32%
+    tint: '#dbe4ee'
+  - name: Gender
+    count: 27%
+    tint: '#e3e8d8'
+  - name: Race
+    count: 25%
+    tint: '#f0e2d0'
+  scraps:
+  - - t: '32% less likely: lower class and management'
+      stat: true
+    - The class ceiling
+  - - Financial resources
+    - Privileged knowledge
+    - Information through networks
+  - - t: '692 adolescents: family SES predicted leadership potential'
+      stat: true
+    - Parenting and self-esteem in between
+  hero:
+    head: Class quietly blocks the road to leadership, and it can also sharpen the leaders who break through.
+    sub: 'A literature review: lower-class Americans are 32% less likely to reach management, a bigger penalty than gender (27%) or race (25%).'
+  figures: []
+metaverse-campus-ilrn-2023:
+  page1: page1.jpg
+  tags_label: Benefits argued in Section 3 (studies cited under each)
+  tags:
+  - name: Sense of belonging
+    count: '1'
+    tint: '#dbe4ee'
+  - name: Engagement
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Communication skills
+    count: '2'
+    tint: '#f0e2d0'
+  - name: Academic success and cultural competence
+    count: '4'
+    tint: '#ecd9d2'
+  scraps:
+  - - Culture shock
+    - Language barriers
+    - Social adjustment
+  - - Isolation from family and friends
+    - Learn by doing
+    - Know the campus before arriving
+  - - t: 5 benefit areas mapped in Section 3
+      stat: true
+  hero:
+    head: Let students walk their new campus in the metaverse before they ever fly to it.
+    sub: 'A work-in-progress proposal: no campus is built yet; the paper maps the benefits from earlier VR studies, with the framework and a perception study left as future work.'
+  figures: []
+pathway-forward-women-police-chiefs-2023:
+  page1: page1.jpg
+  tags_label: Challenges coded from the interviews (Table 1, chiefs naming each)
+  tags:
+  - name: Communication
+    count: '3'
+    tint: '#dbe4ee'
+  - name: Being in a new department
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Overtasking
+    count: '1'
+    tint: '#f0e2d0'
+  - name: Overthinking
+    count: '1'
+    tint: '#ecd9d2'
+  - name: Role-related stress
+    count: '1'
+    tint: '#e8e4f0'
+  scraps:
+  - - Improve communication
+    - Quiet time to think
+    - Emotional intelligence
+  - - Consistency
+    - Delegation
+    - The glass ceiling
+    - The glass cliff
+  - - t: 6 chiefs interviewed of 200+ contacted
+      stat: true
+    - t: 'Communication: top challenge and top strategy, 50% each'
+      stat: true
+  hero:
+    head: Communication is the chiefs' biggest challenge, and also their main way through it.
+    sub: Six women police chiefs, each with at least 15 years in law enforcement and 4 years as chief, interviewed over Zoom and coded in NVivo Pro 12.
+  figures:
+  - img: fig1.jpg
+    caption: Table 1 · Summary of Challenges
+    look: Communication leads at 50.00%; being new to a department follows at 33.33%.
+  - img: fig2.jpg
+    caption: Table 2 · Summary of Strategies
+    look: Improving communication tops the strategies too, named by half the chiefs; quiet time to think is second.
+play-to-learn-catesol-poster-2020:
+  page1: page1.jpg
+  tags_label: 'Who plays: the board''s headline statistics'
+  tags:
+  - name: US adults who are gamers
+    count: 65%
+    tint: '#dbe4ee'
+  - name: US households with a gamer
+    count: 3 of 4
+    tint: '#e3e8d8'
+  - name: Households owning a gaming device
+    count: 64%
+    tint: '#f0e2d0'
+  - name: Parents who see games as educational
+    count: 70%+
+    tint: '#ecd9d2'
+  - name: Gamers worldwide, end of 2019
+    count: 2.47 billion
+    tint: '#e8e4f0'
+  scraps:
+  - - Flipped lesson plan template
+    - 'Choosing games: six criteria'
+  - - Game ideas by PLD, age range, game type
+    - Practical classroom implementations
+  - - t: About 300 million English learners in China
+      stat: true
+    - t: Nearly 5 million ELLs in US public schools (2015)
+      stat: true
+  hero:
+    head: Video games belong in the ESOL classroom, as part of a flipped lesson.
+    sub: A poster board sharing a group flipped lesson plan, criteria for choosing games, and classroom-ready game ideas.
+  figures: []
+press-start-to-play-2022:
+  page1: page1.jpg
+  tags_label: The study as proposed in the abstract, counted
+  tags:
+  - name: 'Leadership foci: characteristics, styles, strategies'
+    count: '3'
+    tint: '#dbe4ee'
+  - name: Authors, all at Pepperdine University
+    count: '4'
+    tint: '#e3e8d8'
+  - name: 'Approaches named: qualitative, phenomenological'
+    count: '2'
+    tint: '#f0e2d0'
+  - name: References cited
+    count: '1'
+    tint: '#ecd9d2'
+  scraps:
+  - - Alliance leaders
+    - Real Time Strategy (RTS) games
+    - Esports spectatorship
+  - - Leader's personal experiences in game
+    - Insights for players and developers
+    - Games to develop leadership skills
+  hero:
+    head: Alliance leaders run real teams inside RTS games, and their leadership is still unstudied.
+    sub: A proposed qualitative, phenomenological study of alliance leaders' in-game experience, in the IOSSBR Fall 2022 proceedings (p. 23).
+  figures: []
+redefining-searching-systematic-reviews-2025:
+  page1: page1.jpg
+  tags_label: The head-to-head count (Table 1)
+  tags:
+  - name: Reviews compared
+    count: '16'
+    tint: '#dbe4ee'
+  - name: Databases searched by hand
+    count: '276'
+    tint: '#e3e8d8'
+  - name: Records from traditional databases
+    count: 136,227
+    tint: '#f0e2d0'
+  - name: Duplicates removed by hand
+    count: 70,011
+    tint: '#ecd9d2'
+  - name: Articles included across the reviews
+    count: 1,116
+    tint: '#e8e4f0'
+  scraps:
+  - - Virtual humans
+    - Multiethnic mental health
+    - Video game leadership
+    - t: 100% of included articles found in Scholar
+      stat: true
+  - - Title-and-abstract limiters
+    - One database for everyone
+    - t: 70,011 duplicates removed by hand
+      stat: true
+  hero:
+    head: Every article the 16 reviews kept was already sitting in Google Scholar.
+    sub: 276 databases searched by hand yielded 136,227 records; advanced Scholar searches covered all 1,116 included articles.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · SR articles, medical and non-medical
+    look: Blue medical bars tower over the chart, but watch the small orange non-medical bars grow from 2008 on.
+  - img: fig2.jpg
+    caption: Table 1 · Search results for 16 reviews
+    look: 'Read the last two columns: included articles and articles in Scholar match in every single row.'
+  - img: fig3.jpg
+    caption: Figure 3 · Google Scholar advanced search
+    look: 'The whole toolkit is this one form; the craft is in the ti: and ab: limiters the team typed by hand.'
+spontaneous-genai-cet-2025:
+  page1: page1.jpg
+  tags_label: Inside the 63-question survey (Table 3)
+  tags:
+  - name: Self-efficacy items
+    count: '15'
+    tint: '#dbe4ee'
+  - name: Motivation items
+    count: '20'
+    tint: '#e3e8d8'
+  - name: GenAI acceptance items
+    count: '21'
+    tint: '#f0e2d0'
+  - name: Questions in total
+    count: '63'
+    tint: '#ecd9d2'
+  scraps:
+  - - Perceived usefulness
+    - Ease of use
+    - Behavioral intention
+    - t: 'Use vs predicted score: p = .913'
+      stat: true
+  - - Intrinsic motivation pulled the other way
+    - Listening self-efficacy lowest
+    - t: 'Users vs non-users ENA: d = 3.10'
+      stat: true
+  hero:
+    head: Feeling useful won users; using more moved neither scores nor self-efficacy.
+    sub: 595 CET-4 students surveyed and 8 interviewed at one Chinese university, in a natural setting with no assigned GenAI use.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · Variables and hypotheses
+    look: 'Every arrow runs through one box in the middle: GenAI usage frequency.'
+  - img: fig2.jpg
+    caption: Table 5 · Motivation factor loadings
+    look: Fourteen items survive the cut, seven per factor; ENG_8 tops the table at 0.90.
+  - img: fig3.jpg
+    caption: Figure 2 · ENA graphs, users and non-users
+    look: In the subtracted graph (c), Usage ties strongly to positive views of the tools, and to no self-efficacy code at all.
+strategies-doctoral-students-icqe-2024:
+  page1: page1.jpg
+  tags_label: The nine doctoral students, by field and country (Table 1)
+  tags:
+  - name: Social sciences
+    count: '6'
+    tint: '#dbe4ee'
+  - name: United States
+    count: '5'
+    tint: '#e3e8d8'
+  - name: China
+    count: '4'
+    tint: '#f0e2d0'
+  - name: STEM
+    count: '3'
+    tint: '#ecd9d2'
+  scraps:
+  - - Efficiency & Strategy
+    - Synergy
+    - Co-authors
+    - Find Articles
+  - - Support Systems
+    - Lack of Support
+    - Publication Preparation
+    - Innovation
+  - - t: Social science vs STEM networks differ on MR1, p = .02
+      stat: true
+    - t: U.S. vs China networks differ on MR1, p = .02
+      stat: true
+  hero:
+    head: 'The students who published shared a routine: set the goal first, search the literature systematically, and polish the manuscript before submitting.'
+    sub: Nine doctoral students (six social sciences, three STEM; five in the U.S., four in China), interviewed and modeled with Epistemic Network Analysis.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · ENA models for STEM (a) and social science (b) students; subtracted model below
+    look: In the subtracted model (c), the thick blue edge from Knowledge to IRB exempt/unfamiliarity is the STEM signature.
+  - img: fig2.jpg
+    caption: Figure 2 · ENA models for China (a) and U.S. (b) students; subtracted model below
+    look: 'The thick red Synergy to Efficiency & Strategy edge dominates the subtracted model: U.S. students talked strategy and collaboration together.'
+unlocking-potential-gamification-2024:
+  page1: page1.jpg
+  tags_label: The PRISMA funnel, from search to synthesis (Figure 1)
+  tags:
+  - name: Records identified
+    count: 1,851
+    tint: '#dbe4ee'
+  - name: Abstracts screened
+    count: 1,085
+    tint: '#e3e8d8'
+  - name: Full texts assessed
+    count: '120'
+    tint: '#f0e2d0'
+  - name: Studies included
+    count: '23'
+    tint: '#ecd9d2'
+  scraps:
+  - - Points, badges, leaderboards
+    - Escape rooms
+    - Business simulations
+    - Serious games
+  - - Gamified lectures
+    - Workshops
+    - Game-based learning
+    - Role-playing games
+  - - t: 12 of 23 never define gamification
+      stat: true
+    - t: 78 full texts excluded for missing the gamification-and-leadership focus
+      stat: true
+  hero:
+    head: Gamification lifts leadership training, but the field still cannot agree on what gamification is.
+    sub: 23 articles screened from 1,851 records; most are theoretical, and 12 never give the key term an operational definition.
+  figures:
+  - img: fig1.jpg
+    caption: Figure 1 · PRISMA chart
+    look: 'Follow the funnel down: 1,851 records become 23 studies. The biggest full-text cut is focus, 78 papers were not about gamification and leadership together.'
+  - img: fig2.jpg
+    caption: Figure 2 · Research methods
+    look: 'One bar towers over the rest: 14 of the 23 studies are theoretical. Only 9 use any empirical design.'
+  - img: fig3.jpg
+    caption: Figure 3 · Data collection year
+    look: Two peaks of six articles, 2019 and 2022, and none at all in 2016 or 2018. A young, spiky literature.
+video-games-bridging-sla-catesol-2024:
+  page1: page1.jpg
+  tags_label: The paper's frameworks, counted by the items it lists
+  tags:
+  - name: Optimal input
+    count: '4'
+    tint: '#dbe4ee'
+  - name: States of mind
+    count: '3'
+    tint: '#e3e8d8'
+  - name: Community lenses
+    count: '3'
+    tint: '#f0e2d0'
+  - name: Forms of English in games
+    count: '3'
+    tint: '#ecd9d2'
+  scraps:
+  - - Optimal input hypothesis
+    - Literacy club
+    - Affective filter
+    - Club membership
+  - - Text-based instructions
+    - Character dialogues
+    - Narrative elements
+    - Immediate feedback
+  - - t: 40% increase in English vocabulary
+      stat: true
+    - t: Twofold rise in chat exchanges
+      stat: true
+  hero:
+    head: Games turn players into a language community, so acquisition happens while they play.
+    sub: A theory-and-evidence synthesis built on Krashen's optimal input and club membership, with the first author's game-based autoethnography in Play to Learn (2020).
+  figures: []
+video-games-leadership-skills-2024:
+  page1: page1.jpg
+  tags_label: Benefits the review found games can support, by sources cited for each (Findings)
+  tags:
+  - name: Motivation
+    count: '8'
+    tint: '#dbe4ee'
+  - name: Academic performance
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Hand-eye coordination
+    count: '1'
+    tint: '#f0e2d0'
+  - name: Skills transfer
+    count: '1'
+    tint: '#ecd9d2'
+  - name: Probabilistic learning
+    count: '1'
+    tint: '#e8e4f0'
+  scraps:
+  - - Organizing
+    - Collaborating
+    - Conflict resolution
+    - Persuasion
+  - - Decision-making
+    - Motivating others
+    - Negotiation
+  - - Deeper bonds with online friends than real-life ones
+    - t: 53.3% of female players · 39.4% of male players
+      stat: true
+  hero:
+    head: Massive online games give players real leadership work to do, and the skills they practice there carry into real life.
+    sub: A scoping review of the video game and leadership literature; the evidence clusters in MMORPGs and MMOGs, and leadership meets games far less often than education does.
+  figures: []
+women-police-chiefs-self-perception-2024:
+  page1: page1.jpg
+  tags_label: What the chiefs named, counted from the findings table (Table 1)
+  tags:
+  - name: Positive traits
+    count: '6'
+    tint: '#dbe4ee'
+  - name: Special soft skills
+    count: '5'
+    tint: '#e3e8d8'
+  - name: Leadership titles held
+    count: '5'
+    tint: '#f0e2d0'
+  - name: Relational benefits
+    count: '4'
+    tint: '#ecd9d2'
+  scraps:
+  - - Empathy
+    - Active listening
+    - Conflict resolution
+    - De-escalation
+  - - Glass ceiling
+    - The "Old Guard"
+    - Few mentors or role models
+    - Restricted daycare access
+  - - t: 6 women chiefs and sheriffs interviewed
+      stat: true
+    - t: Women were 13.3% of full-time U.S. law enforcement officers in 2021
+      stat: true
+  hero:
+    head: Women chiefs are prized for empathy and de-escalation, while the barriers in their path are structural, not personal.
+    sub: Six women police chiefs and sheriffs interviewed about leading in a male-dominated profession; the disadvantages they named, from childcare to the glass ceiling, are structural and, the authors argue, changeable.
+  figures:
+  - img: fig1.jpg
+    caption: Table 1 · Themes and descriptions of the findings (first part)
+    look: 'The first row is the one the chiefs returned to most often: the soft skills women contribute in leadership roles.'
+  - img: fig2.jpg
+    caption: Table 1 · Themes and descriptions of the findings (continued)
+    look: 'The last row gathers the disadvantages: childcare support, a hyper-masculine culture, and too few mentors and role models.'
