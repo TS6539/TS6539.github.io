@@ -3,6 +3,7 @@
    partial from data/companions.yaml). No network calls beyond the
    static companion images; no analytics. */
 (function () {
+function init() {
   var dataEl = document.getElementById('cpx-data');
   var overlay = document.getElementById('cpx-overlay');
   if (!dataEl || !overlay) return;
@@ -136,12 +137,17 @@
   function closeLB() { lb.hidden = true; }
 
   document.querySelectorAll('[data-cpx-open]').forEach(function (n) {
-    n.addEventListener('click', function () { open(n.getAttribute('data-cpx-open'), n); });
     n.setAttribute('tabindex', '0');
     n.setAttribute('role', 'button');
-    n.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(n.getAttribute('data-cpx-open'), n); }
-    });
+  });
+  document.addEventListener('click', function (e) {
+    var n = e.target.closest ? e.target.closest('[data-cpx-open]') : null;
+    if (n) open(n.getAttribute('data-cpx-open'), n);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var n = e.target.closest ? e.target.closest('[data-cpx-open]') : null;
+    if (n) { e.preventDefault(); open(n.getAttribute('data-cpx-open'), n); }
   });
   overlay.querySelectorAll('[data-cpx-close]').forEach(function (n) { n.addEventListener('click', close); });
   lb.querySelectorAll('[data-cpx-close]').forEach(function (n) { n.addEventListener('click', closeLB); });
@@ -150,4 +156,7 @@
     if (!lb.hidden) closeLB();
     else if (!overlay.hidden) close();
   });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
 })();
