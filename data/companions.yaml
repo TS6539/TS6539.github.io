@@ -1,42 +1,236 @@
 last-to-get-a-bit-ets-2026:
-  page1: "page1.jpg"
-  tags_label: "Themes in the coding tree (Figure 1)"
+  page1: page1.jpg
+  tags_label: Themes in the coding tree (Figure 1)
   tags:
-    - { name: "Perception", count: "9", tint: "#dbe4ee" }
-    - { name: "Usage experience", count: "6", tint: "#e3e8d8" }
-    - { name: "Challenges", count: "6", tint: "#f0e2d0" }
-    - { name: "Suggestions", count: "3", tint: "#ecd9d2" }
+  - name: Perception
+    count: '9'
+    tint: '#dbe4ee'
+  - name: Usage experience
+    count: '6'
+    tint: '#e3e8d8'
+  - name: Challenges
+    count: '6'
+    tint: '#f0e2d0'
+  - name: Suggestions
+    count: '3'
+    tint: '#ecd9d2'
   scraps:
-    - [ "Awareness deficit", "Skepticism", "Perceived usefulness", "Perception change", { t: "7 negative to 8 positive", stat: true } ]
-    - [ "Academic support", "Career development", "Behavior change", "Limited understanding", { t: "7 of 10 had never used GenAI", stat: true } ]
-    - [ "Digital literacy barrier", "Cost concerns", "Ethical concerns", "Mindset", { t: "8 of 10 ended as frequent users", stat: true } ]
+  - - Awareness deficit
+    - Skepticism
+    - Perceived usefulness
+    - Perception change
+    - t: 7 negative to 8 positive
+      stat: true
+  - - Academic support
+    - Career development
+    - Behavior change
+    - Limited understanding
+    - t: 7 of 10 had never used GenAI
+      stat: true
+  - - Digital literacy barrier
+    - Cost concerns
+    - Ethical concerns
+    - Mindset
+    - t: 8 of 10 ended as frequent users
+      stat: true
   hero:
-    head: "What held them back was not willingness. It was access."
-    sub: "Digital skills, resources, and nobody to teach them."
+    head: What held them back was not willingness. It was access.
+    sub: Digital skills, resources, and nobody to teach them.
   figures:
-    - { img: "fig1.jpg", caption: "Figure 1 · Codes and themes", look: "Four themes across three interview rounds. Perception alone carries nine codes." }
-    - { img: "fig2.jpg", caption: "Figure 2 · Behavior changes", look: "Look at “Never Used”: 7 at the start, 0 by the end." }
-    - { img: "fig3.jpg", caption: "Figure 3 · Attitude changes", look: "Attitudes flip from 7 negative to 8 positive over one semester." }
-
+  - img: fig1.jpg
+    caption: Figure 1 · Codes and themes
+    look: Four themes across three interview rounds. Perception alone carries nine codes.
+  - img: fig2.jpg
+    caption: Figure 2 · Behavior changes
+    look: 'Look at “Never Used”: 7 at the start, 0 by the end.'
+  - img: fig3.jpg
+    caption: Figure 3 · Attitude changes
+    look: Attitudes flip from 7 negative to 8 positive over one semester.
+  zh:
+    tags_label: 编码树中的主题（图1）
+    tags:
+    - 感知
+    - 使用体验
+    - 挑战
+    - 建议
+    scraps:
+    - - 意识缺失
+      - 怀疑主义
+      - 感知效用
+      - 观念的转变
+      - t: 7负到8正
+        stat: true
+    - - 学业支持
+      - 职业发展
+      - 行为改变
+      - 理解有限
+      - t: 10人中有7人从未使用过生成式人工智能
+        stat: true
+    - - 数字素养障碍
+      - 成本问题
+      - 伦理问题
+      - 思维方式
+      - t: 10人中有8人最终成为频繁使用者
+        stat: true
+    hero:
+      head: 阻碍他们的并不是意愿，而是获取渠道。
+      sub: 数字技能和资源都有，却没人来教。
+    figures:
+    - caption: 图1 · 代码与主题
+      look: 三轮访谈共涉及四个主题。仅“感知”这一项就包含九个编码。
+    - caption: 图2 · 行为变化
+      look: 看看“从未使用过”这一项：一开始是7，到最后变成了0。
+    - caption: 图3 · 态度变化
+      look: 在一个学期内，态度从7个负面转变为8个正面。
+  ja:
+    tags_label: コーディングツリーにおけるテーマ（図1）
+    tags:
+    - 知覚
+    - 利用体験
+    - 課題
+    - ご提案
+    scraps:
+    - - 認識の欠如
+      - 懐疑主義
+      - 有用性の認識
+      - 認識の変化
+      - t: マイナス7からプラス8
+        stat: true
+    - - 学業支援
+      - キャリア開発
+      - 行動の変化
+      - 理解が不十分
+      - t: 10人のうち7人は、GenAIを使ったことがなかった
+        stat: true
+    - - デジタルリテラシーにおける障壁
+      - コストに関する懸念
+      - 倫理上の懸念
+      - マインドセット
+      - t: 10人のうち8人が頻繁に使うようになった
+        stat: true
+    hero:
+      head: 彼らを阻んでいたのは、意欲の欠如ではなく、機会の欠如だった。
+      sub: デジタルスキルやリソースはあるのに、それを教えてくれる人がいない。
+    figures:
+    - caption: 図1・コードとテーマ
+      look: 3回のインタビューラウンドにわたる4つのテーマ。認識だけで9つのコードが抽出された。
+    - caption: 図2・行動の変化
+      look: 「未使用」の項目を見てください。最初は7つありましたが、最後には0つになりました。
+    - caption: 図3・意識の変化
+      look: 1学期の間で、否定的な態度が7から肯定的な態度が8へと逆転した。
 icqe-2026-genai-writing:
-  page1: "page1.jpg"
-  tags_label: "What students did with GenAI: 11 activities in 3 families"
+  page1: page1.jpg
+  tags_label: 'What students did with GenAI: 11 activities in 3 families'
   tags:
-    - { name: "Functional GenAI use", count: "5", tint: "#dbe4ee" }
-    - { name: "Engagement with output", count: "2", tint: "#e3e8d8" }
-    - { name: "Relation to writing", count: "4", tint: "#f0e2d0" }
+  - name: Functional GenAI use
+    count: '5'
+    tint: '#dbe4ee'
+  - name: Engagement with output
+    count: '2'
+    tint: '#e3e8d8'
+  - name: Relation to writing
+    count: '4'
+    tint: '#f0e2d0'
   scraps:
-    - [ "Idea & reasoning support", "Language support", "Content generation", "Source interpretation", "Evaluation & feedback" ]
-    - [ "Transforming AI output", "Taking it as-is", { t: "0 checked AI output against the sources", stat: true } ]
-    - [ "Revision & polishing", "Moves into writing", "Replaces writing", "Source integration", { t: "Group difference: d = 2.53", stat: true } ]
+  - - Idea & reasoning support
+    - Language support
+    - Content generation
+    - Source interpretation
+    - Evaluation & feedback
+  - - Transforming AI output
+    - Taking it as-is
+    - t: 0 checked AI output against the sources
+      stat: true
+  - - Revision & polishing
+    - Moves into writing
+    - Replaces writing
+    - Source integration
+    - t: 'Group difference: d = 2.53'
+      stat: true
   hero:
-    head: "Nobody checked."
-    sub: "In 20,827 coded moments from 16 students, not one checked AI output against the source text."
+    head: Nobody checked.
+    sub: In 20,827 coded moments from 16 students, not one checked AI output against the source text.
   figures:
-    - { img: "fig1.jpg", caption: "Figure 1 · Aggregate network", look: "The whole class in one map. The thickest tie: polishing linked to taking AI text as-is (0.25)." }
-    - { img: "fig2a.jpg", caption: "Figure 2a · Higher-quality writers", look: "Thinking support sits at the centre of this map." }
-    - { img: "fig2b.jpg", caption: "Figure 2b · Lower-quality writers", look: "The map narrows into a polishing loop." }
-    - { img: "fig2sub.jpg", caption: "Figure 2 · Difference (higher − lower)", look: "Blue: idea support tied to uptake (+0.22). Red: language support tied to polishing (−0.17)." }
+  - img: fig1.jpg
+    caption: Figure 1 · Aggregate network
+    look: 'The whole class in one map. The thickest tie: polishing linked to taking AI text as-is (0.25).'
+  - img: fig2a.jpg
+    caption: Figure 2a · Higher-quality writers
+    look: Thinking support sits at the centre of this map.
+  - img: fig2b.jpg
+    caption: Figure 2b · Lower-quality writers
+    look: The map narrows into a polishing loop.
+  - img: fig2sub.jpg
+    caption: Figure 2 · Difference (higher − lower)
+    look: 'Blue: idea support tied to uptake (+0.22). Red: language support tied to polishing (−0.17).'
+  zh:
+    tags_label: 学生如何运用生成式人工智能：3大类共11项活动
+    tags:
+    - 通用人工智能（GenAI）的实际应用
+    - 对产出的参与
+    - 与写作的关系
+    scraps:
+    - - 思路与推理支持
+      - 语言支持
+      - 内容生成
+      - 源文本解读
+      - 评估与反馈
+    - - 转换 AI 生成的内容
+      - 照原样接受
+      - t: 0 次核对了 AI 生成的内容与原始来源是否一致
+        stat: true
+    - - 修订与润色
+      - 转向写作
+      - 取代书写
+      - 源集成
+      - t: 组间差异：d = 2.53
+        stat: true
+    hero:
+      head: 没人检查。
+      sub: 在来自16名学生的20,827个标记时刻中，没有一个人将AI生成的内容与源文本进行核对。
+    figures:
+    - caption: 图1 · 聚合网络
+      look: 整个班级都在一张图上。关联度最高的是：润色与直接采用AI生成的文本（0.25）。
+    - caption: 图2a · 写作水平更高的作者
+      look: “思维支持”位于这张地图的中心位置。
+    - caption: 图2b · 写作水平较低的作者
+      look: 地图逐渐收窄，形成一个抛光环。
+    - caption: 图2 · 差值（较高值 − 较低值）
+      look: 蓝色：创意支持与采用率相关（+0.22）。红色：语言支持与完善程度相关（−0.17）。
+  ja:
+    tags_label: 学生たちがGenAIを使って行ったこと：3つのカテゴリーに分類された11の活動
+    tags:
+    - GenAIの実用的な活用
+    - 成果物への関与
+    - 文章との関連性
+    scraps:
+    - - アイデアと論拠のサポート
+      - 言語対応
+      - コンテンツ生成
+      - 出典の解釈
+      - 評価とフィードバック
+    - - AIの出力を変換する
+      - そのまま受け入れる
+      - t: 0件のAI出力をソースと照合した
+        stat: true
+    - - 推敲・推敲
+      - 執筆へと移行する
+      - 書き込みに代わる
+      - ソースの統合
+      - t: 群間の差：d = 2.53
+        stat: true
+    hero:
+      head: 誰も確認しなかった。
+      sub: 16人の学生から得られた20,827件の記録された場面において、AIの出力を原文と照らし合わせた学生は一人もいなかった。
+    figures:
+    - caption: 図1・集約ネットワーク
+      look: クラス全体を1枚の地図に。最も太い結びつきは、推敲とAIの文章をそのまま取り込むことの間にある（0.25）。
+    - caption: 図2a・より質の高いライター
+      look: このマップの中心には、「思考のサポート」が位置しています。
+    - caption: 図2b・執筆能力の低いライター
+      look: マップは、研磨ループへと狭まっていく。
+    - caption: 図2・差（高い値 − 低い値）
+      look: 青：採用率と関連するアイデアのサポート（+0.22）。赤：完成度と関連する言語面のサポート（−0.17）。
 aera-2025-last-to-get-a-bit:
   page1: page1.jpg
   tags_label: 'The codebook: 10 codes from the interviews (Appendix B)'
@@ -77,6 +271,64 @@ aera-2025-last-to-get-a-bit:
   - img: fig2.jpg
     caption: Appendix C · Subtracted ENA graph
     look: The thick blue edges run from More Understanding to Perceived Benefit and on to Academic Usage.
+  zh:
+    tags_label: 编码表：访谈中的10个编码（附录B）
+    tags:
+    - 理解
+    - 认知
+    - 用法
+    - 挑战与支持
+    scraps:
+    - - 理解有限/不理解
+      - 需要支持
+      - 被认为具有负面影响
+      - t: ENA位移：d = 2.91
+        stat: true
+    - - 感知到的益处
+      - 学术用法
+      - 更深入的理解
+      - t: 10人中有5人从未听说过GenAI
+        stat: true
+    - - 专业用途
+      - 伦理问题
+      - 没有挑战
+    hero:
+      head: 他们开学时对生成式人工智能（GenAI）一无所知，而学期结束时却希望继续使用它。
+      sub: 对十名密西西比三角洲地区的本科生进行了访谈，访谈时间分别在他们使用生成式人工智能（GenAI）一个学期之前和之后；其ENA变化量为 d = 2.91。
+    figures:
+    - caption: 图1 · ENA图表（治疗前与治疗后）
+      look: 红色让位于蓝色：毕业后的社交网络依赖于“感知效益”和“学术用途”。
+    - caption: 附录 C · 减法 ENA 图
+      look: 这些粗粗的蓝色边框从“更深入的理解”延伸至“感知到的益处”，再延伸至“学术用途”。
+  ja:
+    tags_label: コードブック：インタビューから抽出した10のコード（付録B）
+    tags:
+    - 理解
+    - 認識
+    - 使用方法
+    - 課題と支援
+    scraps:
+    - - 理解が限られている／理解できない
+      - サポートが必要
+      - 否定的に受け止められる
+      - t: ENAシフト：d = 2.91
+        stat: true
+    - - 認識されるメリット
+      - 学術的な用法
+      - さらなる理解
+      - t: 10人のうち5人は、GenAIという言葉を聞いたことがなかった
+        stat: true
+    - - 業務用途
+      - 倫理上の懸念
+      - 課題なし
+    hero:
+      head: 彼らは、この学期が始まるまではGenAIという言葉を聞いたこともなかったが、学期が終わる頃には、それを手放したくないと思うようになっていた。
+      sub: ミシシッピ・デルタ地域の大学生10名を対象に、GenAIを用いた1学期の前後でインタビューを実施した。ENAのシフトは d = 2.91 であった。
+    figures:
+    - caption: 図1・ENAグラフ（実施前と実施後）
+      look: 赤から青へ：研究後のネットワークは、「知覚された便益」と「学術的な利用」に支えられている。
+    - caption: 付録 C · 差分 ENA グラフ
+      look: 太い青い線は、「理解の深化」から「認識されるメリット」を経て、「学術的な使用」へと続いています。
 building-pathways-female-leaders-2024:
   page1: page1.jpg
   tags_label: 'Women''s economic empowerment: change at 3 levels (Pereznieto & Taylor, 2014)'
@@ -107,6 +359,52 @@ building-pathways-female-leaders-2024:
     head: 'Two barriers recur in country after country, and one way through: mentors.'
     sub: A literature analysis of female leaders' economic empowerment. Unpaid labor and workplace harassment block the path in Western and non-Western societies alike.
   figures: []
+  zh:
+    tags_label: 妇女的经济赋权：三个层面的变革（Pereznieto & Taylor，2014）
+    tags:
+    - 个人
+    - 社区
+    - 制度与法律
+    scraps:
+    - - 无偿劳动
+      - 性骚扰
+      - 玻璃天花板
+      - 缺乏法律保护
+    - - 导师制
+      - 赞助人，而不仅仅是导师
+      - 人际网络
+      - 医学教育领域的留任率
+    - - t: 女性担任首席执行官的比例约为5%
+        stat: true
+      - t: 几内亚：女性与男性每周家务劳动时间分别为25.6小时和7.2小时
+        stat: true
+    hero:
+      head: 在许多国家，有两个障碍反复出现，而突破的途径只有一个：导师。
+      sub: 关于女性领导者经济赋权的文献综述。无论在西方还是非西方社会，无偿劳动和职场骚扰都阻碍了女性的进步。
+    figures: []
+  ja:
+    tags_label: 女性の経済的エンパワーメント：3つのレベルにおける変化（Pereznieto & Taylor, 2014）
+    tags:
+    - その人物
+    - コミュニティ
+    - 制度と法律
+    scraps:
+    - - 無償労働
+      - セクシャルハラスメント
+      - ガラスの天井
+      - 法的保護の欠如
+    - - メンターシップ
+      - メンターだけでなく、支援者たち
+      - ネットワーキング
+      - 医学教育分野における人材定着
+    - - t: CEOのポストのうち、女性が占める割合は約5％である
+        stat: true
+      - t: ギニア：家事労働の週当たりの労働時間、女性25.6時間、男性7.2時間
+        stat: true
+    hero:
+      head: 国を問わず、2つの障壁が繰り返し現れますが、それを乗り越える方法はただ一つ、メンターの存在です。
+      sub: 女性リーダーの経済的エンパワーメントに関する文献分析。無償労働や職場でのハラスメントは、西洋社会でも非西洋社会でも同様に、その道のりを阻んでいる。
+    figures: []
 critical-questions-2023-blended-learning:
   page1: page1.jpg
   tags_label: Benefits the cited studies point to (studies cited for each)
@@ -136,6 +434,46 @@ critical-questions-2023-blended-learning:
     head: Move the games into the asynchronous part of blended learning, as one choice among several.
     sub: 'The device problem dissolves: by 2020 the average US household already had 2.27 mobile devices and 2.12 computers (Laricchia, 2022).'
   figures: []
+  zh:
+    tags_label: 引用的研究指出的益处（每项研究均附有引用文献）
+    tags:
+    - 动机
+    - 知识转移
+    - 学业表现
+    - 手眼协调能力
+    scraps:
+    - - 探索与指导的平衡
+      - 促进知识交流
+    - - 可迁移技能的培养
+      - 结果评估
+    - - t: 2021年全球游戏玩家人数达32亿
+        stat: true
+      - t: 美国家庭平均拥有2.27台移动设备（2020年）
+        stat: true
+    hero:
+      head: 将游戏纳入混合式学习的异步部分，作为多种选择之一。
+      sub: 设备问题已不复存在：到2020年，美国家庭平均已拥有2.27台移动设备和2.12台电脑（Laricchia，2022）。
+    figures: []
+  ja:
+    tags_label: 引用された研究が指摘する利点（各研究の引用元）
+    tags:
+    - 動機
+    - 知識の移転
+    - 学業成績
+    - 手と目の協調性
+    scraps:
+    - - 探求と指導のバランス
+      - 知識の交流の促進
+    - - 汎用スキルの育成
+      - 結果の評価
+    - - t: 2021年の世界のゲーマー数は32億人
+        stat: true
+      - t: 米国の1世帯あたりのモバイル端末数は2.27台（2020年）
+        stat: true
+    hero:
+      head: ブレンド型学習において、ゲームを非同期学習の要素の一つとして取り入れる。
+      sub: デバイスの問題は解消されつつある。2020年時点で、米国の平均的な世帯にはすでに2.27台のモバイル端末と2.12台のコンピューターが所有されていた（Laricchia, 2022）。
+    figures: []
 cultural-influences-leadership-2024:
   page1: page1.jpg
   tags_label: Cultural markers the review names on each side
@@ -167,6 +505,54 @@ cultural-influences-leadership-2024:
     head: The East borrowed the West's leadership curriculum, then found it did not quite fit.
     sub: A literature analysis with a scoping review. Eastern programs lean theoretical, and Chinese principals report too little practice-based learning.
   figures: []
+  zh:
+    tags_label: 该评论中提到的、位于两侧的文化标志
+    tags:
+    - 东方标志
+    - 西方标志
+    - 仆人式领导力研究对象国
+    scraps:
+    - - 等级制度与权力距离
+      - 儒家渊源
+      - 集体主义
+      - 避免了冲突
+    - - 变革性的
+      - 共同决策
+      - 成长型思维
+      - 情商
+    - - Fusion 领导层
+      - t: 阿拉伯课程融合了80%的西方做法和20%的阿拉伯做法
+        stat: true
+      - t: 同一检索下：东方综述29篇，西方173篇
+        stat: true
+    hero:
+      head: 东方借鉴了西方的领导力课程，随后发现它并不完全适用。
+      sub: 一项结合范围性综述的文献分析。东方的课程项目偏重理论，而中国校长反映实践性学习内容过少。
+    figures: []
+  ja:
+    tags_label: レビューで挙げられている、両側に記された文化的特徴
+    tags:
+    - 東方の目印
+    - 西洋式のマーカー
+    - サーバント・リーダーシップに関する調査対象国
+    scraps:
+    - - 階層構造と権力距離
+      - 儒教のルーツ
+      - 集団主義
+      - 紛争を回避した
+    - - 変革的な
+      - 共同意思決定
+      - 成長志向
+      - 感情知能
+    - - フュージョンのリーダーシップ
+      - t: アラブのプログラムは、80％が西洋式、20％がアラブ式の実践を組み合わせたものである
+        stat: true
+      - t: 同じ検索で「東部 29件」と「西部 173件」のレビューが表示される
+        stat: true
+    hero:
+      head: 東洋は西洋のリーダーシップ教育カリキュラムを取り入れたが、それが必ずしも適合しないことに気づいた。
+      sub: スコーピング・レビューを伴う文献分析。東アジアのプログラムは理論重視の傾向があり、中国の校長たちは実践に基づく学習が不十分であると報告している。
+    figures: []
 female-leadership-development-2024:
   page1: page1.jpg
   tags_label: Women's share of leadership roles, as reported in the review (%)
@@ -206,6 +592,60 @@ female-leadership-development-2024:
   - img: fig1.jpg
     caption: Figure 1 · Female labor force participation rate (LFPR) in the world
     look: 'Read down to the bottom bar: Middle East and North Africa at 18.61%, against a world figure of 46.3% (ILO, 2021).'
+  zh:
+    tags_label: 该综述中报告的女性在领导岗位中所占比例（%）
+    tags:
+    - 印度：商界领袖
+    - 阿联酋：由女性领导的私营企业
+    - 阿拉伯国家：领导层代表
+    - 日本：领导角色
+    - 中国：领导职务
+    scraps:
+    - - 性别歧视
+      - 以家庭为重的期望
+      - 女性榜样寥寥无几
+      - 缺乏平等法律
+    - - 注重关系且包容的风格
+      - 以成就为导向
+      - 以任务为导向
+      - 关爱与呵护
+    - - t: 中东和北非（MENA）地区女性劳动力参与率为18.61%，为全球最低
+        stat: true
+      - t: 2017年，美国女性担任的高级管理职位占比为25.1%
+        stat: true
+    hero:
+      head: “家庭第一”是社会对女性的期望；领导力则只能暂且搁置。
+      sub: 一项基于二手数据的比较研究，对比了中东和北非（MENA）地区、亚洲与西方国家的情况。在多个国家中，女性在领导层中所占的比例仍仅为个位数。
+    figures:
+    - caption: 图1 · 全球女性劳动力参与率（LFPR）
+      look: 请往下看最下方的数据条：中东和北非地区为18.61%，而全球平均水平为46.3%（国际劳工组织，2021年）。
+  ja:
+    tags_label: 本レビューで報告されている、指導的役職に占める女性の割合（％）
+    tags:
+    - インド：ビジネスリーダーたち
+    - UAE：女性が率いる民間企業
+    - アラブ諸国：指導部の代表者
+    - 日本：リーダーの役割
+    - 中国：指導的役割
+    scraps:
+    - - 性別による差別
+      - 「家族第一」という期待
+      - 女性のロールモデルが少ない
+      - 平等に関する法律の欠如
+    - - 関係性を重視し、包摂的なスタイル
+      - 成果志向
+      - タスク志向
+      - 思いやりと育成
+    - - t: MENA地域の女性の労働力参加率は18.61％で、世界最低水準となっている
+        stat: true
+      - t: 2017年、米国では上級管理職の25.1％を女性が占めていた
+        stat: true
+    hero:
+      head: 「家族が最優先」というのは、女性に課せられた期待であり、リーダーシップは後回しにされなければならない。
+      sub: 中東・北アフリカ（MENA）地域およびアジアと欧米との二次データによる比較。いくつかの国では、指導的立場にある女性の割合が依然として一桁にとどまっている。
+    figures:
+    - caption: 図1・世界の女性の労働力参加率（LFPR）
+      look: 一番下のバーをご覧ください。中東・北アフリカは18.61％で、世界平均の46.3％を下回っています（ILO、2021年）。
 gamification-leadership-competencies-2024:
   page1: page1.jpg
   tags_label: Parts in the frameworks this review builds on
@@ -236,6 +676,48 @@ gamification-leadership-competencies-2024:
     head: Gamification is proven in other classrooms, but leadership training has barely tested it.
     sub: 'A literature review: strong results in teacher training, e-learning and workplaces, while leadership models still lack empirical validation.'
   figures: []
+  zh:
+    tags_label: 本综述所依据的框架中的部分内容
+    tags:
+    - 盖洛普领导力维度
+    - 自决需求
+    - 博亚齐斯智能
+    - Day等人提出的胜任力类型
+    scraps:
+    - - 要点
+      - 级别
+      - 排行榜
+    - - t: 在领导力培训项目中，仅有10.2%的讲师使用游戏或模拟教学法
+        stat: true
+      - “蜜月效应”
+    - - 随时间变化的U型效应
+      - 新奇效应，随后是熟悉感
+      - ELESS 设计模型
+    hero:
+      head: 游戏化在其他课堂上已被证明行之有效，但在领导力培训中却几乎未曾尝试过。
+      sub: 文献综述：在教师培训、在线学习和职场领域取得了显著成果，而领导力模型仍缺乏实证验证。
+    figures: []
+  ja:
+    tags_label: 本レビューの基礎となっているフレームワークに含まれる要素
+    tags:
+    - ギャラップのリーダーシップ・ディメンション
+    - 自己決定のニーズ
+    - ボヤツィスの知能理論
+    - Dayらによるコンピテンシーの類型
+    scraps:
+    - - ポイント
+      - レベル
+      - ランキング
+    - - t: リーダーシップ研修において、ゲームやシミュレーションを活用している講師はわずか10.2％にとどまっている
+        stat: true
+      - ハネムーン効果
+    - - 経時的なU字型効果
+      - 新鮮さによる効果、そして慣れ
+      - ELESSデザインモデル
+    hero:
+      head: ゲーミフィケーションは他の教室ではその効果が実証されているが、リーダーシップ研修ではほとんど試されていない。
+      sub: 文献レビュー：教員養成、eラーニング、職場における成果は顕著である一方、リーダーシップモデルについては依然として実証的な裏付けが不足している。
+    figures: []
 genai-academia-autoethnography-2025:
   page1: page1.jpg
   tags_label: The study in numbers
@@ -268,6 +750,52 @@ genai-academia-autoethnography-2025:
     head: For the two PhD students, GenAI leveled the language. For the two professors, it fed curiosity.
     sub: Four scholars, two NNES and two NES, wrote and analyzed their own GenAI use through the Technology Acceptance Model.
   figures: []
+  zh:
+    tags_label: 研究数据一览
+    tags:
+    - 学者作为研究对象
+    - 主要主题
+    - 每位学者撰写的数据类型
+    - 规划步骤
+    scraps:
+    - - 语言障碍
+      - 好奇心
+      - 学术创新
+    - - 校对与润色
+      - 数据分析
+      - 文献综述
+      - 教学设计
+    - - “伟大的平等者”
+      - 过度依赖
+      - 幻觉
+      - 对剽窃的担忧
+    hero:
+      head: 对于两位博士生，GenAI 抹平了语言差距；对于两位教授，它满足了好奇心。
+      sub: 四位学者（其中两位为非英语母语者，两位为英语母语者）通过“技术接受模型”对自身使用生成式人工智能的情况进行了记录和分析。
+    figures: []
+  ja:
+    tags_label: 調査結果の数値
+    tags:
+    - 研究者自身も参加者として
+    - 主なテーマ
+    - 各研究者が執筆したデータの種類
+    - 計画の手順
+    scraps:
+    - - 言語の壁
+      - 好奇心
+      - 学術的イノベーション
+    - - 校正・推敲
+      - データ分析
+      - 文献レビュー
+      - 教育設計
+    - - 「偉大なる平等化者」
+      - 過度な依存
+      - 幻覚
+      - 盗作への懸念
+    hero:
+      head: 2人の博士課程の学生にとって、GenAIは言語の壁を取り払った。2人の教授にとっては、好奇心を掻き立てた。
+      sub: 4人の研究者（非母語話者2名、母語話者2名）が、テクノロジー受容モデルを用いて、自身のジェネレーティブAIの利用状況について記述し、分析を行った。
+    figures: []
 hice-2024-unpacking-success-moocs:
   page1: page1.jpg
   tags_label: The PRISMA funnel, stage by stage
@@ -307,6 +835,62 @@ hice-2024-unpacking-success-moocs:
   - img: fig2.jpg
     caption: Graph B · Number and type of quantitative research design
     look: Surveys lead with 6; every other design appears once or twice.
+  zh:
+    tags_label: PRISMA漏斗模型，分阶段解析
+    tags:
+    - 已识别的记录
+    - 已筛除重复项
+    - 已评估的全文
+    - 纳入的研究
+    scraps:
+    - - 教师在场情况
+      - 课程设计
+      - 学生的学习动机
+      - 数字素养
+    - - t: 超过90%的学员从未完成过一门MOOC课程
+        stat: true
+      - t: 一门课程有12,000人报名；535人完成课程
+        stat: true
+    - - 参与度低
+      - 时间限制
+      - 个性化课程设计
+      - 学习分析
+    hero:
+      head: 教师的参与度、课程设计、学习动机以及数字素养，共同决定了MOOC能否取得成功。
+      sub: PRISMA系统综述：从607篇文献中筛选出29项研究，发表于2012年至2023年。
+    figures:
+    - caption: 图A · PRISMA图表
+      look: 607条记录位于列表顶部；只有29项研究进入底部框中。
+    - caption: 图B · 定量研究设计的数量与类型
+      look: 问卷调查类研究最多，共6项；其余设计各出现一两次。
+  ja:
+    tags_label: PRISMAファネル：各段階ごとに
+    tags:
+    - 特定された記録
+    - 重複を除いて抽出
+    - 評価対象となった全文
+    - 対象となった研究
+    scraps:
+    - - 講師の立ち会い
+      - コース設計
+      - 学生の学習意欲
+      - デジタルリテラシー
+    - - t: 学習者の90％以上がMOOCを最後まで修了しない
+        stat: true
+      - t: ある講座の受講者数は12,000人、修了者は535人
+        stat: true
+    - - エンゲージメントが低い
+      - 時間の制約
+      - 個別対応型のカリキュラム設計
+      - ラーニング・アナリティクス
+    hero:
+      head: MOOCが成功するかどうかは、講師の存在感、コースの設計、受講生の意欲、そしてデジタルリテラシーによって決まります。
+      sub: PRISMAシステマティックレビュー：2012年から2023年までに発表された607件の文献から、29件の研究が選定された。
+    figures:
+    - caption: 図A・PRISMAチャート
+      look: 607件の記録が上位にランクインし、最終段階まで残ったのはわずか29件の研究のみである。
+    - caption: グラフB・定量的研究デザインの数と種類
+      look: 調査法が最多で6件。その他の研究デザインは1〜2件ずつ。
 ila-2024-sustainability-business-education:
   page1: page1.jpg
   tags_label: How the 80 studies were done (Table 2)
@@ -347,6 +931,62 @@ ila-2024-sustainability-business-education:
   - img: fig3.jpg
     caption: Figure 2 · Percentage of the framework
     look: Adopted frameworks are the biggest slice; 34% of studies used no framework at all.
+  zh:
+    tags_label: 这80项研究是如何进行的（表2）
+    tags:
+    - 定性
+    - 理论上的
+    - 混合研究方法
+    - 定量
+    scraps:
+    - - 体验式学习
+      - 可持续发展目标（SDG）的整合
+      - 模拟与游戏
+    - - t: 在80项研究中，只有20项对学生的学习成果进行了评估
+        stat: true
+      - 技能发展
+      - 意识
+    - - t: 2021年是发表量最高的一年，共计17篇论文
+        stat: true
+      - 教学重点：55%的研究
+    hero:
+      head: 可持续发展理念已融入商科课程，但大多只是作为补充内容，而非核心内容。
+      sub: 对80项研究（2013年至2023年）的系统性综述：其中仅有20项研究考察了学生实际学到了什么。
+    figures:
+    - caption: 图1 · PRISMA图表
+      look: 476条记录筛选为80项研究；首先剔除了273条重复记录。
+    - caption: 图1 · 按年份划分的出版物
+      look: 2021年的峰值（17）远超其他年份；趋势线仍在攀升。
+    - caption: 图2 · 框架的百分比
+      look: 采用框架的研究占比最大；34%的研究完全未采用任何框架。
+  ja:
+    tags_label: 80件の研究の実施方法（表2）
+    tags:
+    - 定性的
+    - 理論的
+    - 混合手法
+    - 定量的
+    scraps:
+    - - 体験型学習
+      - SDGsの統合
+      - シミュレーションとゲーム
+    - - t: 80件の研究のうち、学生の学習成果を測定したのはわずか20件のみであった
+        stat: true
+      - スキルの向上
+      - 認識
+    - - t: 2021年は17件の論文が発表され、ピークの年となりました
+        stat: true
+      - 教育の重点分野：研究の55％
+    hero:
+      head: サステナビリティはビジネスコースにも取り入れられつつあるが、その多くは本筋ではなく、あくまで付加的な要素として扱われている。
+      sub: 80件の研究（2013年から2023年）を対象としたシステマティック・レビュー：そのうち、学生が実際に何を学んだかを確認していたのはわずか20件だった。
+    figures:
+    - caption: 図1・PRISMAチャート
+      look: 476件の記録が80件の研究に絞り込まれ、まず273件の重複が除外された。
+    - caption: 図1・年別出版物
+      look: 2021年の急増（17）は他のどの年よりも際立っており、傾向線は依然として上昇を続けている。
+    - caption: 図2・フレームワークの割合
+      look: 採用されたフレームワークが最大の割合を占めており、34％の研究ではフレームワークを一切使用していなかった。
 leadership-styles-virtual-teams-wam-2024:
   page1: page1.jpg
   tags_label: Leadership styles by number of mentions in the 39 studies (Table 2)
@@ -391,6 +1031,66 @@ leadership-styles-virtual-teams-wam-2024:
   - img: fig3.jpg
     caption: Table 3 · Mediating factors between leadership style and team effectiveness
     look: Trust heads the list with a frequency of 7; below it stretches a long tail of factors mentioned only once.
+  zh:
+    tags_label: 39项研究中按提及次数排序的领导风格（表2）
+    tags:
+    - 变革性的
+    - 事务性
+    - 已分享
+    - 自由放任
+    - 新兴领导力
+    scraps:
+    - - 信任
+      - 技术应用
+      - 情商
+      - 沟通
+    - - t: 在17个数据库中共检索到226条记录
+        stat: true
+      - t: 该综述纳入了39项研究
+        stat: true
+    - - 没有放之四海皆准的风格
+      - 适应性
+      - 情境响应能力
+    hero:
+      head: 虽然变革型领导力在相关研究中占据主导地位，但该综述得出的结论是：没有一种领导风格能适用于所有虚拟团队。
+      sub: 2013年至2023年间，从17个数据库中筛选出39项经同行评审的研究，筛选过程遵循PRISMA指南；“信任”是被引用次数最多的中介变量，在7项研究中被提及。
+    figures:
+    - caption: 图1 · 文献检索与筛选流程的PRISMA流程图
+      look: 沿着筛选流程往下看：共检索到226条记录，筛选出150条，最终纳入39项研究。
+    - caption: 表2 · 已审查研究中提到的领导风格
+      look: 变革型领导力以23次提及位居榜首，远远领先于仅被提及15次的交易型领导力。
+    - caption: 表3 · 领导风格与团队效能之间的中介因素
+      look: “信任”以7次的出现频率位居榜首；其下方则是一长串仅被提及一次的因素。
+  ja:
+    tags_label: 39件の研究における言及回数別のリーダーシップ・スタイル（表2）
+    tags:
+    - 変革的な
+    - トランザクション型
+    - 共有済み
+    - 自由放任
+    - 創発的リーダーシップ
+    scraps:
+    - - 信頼
+      - テクノロジーの活用
+      - 感情知能
+      - コミュニケーション
+    - - t: 17のデータベースから226件のレコードが特定されました
+        stat: true
+      - t: 本レビューには39件の研究が対象となった
+        stat: true
+    - - 万人に合うスタイルなどない
+      - 適応力
+      - 状況に応じた対応力
+    hero:
+      head: 研究分野では変革型リーダーシップが主流となっているが、本総説の結論としては、あらゆるバーチャルチームに通用する単一のリーダーシップスタイルは存在しないということである。
+      sub: 2013年から2023年にかけての17のデータベースからPRISMA基準に基づいて選定された39件の査読済み研究。信頼が最も多く言及された媒介変数であり、7件の研究で挙げられていた。
+    figures:
+    - caption: 図1・文献検索および選別プロセスのPRISMAフローチャート
+      look: ファネルを下へたどると、226件の記録が特定され、150件がスクリーニングされ、最終的に39件の研究が選定されました。
+    - caption: 表2・レビュー対象の研究で言及されたリーダーシップのスタイル
+      look: 「変革型リーダーシップ」が23件の言及で最多となり、「取引型リーダーシップ」の15件を大きく上回った。
+    - caption: 表3・リーダーシップ・スタイルとチームの有効性の間の媒介要因
+      look: 「信頼」が7回の頻度で首位に立ち、その下には1回しか言及されていない要因が長い尾のように並んでいる。
 lingering-effects-class-ceiling-2024:
   page1: page1.jpg
   tags_label: Less likely to reach management in the US, by disadvantage (Ingram & Oh, 2022)
@@ -418,6 +1118,46 @@ lingering-effects-class-ceiling-2024:
     head: Class quietly blocks the road to leadership, and it can also sharpen the leaders who break through.
     sub: 'A literature review: lower-class Americans are 32% less likely to reach management, a bigger penalty than gender (27%) or race (25%).'
   figures: []
+  zh:
+    tags_label: 由于处于不利地位，在美国更难晋升至管理层（Ingram & Oh，2022）
+    tags:
+    - 社会阶层
+    - 性别
+    - 种族
+    scraps:
+    - - t: 可能性降低32%：基层员工和管理层
+        stat: true
+      - 阶级上限
+    - - 财政资源
+      - 特权信息
+      - 通过网络获取的信息
+    - - t: 692名青少年：家庭社会经济地位可预测领导潜力
+        stat: true
+      - 育儿与自尊之间的关系
+    hero:
+      head: 阶级在悄无声息中阻断了通往领导地位的道路，但它也能磨砺那些成功突围的领导者。
+      sub: 文献综述：美国底层人群晋升管理层的可能性比其他群体低32%，这一差距比性别（27%）或种族（25%）带来的影响更为显著。
+    figures: []
+  ja:
+    tags_label: 不利な立場にあるため、米国では管理職に就く可能性が低い（Ingram & Oh, 2022）
+    tags:
+    - 社会階級
+    - 性別
+    - レース
+    scraps:
+    - - t: 管理職に就く確率が32%低い：下位階層出身者
+        stat: true
+      - 階級の天井
+    - - 財源
+      - 特権的な知識
+      - ネットワークを通じた情報
+    - - t: 692人の青少年：家庭の社会経済的地位（SES）がリーダーシップの潜在能力を予測した
+        stat: true
+      - 子育てと自尊心の狭間で
+    hero:
+      head: 階級という壁は、リーダーシップへの道を静かに塞ぐ一方で、その壁を打ち破るリーダーたちをさらに鍛え上げることもある。
+      sub: 文献レビューによると、低所得層のアメリカ人は管理職に就く可能性が32％低く、この差は性別（27％）や人種（25％）による差よりも大きい。
+    figures: []
 metaverse-campus-ilrn-2023:
   page1: page1.jpg
   tags_label: Benefits argued in Section 3 (studies cited under each)
@@ -447,6 +1187,46 @@ metaverse-campus-ilrn-2023:
     head: Let students walk their new campus in the metaverse before they ever fly to it.
     sub: 'A work-in-progress proposal: no campus is built yet; the paper maps the benefits from earlier VR studies, with the framework and a perception study left as future work.'
   figures: []
+  zh:
+    tags_label: 第3节中论述的益处（各部分引用的研究）
+    tags:
+    - 归属感
+    - 参与度
+    - 沟通能力
+    - 学业成就与文化素养
+    scraps:
+    - - 文化冲击
+      - 语言障碍
+      - 社会适应
+    - - 与亲友隔绝
+      - 在实践中学习
+      - 抵达前先了解校园情况
+    - - t: 第3节中划定的5个受益区域
+        stat: true
+    hero:
+      head: 让学生在飞往新校园之前，先在元宇宙中漫步一番。
+      sub: 一份正在制定中的提案：目前尚未建成任何校园；该论文梳理了早期虚拟现实研究带来的益处，其中研究框架和感知研究将作为未来的工作留待开展。
+    figures: []
+  ja:
+    tags_label: 第3節で論じられた利点（各項目で引用された研究）
+    tags:
+    - 帰属意識
+    - エンゲージメント
+    - コミュニケーション能力
+    - 学業の成功と文化的適応力
+    scraps:
+    - - カルチャーショック
+      - 言語の壁
+      - 社会的適応
+    - - 家族や友人からの孤立
+      - 実践を通じて学ぶ
+      - 到着前にキャンパスの様子を把握しておきましょう
+    - - t: 第3節で示された5つのメリット分野
+        stat: true
+    hero:
+      head: 学生たちが実際にそのキャンパスへ飛行機で向かう前に、メタバースの中で新しいキャンパスを散策できるようにしましょう。
+      sub: 現在進行中の提案：まだキャンパスは建設されていません。本論文では、これまでのVR研究から得られた知見を整理していますが、枠組みの策定と知覚に関する研究については今後の課題として残されています。
+    figures: []
 pathway-forward-women-police-chiefs-2023:
   page1: page1.jpg
   tags_label: Challenges coded from the interviews (Table 1, chiefs naming each)
@@ -488,6 +1268,62 @@ pathway-forward-women-police-chiefs-2023:
   - img: fig2.jpg
     caption: Table 2 · Summary of Strategies
     look: Improving communication tops the strategies too, named by half the chiefs; quiet time to think is second.
+  zh:
+    tags_label: 从访谈中编码的挑战（表 1，数字为提及该项的警长人数）
+    tags:
+    - 沟通
+    - 进入新部门
+    - 任务过载
+    - 过度思考
+    - 角色相关压力
+    scraps:
+    - - 改善沟通
+      - 静下心来思考的时光
+      - 情商
+    - - 一致性
+      - 代表团
+      - 玻璃天花板
+      - 玻璃悬崖
+    - - t: 在联系的200多位酋长中，有6位接受了采访
+        stat: true
+      - t: 沟通：首要挑战与首要策略，各占50%
+        stat: true
+    hero:
+      head: 沟通是首长们面临的最大挑战，也是他们克服这一挑战的主要途径。
+      sub: 六位女警察局长，每人均拥有至少15年的执法经验和4年的局长任职经历，通过Zoom进行了访谈，并使用NVivo Pro 12进行了数据编码。
+    figures:
+    - caption: 表1 · 挑战概览
+      look: “沟通”以50.00%的比例位居首位；“刚加入部门”以33.33%的比例紧随其后。
+    - caption: 表 2 · 策略汇总
+      look: 改善沟通同样位居策略之首，一半的警长都提到；其次是留出安静思考的时间。
+  ja:
+    tags_label: インタビューから抽出された課題（表1、各課題を挙げた首長名）
+    tags:
+    - コミュニケーション
+    - 新しい部署に配属されること
+    - 過度な業務負担
+    - 考えすぎ
+    - 職務に起因するストレス
+    scraps:
+    - - コミュニケーションの改善
+      - 静かに物思いにふける時間
+      - 感情知能
+    - - 一貫性
+      - 代表団
+      - ガラスの天井
+      - ガラスの崖
+    - - t: 連絡を取った200人以上の首長のうち、6人にインタビューを行った
+        stat: true
+      - t: コミュニケーション：最大の課題であり、最大の戦略でもある（それぞれ50％）
+        stat: true
+    hero:
+      head: コミュニケーションは、リーダーたちにとって最大の課題であると同時に、その課題を乗り越えるための主な手段でもある。
+      sub: それぞれ15年以上の法執行機関での勤務経験と4年以上の警察署長としての経験を持つ6人の女性警察署長を対象に、Zoomを通じてインタビューを行い、NVivo Pro 12を用いてデータコーディングを行った。
+    figures:
+    - caption: 表1・課題の概要
+      look: 「コミュニケーション」が50.00％で首位を占め、次いで「部署に新しく配属されたこと」が33.33％となっています。
+    - caption: 表2・戦略の概要
+      look: コミュニケーションの改善も戦略のトップに挙げられており、経営幹部の半数がこれを挙げた。2位は、じっくり考えるための静かな時間だ。
 play-to-learn-catesol-poster-2020:
   page1: page1.jpg
   tags_label: 'Who plays: the board''s headline statistics'
@@ -520,6 +1356,48 @@ play-to-learn-catesol-poster-2020:
     head: Video games belong in the ESOL classroom, as part of a flipped lesson.
     sub: A poster board sharing a group flipped lesson plan, criteria for choosing games, and classroom-ready game ideas.
   figures: []
+  zh:
+    tags_label: 谁在场上：球队的主要数据
+    tags:
+    - 美国成年游戏玩家
+    - 家中有一名游戏玩家的美国家庭
+    - 拥有游戏设备的家庭
+    - 将游戏视为教育工具的家长
+    - 全球游戏玩家，2019年底
+    scraps:
+    - - 翻转课堂教案模板
+      - 选择游戏：六大标准
+    - - PLD提供的游戏创意、适用年龄段、游戏类型
+      - 课堂中的实际应用
+    - - t: 中国约有3亿英语学习者
+        stat: true
+      - t: 美国公立学校中有近500万名英语学习者（2015年）
+        stat: true
+    hero:
+      head: 电子游戏应当纳入ESOL课堂，作为翻转课堂的一部分。
+      sub: 一张海报板，上面分享了一个小组设计的翻转课堂教案、游戏选择标准以及可直接用于课堂的游戏创意。
+    figures: []
+  ja:
+    tags_label: 出場選手：理事会の主要統計データ
+    tags:
+    - ゲーマーである米国の成人
+    - ゲーマーがいる米国の世帯
+    - ゲーム機を所有している世帯
+    - ゲームを教育的なものと捉える保護者
+    - 世界中のゲーマー、2019年末時点
+    scraps:
+    - - 反転授業の授業計画テンプレート
+      - ゲームの選び方：6つの基準
+    - - PLDによるゲームのアイデア、対象年齢、ゲームの種類
+      - 実際の授業での実践例
+    - - t: 中国には約3億人の英語学習者がいる
+        stat: true
+      - t: 米国の公立学校には約500万人の英語学習者（ELL）がいる（2015年）
+        stat: true
+    hero:
+      head: ビデオゲームは、反転授業の一環として、ESOLの教室に取り入れるべきです。
+      sub: グループで作成した反転授業の計画案、ゲーム選びの基準、そしてすぐに授業で使えるゲームのアイデアをまとめたポスターボード。
+    figures: []
 press-start-to-play-2022:
   page1: page1.jpg
   tags_label: The study as proposed in the abstract, counted
@@ -547,6 +1425,42 @@ press-start-to-play-2022:
     head: Alliance leaders run real teams inside RTS games, and their leadership is still unstudied.
     sub: A proposed qualitative, phenomenological study of alliance leaders' in-game experience, in the IOSSBR Fall 2022 proceedings (p. 23).
   figures: []
+  zh:
+    tags_label: 如摘要中所述，该研究统计了
+    tags:
+    - 领导力的核心：特征、风格、策略
+    - 作者均来自佩珀代因大学
+    - 研究方法名称：定性研究、现象学研究简体中文（大陆）
+    - 参考文献
+    scraps:
+    - - 联盟领导人
+      - 即时战略（RTS）游戏
+      - 电子竞技观众人数
+    - - 领导者在游戏中的亲身经历
+      - 面向玩家和开发者的见解
+      - 培养领导能力的游戏
+    hero:
+      head: 联盟的领队在即时战略游戏中指挥着真实的队伍，但他们的领导方式至今尚未被研究。
+      sub: 一项关于联盟领导者游戏内体验的定性、现象学研究提案，载于《IOSSBR 2022年秋季会议论文集》（第23页）。
+    figures: []
+  ja:
+    tags_label: 要旨で提案されている研究では、以下の数を集計した。
+    tags:
+    - リーダーシップの焦点：特性、スタイル、戦略
+    - 著者らは全員、ペパーダイン大学の所属である
+    - 「定性的」「現象学的」と呼ばれるアプローチ
+    - 引用文献
+    scraps:
+    - - 同盟の指導者たち
+      - リアルタイムストラテジー（RTS）ゲーム
+      - eスポーツの視聴者数
+    - - ゲーム内でのリーダーの個人的な体験
+      - プレイヤーと開発者のための知見
+      - リーダーシップスキルを養うゲーム
+    hero:
+      head: アライアンスのリーダーたちは、RTSゲーム内で実際のチームを率いているが、そのリーダーシップについてはまだ研究が進んでいない。
+      sub: IOSSBR 2022年秋大会の議事録（p. 23）に掲載された、アライアンスリーダーのゲーム内体験に関する定性的・現象学的研究の提案。
+    figures: []
 redefining-searching-systematic-reviews-2025:
   page1: page1.jpg
   tags_label: The head-to-head count (Table 1)
@@ -589,6 +1503,62 @@ redefining-searching-systematic-reviews-2025:
   - img: fig3.jpg
     caption: Figure 3 · Google Scholar advanced search
     look: 'The whole toolkit is this one form; the craft is in the ti: and ab: limiters the team typed by hand.'
+  zh:
+    tags_label: 直接对比统计（表1）
+    tags:
+    - 评论对比
+    - 手动检索的数据库
+    - 传统数据库中的记录
+    - 手动删除了重复项
+    - 各篇综述中收录的文章
+    scraps:
+    - - 虚拟人类
+      - 多族裔心理健康
+      - 电子游戏领域的领导力
+      - t: 在Scholar中检索到的收录文章占100%
+        stat: true
+    - - 标题和摘要长度限制
+      - 一个数据库，服务于所有人
+      - t: 手动删除了 70,011 个重复项
+        stat: true
+    hero:
+      head: 这16篇被收录的论文，每篇此前都已收录在谷歌学术中。
+      sub: 通过手动检索276个数据库，共获得136,227条记录；通过Scholar的高级检索，涵盖了所有1,116篇纳入的文章。
+    figures:
+    - caption: 图1 · SR文章，医学类与非医学类
+      look: 图表中，蓝色的医疗柱状图高耸入云，但请注意，从2008年起，那些橙色的非医疗柱状图也在逐渐增长。
+    - caption: 表 1 · 16 篇综述的搜索结果
+      look: 看最后两列：纳入的文章与在 Google Scholar 中检索到的文章，每一行都完全吻合。
+    - caption: 图3 · Google学术高级搜索
+      look: 整个工具包就是这一份表格；其中的精妙之处在于团队手工输入的“ti:”和“ab:”限制条件。
+  ja:
+    tags_label: 直接対決の集計結果（表1）
+    tags:
+    - レビューの比較
+    - 手作業で検索したデータベース
+    - 従来のデータベースからの記録
+    - 重複データを手作業で削除しました
+    - 各レビューに掲載された記事
+    scraps:
+    - - バーチャルヒューマン
+      - 多民族のメンタルヘルス
+      - ビデオゲーム業界のリーダーシップ
+      - t: Scholarで見つかった掲載論文の100％
+        stat: true
+    - - タイトルおよび要旨の文字数制限
+      - 誰もが利用できる単一のデータベース
+      - t: 手作業で70,011件の重複を削除しました
+        stat: true
+    hero:
+      head: 16件の査読で採用された論文はすべて、すでにGoogle Scholarに掲載されていた。
+      sub: 手作業で276のデータベースを検索した結果、136,227件の記録が得られ、Scholarでの詳細検索により、対象とした1,116編の論文すべてを網羅した。
+    figures:
+    - caption: 図1・SR論文（医学系および非医学系）
+      look: チャート上には青い医療関連の棒グラフがひときわ目立っていますが、2008年以降、オレンジ色の医療以外の小さな棒グラフが徐々に伸びていく様子に注目してください。
+    - caption: 表1・16件のレビューの検索結果
+      look: 最後の2つの列を確認してください：各行ごとに、「included articles」と「Scholar match」の記事が含まれています。
+    - caption: 図3・Google Scholarの詳細検索
+      look: このツールキット全体は、この1つのフォームで構成されています。その工夫は、チームが手作業で入力した「ti:」および「ab:」のリミッターにあります。
 spontaneous-genai-cet-2025:
   page1: page1.jpg
   tags_label: Inside the 63-question survey (Table 3)
@@ -628,6 +1598,60 @@ spontaneous-genai-cet-2025:
   - img: fig3.jpg
     caption: Figure 2 · ENA graphs, users and non-users
     look: In the subtracted graph (c), Usage ties strongly to positive views of the tools, and to no self-efficacy code at all.
+  zh:
+    tags_label: 这份包含63个问题的调查问卷（表3）中
+    tags:
+    - 自我效能感量表项目
+    - 激励项目
+    - 生成式人工智能（GenAI）验收项目
+    - 题目总数
+    scraps:
+    - - 感知效用
+      - 易用性
+      - 行为意向
+      - t: 实际得分与预测得分：p = 0.913
+        stat: true
+    - - 内在动机却产生了相反的作用
+      - 听力自我效能感最低
+      - t: 使用者与非使用者 ENA：d = 3.10
+        stat: true
+    hero:
+      head: “感到自己有所作为”赢得了用户；而“使用更多”则既未提升评分，也未增强自我效能感。
+      sub: 在一所中国大学中，对595名CET-4考生进行了问卷调查，并对其中8人进行了访谈，调查在自然环境中进行，未指定使用生成式人工智能。
+    figures:
+    - caption: 图1 · 变量与假设
+      look: 每条箭头都穿过中间的一个方框：生成式人工智能的使用频率。
+    - caption: 表 5 · 动机因素的因子载荷
+      look: 经过筛选，共有14个项目入选，每个因子各7个；ENG_8以0.90的得分位居榜首。
+    - caption: 图2 · ENA图表：用户与非用户
+      look: 在减法图（c）中，使用情况与对工具的积极看法密切相关，而与自我效能感编码则毫无关联。
+  ja:
+    tags_label: 63問からなるアンケート調査の内容（表3）
+    tags:
+    - 自己効力感の項目
+    - モチベーション向上アイテム
+    - GenAIの受入項目
+    - 質問の総数
+    scraps:
+    - - 有用性の認識
+      - 使いやすさ
+      - 行動意図
+      - t: 実測値対予測値：p = 0.913
+        stat: true
+    - - 内発的動機付けが逆の方向に働いた
+      - 「聞くこと」に関する自己効力感が最も低い
+      - t: 使用者対非使用者 ENA：d = 3.10
+        stat: true
+    hero:
+      head: 「役に立っている」という感覚がユーザーの支持を得たが、利用頻度を増やしても、スコアも自己効力感も変化しなかった。
+      sub: ある中国の大学において、595人のCET-4受験生を対象にアンケート調査を実施し、そのうち8人にインタビューを行った。調査は、生成AIの使用が特に指示されていない自然な環境下で行われた。
+    figures:
+    - caption: 図1・変数と仮説
+      look: すべての矢印は、中央にある「GenAIの利用頻度」という1つのボックスを通っています。
+    - caption: 表5・動機付け要因の因子負荷量
+      look: 選別を経て14項目が残り、各因子につき7項目ずつとなった。ENG_8が0.90で首位に立っている。
+    - caption: 図2・ENAグラフ：利用者と非利用者
+      look: 差分グラフ（c）では、利用状況はツールに対する肯定的な見解と強く関連しており、自己効力感に関するコードとはまったく関連していない。
 strategies-doctoral-students-icqe-2024:
   page1: page1.jpg
   tags_label: The nine doctoral students, by field and country (Table 1)
@@ -667,6 +1691,62 @@ strategies-doctoral-students-icqe-2024:
   - img: fig2.jpg
     caption: Figure 2 · ENA models for China (a) and U.S. (b) students; subtracted model below
     look: 'The thick red Synergy to Efficiency & Strategy edge dominates the subtracted model: U.S. students talked strategy and collaboration together.'
+  zh:
+    tags_label: 这九名博士生按研究领域和国籍分类（表1）
+    tags:
+    - 社会科学
+    - 美国
+    - 中国
+    - STEM
+    scraps:
+    - - 效率与战略
+      - 协同效应
+      - 合著者
+      - 查找文章
+    - - 支持系统
+      - 缺乏支持
+      - 论文投稿准备
+      - 创新
+    - - t: 社会科学网络与STEM网络在MR1上的差异显著，p = .02
+        stat: true
+      - t: 美国与中国在MR1方面的网络存在差异，p = 0.02
+        stat: true
+    hero:
+      head: 发表论文的学生们都有一个共同的流程：先设定目标，然后系统地查阅文献，最后在投稿前对稿件进行润色。
+      sub: 对九名博士生（六名来自社会科学领域，三名来自STEM领域；其中五名在美国，四名在中国）进行了访谈，并运用“认识论网络分析法”对其进行了建模。
+    figures:
+    - caption: 图1 · 针对STEM（a）和社会科学（b）学生的ENA模型；下方为减法模型
+      look: 在减法模型（c）中，从“知识”到“IRB豁免/不熟悉”的那条粗蓝边就是STEM特征。
+    - caption: 图2 · 中国（a）和美国（b）学生的ENA模型；下方为减法模型
+      look: 在“减法”模型中，那条粗粗的红色“协同、效率与战略”边线占据主导地位：美国学生们共同探讨了战略与协作。
+  ja:
+    tags_label: 9名の博士課程学生の専攻分野および出身国（表1）
+    tags:
+    - 社会科学
+    - アメリカ合衆国
+    - 中国
+    - STEM
+    scraps:
+    - - 効率と戦略
+      - シナジー
+      - 共著者
+      - 記事を探す
+    - - サポート体制
+      - 支援の不足
+      - 出版準備
+      - イノベーション
+    - - t: 社会科学系ネットワークとSTEM系ネットワークの間でMR1に差異が認められ、p = .02
+        stat: true
+      - t: MR1に関しては、米国と中国のネットワーク間に差異が認められ、p = 0.02であった。
+        stat: true
+    hero:
+      head: 論文を発表した学生たちには、共通した流れがありました。それは、まず目標を設定し、体系的に文献を調査し、投稿前に原稿を推敲するというものです。
+      sub: 9名の博士課程学生（社会科学6名、STEM分野3名；米国5名、中国4名）を対象に、エピステミック・ネットワーク分析を用いてインタビューを行い、モデル化を行った。
+    figures:
+    - caption: 図1・STEM（a）および社会科学（b）の学生を対象としたENAモデル；下段は差分モデル
+      look: 差し引きモデル（c）において、「Knowledge」から「IRB exempt/unfamiliarity」へと伸びる太い青いエッジが、STEMの特徴を表しています。
+    - caption: 図2・中国（a）および米国（b）の学生を対象としたENAモデル。下段は差分モデル
+      look: 「シナジーから効率性と戦略へ」という太い赤い線が、簡略化されたモデルの中で際立っている。米国の学生たちは、戦略と協働について共に話し合った。
 unlocking-potential-gamification-2024:
   page1: page1.jpg
   tags_label: The PRISMA funnel, from search to synthesis (Figure 1)
@@ -709,6 +1789,66 @@ unlocking-potential-gamification-2024:
   - img: fig3.jpg
     caption: Figure 3 · Data collection year
     look: Two peaks of six articles, 2019 and 2022, and none at all in 2016 or 2018. A young, spiky literature.
+  zh:
+    tags_label: PRISMA漏斗模型：从检索到综合（图1）
+    tags:
+    - 已识别的记录
+    - 已筛选的摘要
+    - 已评估的全文
+    - 纳入的研究
+    scraps:
+    - - 积分、徽章、排行榜
+      - 密室逃脱
+      - 商业模拟
+      - 严肃游戏
+    - - 游戏化讲座
+      - 研讨会
+      - 游戏化学习
+      - 角色扮演游戏
+    - - t: 23个案例中有12个从未对“游戏化”进行定义
+        stat: true
+      - t: 因未聚焦于“游戏化与领导力”主题，剔除了78篇全文
+        stat: true
+    hero:
+      head: 游戏化提升了领导力培训的效果，但该领域至今仍未能就“游戏化”的定义达成共识。
+      sub: 从1,851条文献记录中筛选出23篇论文；其中大部分属于理论性研究，且有12篇从未对该关键词给出操作性定义。
+    figures:
+    - caption: 图1 · PRISMA图表
+      look: 沿着筛选流程往下看：1,851条记录最终筛选出23项研究。全文筛选中最大的筛选依据是研究重点，其中78篇论文并非同时涉及游戏化与领导力这两个主题。
+    - caption: 图2 · 研究方法
+      look: 其中一项数据尤为突出：23项研究中有14项是理论研究。只有9项采用了实证研究设计。
+    - caption: 图3 · 数据采集年份
+      look: 2019年和2022年各有6篇论文，形成两个高峰，而2016年和2018年则一篇也没有。这是一门年轻且发展起伏不定的学科。
+  ja:
+    tags_label: PRISMAファネル：検索から統合まで（図1）
+    tags:
+    - 特定された記録
+    - 査読済みの抄録
+    - 評価対象となった全文
+    - 対象となった研究
+    scraps:
+    - - ポイント、バッジ、ランキング
+      - 脱出ゲーム
+      - ビジネスシミュレーション
+      - シリアスゲーム
+    - - ゲーム要素を取り入れた講義
+      - ワークショップ
+      - ゲームを活用した学習
+      - ロールプレイングゲーム
+    - - t: 23件のうち12件は、ゲーミフィケーションを定義していない
+        stat: true
+      - t: ゲーミフィケーションとリーダーシップという焦点から外れているため、78件の全文を除外した
+        stat: true
+    hero:
+      head: ゲーミフィケーションはリーダーシップ研修の効果を高めるが、この分野では依然として「ゲーミフィケーションとは何か」という点で意見が一致していない。
+      sub: 1,851件の記録から23編の論文を選定した。その多くは理論的なものであり、12編はキーワードについて操作的定義を一切示していない。
+    figures:
+    - caption: 図1・PRISMAチャート
+      look: ファネルを下へたどると、1,851件の記録が23件の研究に絞り込まれます。全文の選別で最も大きな割合を占めたのは「焦点」であり、78編の論文はゲーミフィケーションとリーダーシップの両方を扱ったものではありませんでした。
+    - caption: 図2・研究方法
+      look: ある棒グラフが他を圧倒している。23件の研究のうち14件が理論的な研究であり、実証的な研究デザインを採用しているのはわずか9件に過ぎない。
+    - caption: 図3・データ収集年
+      look: 2019年と2022年の2回、それぞれ6編の論文が発表され、2016年と2018年には1編もなかった。若く、波乱に富んだ研究分野である。
 video-games-bridging-sla-catesol-2024:
   page1: page1.jpg
   tags_label: The paper's frameworks, counted by the items it lists
@@ -742,6 +1882,54 @@ video-games-bridging-sla-catesol-2024:
     head: Games turn players into a language community, so acquisition happens while they play.
     sub: A theory-and-evidence synthesis built on Krashen's optimal input and club membership, with the first author's game-based autoethnography in Play to Learn (2020).
   figures: []
+  zh:
+    tags_label: 该论文的框架，按其中列出的项目数量统计
+    tags:
+    - 最优输入
+    - 心境
+    - 社区视角
+    - 游戏中的英语形式
+    scraps:
+    - - 最优输入假设
+      - 读写俱乐部
+      - 情感过滤器
+      - 俱乐部会员资格
+    - - 文本形式的说明
+      - 角色对话
+      - 叙事元素
+      - 即时反馈
+    - - t: 英语词汇量增加了40%
+        stat: true
+      - t: 聊天量翻了一番
+        stat: true
+    hero:
+      head: 游戏将玩家凝聚成一个语言共同体，因此他们在游戏过程中自然而然地掌握了语言。
+      sub: 一项基于克拉申（Krashen）“最优输入”理论和“俱乐部成员”理论的理论与证据综合研究，其中融入了第一作者在《玩中学》（2020）一书中基于游戏的自我民族志研究。
+    figures: []
+  ja:
+    tags_label: 本論文の枠組みは、そこに挙げられている項目数に基づいて数えられる
+    tags:
+    - 最適な入力
+    - 心の状態
+    - コミュニティレンズ
+    - ゲームにおける英語の表現形態
+    scraps:
+    - - 最適入力仮説
+      - リテラシー・クラブ
+      - 感情フィルター
+      - クラブ会員
+    - - テキスト形式の説明
+      - 登場人物の会話
+      - 物語的要素
+      - 即時のフィードバック
+    - - t: 英語の語彙が40％増加した
+        stat: true
+      - t: チャットのやり取りが2倍に増加
+        stat: true
+    hero:
+      head: ゲームはプレイヤーを言語共同体の一員に変えるため、プレイしながら言語が身につくのです。
+      sub: クラシェンの「最適インプット」と「クラブ・メンバーシップ」の概念に基づき、第一著者が『Play to Learn』（2020年）で発表したゲームに基づくオートエスノグラフィーを組み込んだ、理論と実証の統合研究。
+    figures: []
 video-games-leadership-skills-2024:
   page1: page1.jpg
   tags_label: Benefits the review found games can support, by sources cited for each (Findings)
@@ -776,6 +1964,52 @@ video-games-leadership-skills-2024:
     head: Massive online games give players real leadership work to do, and the skills they practice there carry into real life.
     sub: A scoping review of the video game and leadership literature; the evidence clusters in MMORPGs and MMOGs, and leadership meets games far less often than education does.
   figures: []
+  zh:
+    tags_label: 该评估发现游戏可带来的益处，以及各益处所引用的来源（研究结果）
+    tags:
+    - 动机
+    - 学业表现
+    - 手眼协调能力
+    - 技能转移
+    - 概率学习
+    scraps:
+    - - 组织
+      - 合作
+      - 冲突解决
+      - 《劝导》
+    - - 决策
+      - 激励他人
+      - 谈判
+    - - 与网友的感情比与现实生活中的朋友更深厚
+      - t: 53.3%的女性玩家 · 39.4%的男性玩家
+        stat: true
+    hero:
+      head: 大型网络游戏让玩家有机会体验真实的领导工作，而他们在游戏中锻炼的技能也能应用到现实生活中。
+      sub: 对电子游戏与领导力文献的一项范围性综述；相关证据主要集中在MMORPG和MMOG领域，且领导力与游戏的结合远不如其与教育的结合常见。
+    figures: []
+  ja:
+    tags_label: 本調査で明らかになった、ゲームがもたらし得るメリットと、その根拠となる出典（調査結果）
+    tags:
+    - 動機
+    - 学業成績
+    - 手と目の協調性
+    - スキルの転用
+    - 確率的学習
+    scraps:
+    - - 整理
+      - 協力
+      - 紛争解決
+      - 説得
+    - - 意思決定
+      - 他者をやる気にさせる
+      - 交渉
+    - - オンライン上の友人との絆は、現実の友人とのそれよりも深い
+      - t: 女性プレイヤーの53.3％・男性プレイヤーの39.4％
+        stat: true
+    hero:
+      head: 大規模なオンラインゲームでは、プレイヤーは実際のリーダーシップを発揮する機会が与えられ、そこで磨いたスキルは実生活にも活かされる。
+      sub: ビデオゲームとリーダーシップに関する文献のスコーピング・レビュー。エビデンスはMMORPGやMMOGに集中しており、リーダーシップとゲームの関連性は、教育との関連性に比べてはるかに少ない。
+    figures: []
 women-police-chiefs-self-perception-2024:
   page1: page1.jpg
   tags_label: What the chiefs named, counted from the findings table (Table 1)
@@ -815,3 +2049,59 @@ women-police-chiefs-self-perception-2024:
   - img: fig2.jpg
     caption: Table 1 · Themes and descriptions of the findings (continued)
     look: 'The last row gathers the disadvantages: childcare support, a hyper-masculine culture, and too few mentors and role models.'
+  zh:
+    tags_label: 酋长们所命名的名称，按调查结果表（表1）中的顺序排列
+    tags:
+    - 积极的品质
+    - 特殊软技能
+    - 曾担任的领导职务
+    - 关系带来的好处
+    scraps:
+    - - 共情
+      - 积极倾听
+      - 冲突解决
+      - 缓和局势
+    - - 玻璃天花板
+      - “老一辈”
+      - 导师或榜样寥寥无几
+      - 托儿服务受限
+    - - t: 采访了6位女性警长和治安官
+        stat: true
+      - t: 2021年，女性占美国全职执法人员的13.3%
+        stat: true
+    hero:
+      head: 女性领导者因具备同理心和缓和冲突的能力而备受推崇，而她们面临的障碍是结构性的，而非个人层面的。
+      sub: 六位女警察局长和女警长接受了采访，谈及在男性主导的职业中担任领导者的经历；她们提到的种种不利因素——从育儿问题到“玻璃天花板”——都是结构性的，而作者认为，这些情况是可以改变的。
+    figures:
+    - caption: 表1 · 研究结果的主题及描述（第一部分）
+      look: 第一行是警长们最常提到的：女性在领导岗位上带来的软技能。
+    - caption: 表1 · 研究结果的主题及描述（续）
+      look: 最后一行总结了这些弊端：育儿支持不足、过度强调男性气概的文化，以及导师和榜样太少。
+  ja:
+    tags_label: 調査結果表（表1）に基づいて、首長たちが名付けたもの
+    tags:
+    - 長所
+    - 特別なソフトスキル
+    - 歴任した管理職の役職
+    - 関係性によるメリット
+    scraps:
+    - - 共感
+      - 能動的傾聴
+      - 紛争解決
+      - 緊張緩和
+    - - ガラスの天井
+      - 「オールド・ガード」
+      - メンターや手本となる人物がほとんどいない
+      - 保育所への利用制限
+    - - t: 6人の女性警察署長および保安官へのインタビュー
+        stat: true
+      - t: 2021年、米国の常勤法執行官のうち、女性が占める割合は13.3％だった
+        stat: true
+    hero:
+      head: 女性リーダーは、共感力や緊張緩和能力が高く評価されている一方で、彼女たちの前に立ちはだかる障壁は、個人的なものではなく、構造的なものである。
+      sub: 男性優位の職業におけるリーダーシップについて、6人の女性警察署長および保安官にインタビューを行った。彼女たちが挙げた、育児から「ガラスの天井」に至るまでの不利益は構造的なものであり、著者らは、これらは変えられるものであると主張している。
+    figures:
+    - caption: 表1・調査結果のテーマと説明（前半）
+      look: 首長たちが最も頻繁に挙げたのは、最初の項目、すなわち女性がリーダーシップの役割において発揮するソフトスキルでした。
+    - caption: 表1・調査結果のテーマと説明（続き）
+      look: 最後の行には、育児支援の不足、過度に男性優位な文化、そしてメンターやロールモデルが少なすぎるといったデメリットがまとめられている。

@@ -26,6 +26,45 @@ function init() {
   var lbLook = lb.querySelector('.cpx-lb-look');
   var lastFocus = null;
 
+  /* Companion text follows the page language; the EN / 中文 / 日本語
+     switch in the panel re-renders the open companion in place.
+     Localized blocks (zh / ja in the data) carry text only; counts,
+     tints and image files always come from the base entry. */
+  var pageLang = (document.documentElement.lang || 'en').toLowerCase();
+  var curLang = pageLang.indexOf('zh') === 0 ? 'zh' : pageLang.indexOf('ja') === 0 ? 'ja' : 'en';
+  var curSlug = null;
+  var langBtns = overlay.querySelectorAll('[data-cpx-lang]');
+
+  function view(c) {
+    if (curLang === 'en' || !c[curLang]) return c;
+    var L = c[curLang];
+    var v = { title: c.title, page1: c.page1 };
+    v.tags_label = L.tags_label || c.tags_label;
+    v.tags = (c.tags || []).map(function (t, i) {
+      return { name: (L.tags && L.tags[i]) || t.name, count: t.count, tint: t.tint };
+    });
+    v.scraps = L.scraps || c.scraps;
+    v.hero = L.hero || c.hero;
+    v.figures = (c.figures || []).map(function (f, i) {
+      var lf = (L.figures || [])[i] || {};
+      return { img: f.img, caption: lf.caption || f.caption, look: lf.look || f.look };
+    });
+    return v;
+  }
+
+  function markLangs() {
+    langBtns.forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-cpx-lang') === curLang);
+    });
+  }
+  langBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      curLang = b.getAttribute('data-cpx-lang');
+      markLangs();
+      if (curSlug) fill(curSlug);
+    });
+  });
+
   function el(tag, cls, text) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -34,8 +73,11 @@ function init() {
   }
 
   function fill(slug) {
-    var c = DATA[slug];
-    if (!c) return false;
+    var raw = DATA[slug];
+    if (!raw) return false;
+    curSlug = slug;
+    markLangs();
+    var c = view(raw);
     var base = '/companions/' + slug + '/';
     titleEl.textContent = c.title || '';
     pageImg.src = base + c.page1;

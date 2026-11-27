@@ -9,7 +9,14 @@
 .dark .cpx-panel { background: #171512; color: #ece7dc; }
 .cpx-close { position: absolute; top: 10px; right: 14px; border: 0; background: none; font-size: 30px; line-height: 1; color: #5b6670; cursor: pointer; padding: 4px 8px; }
 .cpx-close:hover { color: #3f5a7a; }
-.cpx-title { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: 1.45rem; line-height: 1.25; margin: 0 44px 18px 0; }
+.cpx-langs { position: absolute; top: 14px; right: 56px; display: flex; gap: 2px; border: 1px solid rgba(26, 29, 32, .22); border-radius: 999px; padding: 2px; background: rgba(255, 255, 255, .45); }
+.dark .cpx-langs { border-color: rgba(236, 231, 220, .3); background: rgba(0, 0, 0, .25); }
+.cpx-langs button { border: 0; background: none; font: inherit; font-size: .78rem; line-height: 1; padding: 5px 9px; border-radius: 999px; color: #5b6670; cursor: pointer; }
+.dark .cpx-langs button { color: #a89f8d; }
+.cpx-langs button.on { background: #3f5a7a; color: #f2f5f7; }
+.cpx-langs button:hover { color: #3f5a7a; }
+.cpx-langs button.on:hover { color: #f2f5f7; }
+.cpx-title { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: 1.45rem; line-height: 1.25; margin: 0 250px 18px 0; }
 .cpx-grid { display: grid; grid-template-columns: 290px 1fr; gap: 28px; align-items: start; }
 .cpx-page img { width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 6px 22px rgba(20, 30, 45, .28); background: #fff; }
 .cpx-tags-label { font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: .92rem; color: #3f5a7a; margin: 2px 0 8px; }
@@ -62,6 +69,8 @@
   .cpx-page { max-width: 290px; }
   .cpx-scraps { grid-template-columns: 1fr 1fr; }
   .cpx-panel { padding: 20px 16px 24px; }
+  .cpx-langs { position: static; margin: 0 44px 10px 0; width: max-content; }
+  .cpx-title { margin-right: 44px; }
 }
 @media (max-width: 560px) {
   .cpx-scraps { grid-template-columns: 1fr; }
