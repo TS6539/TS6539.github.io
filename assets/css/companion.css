@@ -73,5 +73,13 @@
   .cpx-title { margin-right: 44px; }
 }
 @media (max-width: 560px) {
-  .cpx-scraps { grid-template-columns: 1fr; }
+  /* scraps: dissolve the column wrappers so every chip flows in one
+     wrapped cloud that fills the width (no left-hugging single column) */
+  .cpx-scraps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cpx-col { display: contents; }
+  /* figures: one per row, full width, so plates never sit staggered
+     side by side at uneven heights */
+  .cpx-figs { flex-direction: column; }
+  .cpx-fig { flex: none; width: 100%; max-width: 100%; }
+  .cpx-overlay { padding-bottom: 9vh; }
 }
