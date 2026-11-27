@@ -79,7 +79,7 @@ canvas.full{display:block;position:fixed;inset:0;width:100%;height:100%}
 #sTitle{align-items:flex-start;padding-top:max(13vh,calc(env(safe-area-inset-top) + 64px))}
 .title{display:flex;flex-direction:column;align-items:center;width:min(380px,100%);text-shadow:0 2px 20px rgba(0,0,0,.35)}
 .logo{font-size:clamp(34px,8vw,58px);font-weight:200;letter-spacing:.38em;padding-left:.38em;margin:0;line-height:1}
-.tag{font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.88;margin:14px 0 30px;font-weight:500;text-align:center}
+.tag{font-size:11px;letter-spacing:.3em;text-transform:uppercase;margin:14px 0 30px;font-weight:500;text-align:center;background:rgba(12,22,28,.34);padding:6px 14px 6px 17px;border-radius:999px;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);text-shadow:0 1px 4px rgba(0,0,0,.4)}
 .topbar{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));display:flex;justify-content:space-between;align-items:flex-start;gap:10px;pointer-events:none}
 .topbar > *{pointer-events:auto}
 .tstats{display:flex;gap:14px;padding:9px 13px;font-size:13px;align-items:center;flex-wrap:wrap}
@@ -212,6 +212,22 @@ body.vpc .topbar .tstats,body.vpc .topbar .lang,body.vpc .topbar .vsw{background
 .tright{display:flex;gap:8px;align-items:flex-start}
 @media (max-width:640px){body.vpc .rtop{right:auto;left:var(--fx);top:calc(var(--fy) + var(--fh) + 12px);width:var(--fw);justify-content:space-between}
  body.vpc #cap{top:calc(var(--fy) + var(--fh) + 60px)} body.vpc .hint{top:calc(var(--fy) + var(--fh) + 150px)} body.vpc #hud .readout{gap:10px;top:calc(var(--fy) - 34px)} body.vpc #hud .readout .v{font-size:12.5px} body.vpc .wxbox{min-width:130px}}
+#sea,#viewSw,#cap{display:none!important}
+.topbar .lang{flex:none}.lang button{white-space:nowrap}.topbar .tstats{flex:1 1 auto;min-width:0}
+.title .btn{background:transparent;border:0;color:#fff;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 10px rgba(0,0,0,.5);letter-spacing:.2em;text-transform:uppercase;font-size:13px}
+.title .btn:hover{background:rgba(255,255,255,.08)}
+.title .btn.primary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.85);box-shadow:0 2px 18px rgba(0,0,0,.15);font-size:15px;letter-spacing:.3em}
+.title .btn.primary:hover{background:rgba(255,255,255,.12)}
+.title .row{justify-content:center}
+.title .row .btn{flex:0 0 auto}
+.topbar .tstats,.topbar .lang{background:transparent;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.topbar .tstats .cap{color:rgba(255,255,255,.75)}
+.topbar .lang button{color:rgba(255,255,255,.7);text-shadow:inherit}
+.topbar .lang button.on{background:transparent;color:#fff;text-decoration:underline;text-underline-offset:5px}
+#hud .readout,#hud .coinpill,#hud .wxbox,#hud .pause{background:transparent;border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 0 2px rgba(0,0,0,.35),0 1px 8px rgba(0,0,0,.6)}
+#hud .readout .cap,#hud .wxbox .cap{color:rgba(255,255,255,.75)}
+#hud .fuel{background:rgba(255,255,255,.3)}
+.logo{text-shadow:0 2px 24px rgba(0,0,0,.3)}
 @media (max-width:520px){.panel{padding:18px 14px}.grid{grid-template-columns:repeat(2,1fr)}.log{grid-template-columns:repeat(2,1fr)}.tape{height:130px}.readout{padding:8px 11px;gap:2px 10px}.readout .v{font-size:14px}.wxbox{min-width:128px;padding:8px 11px}.tstats{gap:10px;font-size:12px}.mail{flex-wrap:wrap}.mail .tg{margin-left:56px}}
 </style>
 </head>
@@ -247,7 +263,7 @@ body.vpc .topbar .tstats,body.vpc .topbar .lang,body.vpc .topbar .vsw{background
 <div class="screen" id="sTitle">
   <a class="btn small" href="/" style="position:absolute;top:60px;left:12px;z-index:5;text-decoration:none">← tianshihao.org</a>
   <div class="topbar">
-    <div class="tstats glass"><span><span class="coin"></span><span class="num" id="tCoins">0</span></span><span><span class="cap" data-t="best"></span><span class="num" id="tBest">0</span></span><span><span class="cap" data-t="total"></span><span class="num" id="tTotal">0</span></span></div>
+    <div class="tstats glass"><span><span class="coin"></span><span class="num" id="tCoins">0</span></span><span><span class="cap" data-t="best"></span><span class="num" id="tBest">0</span></span><span><span class="cap" data-t="total"></span><span class="num" id="tTotal">0</span></span><span><span class="cap" data-t="nextLeg"></span><span id="tAt"></span></span></div>
     <div class="tright"><button class="vsw" id="viewSw"></button><div class="lang glass" id="langSw"><button data-lang="en">EN</button><button data-lang="zh">中文</button><button data-lang="ja">日本語</button></div></div>
   </div>
   <div class="title">
@@ -325,6 +341,7 @@ const STR = {
   unlockAt:   { en:'Opens at {d} flown', zh:'累计飞行 {d} 后开放', ja:'累計 {d} で解放' },
   coinsMult:  { en:'× {m} coins', zh:'金币 × {m}', ja:'コイン × {m}' },
   mailLine:   { en:'Cape Halcyon Light · 10 km NE · beneath the stratus', zh:'翠鸟岬灯塔 · 东北 10 公里 · 层云之下', ja:'ハルシオン岬灯台・北東 10km・層雲の下' },
+  nextLeg:    { en:'From', zh:'起点', ja:'出発地' },
   viewFull:   { en:'Full screen', zh:'全屏', ja:'全画面' },
   viewCard:   { en:'Postcard', zh:'明信片', ja:'ポストカード' },
   mailSmall:  { en:'Optional. No timer.', zh:'可选，不限时。', ja:'任意。時間制限なし。' },
@@ -377,6 +394,8 @@ const STR = {
   bound:      { en:'Every page filled. The logbook has bound itself in cloth. The ocean stays open.', zh:'每一页都写满了。日志已自行装订成布面册子。大海依旧敞开。', ja:'すべてのページが埋まった。日誌はひとりでに布張りで綴じられた。海はまだ開いている。' },
   postmarks:  { en:'Postmarks', zh:'邮戳', ja:'消印' },
 };
+const NOTE_LAND = { en:'Set down in a quiet field, {d} into {place}. Cows came over to look.', zh:'降落在一片安静的田野里，已入{place} {d}。几头牛走过来看热闹。', ja:'静かな野原に降りた。{place}に入って {d}。牛が見物に来た。' };
+const NOTE_CITY = { en:'Set down on the river in {place}. People on the bridge waved.', zh:'降落在{place}的河面上。桥上的人朝我挥手。', ja:'{place}の川に着水。橋の上の人たちが手を振った。' };
 const NOTES = {
   clear:   { en:'Set down on calm swells, {d} past {place}. Thermos still warm.', zh:'在平缓的涌浪上落水，已过{place} {d}。保温瓶里还是热的。', ja:'穏やかなうねりに着水。{place}を {d} 過ぎたところ。魔法瓶はまだ温かい。' },
   golden:  { en:'Set down in the last of the light, {d} past {place}. The sea went copper.', zh:'在最后一抹余晖里落水，已过{place} {d}。海面成了铜色。', ja:'最後の光の中で着水。{place}を {d} 過ぎたところ。海が銅色になった。' },
@@ -416,7 +435,7 @@ const PLANES = [
 ];
 /* need = lifetime distance flown (m) */
 const WEATHER = [
-  { id:'clear', name:{ en:'Clear morning', zh:'晴朗的清晨', ja:'晴れた朝' }, need:0, mult:1.0, cov:.47, sea:{ deep:[.02,.17,.30], mid:[.04,.30,.43], shal:[.20,.66,.66], sky:[.55,.75,.92], sun:[1,.97,.9], spec:1.0, rough:1.0, foam:0 }, cloud:{ lit:[255,255,255], shade:[170,186,204] }, shadow:.24, slen:1, grade:null, warm:'255,205,150' },
+  { id:'clear', name:{ en:'Clear morning', zh:'晴朗的清晨', ja:'晴れた朝' }, need:0, mult:1.0, cov:.47, sea:{ deep:[.02,.17,.30], mid:[.04,.30,.43], shal:[.20,.66,.66], sky:[.55,.75,.92], sun:[1,.97,.9], spec:1.0, rough:1.0, foam:0 }, cloud:{ lit:[255,255,252], shade:[188,202,222] }, shadow:.24, slen:1, grade:null, warm:'255,205,150' },
   { id:'golden', name:{ en:'Golden hour', zh:'黄金时刻', ja:'夕映え' }, need:0, mult:1.1, cov:.48, sea:{ deep:[.04,.14,.22], mid:[.09,.24,.31], shal:[.34,.58,.52], sky:[1,.72,.45], sun:[1,.72,.42], spec:2.2, rough:1.0, foam:0 }, cloud:{ lit:[255,226,196], shade:[176,140,150] }, shadow:.28, slen:2.2, grade:'rgba(255,160,80,.13)', flare:true, warm:'255,180,110' },
   { id:'drizzle', name:{ en:'Drizzle', zh:'细雨', ja:'霧雨' }, need:8000, mult:1.25, cov:.55, sea:{ deep:[.05,.15,.20], mid:[.09,.23,.28], shal:[.28,.48,.48], sky:[.62,.67,.72], sun:[.7,.73,.76], spec:.35, rough:1.25, foam:.15 }, cloud:{ lit:[226,230,235], shade:[132,142,156] }, shadow:.1, slen:1, grade:'rgba(60,78,96,.20)', rain:200, warm:'235,225,210' },
   { id:'fog', name:{ en:'Sea fog', zh:'海雾', ja:'海霧' }, need:20000, mult:1.35, cov:.57, sea:{ deep:[.10,.22,.27], mid:[.16,.31,.35], shal:[.34,.52,.52], sky:[.86,.89,.91], sun:[.8,.8,.8], spec:.15, rough:.8, foam:0 }, cloud:{ lit:[244,246,247], shade:[190,198,204] }, shadow:.04, slen:1, grade:'rgba(220,228,232,.14)', fog:true, warm:'250,240,225' },
@@ -425,15 +444,27 @@ const WEATHER = [
   { id:'night', name:{ en:'Starry night', zh:'星夜', ja:'星月夜' }, need:80000, mult:1.6, cov:.47, sea:{ deep:[.008,.03,.07], mid:[.015,.055,.11], shal:[.05,.16,.19], sky:[.12,.16,.28], sun:[.78,.84,1], spec:1.1, rough:.8, foam:0 }, cloud:{ lit:[110,122,152], shade:[34,42,64] }, shadow:.05, slen:1, grade:'rgba(4,10,30,.36)', night:true, warm:'150,170,230' },
 ];
 const REGIONS = [
-  { at:0,     name:{ en:'Coral Shallows', zh:'珊瑚浅海', ja:'珊瑚の浅瀬' }, sub:{ en:'warm reef water', zh:'温暖的礁湖', ja:'温かな礁の海' }, tint:[0,.03,.012], isl:.55, kinds:['turtle','turtle','palm','palm','light','volcano'], sea:['boat','dolphins','dolphins','wreck'] },
-  { at:2500,  name:{ en:'Windward Meadows', zh:'风吟草原', ja:'風の草原' }, sub:{ en:'river pasture, grazing flocks', zh:'河畔牧场，羊群吃草', ja:'川辺の牧草地と羊の群れ' }, tint:[0,0,0], isl:.3, kinds:['palm','light'], sea:['boat','dolphins'] },
-  { at:6000,  name:{ en:'Gull Reach', zh:'鸥鸣水道', ja:'カモメの水道' }, sub:{ en:'nesting grounds', zh:'海鸟的栖息地', ja:'海鳥の営巣地' }, tint:[0,0,0], isl:.5, kinds:['light','light','palm','village','volcano'], sea:['boat','dolphins','wreck'] },
-  { at:8500,  name:{ en:'Mirror Paddies', zh:'镜田', ja:'水鏡の田' }, sub:{ en:'flooded rice fields in spring', zh:'春天灌满水的稻田', ja:'水を張った春の田' }, tint:[0,0,0], isl:.3, kinds:['village','light'], sea:['boat'] },
-  { at:12000, name:{ en:'Lantern Archipelago', zh:'灯盏群岛', ja:'灯籠諸島' }, sub:{ en:'scattered inhabited islands', zh:'有人居住的散落岛屿', ja:'人の住む島々' }, tint:[.012,0,-.02], isl:.62, kinds:['village','village','village','light','palm','volcano'], sea:['boat','boat','dolphins'] },
-  { at:15500, name:{ en:'The Long Blue', zh:'长蓝之海', ja:'果てなき青' }, sub:{ en:'open ocean', zh:'开阔的远洋', ja:'外洋' }, tint:[-.012,-.02,.04], isl:.16, kinds:['palm','volcano'], sea:['wreck','wreck','boat','dolphins'] },
-  { at:20000, name:{ en:'Whale Road', zh:'鲸路', ja:'鯨の道' }, sub:{ en:'migration route', zh:'洄游之路', ja:'回遊の道' }, tint:[-.01,-.03,.02], isl:.24, kinds:['volcano','light','palm'], sea:['dolphins','boat'] },
-  { at:26000, name:{ en:'Edge of the Chart', zh:'海图尽头', ja:'海図の果て' }, sub:{ en:'unsurveyed water', zh:'未经测绘的海域', ja:'未測量の海' }, tint:[0,-.02,-.01], isl:.3, kinds:['volcano','volcano','light'], sea:['wreck','boat'] },
+  { at:0,      key:'open',      name:{ en:'The Open Sea', zh:'辽阔海面', ja:'ひらけた海' }, sub:{ en:'a few islands, far apart', zh:'零星小岛，彼此遥远', ja:'遠く離れた小さな島' }, tint:[0,.01,.01], kinds:['palm','light','turtle','volcano'], sea:['boat','dolphins','wreck'] },
+  { at:15000,  key:'scattered', name:{ en:'Scattered Isles', zh:'散落群岛', ja:'点在する島々' }, sub:{ en:'islands begin to gather', zh:'岛屿渐渐聚拢', ja:'島が集まりはじめる' }, tint:[0,.02,.01], kinds:['palm','turtle','light','village'], sea:['boat','dolphins','dolphins','wreck'] },
+  { at:30000,  key:'archi',     name:{ en:'The Archipelago', zh:'千岛之海', ja:'多島海' }, sub:{ en:'islands in every direction', zh:'四面八方都是岛', ja:'見渡すかぎりの島' }, tint:[.01,.02,0], kinds:['palm','village','village','light','turtle','volcano'], sea:['boat','boat','dolphins'] },
+  { at:40500,  key:'landfall',  name:{ en:'First Landfall', zh:'初见陆地', ja:'最初の陸' }, sub:{ en:'a coastline at last', zh:'终于看见海岸线', ja:'ついに海岸線' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:47000,  key:'river',     name:{ en:'River Country', zh:'河谷之乡', ja:'川の国' }, sub:{ en:'a winding river, open grass', zh:'蜿蜒的河，开阔的草地', ja:'曲がりくねる川と草原' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:56000,  key:'farm',      name:{ en:'Farmland', zh:'田园', ja:'田園' }, sub:{ en:'fields and flocks', zh:'田野与羊群', ja:'畑と羊の群れ' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:72000,  key:'hamlets',   name:{ en:'Hamlets', zh:'小村落', ja:'集落' }, sub:{ en:'houses here and there', zh:'这里一户，那里一户', ja:'ぽつりぽつりと家' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:84000,  key:'village',   name:{ en:'The Village Road', zh:'村道', ja:'村の道' }, sub:{ en:'a village by the road', zh:'路边的村庄', ja:'道沿いの村' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:94000,  key:'city',      name:{ en:'City', zh:'城市', ja:'街' }, sub:{ en:'', zh:'', ja:'' }, tint:[0,0,0], kinds:['palm'], sea:['boat','boat'] },
+  { at:150000, key:'outskirts', name:{ en:'The Outskirts', zh:'城郊', ja:'郊外' }, sub:{ en:'the city thinning out', zh:'城市渐渐稀疏', ja:'まばらになる街' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:166000, key:'back',      name:{ en:'Back Country', zh:'远郊田野', ja:'田舎' }, sub:{ en:'farms and quiet roads', zh:'农场与安静的小路', ja:'農場と静かな道' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:184000, key:'empty',     name:{ en:'Empty Uplands', zh:'空旷原野', ja:'人のいない野' }, sub:{ en:'nobody for miles', zh:'方圆数里不见人', ja:'何キロも誰もいない' }, tint:[0,0,0], kinds:['palm'], sea:['boat'] },
+  { at:197000, key:'farcoast',  name:{ en:'The Far Coast', zh:'远方海岸', ja:'向こうの海岸' }, sub:{ en:'land gives way to sea', zh:'陆地让位给大海', ja:'陸が海へとほどける' }, tint:[0,.01,.01], kinds:['palm','light'], sea:['boat','dolphins'] },
+  { at:205000, key:'home',      name:{ en:'Homeward Sea', zh:'归途之海', ja:'帰りの海' }, sub:{ en:'open water again', zh:'又是开阔的海', ja:'また広い海へ' }, tint:[0,.01,.01], kinds:['light','palm','volcano'], sea:['boat','dolphins','wreck'] },
 ];
+const CITYNAME = {
+  river: { name:{ en:'Twinbank', zh:'双岸城', ja:'双岸の街' }, sub:{ en:'a city along both banks of the river', zh:'沿河两岸而建的城市', ja:'川の両岸に広がる街' } },
+  japan: { name:{ en:'Sakuramachi', zh:'樱町', ja:'桜町' }, sub:{ en:'a town ringed by flooded paddies', zh:'被水田环绕的小城', ja:'水田に囲まれた町' } },
+  port:  { name:{ en:'Port Halcyon', zh:'翠鸟港', ja:'ハルシオン港' }, sub:{ en:'a harbour city by the sea', zh:'临海的港城', ja:'海辺の港町' } },
+  grid:  { name:{ en:'Meridian City', zh:'子午城', ja:'子午線シティ' }, sub:{ en:'an inland city on a perfect grid', zh:'方方正正的内陆城市', ja:'碁盤の目の内陸都市' } },
+};
 const SPOTS = {
   palm:     { name:{ en:'Palm Cay', zh:'椰影沙洲', ja:'椰子の砂州' },
     note:{ en:'Three palms and a shadow that moves with the sun. Nobody home.', zh:'三棵椰树，一片随日影移动的阴凉。无人居住。', ja:'椰子が三本、日に合わせて動く影。誰もいない。' },
@@ -481,6 +512,20 @@ SPOTS.egrets = { name:{ en:'Egrets in the Paddies', zh:'稻田白鹭', ja:'田�
 SPOTS.bridge = { name:{ en:'Sakura Bridge', zh:'樱桥', ja:'桜橋' },
     note:{ en:'A red bridge, petals on the water, a bicycle bell.', zh:'一座红桥，水面落满花瓣，一声自行车铃。', ja:'赤い橋、水に散る花びら、自転車のベル。' },
     hint:{ en:'Pink drifting over a straight canal.', zh:'笔直的水渠上，飘着粉色。', ja:'まっすぐな水路に漂う薄紅。' } };
+SPOTS.flock.hint = { en:'Past the first coast, where the farms begin.', zh:'越过第一道海岸，农场开始的地方。', ja:'最初の海岸を越え、農場が始まるあたり。' };
+SPOTS.whale.hint = { en:'Something enormous moves in deep water, far from land.', zh:'远离陆地的深水里，有庞然大物在移动。', ja:'陸から遠い深い海で、巨大な何かが動く。' };
+SPOTS.egrets.hint = { en:'White birds standing in mirrors, near a town of grey roofs.', zh:'灰瓦小城附近，站在镜子里的白鸟。', ja:'灰色の屋根の町の近く、鏡の中に立つ白い鳥。' };
+const ARCS = {
+  arcChain:   { name:{ en:'First Island Chain', zh:'第一条岛链', ja:'最初の島々' }, note:{ en:'Islands like stepping stones. I counted eleven before I lost count.', zh:'岛屿像垫脚石一样排开。我数到十一就数乱了。', ja:'飛び石のような島々。十一まで数えて、わからなくなった。' }, hint:{ en:'Keep flying past the empty sea.', zh:'飞过那片空旷的海。', ja:'がらんとした海の先へ。' } },
+  arcLand:    { name:{ en:'First Landfall', zh:'初见陆地', ja:'最初の陸' }, note:{ en:'A line of surf, then green. The sea is behind me now.', zh:'一道浪花，然后是绿色。大海已在身后。', ja:'白い波の線、それから緑。海はもう後ろだ。' }, hint:{ en:'Beyond the islands, something that does not end.', zh:'在群岛之后，有一片望不到头的东西。', ja:'島々の向こうに、終わりのないもの。' } },
+  arcVillage: { name:{ en:'First Village', zh:'第一座村庄', ja:'最初の村' }, note:{ en:'A shop, a church, washing on a line. Somebody lives here.', zh:'一家小店、一座礼拜堂、一根晾衣绳。这里有人生活。', ja:'店と教会と物干しの洗濯物。誰かがここで暮らしている。' }, hint:{ en:'Follow the road past the farms.', zh:'沿着路，经过农场。', ja:'農場を越えて、道をたどる。' } },
+  arcCity:    { name:{ en:'First City', zh:'第一座城市', ja:'最初の街' }, note:{ en:'Streets in every direction. I flew over it for a long time.', zh:'街道伸向四面八方。我在它上空飞了很久。', ja:'四方に伸びる通り。長いあいだその上を飛んだ。' }, hint:{ en:'Villages grow into towns, if you fly far enough.', zh:'只要飞得够远，村庄会长成城镇。', ja:'遠くまで飛べば、村は町になる。' } },
+  city_river: { name:{ en:'Twinbank', zh:'双岸城', ja:'双岸の街' }, note:{ en:'Two halves of a city holding hands across the water.', zh:'一座城的两半，隔着河水牵着手。', ja:'川をはさんで手をつなぐ、街の二つの半分。' }, hint:{ en:'A city built along both banks of a wide river.', zh:'沿宽阔河流两岸而建的城市。', ja:'広い川の両岸に広がる街。' } },
+  city_japan: { name:{ en:'Sakuramachi', zh:'樱町', ja:'桜町' }, note:{ en:'Grey tile roofs, a red shrine gate, paddies right up to the houses.', zh:'灰色的瓦屋顶，一座红色鸟居，稻田一直铺到屋前。', ja:'灰色の瓦屋根、赤い鳥居、家のすぐ前まで田んぼ。' }, hint:{ en:'A town ringed by flooded paddies.', zh:'被水田环绕的小城。', ja:'水田に囲まれた町。' } },
+  city_port:  { name:{ en:'Port Halcyon', zh:'翠鸟港', ja:'ハルシオン港' }, note:{ en:'Cranes, containers, a ferry horn. The sea came back to meet me.', zh:'吊车、集装箱、一声渡轮的汽笛。大海又回来迎接我。', ja:'クレーン、コンテナ、フェリーの汽笛。海がまた迎えに来た。' }, hint:{ en:'A harbour city where the land meets the sea.', zh:'陆地与大海相接处的港城。', ja:'陸と海が出会う港町。' } },
+  city_grid:  { name:{ en:'Meridian City', zh:'子午城', ja:'子午線シティ' }, note:{ en:'Straight avenues and tall shadows. The plane felt very small.', zh:'笔直的大道，高楼长长的影子。飞机显得很小。', ja:'まっすぐな大通りと長い影。機体がとても小さく感じた。' }, hint:{ en:'An inland city laid out on a perfect grid.', zh:'方方正正规划的内陆城市。', ja:'碁盤の目の内陸都市。' } },
+};
+Object.assign(SPOTS, ARCS);
 const HALCYON = { en:'Cape Halcyon', zh:'翠鸟岬', ja:'ハルシオン岬' };
 
 /* ============================ save ============================ */
@@ -633,6 +678,7 @@ let GL = null;
 })();
 addEventListener('resize', resize); resize();
 const islBuf = new Float32Array(30);
+const MULC = { golden:'rgb(255,234,204)', drizzle:'rgb(206,214,222)', fog:'rgb(236,240,243)', storm:'rgb(146,156,172)', night:'rgb(58,68,104)' };
 const LANDMUL = { clear:[1,1,1], golden:[1.08,.93,.8], drizzle:[.8,.85,.88], fog:[.93,.96,.98], storm:[.55,.6,.66], snow:[1,1,1], night:[.2,.25,.38] };
 function drawSeaGL(camX, camY, z, t, isl, tint = [0, 0, 0]){
   const s = WX.sea;
@@ -647,21 +693,25 @@ function drawSeaGL(camX, camY, z, t, isl, tint = [0, 0, 0]){
 }
 
 /* ============================ cloud sprites ============================ */
-const CW = 256, CHh = 176;
+const CW = 320, CHh = 240;
 const CLOUDS = { key:null, sprites:[], shadows:[] };
 function cloudSprite(seed, lit, sh){
-  const c = mk(CW, CHh), g = c.getContext('2d'), im = g.createImageData(CW, CHh), D = im.data;
-  const dens = (x, y) => { const nx = (x / CW - .5) * 2, ny = (y / CHh - .5) * 2; return fbm(x * .021, y * .021, seed, 5) * 1.3 + (1 - (nx * nx + ny * ny * 1.3)) * .85 - 1.0; };
+  const c = mk(CW, CHh), g = c.getContext('2d'), im = g.createImageData(CW, CHh), D = im.data, R = rng(seed + 11);
+  const bl = []; const n = 7 + Math.floor(R() * 4);
+  for (let i = 0; i < n; i++){ const a = R() * 6.28, d = R() * 50; bl.push([CW / 2 + Math.cos(a) * d * 1.3, CHh / 2 + Math.sin(a) * d * .65 - 4, 20 + R() * 20]); }
+  bl.push([CW / 2, CHh / 2 + 2, 34]);
+  const F = (x, y) => { let s = 0; for (const [bx, by, r] of bl){ const dx = x - bx, dy = (y - by) * 1.08; s += r * r / (dx * dx + dy * dy + 1); } return s; };
+  const dome = (x, y) => { let m = 0; for (const [bx, by, r] of bl){ const d = Math.hypot(x - bx + r * .3, (y - by + r * .35) * 1.1) / r; if (d < 1) m = Math.max(m, 1 - d * d); } return m; };
   for (let y = 0; y < CHh; y++) for (let x = 0; x < CW; x++){
-    const d = dens(x, y); if (d <= 0) continue;
-    const dl = dens(x - 6, y - 7);
-    let a = Math.min(1, d / .3); a = a * a * (3 - 2 * a);
-    const t = clamp(.6 + (d - dl) * 4.2, 0, 1) * (.9 + .1 * vn(x * .2, y * .2, seed + 3));
+    const f = F(x, y) + (fbm(x * .045, y * .045, seed, 3) - .5) * .4; if (f < .72) continue;
+    const a = sstep(.72, 1.2, f), dir = ((x - CW / 2) * .45 + (y - CHh / 2)) / CHh;
+    let t = .9 - dir * .75 - (1 - sstep(.72, 2.4, f)) * (dir > 0 ? .3 : .08) + dome(x, y) * .18;
+    t = clamp(t + (vn(x * .06, y * .06, seed + 5) - .5) * .05, 0, 1);
     const k = (y * CW + x) * 4;
-    D[k] = sh[0] + (lit[0] - sh[0]) * t; D[k + 1] = sh[1] + (lit[1] - sh[1]) * t; D[k + 2] = sh[2] + (lit[2] - sh[2]) * t; D[k + 3] = a * 245;
+    D[k] = sh[0] + (lit[0] - sh[0]) * t; D[k + 1] = sh[1] + (lit[1] - sh[1]) * t; D[k + 2] = sh[2] + (lit[2] - sh[2]) * t; D[k + 3] = a * 250;
   }
   g.putImageData(im, 0, 0);
-  const s = mk(CW, CHh), sg = s.getContext('2d'); sg.drawImage(c, 0, 0); sg.globalCompositeOperation = 'source-in'; sg.fillStyle = 'rgb(4,22,32)'; sg.fillRect(0, 0, CW, CHh);
+  const s = mk(CW, CHh), sg = s.getContext('2d'); if ('filter' in sg) sg.filter = 'blur(9px)'; sg.drawImage(c, 0, 0); sg.filter = 'none'; sg.globalCompositeOperation = 'source-in'; sg.fillStyle = 'rgb(18,44,40)'; sg.fillRect(0, 0, CW, CHh);
   return [c, s];
 }
 function ensureClouds(){
@@ -702,7 +752,7 @@ function islandSprite(s, snow){
       continue;
     }
     const dx = Hm[k + 1] - Hm[k - 1], dy = Hm[k + S] - Hm[k - S];
-    let nx = -dx * kz * .5, ny = -dy * kz * .5; const nl = Math.hypot(nx, ny, 1); const sh = clamp(.38 + .9 * (nx * L[0] + ny * L[1] + L[2]) / nl, .35, 1.25);
+    let nx = -dx * kz * .5, ny = -dy * kz * .5; const nl = Math.hypot(nx, ny, 1); const sh = clamp(.6 + .5 * (nx * L[0] + ny * L[1] + L[2]) / nl, .62, 1.12);
     let r, gg, b;
     if (kind === 'iceberg'){ r = 228; gg = 242; b = 250; const cool = clamp(1.1 - sh, 0, .5); r -= cool * 120; gg -= cool * 50; }
     else if (h < .015){ r = 196; gg = 182; b = 146; }
@@ -711,9 +761,9 @@ function islandSprite(s, snow){
     else if (kind === 'light' || h > .48){ const n = fbm(i * .1, j * .1, sd + 50, 3); r = 120 + n * 40; gg = 116 + n * 36; b = 106 + n * 30; }
     else {
       const n = fbm(i * .05, j * .05, sd + 60, 3);
-      r = 112 - n * 40; gg = 138 - n * 30; b = 66 - n * 20;
+      r = 112 - n * 26; gg = 170 - n * 22; b = 62 - n * 12;
       const cn = vn(i * .42, j * .42, sd + 33), cl = vn((i + 2) * .42, (j + 2) * .42, sd + 33);
-      if (cn > .52){ r = 52; gg = 86; b = 40; if (cn - cl > .05){ r += 22; gg += 26; b += 10; } }
+      if (cn > .52){ r = 62; gg = 112; b = 44; if (cn - cl > .05){ r += 22; gg += 26; b += 10; } }
       else if (cl > .52){ r *= .62; gg *= .66; b *= .66; }
       if (h > .1 && h < .4 && (i + j) % 2) land.push([i, j]);
     }
@@ -788,16 +838,19 @@ function turtle(g, x, y, u, a){
 const CH = 900, CELL = 225, THR = .5;
 const chunks = new Map();
 let WX = WEATHER[0];
-function regionAt(dist){ let r = 0; REGIONS.forEach((x, i) => { if (dist >= x.at) r = i; }); return r; }
+function regionAt(J){ const u = ((J % LOOP) + LOOP) % LOOP; let r = 0; REGIONS.forEach((x, i) => { if (u >= x.at) r = i; }); return r; }
+function regionObj(J){ const R = REGIONS[regionAt(J)]; if (R.key !== 'city') return R; const C = CITYNAME[cityType(Math.floor(J / LOOP))]; return Object.assign({}, R, { name: C.name, sub: C.sub }); }
+let SX = 0, SY = 0;
 let seedRun = 1, CSEED = 7;
 const DEST = { x: 28000, y: -28000 };
+const ARC = { archi:'arcChain', landfall:'arcLand', village:'arcVillage' };
 const HOLE_KINDS = { palm:1, turtle:1, wreck:1, iceberg:1, glow:1, rainbow:1, flock:1, egrets:1, bridge:1 };
 const pickW = (arr, r) => arr[Math.floor(r() * arr.length)];
 /* cloud coverage: above THR is cloud. Gaps, canyons and banks come from the noise. */
 function covStatic(x, y){
   let c = fbm(x * .0011, y * .0011, CSEED, 4) + (WX.cov - .5) + (vn(x * .0002, y * .00018, CSEED + 9) - .5) * .4;
-  const dd = Math.hypot(x - DEST.x, y - DEST.y); if (dd < 2400) c += .32 * clamp((2400 - dd) / 1400, 0, 1);
-  const d0 = Math.hypot(x, y); if (d0 < 1000) c -= .22 * (1 - d0 / 1000);
+  const dd = Math.hypot(x - DEST.x, y - DEST.y); if (MAILON && dd < 2400) c += .32 * clamp((2400 - dd) / 1400, 0, 1);
+  const d0 = Math.hypot(x - SX, y - SY); if (d0 < 1000) c -= .22 * (1 - d0 / 1000);
   return c;
 }
 function covAt(x, y){ const c = chunk(Math.floor(x / CH), Math.floor(y / CH)); for (const h of c.holes) if (Math.hypot(x - h.x, y - h.y) < h.r) return 0; return covStatic(x, y); }
@@ -806,19 +859,21 @@ function fogAt(y){ return WX.fog ? clamp(.35 + (vn(3, y * .00035, CSEED + 55) - 
 function chunk(cx, cy){
   const k = cx + ',' + cy; if (chunks.has(k)) return chunks.get(k);
   const r = rng(hash(cx, cy) ^ seedRun);
-  const ox = cx * CH, oy = cy * CH, dist = Math.max(0, -oy / 4), reg = regionAt(dist), R = REGIONS[reg];
+  const ox = cx * CH, oy = cy * CH, dist = -(oy + CH / 2) / 4, reg = regionAt(dist), R = REGIONS[reg], JP = jparams(dist);
   const c = { islands:[], sea:[], coins:[], clouds:[], holes:[], rain:[], trees:[], life:[], bridges:[] };
   const landHere = landF(ox + CH / 2, oy + CH / 2) > -.4 || landF(ox, oy) > -.4 || landF(ox + CH, oy + CH) > -.4 || landF(ox + CH, oy) > -.4 || landF(ox, oy + CH) > -.4;
   const hasDest = DEST.x >= ox && DEST.x < ox + CH && DEST.y >= oy && DEST.y < oy + CH;
-  if (hasDest) c.islands.push({ kind:'halcyon', x:DEST.x, y:DEST.y, r:105, seed:424242, prog:0 });
-  else if (!(cx === 0 && cy === 0) && r() < R.isl){
-    let kind = pickW(R.kinds, r); if (WX.snow && r() < .3) kind = 'iceberg';
-    const ir = kind === 'iceberg' ? 55 + r() * 30 : kind === 'palm' || kind === 'light' ? 70 + r() * 50 : 110 + r() * 90;
-    const ix = ox + 220 + r() * (CH - 440), iy = oy + 220 + r() * (CH - 440);
-    if (landF(ix, iy) < -.32) c.islands.push({ kind, x: ix, y: iy, r: ir, seed: Math.floor(r() * 1e9), prog:0 });
+  if (hasDest && MAILON) c.islands.push({ kind:'halcyon', x:DEST.x, y:DEST.y, r:105, seed:424242, prog:0 });
+  else if (!(cx === Math.floor(SX / CH) && cy === Math.floor(SY / CH))){
+    const nI = JP.isl > .55 ? 2 : 1;
+    for (let q = 0; q < nI; q++){ if (r() >= JP.isl * 1.2 / nI * (q ? 1.4 : 1)) continue;
+      let kind = pickW(R.kinds, r); if (WX.snow && r() < .3) kind = 'iceberg';
+      const ir = (kind === 'iceberg' ? 55 + r() * 30 : kind === 'palm' || kind === 'light' ? 70 + r() * 50 : 110 + r() * 90) * JP.islS;
+      const ix = ox + 220 + r() * (CH - 440), iy = oy + 220 + r() * (CH - 440);
+      if (landF(ix, iy) < -.32 && !c.islands.some(o => Math.hypot(o.x - ix, o.y - iy) < o.r + ir + 80)) c.islands.push({ kind, x: ix, y: iy, r: ir, seed: Math.floor(r() * 1e9), prog:0 }); }
   }
   if (r() < .34) c.sea.push({ kind: pickW(R.sea, r), x: ox + 120 + r() * (CH - 240), y: oy + 120 + r() * (CH - 240), a: r() * 6.28, r:70, prog:0 });
-  if (reg >= 6 && r() < .4) c.sea.push({ kind:'whale', x: ox + r() * CH, y: oy + r() * CH, a: r() * 6.28, r:90, prog:0 });
+  if (JP.land < .05 && dist > 25000 && (JP.u < 15000 || JP.u > 205000) && r() < .3) c.sea.push({ kind:'whale', x: ox + r() * CH, y: oy + r() * CH, a: r() * 6.28, r:90, prog:0 });
   if (WX.night && r() < .25) c.sea.push({ kind:'glow', x: ox + r() * CH, y: oy + r() * CH, a: 0, r:90, prog:0 });
   if (WX.id === 'drizzle' && r() < .14) c.sea.push({ kind:'rainbow', x: ox + r() * CH, y: oy + r() * CH, a: 0, r:90, prog:0 });
   c.sea = c.sea.filter(s => landF(s.x, s.y) < -.12);
@@ -829,7 +884,8 @@ function chunk(cx, cy){
   for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++){
     const x = ox + (i + .5) * CELL + (r() - .5) * 170, y = oy + (j + .5) * CELL + (r() - .5) * 150;
     const cov = covStatic(x, y), hole = inHole(x, y);
-    if (cov > THR - .07 && !hole) c.clouds.push({ x, y, k: Math.floor(r() * 6), s: 1.15 + clamp(cov - THR, 0, .2) * 3 + r() * .45, f: r() < .5, a: clamp((cov - THR + .07) / .12, 0, 1), ph: r() * 6.28 });
+    if (cov > THR + .12 && !hole) c.clouds.push({ x, y, k: Math.floor(r() * 6), s: (1.3 + clamp(cov - THR, 0, .25) * 2.4 + r() * .35) * .68, f: r() < .5, a: clamp((cov - THR - .12) / .05, .82, 1), ph: r() * 6.28, cu:true });
+    else if (cov > THR + .01 && !hole) c.clouds.push({ x, y, k: Math.floor(r() * 6), s: (1.1 + r() * .3) * .8, f: r() < .5, a: .5, ph: r() * 6.28, cu:false });
     if (!hole && cov < THR - .03 && cov > THR - .16 && r() < .3) c.coins.push({ x, y, alt:.6, v:2, got:false });
     if (cov > THR + .09 && r() < .16) c.coins.push({ x, y, alt:.7, v:1, got:false });
   }
@@ -854,7 +910,10 @@ function newFlight(){
   const p = planeById(SAVE.sel.plane);
   WX = WEATHER.find(w => w.id === SAVE.wx) || WEATHER[0]; if (WX.need > SAVE.total) WX = WEATHER[0];
   ensureClouds();
-  F = { p, liv: p.liv.find(l => l.id === SAVE.sel.liv) || p.liv[0], x:0, y:0, a:0, av:0, alt:.35, altT:.35, fuel:p.fuel, fuelMax:p.fuel, dist:0, picked:0, pickedVal:0, cl:0, charted:[], firsts:[], t:0,
+  const oldMail = MAILON, oD = [DEST.x, DEST.y];
+  SX = SAVE.jx || 0; SY = SAVE.jy || 0; DEST.x = SX + 28000; DEST.y = SY - 28000; MAILON = !!SAVE.mail;
+  if (oldMail) invalidateNear(oD[0], oD[1]); if (MAILON) invalidateNear(DEST.x, DEST.y);
+  F = { p, liv: p.liv.find(l => l.id === SAVE.sel.liv) || p.liv[0], x:SX, y:SY, y0:SY, a:0, av:0, alt:.35, altT:.35, fuel:p.fuel, fuelMax:p.fuel, dist:0, picked:0, pickedVal:0, cl:0, charted:[], firsts:[], t:0,
     prop:0, landing:false, landT:0, region:-1, trail:[], ribbon:[], rain:[], snow:[], fog:[], flash:0, nextBolt: 4 + Math.random() * 6, birds:[], birdCD:0, wind:0, bump:0, spd:0,
     banked:0, lastBank:0, prevBest:SAVE.best, prevTotal:SAVE.total, prevCoins:SAVE.coins, mail:!!SAVE.mail, delivered:false, parcel:null, tint:REGIONS[0].tint.slice(),
     mist:0, cov:0, skim:false, skimTold:false, inBand:false, bandClean:true, bandFrom:0, gapT:0, awarded:false, rainI:0, shake:0, splash:0, charting:false };
@@ -885,8 +944,10 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && sta
 addEventListener('pagehide', () => { if (state === 'fly') bank(); });
 
 /* ============================ banking (never lose a run) ============================ */
+function invalidateNear(x, y){ for (const k of [...TILES.keys()]){ const [tx, ty] = k.split(',').map(parseFloat); if (Math.hypot((tx + .5) * TS - x, (ty + .5) * TS - y) < 1400) TILES.delete(k); } }
 function bank(){
   const f = F; if (!f) return;
+  SAVE.jx = f.x; SAVE.jy = f.y;
   const e = earnedNow(f); SAVE.coins += e - f.banked; f.banked = e;
   SAVE.total += f.dist - f.lastBank; f.lastBank = f.dist;
   if (f.dist > SAVE.best) SAVE.best = f.dist;
@@ -941,7 +1002,7 @@ function update(dt){
   const sp = (f.landing ? lerp(200, 30, Math.min(1, f.landT / 4)) : 230) * p.speed * (1 + f.alt * .15) * mult;
   f.spd = sp;
   f.x += (Math.sin(f.a) * sp + (f.landing ? 0 : f.wind)) * dt; f.y += -Math.cos(f.a) * sp * dt;
-  f.dist = Math.max(f.dist, -f.y / 4);
+  f.dist = Math.max(f.dist, (f.y0 - f.y) / 4);
   // fuel: dense low air burns more, the high air less, cloud-top updrafts least
   const burn = below ? 1.25 : above ? (f.skim ? .45 : .6) : 1;
   if (!f.landing){ f.fuel -= dt * burn; if (f.fuel <= 0){ f.fuel = 0; startLanding(); toast(T('fuelOut')); } }
@@ -951,8 +1012,10 @@ function update(dt){
     if (f.landT > 5.2) endFlight();
   }
   if (f.dist - f.lastBank >= 250) bank();
-  const rg = regionAt(f.dist);
-  if (rg !== f.region){ f.region = rg; showRegion(REGIONS[rg], f.dist); if ((rg === 1 || rg === 3) && !toldLow){ toldLow = true; showHint(T('hintLow'), 6500); } }
+  const J = -f.y / 4, rg = regionAt(J);
+  if (rg !== f.region){ const first = f.region === -1; f.region = rg; const RO = regionObj(J); showRegion(RO, J);
+    if (RO.key === 'farm' && !toldLow){ toldLow = true; showHint(T('hintLow'), 6500); }
+    if (!first || f.t > 1){ if (ARC[RO.key]) arcFind(ARC[RO.key]); if (RO.key === 'city'){ arcFind('arcCity'); arcFind('city_' + cityType(Math.floor(J / LOOP))); } } }
   const tt = REGIONS[rg].tint; for (let i = 0; i < 3; i++) f.tint[i] = lerp(f.tint[i], tt[i], dt * .4);
   // trails
   if (p.shape === 'jet' && above) [-1, 1].forEach(s => f.trail.push({ x: f.x + Math.cos(f.a) * s * 17 - Math.sin(f.a) * 12, y: f.y + Math.sin(f.a) * s * 17 + Math.cos(f.a) * 12, life: 2.2 }));
@@ -1016,6 +1079,7 @@ function chart(s){
   const box = $('#cards'); box.appendChild(el); while (box.children.length > 2) box.firstChild.remove();
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 700); }, 5200);
 }
+function arcFind(kind){ if (SAVE.log[kind]) return; chart({ kind, x: F.x, y: F.y }); }
 function deliver(s){
   const f = F; f.delivered = true; f.parcel = { x: f.x, y: f.y, tx: s.x, ty: s.y, t: 0 };
   SAVE.posts.push({ date: new Date().toISOString().slice(0, 10), wx: WX.id }); bank();
@@ -1095,78 +1159,398 @@ function drawSea(c, s, X, Y, z, t){
   if (s.kind === 'rainbow'){ const cols = ['255,90,90','255,165,70','255,225,90','110,220,130','90,170,255','150,110,240']; c.lineWidth = 6 * z; cols.forEach((col, i) => { c.strokeStyle = `rgba(${col},.22)`; c.beginPath(); c.arc(X, Y + 90 * z, (150 - i * 6) * z, Math.PI * 1.08, Math.PI * 1.92); c.stroke(); }); }
 }
 
-/* ============================ terrain (mirrors the shader) ============================ */
+/* ============================ the journey ============================ */
+/* One loop of the world is about an hour of flight at cruise. Every parameter below is a smooth
+   function of journey distance J (metres, J = -y / 4). Flights continue from where the last one set down. */
 const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
-const bumpR = (d, a, b) => sstep(a, a + 900, d) * (1 - sstep(b - 900, b, d));
-function landF(x, y){ const d = -y / 4; const base = -.6 + 1.1 * Math.max(bumpR(d, 2500, 6000), bumpR(d, 8500, 12000));
-  return base + .22 * Math.sin(x * .0011 + Math.sin(y * .0007) * 2) + .14 * Math.sin(y * .0017 + x * .0006) + .09 * Math.sin(x * .0031 - y * .0023); }
-const riverX = y => 380 * Math.sin(y * .0009) + 160 * Math.sin(y * .0023 + 1.3) - 260;
-const riverW = y => 46 + 14 * Math.sin(y * .003);
-const roadX = y => 240 * Math.sin(y * .0006 + 2) - 760 + 90 * Math.sin(y * .0019);
-const canalX = y => 120 * Math.sin(y * .00035) + 220;
-const isMeadow = y => -y / 4 < 7250;
+const LOOP = 234000;
+const KEYS = [
+  [0,      { land:0, isl:.14, islS:.6, road:0, farm:0, house:0, village:0, city:0, trees:.3 }],
+  [12000,  { isl:.2, islS:.7 }],
+  [22000,  { isl:.42, islS:.9 }],
+  [33000,  { isl:.7, islS:1.15 }],
+  [40000,  { land:0, isl:.6 }],
+  [44500,  { land:1, isl:0, trees:1 }],
+  [49000,  { road:0 }],
+  [52000,  { road:1 }],
+  [56000,  { farm:.1 }],
+  [62000,  { farm:.6 }],
+  [67000,  { farm:.9, house:.15 }],
+  [74000,  { house:.6, village:0 }],
+  [80000,  { house:.8, village:.5 }],
+  [86000,  { village:1, city:0 }],
+  [92000,  { city:.3, farm:.6, trees:.7 }],
+  [100000, { city:.7, farm:.25 }],
+  [106000, { city:1, farm:0, trees:.4, house:.3, village:.4 }],
+  [140000, { city:1 }],
+  [148000, { city:.6, village:.8, house:.9, farm:.2, trees:.6 }],
+  [156000, { city:.15, farm:.7, village:.5 }],
+  [164000, { city:0, farm:.9, village:.15, house:.6, trees:.9 }],
+  [174000, { village:0, house:.2, farm:.5 }],
+  [184000, { house:.03, farm:.08, road:.6, trees:1 }],
+  [194000, { road:0, farm:0, house:0 }],
+  [198000, { land:1 }],
+  [203000, { land:0, isl:.3, islS:.9 }],
+  [218000, { isl:.22, islS:.75 }],
+  [234000, { isl:.14, islS:.6, trees:.3 }],
+];
+const PKEYS = ['land','isl','islS','road','farm','house','village','city','trees'];
+const PK = (() => { let cur = {}; return KEYS.map(([u, o]) => { cur = Object.assign({}, cur, o); return [u, cur]; }); })();
+const JPC = new Map();
+function jparams(J){
+  const key = Math.round(J / 20); const hit = JPC.get(key); if (hit) return hit;
+  const u = ((J % LOOP) + LOOP) % LOOP; let i = 0; while (i < PK.length - 2 && PK[i + 1][0] <= u) i++;
+  const [ua, a] = PK[i], [ub, b] = PK[i + 1], t = sstep(0, 1, (u - ua) / (ub - ua));
+  const o = { u, pass: Math.floor(J / LOOP) }; PKEYS.forEach(k => o[k] = a[k] + (b[k] - a[k]) * t);
+  o.ct = cityType(o.pass);
+  o.cityZone = sstep(82000, 92000, u) * (1 - sstep(152000, 162000, u));
+  if (JPC.size > 30000) JPC.clear(); JPC.set(key, o); return o;
+}
+const CTYPES = ['river', 'japan', 'port', 'grid'];
+function cityType(pass){ if (pass < 4) return CTYPES[((pass % 4) + 4) % 4]; return CTYPES[Math.floor(h2(pass, 7, 91) * 4)]; }
+const CG = {
+  grid:  { bw:150, bh:122, st:16, ang:0,    hMax:130, riv:.7,  ground:[196,192,182], street:[104,108,114], roofs:['#c9c4b8','#b4b8bc','#d9d3c5','#9da6ad','#e3ded3','#808b93','#c2b49c'] },
+  river: { bw:118, bh:96,  st:12, ang:.21,  hMax:44,  riv:2.3, ground:[214,204,184], street:[140,132,120], roofs:['#c0623f','#b0553a','#d07a52','#a84b33','#cfa27a','#bd8a64'] },
+  port:  { bw:140, bh:112, st:14, ang:-.06, hMax:62,  riv:1,   ground:[204,204,198], street:[118,122,126], roofs:['#ebe9e3','#c7d3db','#5f8fb0','#d9d4c8','#b4bec6','#c45a46'] },
+  japan: { bw:80,  bh:58,  st:8,  ang:0,    hMax:26,  riv:1.1, ground:[202,198,188], street:[150,150,146], roofs:['#5b6672','#4a5560','#6d7680','#3f4a55','#7d6a58','#596570'] },
+};
+const passOf = y => Math.floor(-y / 4 / LOOP);
+const PPH = p => h2(p, 3, 77) * 6.28;
+function riverScale(y){ const P = jparams(-y / 4); return 1 + (CG[P.ct].riv - 1) * P.cityZone; }
+const riverX = y => { const p = PPH(passOf(y)); return 380 * Math.sin(y * .0009 + p) + 160 * Math.sin(y * .0023 + 1.3 + p * 2) - 260; };
+const riverW = y => (46 + 14 * Math.sin(y * .003)) * riverScale(y);
+const roadX = y => { const p = PPH(passOf(y)); return 240 * Math.sin(y * .0006 + 2 + p) - 760 + 90 * Math.sin(y * .0019 + p); };
+const harbourX = y => 700 + 260 * Math.sin(y * .00035 + PPH(passOf(y)));
+let MAILON = false;
+function landF(x, y){
+  const P = jparams(-y / 4), p = PPH(P.pass);
+  let v = -.6 + 1.15 * P.land + .22 * Math.sin(x * .0011 + Math.sin(y * .0007 + p) * 2) + .14 * Math.sin(y * .0017 + x * .0006 + p) + .09 * Math.sin(x * .0031 - y * .0023);
+  if (P.ct === 'port' && P.cityZone > 0) v -= P.cityZone * 1.4 * sstep(250, 900, x - harbourX(y));
+  if (MAILON){ const d = Math.hypot(x - DEST.x, y - DEST.y); if (d < 900) v -= 1.5 * sstep(900, 350, d); }
+  return v;
+}
 const inRiver = (x, y) => Math.abs(x - riverX(y)) < riverW(y) + 8;
-const okGrass = (x, y) => landF(x, y) > .07 && (isMeadow(y) ? !inRiver(x, y) : Math.abs(x - canalX(y)) > 46);
+/* city blocks: a grid per city type; whether a block is built depends on city and village intensity */
+const BLK = new Map();
+function gridOf(ct){ return CG[ct]; }
+function blockU(bi, bj, ct, pass){
+  const key = bi + ',' + bj + ',' + ct + ',' + pass; if (BLK.has(key)) return BLK.get(key);
+  const G = CG[ct], c = Math.cos(G.ang), s = Math.sin(G.ang), gx = (bi + .5) * G.bw, gy = (bj + .5) * G.bh;
+  const x = gx * c - gy * s, y = gx * s + gy * c, P = jparams(-y / 4);
+  let U = 0;
+  if (P.ct === ct && landF(x, y) > .08){
+    const cityU = P.city * 1.3 - .2 + (vn(bi * .3, bj * .3, 61) - .5) * .5;
+    const villU = P.village * sstep(560, 140, Math.abs(x - roadX(y))) * 1.15 - .15 + (vn(bi * .5, bj * .5, 63) - .5) * .3;
+    U = Math.max(cityU, villU);
+    if (Math.abs(x - riverX(y)) < riverW(y) + 10) U = 0;
+    U = h2(bi, bj, 62) < U ? clamp(U, .05, 1) : 0;
+  }
+  if (BLK.size > 60000) BLK.clear(); BLK.set(key, U); return U;
+}
+function blockAt(x, y){ const P = jparams(-y / 4); if (P.city < .02 && P.village < .02) return 0; const G = CG[P.ct], c = Math.cos(G.ang), s = Math.sin(G.ang); const gx = x * c + y * s, gy = -x * s + y * c; return blockU(Math.floor(gx / G.bw), Math.floor(gy / G.bh), P.ct, P.pass); }
+const okGrass = (x, y) => landF(x, y) > .07 && !inRiver(x, y) && Math.abs(x - roadX(y)) > 16 && blockAt(x, y) === 0;
+const isMeadow = y => jparams(-y / 4).ct !== 'japan' || jparams(-y / 4).farm < .2;
 
-/* ============================ trees ============================ */
-const TREES = { g:[], s:[], gs:[], ss:[] };
+
+/* ============================ painted ground ============================ */
+/* The ground is painted once into 512-unit tiles (offscreen canvases) and reused every frame. */
+const TS = 512, TRES = .6, TPX = Math.round(TS * TRES) + 1, CANW = 70;
+const TILES = new Map(), TOBJ = new Map();
+let SAKV = [];
+const hexA = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${n >> 8 & 255},${n & 255},${a})`; };
+function softBlob(g, x, y, r, col, a){ const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, hexA(col, a)); gr.addColorStop(.62, hexA(col, a)); gr.addColorStop(1, hexA(col, 0)); g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }
+/* trees: layered soft blobs, dark core, mid green, light rim, soft shadow */
 function treeSprite(seed, pal){
   const S = 128, c = mk(S, S), g = c.getContext('2d'), sh = mk(S, S), h = sh.getContext('2d'), R = rng(seed);
-  const cs = []; for (let i = 0; i < 9; i++){ const r = 15 + R() * 15, a = R() * 6.28, d = R() * 26; cs.push([S / 2 + Math.cos(a) * d, S / 2 + Math.sin(a) * d, r]); }
-  cs.sort((a, b) => (b[0] + b[1]) - (a[0] + a[1]));
-  cs.forEach(([x, y, r]) => { const gr = g.createRadialGradient(x - r * .4, y - r * .45, r * .1, x, y, r); gr.addColorStop(0, pal[0]); gr.addColorStop(.55, pal[1]); gr.addColorStop(1, pal[2]); g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); });
+  const bl = []; const n = 6 + Math.floor(R() * 4);
+  for (let i = 0; i < n; i++){ const a = R() * 6.28, d = R() * 22; bl.push([S / 2 + Math.cos(a) * d, S / 2 + Math.sin(a) * d, 15 + R() * 11]); }
+  if ('filter' in h) h.filter = 'blur(5px)';
+  h.fillStyle = '#000'; bl.forEach(([x, y, r]) => { h.beginPath(); h.arc(x, y, r * .95, 0, 7); h.fill(); });
+  bl.forEach(([x, y, r]) => softBlob(g, x + 2.5, y + 3.5, r * 1.08, pal[3], 1));
+  bl.forEach(([x, y, r]) => softBlob(g, x, y, r * .9, pal[2], .95));
+  bl.forEach(([x, y, r]) => softBlob(g, x - r * .2, y - r * .24, r * .62, pal[1], .9));
+  bl.forEach(([x, y, r]) => softBlob(g, x - r * .4, y - r * .44, r * .32, pal[0], .75));
   g.globalCompositeOperation = 'source-atop';
-  for (let i = 0; i < 420; i++){ const x = R() * S, y = R() * S; g.fillStyle = R() < .5 ? 'rgba(255,255,255,.10)' : 'rgba(0,0,0,.13)'; g.beginPath(); g.arc(x, y, .8 + R() * 1.6, 0, 7); g.fill(); }
-  if ('filter' in h) h.filter = 'blur(3px)';
-  h.fillStyle = '#000'; cs.forEach(([x, y, r]) => { h.beginPath(); h.arc(x, y, r, 0, 7); h.fill(); });
+  for (let i = 0; i < 70; i++){ const x = R() * S, y = R() * S, l = R() < .5; softBlob(g, x, y, 2 + R() * 3, l ? pal[0] : pal[3], .28); }
   return [c, sh];
 }
+const TREES = { g:[], s:[], gs:[], ss:[] };
 function ensureTrees(){
   if (TREES.g.length) return;
-  for (let i = 0; i < 4; i++){ const [a, b] = treeSprite(300 + i, i % 2 ? ['#a8c96a','#4f8a35','#21492a'] : ['#93bb5a','#477f31','#1f4426']); TREES.g.push(a); TREES.gs.push(b); }
-  for (let i = 0; i < 3; i++){ const [a, b] = treeSprite(500 + i, ['#fff0f4','#f2b3c6','#c97890']); TREES.s.push(a); TREES.ss.push(b); }
+  const greens = [['#cfe48a','#86b84a','#4f8a33','#2c5c25'], ['#c4df7c','#79ad42','#46802f','#275422'], ['#d6e796','#8fbf52','#58923a','#30622a'], ['#bcd874','#71a43e','#3f772b','#234d1f']];
+  for (let i = 0; i < 4; i++){ const [a, b] = treeSprite(300 + i, greens[i]); TREES.g.push(a); TREES.gs.push(b); }
+  for (let i = 0; i < 3; i++){ const [a, b] = treeSprite(500 + i, ['#fff4f7','#f8c9d7','#eda4bc','#cf7f99']); TREES.s.push(a); TREES.ss.push(b); }
+}
+function tileObjs(tx, ty){
+  const key = tx + ',' + ty; if (TOBJ.has(key)) return TOBJ.get(key);
+  const R = rng(hash(tx * 7 + 3, ty * 13 + 5) ^ 0x5bd1e995), ox = tx * TS, oy = ty * TS;
+  const o = { trees:[], rocks:[], houses:[], bridges:[], bushes:[], blds:[], piers:[], ships:[], torii:[] };
+  const P = jparams(-(oy + TS / 2) / 4), CT = P.ct, G = CG[CT];
+  const lfMax = Math.max(landF(ox, oy), landF(ox + TS, oy), landF(ox, oy + TS), landF(ox + TS, oy + TS), landF(ox + TS / 2, oy + TS / 2));
+  if (lfMax > -.05){
+    const ok = (x, y) => okGrass(x, y);
+    const paddy = CT === 'japan' && P.farm > .15;
+    const tq = P.trees;
+    // trees along the river and in groves
+    for (let i = 0; i < Math.round(10 * tq); i++){ const y = oy + R() * TS, x = riverX(y) + (R() < .5 ? -1 : 1) * (riverW(y) + 24 + R() * 70); if (ok(x, y)) o.trees.push({ x, y, s: 40 + R() * 30, k: Math.floor(R() * 4), sak: paddy && R() < .6 }); }
+    if (R() < .55 * tq){ const cx = ox + R() * TS, cy = oy + R() * TS; for (let i = 0; i < 6; i++){ const x = cx + (R() - .5) * 110, y = cy + (R() - .5) * 90; if (ok(x, y)) o.trees.push({ x, y, s: 36 + R() * 30, k: Math.floor(R() * 4) }); } }
+    for (let i = 0; i < Math.round(4 * tq); i++){ const x = ox + R() * TS, y = oy + R() * TS; if (ok(x, y)) o.trees.push({ x, y, s: 34 + R() * 34, k: Math.floor(R() * 4) }); }
+    for (let i = 0; i < Math.round(16 * tq); i++){ const x = ox + R() * TS, y = oy + R() * TS; if (ok(x, y)) o.bushes.push({ x, y, s: 9 + R() * 9, k: Math.floor(R() * 4) }); }
+    for (let i = 0; i < 2; i++){ const x = ox + R() * TS, y = oy + R() * TS; if (ok(x, y)) o.rocks.push({ x, y, s: 3 + R() * 4, w:false }); }
+    if (R() < .4){ const y = oy + R() * TS, x = riverX(y) + (R() - .5) * riverW(y) * 1.4; if (landF(x, y) > .08 && P.cityZone < .3) o.rocks.push({ x, y, s: 4 + R() * 5, w:true }); }
+    // sakura on paddy ridges
+    if (paddy) for (let i = 0; i < 12; i++){ const x0 = ox + R() * TS, y0 = oy + R() * TS, x = Math.round((x0 + 37) / 120) * 120 - 37, y = Math.round((y0 + 11) / 64) * 64 - 11 + (R() - .5) * 20; if (ok(x, y) && R() < .45) o.trees.push({ x, y, s: 48 + R() * 30, k: Math.floor(R() * 3), sak:true }); }
+    // scattered houses and farmsteads
+    const nh = Math.round(P.house * 3 + P.farm * 1.2);
+    for (let i = 0; i < nh; i++){ if (R() > .55) continue; const y = oy + R() * TS, x = R() < .7 ? roadX(y) + (R() < .5 ? -1 : 1) * (30 + R() * 60) : ox + R() * TS;
+      if (ok(x, y)){ o.houses.push({ x, y, w: 24 + R() * 12, h: 17 + R() * 6, a: (R() - .5) * .4, col: G.roofs[Math.floor(R() * G.roofs.length)] }); if (R() < .6) o.trees.push({ x: x + 26, y: y - 22, s: 34 + R() * 12, k: Math.floor(R() * 4), sak: paddy }); } }
+    // bridges: paddy roads in the Japanese countryside, and streets in any city
+    if (paddy || P.cityZone > .3){ const step = paddy && P.city < .2 ? 1400 : 380, off = paddy && P.city < .2 ? 700 : 0;
+      for (let ry = Math.ceil((oy - off) / step) * step + off; ry < oy + TS; ry += step) o.bridges.push({ x: riverX(ry), y: ry, w: riverW(ry) * 2 + 30, sak: paddy && P.city < .2 }); }
+    // city blocks
+    if (P.city > .02 || P.village > .02){
+      const c = Math.cos(G.ang), s = Math.sin(G.ang);
+      const cs = [[ox, oy], [ox + TS, oy], [ox, oy + TS], [ox + TS, oy + TS]].map(([x, y]) => [x * c + y * s, -x * s + y * c]);
+      const bi0 = Math.floor(Math.min(...cs.map(v => v[0])) / G.bw), bi1 = Math.floor(Math.max(...cs.map(v => v[0])) / G.bw);
+      const bj0 = Math.floor(Math.min(...cs.map(v => v[1])) / G.bh), bj1 = Math.floor(Math.max(...cs.map(v => v[1])) / G.bh);
+      for (let bi = bi0; bi <= bi1; bi++) for (let bj = bj0; bj <= bj1; bj++){
+        const gxc = (bi + .5) * G.bw, gyc = (bj + .5) * G.bh, wx = gxc * c - gyc * s, wy = gxc * s + gyc * c;
+        if (wx < ox || wx >= ox + TS || wy < oy || wy >= oy + TS) continue;
+        const U = blockU(bi, bj, CT, P.pass); if (!U) continue;
+        const RB = rng(hash(bi * 31 + 7, bj * 17 + 3) ^ (P.pass * 977));
+        const x0 = bi * G.bw + G.st / 2 + 3, y0 = bj * G.bh + G.st / 2 + 3, x1 = (bi + 1) * G.bw - G.st / 2 - 3, y1 = (bj + 1) * G.bh - G.st / 2 - 3;
+        const hp = h2(bi, bj, 64);
+        if (hp < .07){ for (let k = 0; k < 5; k++){ const gx = x0 + RB() * (x1 - x0), gy = y0 + RB() * (y1 - y0); o.trees.push({ x: gx * c - gy * s, y: gx * s + gy * c, s: 30 + RB() * 26, k: Math.floor(RB() * 4), sak: CT === 'japan' && RB() < .6 }); }
+          if (CT === 'japan' && hp < .03) o.torii.push({ x: wx, y: wy }); continue; }
+        if (U < .42){ // village: pitched-roof houses in their yards
+          const n = 2 + Math.floor(RB() * 3); for (let k = 0; k < n; k++){ const gx = x0 + 14 + RB() * (x1 - x0 - 28), gy = y0 + 12 + RB() * (y1 - y0 - 24); o.houses.push({ x: gx * c - gy * s, y: gx * s + gy * c, w: 22 + RB() * 10, h: 16 + RB() * 5, a: G.ang + (RB() < .5 ? 0 : Math.PI / 2), col: G.roofs[Math.floor(RB() * G.roofs.length)] }); }
+          if (RB() < .6){ const gx = x0 + RB() * (x1 - x0), gy = y0 + RB() * (y1 - y0); o.trees.push({ x: gx * c - gy * s, y: gx * s + gy * c, s: 30 + RB() * 16, k: Math.floor(RB() * 4), sak: CT === 'japan' }); }
+          continue; }
+        const nx = CT === 'japan' ? 3 : U > .8 ? (CT === 'grid' ? 1 + Math.floor(RB() * 2) : 2) : 3, ny = CT === 'japan' ? 2 : 2;
+        const lw = (x1 - x0) / nx, lh = (y1 - y0) / ny;
+        for (let a = 0; a < nx; a++) for (let b = 0; b < ny; b++){
+          const i0 = 2 + RB() * 3, h = Math.max(6, U * U * G.hMax * (.35 + RB() * .85));
+          o.blds.push({ ang: G.ang, x0: x0 + a * lw + i0, y0: y0 + b * lh + i0, x1: x0 + (a + 1) * lw - i0, y1: y0 + (b + 1) * lh - i0, h, col: G.roofs[Math.floor(RB() * G.roofs.length)], tall: h > 50, ct: CT });
+        }
+      }
+    }
+    // the harbour: piers and moored ships
+    if (CT === 'port' && P.cityZone > .2){
+      for (let y = Math.ceil(oy / 170) * 170; y < oy + TS; y += 170){ if (h2(Math.round(y / 170), P.pass, 81) < .25) continue; const hx = harbourX(y) + 470; o.piers.push({ x: hx, y, w: 230, h: 20 });
+        if (h2(Math.round(y / 170), 3, 82) < .6) o.ships.push({ x: hx + 70 + h2(Math.round(y / 170), 4, 83) * 90, y: y + 52, l: 120 + h2(Math.round(y / 170), 5, 84) * 70, col: ['#8a2f2a','#2f4e6e','#2b2b2b','#3f6b52'][Math.floor(h2(Math.round(y / 170), 6, 85) * 4)] }); }
+    }
+  }
+  TOBJ.set(key, o); if (TOBJ.size > 500) TOBJ.delete(TOBJ.keys().next().value);
+  return o;
+}
+function drawBld(g, b, snow){
+  const c = Math.cos(b.ang), s = Math.sin(b.ang);
+  const ox = b.h * .5 * WX.slen, oy = b.h * .65 * WX.slen, dx = Math.max(0, ox * c + oy * s), dy = Math.max(0, -ox * s + oy * c);
+  g.save(); g.rotate(b.ang);
+  g.fillStyle = 'rgba(16,26,36,.32)'; g.beginPath(); g.moveTo(b.x0, b.y0); g.lineTo(b.x1, b.y0); g.lineTo(b.x1 + dx, b.y0 + dy); g.lineTo(b.x1 + dx, b.y1 + dy); g.lineTo(b.x0 + dx, b.y1 + dy); g.lineTo(b.x0, b.y1); g.closePath(); g.fill();
+  const w = b.x1 - b.x0, h = b.y1 - b.y0;
+  const gr = g.createLinearGradient(b.x0, b.y0, b.x1, b.y1); gr.addColorStop(0, shade(b.col, .14)); gr.addColorStop(1, shade(b.col, -.12));
+  g.fillStyle = snow ? '#eef2f6' : gr; g.fillRect(b.x0, b.y0, w, h);
+  g.strokeStyle = 'rgba(0,0,0,.22)'; g.lineWidth = 1; g.strokeRect(b.x0 + .5, b.y0 + .5, w - 1, h - 1);
+  g.strokeStyle = 'rgba(255,255,255,.35)'; g.beginPath(); g.moveTo(b.x0 + 2, b.y1 - 2); g.lineTo(b.x0 + 2, b.y0 + 2); g.lineTo(b.x1 - 2, b.y0 + 2); g.stroke();
+  if (b.ct === 'japan' || (b.ct === 'river' && !b.tall)){ g.strokeStyle = 'rgba(0,0,0,.18)'; g.beginPath(); if (w > h){ g.moveTo(b.x0, b.y0 + h / 2); g.lineTo(b.x1, b.y0 + h / 2); } else { g.moveTo(b.x0 + w / 2, b.y0); g.lineTo(b.x0 + w / 2, b.y1); } g.stroke(); }
+  if (b.tall){ const R = rng(Math.floor(b.x0 * 13 + b.y0 * 7)); g.fillStyle = 'rgba(70,78,86,.5)'; for (let i = 0; i < 3; i++) g.fillRect(b.x0 + 6 + R() * (w - 20), b.y0 + 6 + R() * (h - 20), 6 + R() * 8, 5 + R() * 6);
+    if (b.h > 100 && w > 40){ g.strokeStyle = 'rgba(255,255,255,.5)'; g.beginPath(); g.arc(b.x0 + w / 2, b.y0 + h / 2, Math.min(w, h) * .2, 0, 7); g.stroke(); } }
+  g.restore();
+}
+function paintTile(tx, ty, snow){
+  const c = mk(TPX, TPX), g = c.getContext('2d'), im = g.createImageData(TPX, TPX), D = im.data, ox = tx * TS, oy = ty * TS;
+  for (let j = 0; j < TPX; j++){
+    const wy0 = oy + j / TRES, Pr = jparams(-wy0 / 4), CT = Pr.ct, G = CG[CT], gc = Math.cos(G.ang), gs = Math.sin(G.ang);
+    const urbRow = Math.max(Pr.city, Pr.village * .6), paddyRow = CT === 'japan' && Pr.farm > .02;
+    const wa = 2 + 14 * (1 - Math.max(urbRow, paddyRow ? Pr.farm : 0)), fang = (h2(Pr.pass, 5, 3) - .5) * .5, fc = Math.cos(fang), fs = Math.sin(fang);
+    for (let i = 0; i < TPX; i++){
+      const wx0 = ox + i / TRES;
+      const wx = wx0 + (vn(wx0 * .018, wy0 * .018, 5) - .5) * wa, wy = wy0 + (vn(wx0 * .018 + 7.3, wy0 * .018, 6) - .5) * wa;
+      const lf = landF(wx, wy) + (vn(wx0 * .006, wy0 * .006, 9) - .5) * .05;
+      const big = vn(wx0 * .0025, wy0 * .0025, 21), mid = vn(wx0 * .011, wy0 * .011, 22), streak = vn((wx0 + wy0) * .03, (wx0 - wy0) * .012, 23);
+      let r, gg, b, land = true;
+      if (lf < 0){
+        land = false;
+        r = 30 + big * 28; gg = 110 + big * 40; b = 160 + big * 28;
+        r += (mid - .5) * 14; gg += (mid - .5) * 16;
+        const sw = vn(wx0 * .016, wy0 * .05, 26); if (sw > .64){ const k = (sw - .64) * 1.6; r += 30 * k; gg += 30 * k; b += 22 * k; }
+        const mot = vn(wx0 * .0055, wy0 * .0055, 28); r += (mot - .5) * 16; gg += (mot - .5) * 18; b += (mot - .5) * 12;
+        const port = CT === 'port' && Pr.cityZone > .3;
+        const sh = sstep(-.26, 0, lf) * (port ? .4 : 1); r = lerp(r, 86, sh); gg = lerp(gg, 194, sh); b = lerp(b, 198, sh);
+        const sa = sstep(-.07, 0, lf) * (port ? 0 : 1); r = lerp(r, 172, sa * .7); gg = lerp(gg, 224, sa * .7); b = lerp(b, 206, sa * .7);
+        if (lf > -.016 && !port){ const k = (lf + .016) / .016 * (.55 + .45 * vn(wx0 * .08, wy0 * .08, 24)); r = lerp(r, 252, k); gg = lerp(gg, 252, k); b = lerp(b, 246, k); }
+      } else if (lf < .05){
+        if (CT === 'port' && Pr.cityZone > .3){ r = 186; gg = 184; b = 176; }
+        else { const k = vn(wx0 * .06, wy0 * .06, 25); r = 234 + k * 12; gg = 216 + k * 10; b = 170 + k * 8;
+          if (lf < .014){ const w = 1 - lf / .014; r = lerp(r, 204, w * .6); gg = lerp(gg, 190, w * .6); b = lerp(b, 152, w * .6); } }
+      } else {
+        // grassland
+        r = 96 + big * 40 - mid * 20; gg = 162 + big * 34 - mid * 16; b = 54 + big * 14;
+        if (streak > .62){ const k = (streak - .62) * 1.6; r += 6 * k; gg += 9 * k; }
+        if (h2(i + tx * TPX, j + ty * TPX, 31) > .9968){ r = 250; gg = 244; b = 196; }
+        // farmland: patchwork fields, or flooded paddies around a Japanese town
+        if (Pr.farm > .02){
+          if (paddyRow){
+            const qx = wx + 37, qy = wy + 11, cx = Math.floor(qx / 120), cy = Math.floor(qy / 64), ux = qx - cx * 120, uy = qy - cy * 64;
+            if (h2(cx, cy, 40) < Pr.farm * 1.15){
+              const edge = Math.min(ux, 120 - ux, uy, 64 - uy), hc = h2(cx, cy, 41);
+              if (hc < .62){ const v = h2(cx, cy, 42), gy = uy / 64; r = 116 + v * 34 + gy * 14; gg = 176 + v * 26 + gy * 10; b = 204 + v * 14;
+                const sky = vn(wx0 * .004, wy0 * .004, 43); if (sky > .6){ const k = (sky - .6) * 2.2; r += 62 * k; gg += 52 * k; b += 30 * k; }
+                if (h2(cx, cy, 44) > .45 && ((qx % 7) + 7) % 7 < 1.9 && ((qy % 7) + 7) % 7 < 1.9){ r = lerp(r, 96, .45); gg = lerp(gg, 168, .45); b = lerp(b, 108, .45); }
+                land = false; }
+              else if (hc < .86){ const v = h2(cx, cy, 45); r = 98 + v * 30; gg = 166 + v * 22; b = 84 + v * 14; if (((qx % 6) + 6) % 6 < 2.4){ r -= 12; gg -= 10; b -= 8; } }
+              else { r = 178; gg = 148; b = 106; }
+              const ridge = sstep(3.4, 1.4, edge); r = lerp(r, 214, ridge); gg = lerp(gg, 216, ridge); b = lerp(b, 168, ridge); if (ridge > .5) land = true;
+              const ry = Math.abs(((wy % 1400) + 1400) % 1400 - 700); const road = sstep(10, 7, ry); r = lerp(r, 232, road); gg = lerp(gg, 224, road); b = lerp(b, 198, road); if (road > .5) land = true;
+            }
+          } else {
+            const fx = wx * fc + wy * fs, fy = -wx * fs + wy * fc, cx = Math.floor(fx / 170), cy = Math.floor(fy / 120), ux = fx - cx * 170, uy = fy - cy * 120;
+            if (h2(cx, cy, 72) < Pr.farm * .6){
+              const kc = h2(cx, cy, 71), edge = Math.min(ux, 170 - ux, uy, 120 - uy);
+              let fr, fg, fb;
+              if (kc < .28){ fr = 212; fg = 194; fb = 112; } else if (kc < .52){ fr = 118; fg = 172; fb = 70; if (((ux % 7) + 7) % 7 < 2.5){ fr -= 14; fg -= 12; } } else if (kc < .7){ fr = 162; fg = 124; fb = 86; if (((uy % 6) + 6) % 6 < 2){ fr -= 16; fg -= 14; fb -= 10; } } else { fr = 132; fg = 186; fb = 80; }
+              const inside = sstep(2, 6, edge); r = lerp(r, fr + (big - .5) * 16, inside); gg = lerp(gg, fg + (big - .5) * 14, inside); b = lerp(b, fb, inside);
+              const hedge = sstep(3.5, 1.2, edge) * .8; r = lerp(r, 64, hedge); gg = lerp(gg, 108, hedge); b = lerp(b, 48, hedge);
+            }
+          }
+        }
+        // city and village blocks
+        if (Pr.city > .02 || Pr.village > .02){
+          const gx = wx * gc + wy * gs, gy = -wx * gs + wy * gc, bi = Math.floor(gx / G.bw), bj = Math.floor(gy / G.bh), ux = gx - bi * G.bw, uy = gy - bj * G.bh;
+          const U = blockU(bi, bj, CT, Pr.pass), ed = Math.min(ux, G.bw - ux, uy, G.bh - uy);
+          const nbr = U || blockU(ux < G.bw / 2 ? bi - 1 : bi + 1, bj, CT, Pr.pass) || blockU(bi, uy < G.bh / 2 ? bj - 1 : bj + 1, CT, Pr.pass);
+          if (U || (nbr && ed < G.st / 2)){
+            if (ed < G.st / 2 && nbr){ const sc = G.street; r = sc[0]; gg = sc[1]; b = sc[2]; land = true;
+              if (G.st >= 14 && Math.abs(ed - 0) < .8 && ((Math.floor((ux + uy) / 9) % 2) === 0)){ r = 236; gg = 232; b = 214; } }
+            else if (U && ed < G.st / 2 + 3){ r = 222; gg = 218; b = 206; }
+            else if (U){ if (h2(bi, bj, 64) < .07){ r = 110 + big * 30; gg = 170 + big * 20; b = 72; } else { const v = h2(bi, bj, 65) * 14; r = G.ground[0] + v; gg = G.ground[1] + v; b = G.ground[2] + v; } }
+          }
+        }
+        // the river
+        const rw = riverW(wy), rd = Math.abs(wx - riverX(wy)), urbR = Pr.cityZone > .3;
+        const bank = sstep(rw + 16, rw + 6, rd); const bc = urbR ? [178, 174, 166] : [230, 210, 162];
+        r = lerp(r, bc[0], bank * .95); gg = lerp(gg, bc[1], bank * .95); b = lerp(b, bc[2], bank * .95);
+        // the main road: dirt in the country, paved near towns
+        if (Pr.road > .02){
+          const urb = clamp(Math.max(Pr.city, Pr.village * .8) * 1.4, 0, 1), hw = 11 + urb * 7, rdd = Math.abs(wx - roadX(wy)), road = sstep(hw + .5, hw - 3.5, rdd) * sstep(0, .3, Pr.road);
+          const rc = [lerp(228, 108, urb), lerp(204, 110, urb), lerp(156, 114, urb)], rut = sstep(2.2, .5, Math.abs(rdd - 4.2)) * road * .35 * (1 - urb);
+          r = lerp(r, rc[0], road) - rut * 30; gg = lerp(gg, rc[1], road) - rut * 30; b = lerp(b, rc[2], road) - rut * 24;
+          if (urb > .3 && rdd < .9 && (Math.floor(wy / 14) % 2 === 0)){ r = lerp(r, 240, road); gg = lerp(gg, 232, road); b = lerp(b, 200, road); }
+        }
+        if (rd < rw + 3){ const e = sstep(rw + 3, rw - 3, rd), k = clamp(rd / rw, 0, 1), fl = vn(wx0 * .012, wy0 * .06, 27);
+          r = lerp(r, lerp(56, 110, k * k) + fl * 26, e); gg = lerp(gg, lerp(138, 190, k * k) + fl * 22, e); b = lerp(b, lerp(200, 214, k * k) + fl * 10, e); if (e > .5) land = false; }
+      }
+      const sh2 = .92 + .16 * vn(wx0 * .0045 + 3, wy0 * .0045, 51);
+      const grn = (h2(Math.floor(wx0 * TRES), Math.floor(wy0 * TRES), 52) - .5) * 14 + (vn(wx0 * .2, wy0 * .7, 53) - .5) * 10;
+      if (snow && land){ r = lerp(r, 240, .62); gg = lerp(gg, 243, .62); b = lerp(b, 248, .62); }
+      const q = (j * TPX + i) * 4;
+      D[q] = clamp(r * sh2 * 1.03 + grn, 0, 255); D[q + 1] = clamp(gg * sh2 + grn, 0, 255); D[q + 2] = clamp(b * sh2 * .96 + grn, 0, 255); D[q + 3] = 255;
+    }
+  }
+  g.putImageData(im, 0, 0);
+  ensureTrees();
+  const all = { trees:[], rocks:[], houses:[], bridges:[], bushes:[], blds:[], piers:[], ships:[], torii:[] };
+  for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++){ const o = tileObjs(tx + dx, ty + dy); for (const k in all) o[k].forEach(v => { const vx = v.x0 !== undefined ? (v.x0 + v.x1) / 2 * Math.cos(v.ang) - (v.y0 + v.y1) / 2 * Math.sin(v.ang) : v.x, vy = v.x0 !== undefined ? (v.x0 + v.x1) / 2 * Math.sin(v.ang) + (v.y0 + v.y1) / 2 * Math.cos(v.ang) : v.y; if (vx > ox - 200 && vx < ox + TS + 200 && vy > oy - 200 && vy < oy + TS + 200) all[k].push(v); }); }
+  g.save(); g.scale(TRES, TRES); g.translate(-ox, -oy);
+  all.piers.forEach(p => { g.fillStyle = 'rgba(10,30,40,.3)'; g.fillRect(p.x - p.w / 2 + 6, p.y - p.h / 2 + 8, p.w, p.h); g.fillStyle = '#bdb8ac'; g.fillRect(p.x - p.w / 2, p.y - p.h / 2, p.w, p.h); g.fillStyle = '#9a958a'; for (let x = p.x - p.w / 2 + 10; x < p.x + p.w / 2; x += 22) g.fillRect(x, p.y - p.h / 2, 2, p.h); });
+  all.ships.forEach(s => { g.fillStyle = 'rgba(10,30,40,.3)'; g.beginPath(); g.ellipse(s.x + 8, s.y + 10, s.l / 2, 15, 0, 0, 7); g.fill();
+    g.fillStyle = s.col; g.beginPath(); g.moveTo(s.x - s.l / 2, s.y - 12); g.lineTo(s.x + s.l / 2 - 16, s.y - 12); g.quadraticCurveTo(s.x + s.l / 2 + 6, s.y, s.x + s.l / 2 - 16, s.y + 12); g.lineTo(s.x - s.l / 2, s.y + 12); g.closePath(); g.fill();
+    const R = rng(Math.floor(s.x + s.y)); const cc = ['#c0462f','#2f6aa8','#e0b040','#4f8a5a','#d8d4cc']; for (let x = s.x - s.l / 2 + 8; x < s.x + s.l / 2 - 30; x += 13) for (let k = -1; k <= 0; k++){ g.fillStyle = cc[Math.floor(R() * cc.length)]; g.fillRect(x, s.y + k * 9 + .5, 12, 8); }
+    g.fillStyle = '#f2f0ea'; g.fillRect(s.x - s.l / 2 + 2, s.y - 8, 14, 16); });
+  g.globalAlpha = .34; all.trees.forEach(t => g.drawImage((t.sak ? TREES.ss : TREES.gs)[t.k % (t.sak ? 3 : 4)], t.x - t.s / 2 + t.s * .26, t.y - t.s / 2 + t.s * .34, t.s, t.s));
+  all.bushes.forEach(t => g.drawImage(TREES.gs[t.k], t.x - t.s / 2 + t.s * .25, t.y - t.s / 2 + t.s * .32, t.s, t.s));
+  g.globalAlpha = 1;
+  all.rocks.forEach(rk => { if (rk.w){ g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 1.4; g.beginPath(); g.ellipse(rk.x, rk.y + 1, rk.s * 1.6, rk.s * 1.1, 0, 0, 7); g.stroke(); }
+    g.fillStyle = 'rgba(30,40,20,.3)'; g.beginPath(); g.ellipse(rk.x + rk.s * .5, rk.y + rk.s * .6, rk.s, rk.s * .7, 0, 0, 7); g.fill();
+    const gr = g.createRadialGradient(rk.x - rk.s * .35, rk.y - rk.s * .35, 0, rk.x, rk.y, rk.s); gr.addColorStop(0, snow ? '#ffffff' : '#d8d4c8'); gr.addColorStop(1, '#8c887c'); g.fillStyle = gr; g.beginPath(); g.ellipse(rk.x, rk.y, rk.s, rk.s * .75, .3, 0, 7); g.fill(); });
+  all.trees.forEach(t => { if (!t.sak) return; const R = rng(Math.floor(t.x * 7 + t.y * 3)); g.fillStyle = 'rgba(250,200,215,.85)'; for (let i = 0; i < 22; i++){ const a = R() * 6.28, d = t.s * (.45 + R() * .9); g.beginPath(); g.ellipse(t.x + Math.cos(a) * d + t.s * .2, t.y + Math.sin(a) * d * .8 + t.s * .25, 1.6, 1, a, 0, 7); g.fill(); } });
+  all.bridges.forEach(b => drawBridgeW(g, b.x, b.y, b.w, b.sak));
+  all.blds.forEach(b => drawBld(g, b, snow));
+  all.houses.forEach(h => house(g, h.x, h.y, h.w, h.h, h.a, h.col, snow));
+  all.torii.forEach(t => { g.fillStyle = 'rgba(10,20,20,.3)'; g.fillRect(t.x - 12 + 4, t.y - 2 + 6, 24, 4); g.fillStyle = '#c0392b'; g.fillRect(t.x - 13, t.y - 3, 26, 4); g.fillRect(t.x - 9, t.y - 6, 3, 10); g.fillRect(t.x + 6, t.y - 6, 3, 10); });
+  all.bushes.forEach(t => g.drawImage(TREES.g[t.k], t.x - t.s / 2, t.y - t.s / 2, t.s, t.s));
+  all.trees.sort((a, b) => a.y - b.y).forEach(t => { g.drawImage((t.sak ? TREES.s : TREES.g)[t.k % (t.sak ? 3 : 4)], t.x - t.s / 2, t.y - t.s / 2, t.s, t.s);
+    if (snow){ g.globalAlpha = .5; softBlob(g, t.x - t.s * .08, t.y - t.s * .1, t.s * .3, '#f6f8fb', 1); g.globalAlpha = 1; } });
+  g.restore();
+  return c;
+}
+function drawBridgeW(c, x, y, w, sak){
+  const h = 22;
+  c.fillStyle = 'rgba(10,30,40,.3)'; c.fillRect(x - w / 2 + 8, y - h / 2 + 10, w, h);
+  c.fillStyle = sak ? '#d6cfbf' : '#c9c6bd'; c.fillRect(x - w / 2, y - h / 2, w, h);
+  c.fillStyle = sak ? '#c0462f' : '#8d8a82'; c.fillRect(x - w / 2, y - h / 2, w, 3); c.fillRect(x - w / 2, y + h / 2 - 3, w, 3);
+  if (sak){ c.fillStyle = '#8f2f22'; for (let i = 0; i <= 8; i++){ const px = x - w / 2 + i * w / 8; c.fillRect(px - 1.4, y - h / 2 - 1, 2.8, 5); c.fillRect(px - 1.4, y + h / 2 - 4, 2.8, 5); } }
+}
+function drawGround(camX, camY, z, CXs, CYs, f){
+  const left = camX - CXs / z, right = camX + (W - CXs) / z, top = camY - CYs / z, bot = camY + (H - CYs) / z;
+  const tx0 = Math.floor(left / TS), tx1 = Math.floor(right / TS), ty0 = Math.floor(top / TS), ty1 = Math.floor(bot / TS);
+  const snow = !!WX.snow, miss = [];
+  SAKV = [];
+  for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++){
+    const key = tx + ',' + ty + (snow ? 's' : '');
+    if (!TILES.has(key)) miss.push([tx, ty, key, Math.hypot((tx + .5) * TS - f.x, (ty + .5) * TS - f.y)]);
+    else { const v = TILES.get(key); TILES.delete(key); TILES.set(key, v); }
+    tileObjs(tx, ty).trees.forEach(t => { if (t.sak) SAKV.push(t); });
+  }
+  miss.sort((a, b) => a[3] - b[3]);
+  let budget = TILES.size < 8 ? 40 : 2;
+  for (const [tx, ty, key] of miss){ if (budget-- <= 0) break; TILES.set(key, paintTile(tx, ty, snow)); }
+  while (TILES.size > 80) TILES.delete(TILES.keys().next().value);
+  const sz = TPX / TRES * z + .6;
+  for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++){
+    const X = CXs + (tx * TS - camX) * z, Y = CYs + (ty * TS - camY) * z, tc = TILES.get(tx + ',' + ty + (snow ? 's' : ''));
+    if (tc) ctx.drawImage(tc, X, Y, sz, sz);
+    else { ctx.fillStyle = landF((tx + .5) * TS, (ty + .5) * TS) > 0 ? '#7fae48' : '#2f7ea6'; ctx.fillRect(X, Y, sz, sz); }
+  }
 }
 
 /* ============================ land life ============================ */
 function genLand(c, ox, oy, r){
   ensureTrees();
-  const meadow = isMeadow(oy + CH / 2);
-  const add = o => c.life.push(o);
-  const N = meadow ? 26 : 10;
-  for (let i = 0; i < N; i++){
-    let x, y;
-    if (meadow && i < 15){ y = oy + r() * CH; x = riverX(y) + (r() < .5 ? -1 : 1) * (riverW(y) + 28 + r() * 70); }
-    else { x = ox + r() * CH; y = oy + r() * CH; }
-    if (!okGrass(x, y)) continue; if (meadow && Math.abs(x - roadX(y)) < 22) continue;
-    c.trees.push({ x, y, k: Math.floor(r() * 4), s: 48 + r() * 36, sak: false });
+  const cy0 = oy + CH / 2, P = jparams(-cy0 / 4), CT = P.ct, G = CG[CT], add = o => c.life.push(o);
+  const paddy = CT === 'japan' && P.farm > .2 && P.city < .4;
+  const findGrass = () => { for (let k = 0; k < 10; k++){ const x = ox + 120 + r() * (CH - 240), y = oy + 120 + r() * (CH - 240); if (okGrass(x, y)) return [x, y]; } return null; };
+  // grazing animals arrive with the farms
+  if (P.farm > .15 && P.city < .3 && !paddy){
+    if (r() < P.farm * .8){ const pt = findGrass(); if (pt){ const [cx, cy] = pt, fl = { cx, cy }; const n = 8 + Math.floor(r() * 9); for (let i = 0; i < n; i++){ const x = cx + (r() - .5) * 90, y = cy + (r() - .5) * 70; if (okGrass(x, y)) add({ t:'sheep', x, y, a: r() * 6.28, v:0, st: r() * 3, fl, ph: r() * 6, sc:0 }); }
+      if (r() < .5) c.sea.push({ kind:'flock', x: cx, y: cy, r:90, prog:0 }); } }
+    if (r() < P.farm * .5){ const n = 2 + Math.floor(r() * 4), hol = r() < .5; for (let i = 0; i < n; i++){ const x = ox + r() * CH, y = oy + r() * CH; if (okGrass(x, y)) add({ t:'cow', x, y, a: r() * 6.28, v:0, st: r() * 4, hol, ph: r() * 6, sc:0 }); } }
   }
-  if (!meadow){
-    for (let i = 0; i < 4; i++){ const y = oy + r() * CH, x = canalX(y) + (r() < .5 ? -1 : 1) * (58 + r() * 24); if (landF(x, y) > .07) c.trees.push({ x, y, k: Math.floor(r() * 3), s: 60 + r() * 34, sak: true }); }
-    const ry = Math.round((oy + CH / 2 - 700) / 1400) * 1400 + 700;
+  // the main road
+  const rx = roadX(cy0);
+  if (P.road > .3 && rx > ox - 100 && rx < ox + CH + 100){
+    const urb = Math.max(P.city, P.village);
+    if (urb < .5) for (let i = 0; i < 1 + Math.floor(r() * 2); i++) add({ t:'walk', y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 11 + r() * 5, lane: (r() - .5) * 10, hat:false, col: ['#c0533c','#3d6e9a','#e4d06a','#5b8a4d'][Math.floor(r() * 4)], ph: r() * 6, road:'meadow' });
+    if (P.farm > .3 && urb < .4 && r() < .5) add({ t:'tractor', y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 32 + r() * 8, lane: 0, ph:0, road:'meadow' });
+    const nc = Math.round((P.house * .6 + urb * 3) * (r() + .5));
+    for (let i = 0; i < nc; i++){ const dir = r() < .5 ? 1 : -1; add({ t:'car', y: oy + r() * CH, dir, v: 70 + r() * 40, lane: dir * 4.5, ph:0, road:'meadow', col: ['#c9cdd2','#2f4e6e','#a8322c','#e9e6df','#3c3f44','#d8b14a'][Math.floor(r() * 6)] }); }
+  }
+  // a boat on the river
+  const vx = riverX(cy0); if (vx > ox - 150 && vx < ox + CH + 150 && landF(vx, cy0) > .05 && r() < .5) add({ t:'row', y: oy + r() * CH, v: 12 + r() * 6, off: (r() - .5) * riverW(cy0) * .8, ph: r() * 6, water:'river' });
+  // Japanese countryside: egrets, farmers in the paddies, a kei truck on the field road, sakura bridges
+  if (paddy){
+    if (r() < .6){ const cx = ox + 150 + r() * (CH - 300), cy = oy + 150 + r() * (CH - 300); if (landF(cx, cy) > .1 && !inRiver(cx, cy)){
+      const n = 4 + Math.floor(r() * 5); for (let i = 0; i < n; i++) add({ t:'egret', x: cx + (r() - .5) * 120, y: cy + (r() - .5) * 80, a: r() * 6.28, fly:0, vx:0, vy:0, ph: r() * 6, st: r() * 3, hx: cx, hy: cy });
+      if (r() < .55) c.sea.push({ kind:'egrets', x: cx, y: cy, r:90, prog:0 }); } }
+    for (let i = 0; i < 2; i++){ if (r() < .7){ const col = Math.floor((ox + r() * CH + 37) / 120), bx = col * 120 - 37; if (!inRiver(bx, cy0)) add({ t:'walk', x: bx, y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 8 + r() * 4, lane: 0, hat:true, col: ['#4f6d8a','#8a5a44','#d6d0c0'][Math.floor(r() * 3)], ph: r() * 6, road:'bund' }); } }
+    const ry = Math.round((cy0 - 700) / 1400) * 1400 + 700;
     if (ry >= oy && ry < oy + CH){
-      c.bridges.push({ x: canalX(ry), y: ry });
-      for (let i = 0; i < 3; i++){ const x = ox + r() * CH, y = ry + (r() < .5 ? -1 : 1) * (26 + r() * 10); if (landF(x, y) > .07 && Math.abs(x - canalX(y)) > 60) c.trees.push({ x, y, k: Math.floor(r() * 3), s: 58 + r() * 30, sak: true }); }
-      if (r() < .45) c.sea.push({ kind:'bridge', x: canalX(ry), y: ry, r:70, prog:0 });
+      if (r() < .45) c.sea.push({ kind:'bridge', x: riverX(ry), y: ry, r:70, prog:0 });
       if (r() < .7) add({ t:'kei', x: ox + r() * CH, y: ry + 5, dir: r() < .5 ? 1 : -1, v: 55 + r() * 25, a:0, ph:0 });
       if (r() < .5) add({ t:'bike', x: ox + r() * CH, y: ry - 5, dir: r() < .5 ? 1 : -1, v: 30 + r() * 15, a:0, ph: r() * 6 });
     }
   }
-  if (meadow){
-    if (r() < .7){ let cx = 0, cy = 0, ok = false; for (let k = 0; k < 8 && !ok; k++){ cx = ox + 120 + r() * (CH - 240); cy = oy + 120 + r() * (CH - 240); ok = okGrass(cx, cy) && Math.abs(cx - roadX(cy)) > 60; }
-      if (ok){ const fl = { cx, cy }; const n = 9 + Math.floor(r() * 9); for (let i = 0; i < n; i++){ const x = cx + (r() - .5) * 90, y = cy + (r() - .5) * 70; if (okGrass(x, y)) add({ t:'sheep', x, y, a: r() * 6.28, v:0, st: r() * 3, fl, ph: r() * 6, sc:0 }); }
-        if (r() < .55) c.sea.push({ kind:'flock', x: cx, y: cy, r:90, prog:0 }); } }
-    if (r() < .45){ const n = 2 + Math.floor(r() * 4), hol = r() < .5; for (let i = 0; i < n; i++){ const x = ox + r() * CH, y = oy + r() * CH; if (okGrass(x, y) && Math.abs(x - roadX(y)) > 30) add({ t:'cow', x, y, a: r() * 6.28, v:0, st: r() * 4, hol, ph: r() * 6, sc:0 }); } }
-    const rx = roadX(oy + CH / 2); if (rx > ox - 100 && rx < ox + CH + 100){
-      const nw = 1 + Math.floor(r() * 2); for (let i = 0; i < nw; i++) add({ t:'walk', y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 11 + r() * 5, lane: (r() - .5) * 10, hat:false, col: ['#c0533c','#3d6e9a','#e4d06a','#5b8a4d'][Math.floor(r() * 4)], ph: r() * 6, road:'meadow' });
-      if (r() < .45) add({ t:'tractor', y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 32 + r() * 8, lane: 0, ph:0, road:'meadow' });
+  // city traffic on the street grid
+  if (P.city > .2){
+    const cs = Math.cos(G.ang), sn = Math.sin(G.ang), n = Math.round(3 + P.city * 9);
+    for (let i = 0; i < n; i++){
+      const x = ox + r() * CH, y = oy + r() * CH, gx = x * cs + y * sn, gy = -x * sn + y * cs, vert = r() < .5, dir = r() < .5 ? 1 : -1;
+      const line = vert ? Math.round(gx / G.bw) * G.bw : Math.round(gy / G.bh) * G.bh;
+      const bi = Math.floor(gx / G.bw), bj = Math.floor(gy / G.bh);
+      if (!blockU(bi, bj, CT, P.pass)) continue;
+      add({ t:'car', grid:true, G, ang:G.ang, vert, dir, line: line + dir * (G.st >= 12 ? 3.5 : 2), s: vert ? gy : gx, s0: vert ? gy : gx, v: 50 + r() * 50, ph:0, col: ['#c9cdd2','#2f4e6e','#a8322c','#e9e6df','#3c3f44','#d8b14a','#f2f0ea'][Math.floor(r() * 7)] });
     }
-    const vx = riverX(oy + CH / 2); if (vx > ox - 100 && vx < ox + CH + 100 && r() < .55) add({ t:'row', y: oy + r() * CH, v: 12 + r() * 6, off: (r() - .5) * 30, ph: r() * 6, water:'river' });
-  } else {
-    if (r() < .6){ let cx = ox + 150 + r() * (CH - 300), cy = oy + 150 + r() * (CH - 300); if (landF(cx, cy) > .1 && Math.abs(cx - canalX(cy)) > 90){
-      const n = 4 + Math.floor(r() * 5); for (let i = 0; i < n; i++) add({ t:'egret', x: cx + (r() - .5) * 120, y: cy + (r() - .5) * 80, a: r() * 6.28, fly:0, vx:0, vy:0, ph: r() * 6, st: r() * 3, hx: cx, hy: cy });
-      if (r() < .55) c.sea.push({ kind:'egrets', x: cx, y: cy, r:90, prog:0 }); } }
-    for (let i = 0; i < 2; i++){ if (r() < .7){ const col = Math.floor((ox + r() * CH + 37) / 120), bx = col * 120 - 37; add({ t:'walk', x: bx, y: oy + r() * CH, dir: r() < .5 ? 1 : -1, v: 8 + r() * 4, lane: 0, hat:true, col: ['#4f6d8a','#8a5a44','#d6d0c0'][Math.floor(r() * 3)], ph: r() * 6, road:'bund' }); } }
-    const cxx = canalX(oy + CH / 2); if (cxx > ox - 100 && cxx < ox + CH + 100 && r() < .4) add({ t:'row', y: oy + r() * CH, v: 9 + r() * 4, off: (r() - .5) * 26, ph: r() * 6, water:'canal' });
   }
 }
 function lifeStep(o, dt, f){
@@ -1189,7 +1573,9 @@ function lifeStep(o, dt, f){
     else o.a = o.dir > 0 ? Math.PI / 2 : -Math.PI / 2;
   } else if (o.t === 'kei' || o.t === 'bike'){
     o.x += o.dir * o.v * dt; o.ph += dt * 6; o.a = o.dir > 0 ? 0 : Math.PI;
-    const cx = canalX(o.y); if (Math.abs(o.x - cx) < 60 && false) o.x += 0;
+  } else if (o.t === 'car'){
+    if (o.grid){ o.s += o.dir * o.v * dt; if (Math.abs(o.s - o.s0) > 1000) o.s = o.s0; const gx = o.vert ? o.line : o.s, gy = o.vert ? o.s : o.line, c = Math.cos(o.ang), s = Math.sin(o.ang); o.x = gx * c - gy * s; o.y = gx * s + gy * c; const ux = o.vert ? 0 : o.dir, uy = o.vert ? o.dir : 0; o.a = Math.atan2(ux * s + uy * c, ux * c - uy * s); }
+    else { o.y += o.dir * o.v * dt; o.x = roadX(o.y) + o.lane; const y2 = o.y + o.dir * 4; o.a = Math.atan2(o.dir * 4, roadX(y2) - roadX(o.y)); }
   } else if (o.t === 'row'){
     o.y += o.v * dt; o.ph += dt * 3;
     o.x = (o.water === 'river' ? riverX(o.y) : canalX(o.y)) + o.off; const y2 = o.y + 4; o.a = Math.atan2(4, (o.water === 'river' ? riverX(y2) : canalX(y2)) - (o.x - o.off));
@@ -1226,6 +1612,11 @@ function drawLife(c, o, X, Y, z, t){
     c.fillStyle = '#1e1e1e'; c.fillRect(-11, -8.5, 8, 3.5); c.fillRect(-11, 5, 8, 3.5); c.fillRect(6, -6.5, 5, 2.5); c.fillRect(6, 4, 5, 2.5);
     c.fillStyle = '#b8322a'; rr(c, -9, -5, 22, 10, 2); c.fill(); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(-9, -5, 22, 3);
     c.fillStyle = '#2a3440'; rr(c, -8, -4, 7, 8, 1.2); c.fill();
+    c.restore(); if (WX.night) headlight(c, X, Y, o.a, z); return; }
+  if (o.t === 'car'){ sh(26, 12);
+    c.save(); c.translate(X, Y); c.rotate(o.a); c.scale(z, z);
+    c.fillStyle = o.col; rr(c, -13, -5.5, 26, 11, 3); c.fill();
+    c.fillStyle = 'rgba(30,40,50,.75)'; rr(c, -6, -4.6, 13, 9.2, 2); c.fill(); c.fillStyle = o.col; c.fillRect(-2.5, -4.6, 5, 9.2);
     c.restore(); if (WX.night) headlight(c, X, Y, o.a, z); return; }
   if (o.t === 'kei'){ sh(34, 15);
     c.save(); c.translate(X, Y); c.rotate(o.a); c.scale(z, z);
@@ -1268,19 +1659,11 @@ function drawBridge(c, X, Y, z){
 const PET = [];
 function drawLand(vis, sx, sy, z, t, dt, f){
   const cull = (X, Y, m) => X < -m || X > W + m || Y < -m || Y > H + m;
-  // tree shadows first, then bridges and ground life, then canopies
-  vis.forEach(c => c.trees.forEach(tr => { const X = sx(tr.x), Y = sy(tr.y), s = tr.s * z * 1.2; if (cull(X, Y, s)) return; ctx.globalAlpha = .38; ctx.drawImage((tr.sak ? TREES.ss : TREES.gs)[tr.k], X - s / 2 + s * .3 * WX.slen, Y - s / 2 + s * .38 * WX.slen, s, s); }));
-  ctx.globalAlpha = 1;
-  vis.forEach(c => c.bridges.forEach(b => { const X = sx(b.x), Y = sy(b.y); if (!cull(X, Y, 80)) drawBridge(ctx, X, Y, z); }));
-  vis.forEach(c => c.life.forEach(o => { if (dt > 0) lifeStep(o, dt, f); const X = sx(o.x), Y = sy(o.y); if (!cull(X, Y, 40) && !(o.t === 'egret' && o.fly > 0)) drawLife(ctx, o, X, Y, z, t); }));
-  vis.forEach(c => c.trees.forEach(tr => { const X = sx(tr.x), Y = sy(tr.y), s = tr.s * z * 1.2; if (cull(X, Y, s)) return; ctx.drawImage((tr.sak ? TREES.s : TREES.g)[tr.k], X - s / 2, Y - s / 2, s, s);
-    if (WX.snow){ ctx.globalAlpha = .45; ctx.fillStyle = '#f4f7fa'; ctx.beginPath(); ctx.arc(X - s * .08, Y - s * .1, s * .28, 0, 7); ctx.fill(); ctx.globalAlpha = 1; }
-    if (tr.sak && dt > 0 && PET.length < 260 && Math.random() < dt * 1.4) PET.push({ x: tr.x + (Math.random() - .5) * tr.s * .6, y: tr.y + (Math.random() - .5) * tr.s * .6, vx: 9 + Math.random() * 8, vy: 5 + Math.random() * 6, life: 5 + Math.random() * 3, r: Math.random() * 6, h: 1 }); }));
-  // petals drifting on the wind, settling on the ground and water
+  vis.forEach(c => c.life.forEach(o => { lifeStep(o, dt, f); const X = sx(o.x), Y = sy(o.y); if (!cull(X, Y, 40) && !(o.t === 'egret' && o.fly > 0)) drawLife(ctx, o, X, Y, z, t); }));
+  if (dt > 0) SAKV.forEach(tr => { if (PET.length < 240 && Math.random() < dt * .9) PET.push({ x: tr.x + (Math.random() - .5) * tr.s * .6, y: tr.y + (Math.random() - .5) * tr.s * .6, vx: 9 + Math.random() * 8, vy: 5 + Math.random() * 6, life: 5 + Math.random() * 3, r: Math.random() * 6, h: 1 }); });
   for (let i = PET.length - 1; i >= 0; i--){ const p = PET[i]; p.life -= dt; if (p.life <= 0){ PET.splice(i, 1); continue; } if (p.h > 0){ p.x += p.vx * dt; p.y += p.vy * dt; p.r += dt * 3; p.h -= dt * .3; }
     const X = sx(p.x), Y = sy(p.y); if (cull(X, Y, 10)) continue; ctx.globalAlpha = Math.min(1, p.life / 1.5) * .9; ctx.fillStyle = '#f7c6d4'; ctx.beginPath(); ctx.ellipse(X, Y, Math.max(.8, 1.7 * z), Math.max(.5, 1 * z), p.r, 0, 7); ctx.fill(); }
   ctx.globalAlpha = 1;
-  // egrets in flight sit above the trees
   vis.forEach(c => c.life.forEach(o => { if (o.t === 'egret' && o.fly > 0) drawLife(ctx, o, sx(o.x), sy(o.y), z, t); }));
 }
 
@@ -1288,11 +1671,11 @@ function drawLand(vis, sx, sy, z, t, dt, f){
 let FX = 0, FY = 0, FW = 0, FH = 0, BZ = 1, OV = null, PLX = 0, PLY = 0;
 const PAPER = '#f3f1ec';
 function layoutFrame(){
-  const pc = SAVE.view !== 'full';
+  const pc = false;
   if (!pc){ FX = 0; FY = 0; FW = W; FH = H; }
   else if (W < 640){ FW = Math.round(W * .9); FH = Math.round(Math.min(H * .58, FW * 1.3)); FX = Math.round((W - FW) / 2); FY = Math.round(Math.max(70, H * .11)); }
   else { FH = Math.round(H * .66); FW = Math.round(Math.min(W * .86, FH * 1.6)); FX = Math.round((W - FW) / 2); FY = Math.round(Math.max(64, H * .12)); }
-  BZ = clamp(Math.min(FW, FH * 1.35) / 1000, .42, 1);
+  BZ = clamp(Math.min(W, H * 1.35) / 1000 * .62, .34, .7);
   document.body.classList.toggle('vpc', pc);
   const st = document.documentElement.style; st.setProperty('--fx', FX + 'px'); st.setProperty('--fy', FY + 'px'); st.setProperty('--fw', FW + 'px'); st.setProperty('--fh', FH + 'px');
   if (!pc){ OV = null; return; }
@@ -1318,7 +1701,7 @@ function layoutFrame(){
 }
 function caption(f){
   const el = $('#cap'); if (!el) return;
-  const d = Math.max(0, -f.y / 4), reg = REGIONS[regionAt(d)];
+  const d = -f.y / 4, reg = regionObj(d);
   const key = reg.name.en + '|' + LANG + '|' + WX.id;
   if (el.dataset.k !== key){ el.dataset.k = key; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
     $('#cap1').textContent = L3(reg.name); $('#cap1e').textContent = LANG === 'en' ? '' : reg.name.en; $('#cap2').textContent = L3(WX.name) + ' · ' + L3(reg.sub); }
@@ -1342,35 +1725,38 @@ function draw(){
   for (let i = cx0; i <= cx1; i++) for (let j = cy0; j <= cy1; j++) vis.push(chunk(i, j));
   const isl = []; vis.forEach(c => c.islands.forEach(s => isl.push(s)));
   ctx.clearRect(0, 0, W, H);
-  drawSeaGL(camX, camY, zoomG, t, isl, f.tint || [0, 0, 0]);
+  drawGround(camX, camY, zoomG, CXs, CYs, f);
   vis.forEach(c => c.sea.forEach(s => drawSea(ctx, s, sx(s.x), sy(s.y), zoomG, t)));
   drawLand(vis, sx, sy, zoomG, t, FDT, f);
   vis.forEach(c => c.islands.forEach(s => {
     const X = sx(s.x), Y = sy(s.y), E = s.r * 1.5 * zoomG; if (X < -E || X > W + E || Y < -E || Y > H + E) return;
+    const hr = s.r * 2.6 * zoomG, hg = ctx.createRadialGradient(X, Y, s.r * .6 * zoomG, X, Y, hr); hg.addColorStop(0, 'rgba(110,206,200,.55)'); hg.addColorStop(1, 'rgba(110,206,200,0)'); ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(X, Y, hr, 0, 7); ctx.fill();
     const sp = islandSprite(s, !!WX.snow); ctx.drawImage(sp.c, X - E, Y - E, E * 2, E * 2);
     islandExtras(s, sp, X, Y, zoomG, t);
   }));
   // charting rings on the water
   if (F && f.alt < .62) vis.forEach(c => [...c.islands, ...c.sea].forEach(s => { if (s.kind === 'halcyon' || s.charted) return; drawRing(sx(s.x), sy(s.y), (s.r + 170) * zoomG, s.prog, f); }));
   if (F && f.mail && !f.delivered) vis.forEach(c => c.islands.forEach(s => { if (s.kind === 'halcyon' && f.alt < .62) drawRing(sx(s.x), sy(s.y), (s.r + 170) * zoomG, 0, f, true); }));
-  // cloud shadows on the water
+  if (MULC[WX.id]){ ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = MULC[WX.id]; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+  // cloud shadows on the ground
   const zC = zoomG * lerp(1.35, 1.08, f.alt);
   if (WX.shadow > .05 && CLOUDS.shadows.length){
-    vis.forEach(c => c.clouds.forEach(cl => { const w = CW * cl.s * zoomG, h = CHh * cl.s * zoomG, X = sx(cl.x) + 150 * WX.slen * zoomG, Y = sy(cl.y) + 190 * WX.slen * zoomG; if (X + w < 0 || X - w > W || Y + h < 0 || Y - h > H) return; ctx.globalAlpha = WX.shadow * cl.a; ctx.drawImage(CLOUDS.shadows[cl.k], X - w / 2, Y - h / 2, w, h); }));
+    vis.forEach(c => c.clouds.forEach(cl => { if (!cl.cu) return; const w = CW * cl.s * zoomG * 1.05, h = CHh * cl.s * zoomG * 1.05, X = sx(cl.x) + Math.sin(t * .05 + cl.ph) * 6 * zoomG + 140 * WX.slen * zoomG, Y = sy(cl.y) + 180 * WX.slen * zoomG; if (X + w < 0 || X - w > W || Y + h < 0 || Y - h > H) return; ctx.globalAlpha = Math.min(.5, WX.shadow * 1.35) * cl.a; ctx.drawImage(CLOUDS.shadows[cl.k], X - w / 2, Y - h / 2, w, h); }));
     ctx.globalAlpha = 1;
   }
   vis.forEach(c => c.coins.forEach(k => { if (!k.got && k.alt < .5) drawCoin(ctx, sx(k.x), sy(k.y), zoomG, t, k, f.alt); }));
   const PX = sx(f.x), PY = sy(f.y);
   // plane shadow
-  ctx.save(); ctx.globalAlpha = WX.night ? .1 : (.34 - f.alt * .2) * (WX.shadow > .1 ? 1 : .5) * (f.alt > .62 ? clamp(1 - (f.cov - THR) * 8, .15, 1) : 1);
-  if (canBlur) ctx.filter = `blur(${(1 + f.alt * 5).toFixed(1)}px)`;
-  ctx.translate(PX + (14 + f.alt * 90) * WX.slen, PY + (18 + f.alt * 110) * WX.slen); ctx.rotate(f.a); ctx.scale(zoomG * .92, zoomG * .92);
+  const ps = Math.max(zoomG * (1 + f.alt * .18) * .5, 26 / 108);
+  ctx.save(); ctx.globalAlpha = WX.night ? .12 : (.46 - f.alt * .22) * (WX.shadow > .1 ? 1 : .55) * (f.alt > .62 ? clamp(1 - (f.cov - THR) * 8, .15, 1) : 1);
+  if (canBlur) ctx.filter = `blur(${(.6 + f.alt * 3.5).toFixed(1)}px)`;
+  ctx.translate(PX + (12 + f.alt * 120) * WX.slen * zoomG, PY + (16 + f.alt * 150) * WX.slen * zoomG); ctx.rotate(f.a); ctx.scale(ps * .9, ps * .9);
   drawPlane(ctx, f.p, f.liv, 0, true); ctx.restore(); if (canBlur) ctx.filter = 'none';
   f.birds.forEach(b => drawGull(ctx, sx(b.x), sy(b.y), zoomG, b.p));
   // the cloud deck: under the plane when it is above, over it when it is below
   const planeAbove = f.alt >= .6;
   const csx = x => CXs + (x - camX) * zC, csy = y => CYs + (y - camY) * zC;
-  const deckA = f.alt >= .66 ? .97 : f.alt > .54 ? lerp(.3, .97, (f.alt - .54) / .12) : clamp(.07 + f.alt * .2, .07, .17);
+  const deckA = f.alt >= .66 ? .97 : f.alt > .54 ? lerp(.6, .97, (f.alt - .54) / .12) : .93;
   if (planeAbove) drawClouds(vis, csx, csy, zC, deckA, t);
   drawSigns(vis, sx, sy, csx, csy, zoomG, zC, t, f);
   vis.forEach(c => c.coins.forEach(k => { if (!k.got && k.alt >= .5) drawCoin(ctx, sx(k.x), sy(k.y), zoomG * 1.08, t, k, f.alt); }));
@@ -1381,7 +1767,7 @@ function draw(){
   if (WX.night && f.alt < .35){ const g = ctx.createRadialGradient(PX, PY - 120 * zoomG, 0, PX, PY - 120 * zoomG, 120 * zoomG); g.addColorStop(0, `rgba(255,240,200,${.18 * (1 - f.alt / .35)})`); g.addColorStop(1, 'rgba(255,240,200,0)'); ctx.fillStyle = g; ctx.fillRect(PX - 140 * zoomG, PY - 260 * zoomG, 280 * zoomG, 280 * zoomG); }
   // the plane
   ctx.save(); ctx.translate(PX, PY + Math.sin(t * 2.2) * 1.2); ctx.rotate(f.a);
-  const ps = zoomG * (1 + f.alt * .18); ctx.scale(ps, ps);
+  ctx.scale(ps, ps);
   drawPlane(ctx, f.p, f.liv, f.prop, false, f.av, !!WX.night, f.ctl);
   ctx.restore();
   if (f.parcel){ const k = Math.min(1, f.parcel.t / 2.6), x = lerp(f.parcel.x, f.parcel.tx, k), y = lerp(f.parcel.y, f.parcel.ty, k), X = sx(x), Y = sy(y), s = zoomG * (1.4 - k * .8);
@@ -1405,7 +1791,8 @@ function drawClouds(vis, csx, csy, z, alpha, t){
   if (!CLOUDS.sprites.length) return;
   vis.forEach(c => c.clouds.forEach(cl => {
     const w = CW * cl.s * z, h = CHh * cl.s * z, X = csx(cl.x) + Math.sin(t * .05 + cl.ph) * 6 * z, Y = csy(cl.y); if (X + w / 2 < 0 || X - w / 2 > W || Y + h / 2 < 0 || Y - h / 2 > H) return;
-    ctx.globalAlpha = alpha * cl.a;
+    if (!cl.cu && alpha < .96) return;
+    ctx.globalAlpha = cl.cu ? alpha * cl.a : alpha * cl.a * .3;
     if (cl.f){ ctx.save(); ctx.translate(X, Y); ctx.scale(-1, 1); ctx.drawImage(CLOUDS.sprites[cl.k], -w / 2, -h / 2, w, h); ctx.restore(); }
     else ctx.drawImage(CLOUDS.sprites[cl.k], X - w / 2, Y - h / 2, w, h);
   }));
@@ -1446,7 +1833,7 @@ function islandExtras(s, sp, X, Y, z, t){
 }
 function drawCoin(c, X, Y, z, t, k, alt){
   if (X < -40 || X > W + 40 || Y < -40 || Y > H + 40) return;
-  const big = k.v > 1, s = (big ? 8 : 6.5) * z, w = Math.max(1.2, Math.abs(Math.cos(t * 2.4 + X * .013)) * s);
+  const big = k.v > 1, s = Math.max((big ? 8 : 6.5) * z, big ? 4.6 : 3.8), w = Math.max(1.2, Math.abs(Math.cos(t * 2.4 + X * .013)) * s);
   const gap = Math.abs(alt - k.alt), active = gap < .14;
   c.globalAlpha = active ? 1 : clamp(.65 - gap * 1.4, .14, .5);
   const off = k.alt * 50 * z;
@@ -1458,6 +1845,7 @@ function drawCoin(c, X, Y, z, t, k, alt){
   c.globalAlpha = 1;
 }
 function drawWeather(f, t, vis, csx, csy, zC){
+  if (WX.id === 'clear'){ const g = ctx.createRadialGradient(W * .12, -H * .1, 0, W * .12, -H * .1, Math.max(W, H) * 1.2); g.addColorStop(0, 'rgba(255,222,160,.16)'); g.addColorStop(1, 'rgba(255,222,160,.03)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
   if (WX.flare){ const g = ctx.createRadialGradient(W * .9, -H * .05, 0, W * .9, -H * .05, H * 1.1); g.addColorStop(0, 'rgba(255,190,110,.35)'); g.addColorStop(.4, 'rgba(255,170,90,.08)'); g.addColorStop(1, 'rgba(255,160,80,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
   if (WX.grade){ ctx.fillStyle = WX.grade; ctx.fillRect(0, 0, W, H); }
   // distant rain cells you can fly around
@@ -1568,6 +1956,15 @@ function seaBg(c, w, h, wx = WEATHER[0]){ const g = c.createLinearGradient(0, 0,
   c.strokeStyle = 'rgba(255,255,255,.05)'; c.lineWidth = 1; for (let i = 0; i < 40; i++){ const x = (i * 53) % w, y = (i * 97) % h; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + 6, y - 2, x + 12, y); c.stroke(); } }
 function thumbFor(kind){
   if (THUMB[kind]) return THUMB[kind];
+  if (ARCS[kind]){
+    const w = 240, h = 160, c = mk(w, h), g = c.getContext('2d');
+    const spot = { arcChain:[0, 33000], arcLand:[0, 44200], arcVillage:[0, 87000], arcCity:[0, 120000], city_river:[0, 120000], city_japan:[1, 120000], city_port:[2, 120000], city_grid:[3, 120000] }[kind];
+    if (kind === 'arcChain'){ seaBg(g, w, h); [[70, 60, 40], [160, 100, 30], [190, 40, 22]].forEach(([x, y, r], i) => { const sp = islandSprite({ kind: i ? 'palm' : 'village', r, seed: 900 + i }, false); const E = r * 1.5 * .9; g.drawImage(sp.c, x - E, y - E, E * 2, E * 2); }); }
+    else { const y = -(spot[0] * LOOP + spot[1]) * 4, ct = cityType(spot[0]); let x = kind === 'arcVillage' ? roadX(y) : ct === 'port' && kind !== 'arcCity' ? harbourX(y) + 200 : riverX(y) + 160;
+      const tx = Math.floor(x / TS), ty = Math.floor(y / TS), tc = paintTile(tx, ty, false), px = (x - tx * TS) * TRES, py = (y - ty * TS) * TRES;
+      g.drawImage(tc, px - 120, py - 80, 240, 160, 0, 0, 240, 160); }
+    THUMB[kind] = c.toDataURL('image/jpeg', .85); return THUMB[kind];
+  }
   const w = 240, h = 160, c = mk(w, h), g = c.getContext('2d'); const wx = kind === 'glow' ? WEATHER[6] : kind === 'iceberg' ? WEATHER[5] : kind === 'rainbow' ? WEATHER[2] : WEATHER[0];
   seaBg(g, w, h, wx);
   if (['flock','egrets','bridge'].includes(kind)){
@@ -1603,9 +2000,15 @@ function planeThumb(cnv, p, lv){
 }
 
 /* idle flight behind the menus: cruising above the deck */
-let IDLE = null;
-function idleFlight(){ if (!IDLE){ const p = planeById(SAVE.sel.plane); IDLE = { p, liv: p.liv.find(l => l.id === SAVE.sel.liv) || p.liv[0], x:0, y:0, a:0, av:0, alt:.74, t:0, prop:0, trail:[], ribbon:[], birds:[], rain:[], snow:[], fog:[], flash:0, landing:false, tint:[0, .02, .01], cov:.6, mist:0, shake:0 }; } return IDLE; }
-function idleUpdate(dt){ const f = idleFlight(); f.t += dt; f.prop += dt * 40; f.a = Math.sin(f.t * .2) * .3; f.y -= Math.cos(f.a) * 120 * dt; f.x += Math.sin(f.a) * 120 * dt; f.alt = .72 + Math.sin(f.t * .25) * .05; }
+let IDLE = null, IDLEP = null;
+/* the title view: over the meadow river, with a few cumulus in sight but clear air around the plane */
+function IDLEPOS(){ if (IDLEP) return IDLEP; let best = null;
+  for (let y = -230000; y > -244000; y -= 150){ const x = riverX(y) + 260; if (landF(x, y) < .1 || blockAt(x, y)) continue; if (covStatic(x, y) > THR - .05) continue; let n = 0;
+    for (let gx = -900; gx <= 900; gx += 225) for (let gy = -700; gy <= 500; gy += 225){ if (Math.hypot(gx, gy) < 420) continue; if (covStatic(x + gx, y + gy) > THR + .12) n++; }
+    const sc = Math.abs(n - 3); if (!best || sc < best[2]) best = [x, y, sc]; }
+  IDLEP = best ? [best[0], best[1]] : [riverX(-236000) + 260, -236000]; return IDLEP; }
+function idleFlight(){ if (!IDLE){ const p = planeById(SAVE.sel.plane); IDLE = { p, liv: p.liv.find(l => l.id === SAVE.sel.liv) || p.liv[0], x:IDLEPOS()[0], y:IDLEPOS()[1], a:0, av:0, alt:.45, t:0, prop:0, trail:[], ribbon:[], birds:[], rain:[], snow:[], fog:[], flash:0, landing:false, tint:[0, .02, .01], cov:.6, mist:0, shake:0 }; } return IDLE; }
+function idleUpdate(dt){ const f = idleFlight(); f.t += dt; f.prop += dt * 40; f.a = Math.sin(f.t * .15) * .22; f.y -= Math.cos(f.a) * 70 * dt; f.x += Math.sin(f.a) * 70 * dt; f.alt = .45 + Math.sin(f.t * .2) * .03; if (f.y < -250000){ f.y = IDLEPOS()[1]; } }
 
 /* ============================ loop (fixed timestep, so slow devices do not slow the game) ============================ */
 const STEP = 1 / 60;
@@ -1623,7 +2026,7 @@ function frame(now){
 const screens = ['sTitle','sPre','sHangar','sLog','sPause','sSum'];
 function show(id){ screens.forEach(s => $('#' + s).classList.toggle('hidden', s !== id)); }
 function setWx(){ const w = WEATHER.find(w => w.id === SAVE.wx && w.need <= SAVE.total) || WEATHER[0]; if (w !== WX){ WX = w; chunks.clear(); } ensureClouds(); }
-function goTitle(){ state = 'title'; F = null; IDLE = null; setWx(); $('#hud').classList.add('hidden'); show('sTitle'); $('#tCoins').textContent = SAVE.coins.toLocaleString(); $('#tBest').textContent = fmtDist(SAVE.best); $('#tTotal').textContent = fmtDist(SAVE.total); }
+function goTitle(){ state = 'title'; F = null; IDLE = null; setWx(); $('#hud').classList.add('hidden'); show('sTitle'); $('#tCoins').textContent = SAVE.coins.toLocaleString(); $('#tBest').textContent = fmtDist(SAVE.best); $('#tTotal').textContent = fmtDist(SAVE.total); $('#tAt').textContent = L3(regionObj(-(SAVE.jy || 0) / 4).name); }
 function goPre(){ show('sPre'); renderWx(); renderMail(); }
 function renderWx(){
   $('#wxList').innerHTML = WEATHER.map(w => { const ok = SAVE.total >= w.need;
@@ -1641,8 +2044,9 @@ function endFlight(){
   const earned = SAVE.coins - f.prevCoins;
   $('#hud').classList.add('hidden');
   $('#sumTitle').innerHTML = esc(T('pilotsLog')) + (f.dist > f.prevBest && SAVE.flights > 1 ? `<span class="newbest">${esc(T('newBest'))}</span>` : '');
-  const reg = REGIONS[regionAt(f.dist)];
-  $('#sumNote').textContent = L3(NOTES[WX.id]).replace('{d}', fmtDist(f.dist - reg.at)).replace('{place}', L3(reg.name));
+  const JJ = -f.y / 4, reg = regionObj(JJ), JPf = jparams(JJ), onLand = landF(f.x, f.y) > 0;
+  const nt = onLand ? (JPf.cityZone > .4 ? NOTE_CITY : NOTE_LAND) : NOTES[WX.id];
+  $('#sumNote').textContent = L3(nt).replace('{d}', fmtDist(Math.max(0, JPf.u - reg.at))).replace('{place}', L3(reg.name));
   $('#sumDist').textContent = fmtDist(f.dist);
   $('#sumWx').textContent = L3(WX.name);
   const names = f.firsts.map(k => L3(SPOTS[k].name));
@@ -1711,6 +2115,7 @@ $('#bLand').onclick = () => { paused = false; show(null); if (F){ F.fuel = Math.
 $('#bAgain').onclick = goPre;
 $('#bSumHome').onclick = goTitle;
 
+window.__x = (y, m) => m === 'road' ? roadX(y) : harbourX(y) - 300;
 window.__cl = { get F(){ return F; }, get SAVE(){ return SAVE; }, takeoff, endFlight, get state(){ return state; }, keys, gl: () => !!GL, covAt, DEST, chunk };
 window.__lay = true; layoutFrame();
 applyLang();
